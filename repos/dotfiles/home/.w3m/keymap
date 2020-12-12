@@ -1,0 +1,67 @@
+# w3m vim-like keymap file
+
+########## command ##########
+keymap :: COMMAND
+keymap :H HELP
+
+########## history navigation ##########
+keymap L NEXT
+keymap H PREV
+
+########## scrolling ##########
+keymap gg BEGIN
+keymap G END
+keymap zz CENTER_V
+
+########## cursor ##########
+keymap 0 LINE_BEGIN
+keymap $ LINE_END
+keymap w NEXT_WORD
+keymap b PREV_WORD
+
+########## navigation ##########
+keymap f MOVE_LIST_MENU
+keymap F LIST_MENU
+
+# reload
+keymap r RELOAD
+keymap C-r RELOAD
+
+# save/load
+keymap :w SAVE
+keymap :W PRINT
+keymap :o GOTO
+keymap :e LOAD
+
+########## info ##########
+keymap y PEEK
+keymap gC-g INFO
+keymap C-g LINE_INFO
+keymap gf VIEW
+
+########## search ##########
+keymap / ISEARCH
+keymap ? ISEARCH_BACK
+keymap n SEARCH_NEXT
+keymap N SEARCH_PREV
+
+########## bookmarks ##########
+keymap a ADD_BOOKMARK
+keymap :b VIEW_BOOKMARK
+
+########## tab ##########
+keymap d CLOSE_TAB
+keymap gh GOTO http://www.duckduckgo.com
+keymap gH TAB_GOTO http://www.duckduckgo.com
+keymap C-t NEW_TAB
+keymap gt NEXT_TAB
+keymap gT PREV_TAB
+keymap C-wL TAB_RIGHT
+keymap C-wH TAB_LEFT
+keymap t TAB_GOTO
+keymap T TAB_MENU
+
+########## quit ##########
+keymap :q QUIT
+keymap ZZ QUIT
+keymap ZQ EXIT

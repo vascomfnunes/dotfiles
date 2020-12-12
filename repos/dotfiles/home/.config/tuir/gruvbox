@@ -1,0 +1,50 @@
+[theme]
+;<element>            = <foreground>  <background>  <attributes>
+Normal                = ansi_8      ansi_236        normal
+Selected              = ansi_248    ansi_237        normal
+SelectedCursor        = default     -               reverse
+
+TitleBar              = ansi_3      ansi_236        bold
+OrderBar              = ansi_1      -               bold
+OrderBarHighlight     = ansi_3      -               bold+reverse
+HelpBar               = ansi_1      ansi_236        bold
+Prompt                = ansi_15     ansi_236        bold
+NoticeInfo            = -           -               bold
+NoticeLoading         = -           -               bold
+NoticeError           = -           -               bold
+NoticeSuccess         = -           -               bold
+
+CursorBlock           = -           -               -
+CursorBar1            = default     -               -
+CursorBar2            = default     -               -
+CursorBar3            = default     -               -
+CursorBar4            = default     -               -
+
+CommentAuthor         = ansi_6      -               bold
+CommentAuthorSelf     = ansi_10     ansi_130        bold
+CommentCount          = -           -               -
+CommentText           = -           -               -
+Created               = -           -               -
+Downvote              = red         -               bold
+Gold                  = -           -               bold
+HiddenCommentExpand   = -           -               bold
+HiddenCommentText     = -           -               -
+MultiredditName       = yellow      -               bold
+MultiredditText       = -           -               -
+NeutralVote           = -           -               bold
+NSFW                  = red         -               bold+reverse
+Saved                 = green       -               -
+Score                 = -           -               -
+Separator             = -           -               bold
+Stickied              = ansi_3      -               -
+SubscriptionName      = yellow      -               bold
+SubscriptionText      = -           -               -
+SubmissionAuthor      = ansi_239    -               bold
+SubmissionFlair       = ansi_239    -               -
+SubmissionSubreddit   = ansi_239    -               -
+SubmissionText        = -           -               -
+SubmissionTitle       = -           -               bold
+Upvote                = green       -               bold
+Link                  = ansi_2      -               underline
+LinkSeen              = ansi_13     -               underline
+UserFlair             = ansi_239    -               bold

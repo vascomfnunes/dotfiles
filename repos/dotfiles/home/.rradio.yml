@@ -1,0 +1,73 @@
+#                     _ _
+#  _ __ _ __ __ _  __| (_) ___
+# | '__| '__/ _` |/ _` | |/ _ \
+# | |  | | | (_| | (_| | | (_) |
+# |_|  |_|  \__,_|\__,_|_|\___/
+
+stations:
+  bbc1:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio1_mf_p'
+    name: BBC 1
+  bbc2:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio2_mf_p'
+    name: BBC 2
+  bbc3:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio3_mf_p'
+    name: BBC 3
+  bbc4:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio4fm_mf_p'
+    name: BBC 4
+  bbc5:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p'
+    name: BBC 5
+  bbc6:
+    url: 'http://bbcmedia.ic.llnwd.net/stream/bbcmedia_6music_mf_p'
+    name: BBC 6
+  radio_x_manchester:
+    url: 'http://media-ice.musicradio.com:80/RadioXManchesterMP3'
+    name: Radio X Manchester
+  radio_paradise:
+    url: 'http://stream-uk1.radioparadise.com/mp3-192'
+    name: Radio Paradise
+  kexp:
+    url: 'http://live-aacplus-64.kexp.org/kexp64.aac'
+    name: KEXP
+  ambient_radio:
+    url: 'http://uk2.internet-radio.com:31491'
+    name: Ambient Radio
+  classical_fm:
+    url: 'http://media-ice.musicradio.com/ClassicFMMP3'
+    name: Classical FM
+  jazz_fm:
+    url: 'http://tx.planetradio.co.uk/icecast.php?i=jazz.mp3'
+    name: Jazz FM
+  somafm_goa:
+    url: 'http://ice6.somafm.com/suburbsofgoa-128-mp3'
+    name: Suburbs of Goa
+  somafm_sonic:
+    url: 'http://ice6.somafm.com/sonicuniverse-128-mp3'
+    name: Sonic Universe
+  somafm_folk:
+    url: 'http://ice4.somafm.com/folkfwd-128-mp3'
+    name: Soma FM Folk
+  somafm_celtic:
+    url: 'http://ice2.somafm.com/thistle-128-mp3'
+    name: Soma FM Celtik
+  somafm_lush:
+    url: 'http://ice6.somafm.com/lush-128-mp3'
+    name: Lush
+  somafm_defcon:
+    url: 'http://ice6.somafm.com/defcon-128-mp3'
+    name: DefCom
+  jazz_cafe:
+    url: http://radio.wanderingsheep.tv:8000/jazzcafe
+    name: Jazz Cafe
+  wucf:
+    url: http://peridot.streamguys.com:7830/WUCF-fallback
+    name: WUCF
+  antena_1:
+    url: http://radiocast.rtp.pt/antena180a.mp3
+    name: Antena 1
+  antena_2:
+    url: http://radiocast.rtp.pt/antena280a.mp3
+    name: Antena 2

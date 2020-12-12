@@ -1,0 +1,19 @@
+[database]
+path=/Users/vasco.nunes/.mail
+
+[user]
+name=Vasco Nunes
+primary_email=vasco.m.nunes@me.com
+
+[new]
+tags=unread;inbox;
+ignore=
+
+[search]
+exclude_tags=deleted;spam;
+
+[maildir]
+synchronize_flags=true
+
+[crypto]
+gpg_path=gpg

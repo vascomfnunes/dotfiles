@@ -1,0 +1,13 @@
+#!/bin/sh
+
+/usr/local/bin/mbsync -a
+/usr/local/bin/notmuch new
+
+# Mark emails archived on phone as read and processed
+/usr/local/bin/notmuch tag -unread 'tag:unread AND NOT folder:INBOX'
+/usr/local/bin/notmuch tag -inbox 'NOT folder:INBOX'
+
+count=$(/usr/local/bin/notmuch count 'tag:unread AND tag:inbox')
+/usr/local/bin/notmuch tag -inbox '*'
+[ "$count" != "0" ] && /usr/bin/osascript -e 'display notification "There are new email message(s)"'
+exit 0

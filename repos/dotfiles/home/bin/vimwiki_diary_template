@@ -1,0 +1,42 @@
+#!/usr/bin/python
+import sys
+import datetime
+import os
+import subprocess
+
+template = """<!---
+   Date: {date}
+   Tags: :diary:
+--->
+
+# {date}
+
+## ISSUES
+
+{issues}
+## STAND-UP
+
+### Yesterday
+
+*
+
+### Today
+
+*
+
+## MEETINGS
+```
+{meetings}
+```
+## TODO
+
+*
+
+## NOTES
+
+*
+"""
+
+meetings = subprocess.check_output("today", shell=True)
+issues = subprocess.check_output("jira-ruby", shell=True)
+print(template.format(date=os.path.basename(sys.argv[1])[0:10], meetings=meetings, issues=issues))

@@ -1,0 +1,126 @@
+#            _
+#  _ __ ___ | |__  ___ _   _ _ __   ___ _ __ ___
+# | '_ ` _ \| '_ \/ __| | | | '_ \ / __| '__/ __|
+# | | | | | | |_) \__ \ |_| | | | | (__| | | (__
+# |_| |_| |_|_.__/|___/\__, |_| |_|\___|_|  \___|
+#                      |___/
+
+################################
+######## Account icloud ########
+################################
+
+IMAPAccount icloud
+Host imap.mail.me.com
+User vasco.m.nunes
+PassCmd "security find-internet-password -s smtp.mail.me.com -w"
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs PLAIN
+CertificateFile ~/.certificates.pem
+
+# Remote storage
+
+IMAPStore icloud-remote
+Account icloud
+
+# Local storage
+
+MaildirStore icloud-local
+Path ~/.mail/icloud/
+Inbox ~/.mail/icloud/INBOX
+Trash Trash
+
+#
+# Channels and Groups
+# (so that we can rename local directories and flatten the hierarchy)
+
+Channel icloud-folders
+Master :icloud-remote:
+Slave :icloud-local:
+Patterns "INBOX" "Saved" "Drafts" "Archive" "Sent*" "Trash" "Junk"
+Create Both
+Expunge Both
+SyncState *
+
+Group icloud
+Channel icloud-folders
+
+##############################
+######## Account vnws ########
+##############################
+
+IMAPAccount vnws
+Host mail.gandi.net
+User vasco@vnws.uk
+PassCmd "security find-internet-password -s mail.gandi.net -w"
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs PLAIN
+CertificateFile ~/.certificates.pem
+
+# Remote storage
+
+IMAPStore vnws-remote
+Account vnws
+
+# Local storage
+
+MaildirStore vnws-local
+Path ~/.mail/vnws/
+Inbox ~/.mail/vnws/INBOX
+Trash Trash
+
+#
+# Channels and Groups
+# (so that we can rename local directories and flatten the hierarchy)
+
+Channel vnws-folders
+Master :vnws-remote:
+Slave :vnws-local:
+Patterns "INBOX" "Saved" "Drafts" "Archive" "Sent*" "Trash" "Junk"
+Create Both
+Expunge Both
+SyncState *
+
+Group vnws
+Channel vnws-folders
+
+###################################
+######## Account vasco.dev ########
+###################################
+
+IMAPAccount vasco.dev
+Host mail.gandi.net
+User contact@vasco.dev
+PassCmd "security find-internet-password -s mail.gandi.net2 -w"
+SSLType IMAPS
+SSLVersions TLSv1.2
+AuthMechs PLAIN
+CertificateFile ~/.certificates.pem
+
+# Remote storage
+
+IMAPStore vasco.dev-remote
+Account vasco.dev
+
+# Local storage
+
+MaildirStore vasco.dev-local
+Path ~/.mail/vasco.dev/
+Inbox ~/.mail/vasco.dev/INBOX
+Trash Trash
+
+#
+# Channels and Groups
+# (so that we can rename local directories and flatten the hierarchy)
+
+Channel vasco.dev-folders
+Master :vasco.dev-remote:
+Slave :vasco.dev-local:
+Patterns "INBOX" "Saved" "Drafts" "Archive" "Sent*" "Trash" "Junk"
+Create Both
+Expunge Both
+SyncState *
+
+Group vasco.dev
+Channel vasco.dev-folders

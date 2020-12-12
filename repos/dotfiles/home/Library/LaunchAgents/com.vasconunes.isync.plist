@@ -1,0 +1,14 @@
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.vasconunes.isync</string>
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/vasco.nunes/bin/check_email</string>
+    </array>
+    <key>RunAtLoad</key>
+    <true/>
+    <key>StartInterval</key>
+    <integer>300</integer>
+</dict>
+</plist>

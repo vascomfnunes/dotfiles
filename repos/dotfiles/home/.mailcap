@@ -1,0 +1,15 @@
+# Images
+image/*; $HOME/bin/mail-view-attachment %s
+
+# PDFs
+application/pdf; $HOME/bin/mail-view-attachment %s
+application/octet-stream; $HOME/bin/mail-view-attachment %s
+
+# HTML
+text/html; ~/bin/mail-view-attachment %s html; test=test -n "$DISPLAY"
+text/html; w3m %s; nametemplate=%s.html; needsterminal
+text/html; w3m -v -F -T text/html -dump %s; copiousoutput
+
+# Plain text
+text/plain; $HOME/bin/mail-view-attachment %s
+

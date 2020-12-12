@@ -1,0 +1,31 @@
+=[ UK/US ]=,*
+,*
+BBC1, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_one.m3u8
+BBC2, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_two.m3u8
+BBC3, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_three.m3u8
+BBC4, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_fourfm.m3u8
+BBC5, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_radio_five_live.m3u8
+BBC6, http://a.files.bbci.co.uk/media/live/manifesto/audio/simulcast/hls/uk/sbr_high/ak/bbc_6music.m3u8
+Radio X Manchester, http://media-ice.musicradio.com:80/RadioXManchesterMP3
+Radio Paradise, http://stream-uk1.radioparadise.com/mp3-192
+KEXP, http://live-aacplus-64.kexp.org/kexp64.aac
+Ambient Radio, http://uk2.internet-radio.com:31491
+Jazz FM, http://tx.planetradio.co.uk/icecast.php?i=jazz.mp3
+Smooth Jazz Mellow, http://www.101smoothjazz.com/101mellowmix.m3u
+Classical FM, http://media-ice.musicradio.com/ClassicFMMP3
+SomaFM Goa, http://ice6.somafm.com/suburbsofgoa-128-mp3
+SomaFM Sonic, http://ice6.somafm.com/sonicuniverse-128-mp3
+SomaFM Folk, http://ice4.somafm.com/folkfwd-128-mp3
+SomaFM Celtic, http://ice2.somafm.com/thistle-128-mp3
+SomaFM Lush, http://ice6.somafm.com/lush-128-mp3
+SomaFM Defcon, http://ice6.somafm.com/defcon-128-mp3
+SomaFM Groove Salad, http://somafm.com/startstream=groovesalad.pls
+SomaFM Secret Agent, http://somafm.com/secretagent.pls
+,*
+=[ PORTUGAL ]=,*
+,*
+Antena 1, http://radiocast.rtp.pt/antena180a.mp3
+Antena 2, http://radiocast.rtp.pt/antena280a.mp3
+M80, https://mcrscast.mcr.iol.pt/m80
+Radar, https://scast1.evspt.com/radar_aac
+TSF, https://tsfdirecto.tsf.pt/tsfdirecto.mp3

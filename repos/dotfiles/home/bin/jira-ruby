@@ -1,0 +1,45 @@
+#!/usr/bin/env ruby
+
+# Gets my active Jira tickets
+
+require 'rest-client'
+require 'json'
+
+# Get the configuration from environment variables
+JIRA_BASE_URL = ENV['JIRA_API_BASE_URL']
+
+# The authorization header is a base64 encoded string
+# with the username and password separated by a colon
+# e.g. base64(user:password)
+JIRA_AUTH = ENV['JIRA_API_AUTH']
+
+def search_tickets(status, assignee = 'currentuser()')
+  response = RestClient::Request.execute(
+    method: :get,
+    url: "#{JIRA_BASE_URL}/rest/api/2/search?jql=assignee=#{assignee}+and+status+in+(#{status})",
+    content_type: :json,
+    accept: :json,
+    headers: {
+      Authorization: "Basic #{JIRA_AUTH}"
+    }
+  )
+
+  JSON.parse(response)
+end
+
+def issue_body
+  puts 'No issues.' if @issues.count.zero?
+
+  @issues['issues'].each do |issue|
+    puts "* **#{issue['key']} | #{issue['fields']['summary']}**"
+    puts "  * **Status:** #{issue['fields']['status']['name'] || '---'}"
+    puts "  * **Creator:** #{issue['fields']['creator']['displayName'] || '---'}"
+    puts "  * **Type:** #{issue['fields']['issuetype']['name']}"
+    puts "  * **Priority:** #{issue['fields']['priority']['name']}"
+    puts "  * **Link:** [#{issue['key']}](https://jira.thefloow.com/browse/#{issue['key']})"
+  end
+end
+
+# Get issues and output them
+@issues = search_tickets('"In development","Code review","Ready for testing","Open","Planned"')
+issue_body

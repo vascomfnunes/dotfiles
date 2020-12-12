@@ -1,0 +1,298 @@
+" /*********************************************
+" * Description - Vim configuration
+" * Author - Vasco Nunes <contact@vasco.dev>
+" * Creation Date - Dec 12 2020
+" ********************************************/
+
+call plug#begin('~/.vim/plugged')
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-ragtag'
+Plug 'sheerun/vim-polyglot'
+Plug 'mhinz/vim-signify'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'RyanMillerC/better-vim-tmux-resizer'
+Plug 'tmux-plugins/vim-tmux-focus-events'
+Plug 'vim-test/vim-test'
+Plug 'vimwiki/vimwiki'
+Plug 'sunaku/vim-dasht'
+Plug 'mattn/webapi-vim'
+Plug 'alexbel/vim-rubygems'
+Plug 'lambdalisue/fern.vim'
+Plug 'AndrewRadev/tagalong.vim'
+Plug 'tweekmonster/startuptime.vim'
+Plug 'machakann/vim-highlightedyank'
+Plug 'ap/vim-css-color'
+Plug 'prabirshrestha/vim-lsp'
+Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim'
+Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'chriskempson/base16-vim'
+call plug#end()
+
+let g:mapleader=" "
+
+let g:python3_host_prog = "/usr/local/bin/python3"
+let g:python_host_prog = "/usr/local/bin/python"
+
+set number
+set relativenumber
+set clipboard=unnamed
+set tabstop=2
+set shiftwidth=2
+set noswapfile
+set hidden
+set nojoinspaces
+set path+=**
+set updatetime=100
+set signcolumn=yes
+set nowildignorecase
+set wildignore+=.git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*
+set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
+set wildignore+=**/node_modules/**,**/bower_modules/**,*/.sass-cache/*
+set wildignore+=__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**
+set hlsearch incsearch
+set splitbelow
+set splitright
+set expandtab
+set smartindent
+set mouse=a
+set nowrap
+set undofile
+set undodir='~/.vim/undo'
+set undolevels=100
+set ignorecase
+set smartcase
+set foldlevelstart=99
+set cmdheight=2
+set completeopt=menu,menuone,noselect,noinsert,preview
+set omnifunc=syntaxcomplete#Complete
+set dictionary='/usr/share/dict/words'
+set thesaurus='~/.vim/thesaurii.txt'
+
+" STATUSLINE {{{
+set statusline=
+set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
+set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
+set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
+set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
+set statusline+=%#Visual# " colour
+set statusline+=%{&paste?'\ PASTE\ ':''}
+set statusline+=%{&spell?'\ SPELL\ ':''}
+set statusline+=%#CursorIM# " colour
+set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
+set statusline+=%R " readonly flag
+set statusline+=%M " modified [+] flag
+set statusline+=%#Cursor# " colour
+set statusline+=%#CursorLine# " colour
+set statusline+=\ %t\ " short file name
+set statusline+=%= " right align
+set statusline+=%#CursorLine# " colour
+set statusline+=\ %Y\ " file type
+set statusline+=%#CursorIM# " colour
+set statusline+=\ %3l:%-2c\ " line + column
+set statusline+=%#Cursor# " colour
+set statusline+=\ %3p%%\ " percentage
+" }}}
+
+" FUNCTIONS {{{
+function FileHeading()
+  let s:line=line(".")
+  call setline(s:line,"/*********************************************")
+  call append(s:line,"* Description - ")
+  call append(s:line+1,"* Author - Vasco Nunes <contact@vasco.dev>")
+  call append(s:line+2,"* Creation Date - ".strftime("%b %d %Y"))
+  call append(s:line+4,"********************************************/")
+  unlet s:line
+endfunction
+
+nmap <leader>h <Esc>mz:execute FileHeading()<cr>
+" }}}
+
+" MAPPINGS {{{
+" Windows splits
+nnoremap <silent> vv <c-w>v
+nnoremap <silent> ss <c-w>s
+" Clear highlights
+nnoremap <leader>n :noh<cr>
+" Sessions
+nnoremap <leader>ss :mks ~/.vim/sessions/
+nnoremap <leader>sl :source ~/.vim/sessions/
+" }}}
+
+
+" PLUGINS {{{
+" Tmux
+let g:tmux_navigator_no_mappings = 1
+let g:tmux_resizer_no_mappings = 1
+
+nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
+nnoremap <silent> <s-j> :TmuxResizeDown<cr>
+nnoremap <silent> <s-k> :TmuxResizeUp<cr>
+nnoremap <silent> <s-l> :TmuxResizeRight<cr>
+
+" Fzf
+nnoremap <leader>ff :GFiles<cr>
+nnoremap <leader>fF :Files<cr>
+nnoremap <leader>fo :BTags<cr>
+nnoremap <leader>fb :Buffers<cr>
+nnoremap <leader>fs :Snippets<cr>
+nnoremap <leader>fh :HelpTags<cr>
+nnoremap <leader>fg :Rg<cr>
+nnoremap <expr> <leader>fG ':Rg '.expand('<cword>').'<cr>'
+
+" Highlight Yank
+let g:highlightedyank_highlight_duration = 300
+highlight HighlightedyankRegion ctermbg=red ctermfg=black
+
+" Tests
+let test#strategy = "dispatch"
+let test#ruby#rspec#executable = 'RUBYOPT="-W0" bundle exec rspec'
+let g:test#javascript#runner = 'jest'
+let test#ruby#rspec#options = {
+      \ 'all': '--require ~/bin/rspec_quick_fix_formatter.rb --format QuickfixFormatter --out ~/quickfix.out --format progress --color'
+      \}
+
+nnoremap <leader>tn :TestNearest<cr>
+nnoremap <leader>tf :TestFile<cr>
+nnoremap <leader>ts :TestSuite<cr>
+nnoremap <leader>tl :cg ~/quickfix.out \| cwindow<cr>
+
+" Vimwiki
+let g:markdown_folding = 1
+
+let wiki_1 = {}
+let wiki_1.path = '~/vimwiki_work_md/'
+let wiki_1.syntax = 'markdown'
+let wiki_1.ext = '.md'
+
+let wiki_2 = {}
+let wiki_2.path = '~/vimwiki_personal_md/'
+let wiki_2.syntax = 'markdown'
+let wiki_2.ext = '.md'
+
+let g:vimwiki_list = [wiki_1, wiki_2]
+let g:vimwiki_ext2syntax = {'.md': 'markdown', '.markdown': 'markdown', '.mdown': 'markdown'}
+let g:vimwiki_global_ext = 0
+let g:vimwiki_key_mappings =
+      \ {
+      \   'all_maps': 1,
+      \   'global': 1,
+      \   'headers': 1,
+      \   'text_objs': 1,
+      \   'table_format': 1,
+      \   'table_mappings': 1,
+      \   'lists': 1,
+      \   'links': 1,
+      \   'html': 1,
+      \   'mouse': 1,
+      \ }
+
+let g:vimwiki_listsyms = '✗○◐●✓'
+let g:vimwiki_folding='expr'
+
+nnoremap <leader>di :VimwikiDiaryIndex<CR>
+nnoremap <leader>dn :VimwikiMakeDiaryNote<CR>
+nnoremap <leader>dy :VimwikiMakeYesterdayDiaryNote<CR>
+nnoremap <leader>dt :VimwikiMakeTomorrowDiaryNote<CR>
+nnoremap <leader>dtt :r !~/bin/vimwiki_diary_template %<CR>
+nnoremap <leader>dg :VimwikiDiaryGenerateLinks<CR>
+nnoremap <leader>wd :VimwikiDeleteFile<CR>
+nnoremap <leader>wr :VimwikiRenameFile<CR>
+nnoremap <leader>ws :VimwikiUISelect<CR>
+nnoremap <leader>wt :VimwikiTable cols rows
+
+" Fugitive
+autocmd BufReadPost fugitive://* set bufhidden=delete
+
+" Fern
+nnoremap e :Fern %:h -reveal=%<CR>
+
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gp :Gpull<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gf :Gfetch<cr>
+nnoremap <leader>gP :Gpush<cr>
+nnoremap <leader>gd :Gdiffsplit!<cr>
+
+" Dasht
+nnoremap <Leader>k :Dasht<Space>
+nnoremap <silent> <Leader>K :call Dasht(dasht#cursor_search_terms())<Return>
+let g:dasht_results_window = 'vnew'
+
+let g:dasht_filetype_docsets = {}
+let g:dasht_filetype_docsets['html'] = ['CSS', 'Javascript', 'Bootstrap_4', 'Emmet', 'Font_Awesome', 'HTML', 'JavaScript', 'MomentJS', 'jQuery']
+let g:dasht_filetype_docsets['eruby'] = ['CSS', 'Javascript', 'Bootstrap_4', 'Emmet', 'Font_Awesome', 'HTML', 'JavaScript', 'MomentJS', 'jQuery', 'Ruby_2', 'Ruby_on_Rails_6']
+let g:dasht_filetype_docsets['vim'] = ['Vim']
+let g:dasht_filetype_docsets['css'] = ['CSS']
+let g:dasht_filetype_docsets['scss'] = ['CSS', 'Sass']
+let g:dasht_filetype_docsets['javascript'] = ['JavasScript', 'Mocha', 'MomentJS', 'jQuery', 'jQuery_Mobile', 'jQuery_UI']
+let g:dasht_filetype_docsets['ruby'] = ['Ruby_2', 'Ruby_onRails_6', 'Ruby_Installed_Gems']
+let g:dasht_filetype_docsets['markdown'] = ['Markdown']
+let g:dasht_filetype_docsets['docker'] = ['Docker', 'Man_Pages']
+let g:dasht_filetype_docsets['bash'] = ['Bash']
+
+" Lsp
+let g:lsp_diagnostics_enabled = 1
+let g:lsp_signs_enabled = 1 
+let g:lsp_diagnostics_echo_cursor = 1
+let g:lsp_highlights_enabled = 0
+let g:lsp_textprop_enabled = 0
+let g:lsp_signs_error = {'text': 'x'}
+let g:lsp_signs_warning = {'text': '!'}
+let g:lsp_signs_hint = {'text': 'i'}
+
+function! s:on_lsp_buffer_enabled() abort
+  nmap <buffer> gd <plug>(lsp-definition)
+  nmap <buffer> gr <plug>(lsp-references)
+  nmap <buffer> gi <plug>(lsp-implementation)
+  nmap <buffer> gt <plug>(lsp-type-definition)
+  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
+  nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
+  nmap <buffer> K <plug>(lsp-hover)
+
+  let g:asyncomplete_auto_completeopt = 0
+  let g:asyncomplete_auto_popup = 0
+  inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
+  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+endfunction
+
+augroup lsp_install
+  au!
+  " call s:on_lsp_buffer_enabled only for languages that has the server registered.
+  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
+augroup END
+" }}}
+
+" THEME {{{
+set background=dark
+colorscheme base16-gruvbox-dark-pale
+
+hi LineNr ctermbg=none ctermfg=gray
+hi SignColumn ctermbg=none
+hi LspWarningVirtual ctermfg=3
+hi LspErrorVirtual ctermfg=1
+hi LspInformationVirtual ctermfg=6
+hi LspInformationText ctermbg=none ctermfg=5
+hi SignifySignChange ctermbg=none ctermfg=3
+hi SignifySignAdd ctermbg=none ctermfg=2
+hi SignifySignDelete ctermbg=none ctermfg=1
+hi SignifySignDeleteFirstLine ctermbg=none ctermfg=1
+hi SpellBad ctermbg=none ctermfg=5
+hi SpellLocal ctermbg=none ctermfg=5
+"}}}

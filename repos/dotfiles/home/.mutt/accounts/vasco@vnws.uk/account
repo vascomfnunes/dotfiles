@@ -1,0 +1,29 @@
+#  vim: set ts=8 sw=4 tw=0 ft=muttrc :
+
+set from             = "Vasco Nunes <vasco@vnws.uk>"
+set folder           = ~/.mail/vnws
+set sendmail         = "`which msmtp` -a vnws"
+set mbox             = "+Archive"
+set postponed        = "+Drafts"
+set spoolfile        = "+Inbox"
+# Record outgoing emails
+set record           = "+Sent"
+set trash            = "+Trash"
+set header_cache     = "$HOME/.mutt/cache/vasco@vnws.uk.headers"
+set message_cachedir = "$HOME/.mutt/cache/vasco@vnws.uk.bodies"
+set certificate_file = "$HOME/.mutt/certificates/vasco@vnws.uk.certificate"
+set status_format    = "%>═[Folder:vnws/%f Msgs:%m%?n? New:%n?%?d? Del:%d?%?t? Tag:%t?%?l??]%?p?---- .: %p waiting to send :. ? [%P]"
+set signature        = "$HOME/.mutt/accounts/vasco@vnws.uk/signature"
+
+unmailboxes *
+
+mailboxes \
+  "+Inbox" \
+  "+Drafts" \
+  "+Archive" \
+  "+Sent" \
+  # "+Spam" \
+  "+Trash" \
+  `tree ~/.mail -d -I "cur|new|tmp|certs|.notmuch|Inbox" -a -f -i | sed -n -E -e "s|^'$HOME'/.mail/?||" -e "/^(vnws)(\/[a-z].+)?$/d" -e "/^(vnws)/{p;}" | sed -E -e 's/(.*)/+"\1"/' | tr '\n' ' '`
+
+# vi:syntax=muttrc

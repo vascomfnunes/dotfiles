@@ -1,0 +1,212 @@
+#                                   _   _
+#  _ __   ___  ___  _ __ ___  _   _| |_| |_
+# | '_ \ / _ \/ _ \| '_ ` _ \| | | | __| __|
+# | | | |  __/ (_) | | | | | | |_| | |_| |_
+# |_| |_|\___|\___/|_| |_| |_|\__,_|\__|\__|
+
+source ~/.mutt/mutt-colours
+bind pager i noop
+
+# run viewer defined in mailcap by <return> in attach view
+bind attach <return> view-mailcap
+
+# Macros for changing mailboxes
+macro index 1 '<sync-mailbox><enter-command>source ~/.mutt/accounts/vasco.m.nunes@me.com/account<enter><change-folder>!<enter>'
+macro index 2 '<sync-mailbox><enter-command>source ~/.mutt/accounts/vasco@vnws.uk/account<enter><change-folder>!<enter>'
+macro index 3 '<sync-mailbox><enter-command>source ~/.mutt/accounts/contact@vasco.dev/account<enter><change-folder>!<enter>'
+
+# Set editor
+# set editor='vim + -c "setlocal wrapmargin=0 textwidth=80 wrap nocp linebreak spell digraph nolist norelativenumber nonumber"  -c "?^$"'
+set editor='vim'
+
+# Set mailcap
+set mailcap_path = "~/.mailcap"
+
+auto_view text/html
+
+set sig_on_top = yes
+
+# Ignore all headers (don't display them)
+ignore *
+
+# ...except these ones
+unignore from: to: cc: date: subject:
+
+# Clear any system default ordering of headers
+unhdr_order *
+
+# Display headers in this order
+hdr_order from: to: cc: date: subject:
+
+# Use notmuch-addrlookup to query for contacts
+set query_command = "notmuch address %s"
+bind editor <Tab> complete-query
+bind editor ^T complete
+
+# Prefer plain-text over enriched text over HTML
+alternative_order text/enriched text/plain text/html text
+
+# always show X number of mails in the index
+set pager_index_lines = 10
+
+# allow to use alt or ESC
+set meta_key = yes
+set timeout = 5
+
+# Check for mailbox statistics every 10 seconds (required for new mail count)
+set mail_check_stats
+set mail_check_stats_interval = 10
+
+# put dashes between message and signature
+set sig_dashes=yes
+
+set wrap=80
+set mail_check = 0
+set markers = no
+set mark_old = no
+set wait_key = no
+
+auto_view text/html
+auto_view application/pgp-encrypted
+alternative_order text/plain text/enriched text/html
+
+set reply_to
+set smileys="(>From )|(:[-^]?[][)(><}{|/DP])"
+set date_format="%d/%m/%y %I:%M%p"
+set index_format="%4C %Z %{%d %b} %-35.35L (%4l) %s"
+set sort = 'reverse-date'
+set rfc2047_parameters = yes
+set sleep_time = 0		# Pause 0 seconds for informational messages
+set markers = no		# Disables the `+` displayed at line wraps
+set mark_old = no		# Unread mail stay unread until read
+set mime_forward = yes		# attachments are forwarded with mail
+set wait_key = no		# mutt won't ask "press key to continue"
+set fast_reply			# skip to compose when replying
+set fcc_attach			# save attachments with the body
+set forward_format = "Fwd: %s"	# format of subject when forwarding
+set forward_quote		# include message in forwards
+set reverse_name		# reply as whomever it was to
+set include			# include message in replies
+
+alternative_order text/plain text/enriched text/html
+
+set pgp_use_gpg_agent        = yes
+#set pgp_autosign             = yes
+set pgp_verify_sig           = yes
+set pgp_sign_as              = 0xBC9C8902
+set pgp_replyencrypt         = yes
+set pgp_timeout              = 3600
+set pgp_good_sign            = "^gpg: Signed by "
+set pgp_auto_decode          = yes
+
+bind index B bounce-message     # remap bounce message functionality
+
+set fast_reply                       # skip to compose when replying
+set fcc_attach                       # save attachments with the body
+unset mime_forward                   # forward attachments as part of body
+set forward_format = "Fwd: %s"       # format of subject when forwarding
+set forward_decode                   # decode when forwarding
+set forward_quote                    # include message in forwards
+set reverse_name                     # reply as whomever it was to
+set include                          # include message in replies
+
+set pgp_decode_command       = "gpg --no-verbose --batch --output - %f"
+set pgp_decrypt_command      = "gpg --no-verbose --batch --output - %f"
+set pgp_sign_command         = "gpg --no-verbose --batch --output - --armor --detach-sign --textmode %?a?-u %a? %f"
+set pgp_clearsign_command    = "gpg --no-verbose --batch --output - --armor --textmode --clearsign %?a?-u %a? %f"
+set pgp_encrypt_sign_command = "/usr/lib/mutt/pgpewrap gpg --batch --quiet --no-verbose --textmode --output - --encrypt --sign %?a?-u %a? --armor --always-trust -- -r %r -- %f"
+
+set pgp_verify_command       = "gpg --no-verbose --batch --output - --verify %s %f"
+set pgp_encrypt_only_command = "/usr/lib/mutt/pgpewrap gpg --batch --quiet --no-verbose --output - --encrypt --textmode --armor --always-trust -- -r %r -- %f"
+set pgp_import_command       = "gpg --no-verbose --import -v %f"
+set pgp_export_command       = "gpg --no-verbose --export --armor %r"
+set pgp_verify_key_command   = "gpg --no-verbose --batch --fingerprint --check-sigs %r"
+set pgp_list_pubring_command = "gpg --no-verbose --batch --with-colons --list-keys %r"
+set pgp_list_secring_command = "gpg --no-verbose --batch --with-colons --list-secret-keys %r"
+
+macro index,pager a "|abook --add-email\n" 'add sender to abook'
+macro index A "<limit>all\n" "show all messages (undo limit)"
+
+# General remappings
+
+bind index,pager g noop
+
+bind editor <space> noop
+bind index G last-entry
+bind index gg first-entry
+bind pager gg top
+bind pager G bottom
+bind index d half-down
+bind index u half-up
+bind index D delete-message
+bind index U undelete-message
+bind index F search
+bind index,pager R group-reply
+bind index,pager \031 previous-undeleted # Mouse wheel
+bind index,pager \005 next-undeleted # Mouse wheel
+macro index,pager S <sync-mailbox>
+macro index,pager \Cu |urlscan\n
+macro index,pager ,, |urlscan\n
+bind pager <down> next-line
+bind pager <up> previous-line
+
+# Threads
+set sort="threads"
+set strict_threads="yes"
+set sort_browser="reverse-date"
+set sort_aux="reverse-last-date-received"
+unset collapse_unread
+
+# ----------------------------------------------------------------------------
+# Powerline / nerdfont
+# This is a bit "hackish" due to neomutt limitations
+#
+# Author: Sheoak <contact [at] sheoak.fr>
+# ----------------------------------------------------------------------------
+set index_format=" %zs %zc %zt %{!%d %b} . %-28.28L  %?M?(%1M)&  ? %?X?&·? %s"
+set pager_format=" %n %zc  %T %s%*  %{!%d %b · %H:%M} %?X?  %X ? %P  "
+set status_format = " %f%?r? %r?   %m %?n?  %n ?  %?d?  %d ?%?t?  %t ?%?F?  %F? %> %?p?   %p ?"
+set attach_format = "%u%D  %T%-75.75d %?T?%&   ? %5s · %m/%M"
+
+# no addressed to me, to me, group, cc, sent by me, mailing list
+set to_chars=""
+
+# unchanged mailbox, changed, read only, attach mode
+set status_chars = " "
+ifdef crypt_chars set crypt_chars = " "
+set flag_chars = "      "
+
+set hidden_tags = "unread,draft,flagged,passed,replied,attachment,signed,encrypted"
+tag-transforms "replied" "↻ "  \
+               "encrytpted" "" \
+               "signed" "" \
+               "attachment" "" \
+
+# The formats must start with 'G' and the entire sequence is case sensitive.
+tag-formats "replied" "GR" \
+            "encrypted" "GE" \
+            "signed" "GS" \
+            "attachment" "GA" \
+
+macro index ,c "<change-vfolder>?" "Change to vfolder overview"
+macro index ,s "<vfolder-from-query>" "Search mailbox"
+
+# 'a' shows all messages again (supersedes default <alias> binding)
+macro index a "<limit>all\n" "show all messages (undo limit)"
+
+# Sync via mbsync
+macro index ,u "<shell-escape>mbsync -a<return>" "Run mbsync for everything"
+
+# Send the pager contents to urlview
+macro index,pager ,b <pipe-entry>"urlview"<enter> "Follow links with urlview"
+
+# Mark all email as read
+macro index ,a "<tag-pattern>~N<enter><tag-prefix><clear-flag>N<untag-pattern>.<enter>" "mark all new as read"
+
+# Mark messages as read and 'Save' messages to another mailbox (what mutt calls 'moving')
+macro index,pager s "<save-message>?<toggle-mailboxes>" "move a message to a mailbox"
+
+# default
+source $HOME/.mutt/accounts/vasco.m.nunes@me.com/account
+
+# vim: set ts=8 sw=4 tw=0 ft=muttrc :

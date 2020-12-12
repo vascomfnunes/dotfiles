@@ -1,0 +1,29 @@
+#  vim: set ts=8 sw=4 tw=0 ft=muttrc :
+
+set from             = "Vasco Nunes <contact@vasco.dev>"
+set folder           = ~/.mail/vasco.dev
+set sendmail         = "`which msmtp` -a vasco.dev"
+set mbox             = "+Archive"
+set postponed        = "+Drafts"
+set spoolfile        = "+Inbox"
+# Record outgoing emails
+set record           = "+Sent"
+set trash            = "+Trash"
+set header_cache     = "$HOME/.mutt/cache/contact@vasco.dev.headers"
+set message_cachedir = "$HOME/.mutt/cache/contact@vasco.dev.bodies"
+set certificate_file = "$HOME/.mutt/certificates/contact@vasco.dev.certificate"
+set status_format    = "%>═[Folder:vasco.dev/%f Msgs:%m%?n? New:%n?%?d? Del:%d?%?t? Tag:%t?%?l??]%?p?---- .: %p waiting to send :. ? [%P]"
+set signature        = "$HOME/.mutt/accounts/contact@vasco.dev/signature"
+
+unmailboxes *
+
+mailboxes \
+  "+Inbox" \
+  "+Drafts" \
+  "+Archive" \
+  "+Sent" \
+  # "+Spam" \
+  "+Trash" \
+  `tree ~/.mail -d -I "cur|new|tmp|certs|.notmuch|Inbox" -a -f -i | sed -n -E -e "s|^'$HOME'/.mail/?||" -e "/^(vasco.dev)(\/[a-z].+)?$/d" -e "/^(vasco.dev)/{p;}" | sed -E -e 's/(.*)/+"\1"/' | tr '\n' ' '`
+
+# vi:syntax=muttrc

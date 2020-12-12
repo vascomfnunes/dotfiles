@@ -1,0 +1,102 @@
+#        _ _
+#   __ _| (_) __ _ ___  ___  ___
+#  / _` | | |/ _` / __|/ _ \/ __|
+# | (_| | | | (_| \__ \  __/\__ \
+#  \__,_|_|_|\__,_|___/\___||___/
+
+# /*********************************************
+# * Description - shell aliases configuration
+# * Author - Vasco Nunes <contact@vasco.dev>
+# * Creation Date - Nov 24 2020
+# * *******************************************/
+
+alias c='clear'
+# alias w3m='W3M_IMG2SIXEL=/Users/vasco.nunes/bin/libsixel/converters/img2sixel /Users/vasco.nunes/bin/w3m -sixel -o display_image=1'
+alias vim='$EDITOR'
+alias e="$EDITOR"
+alias tmux='tmux -2'
+alias vimdiff='$EDITOR -d'
+alias firefox="open -a '/Applications/Firefox Developer Edition.app'"
+alias cp='cp -i'
+alias mv='mv -i'
+alias rm='rm -i'
+alias ls='ls -G'
+alias la='ls -laG'
+alias diff='diff --color=auto'
+alias h='history'
+alias figlet='figlet -f cybermedium'
+alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
+alias jukebox='mpsyt'
+alias youtube='youtube-viewer'
+alias google='surfraw google'
+alias wikipedia='surfraw wikipedia'
+alias stack='surfraw stack'
+alias imdb='surfraw imdb'
+alias discogs='surfraw discogs'
+alias priberam='surfraw priberam'
+alias duckduckgo='surfraw duckduckgo'
+alias podcasts='podboat'
+alias mutt='neomutt'
+alias email='neomutt'
+alias flay='flay -v --diff'
+alias pocket='pockyt'
+alias bookmarks="buku"
+alias b="w3m https://duckduckgo.com"
+alias ssh='TERM=xterm-256color ssh'
+alias spotify='spt'
+alias agenda='gcalcli agenda --details url'
+
+# os updates
+alias update_brew='brew update; brew upgrade; brew cleanup'
+alias update_npm='npm update npm -g; npm update -g;'
+alias update_gems='sudo gem update --system; sudo gem update'
+alias update_os='sudo softwareupdate -i -a'
+alias update_all='update_brew; update_npm; update_gems; update_os'
+alias kitty_image='kitty +kitten icat'
+alias cat='bat'
+alias weather="curl wttr.in/buxton"
+alias moon='curl wttr.in/moon'
+alias reddit='tuir --enable-media --theme ~/.config/tuir/gruvbox'
+alias fzf='fzf --color info:254,prompt:37,spinner:108,pointer:235,marker:235'
+alias fzfp='fzf --preview="cat {}" --preview-window=right:70%:wrap'
+alias news='newsboat'
+alias ctags='/usr/local/bin/ctags -R --languages=ruby,scss,javascript,jsx,css --exclude=.git --exclude=node_modules --exclude=log . $(bundle list --paths)'
+alias postgresql-start='pg_ctl -D ~/postgres start'
+alias rspec='rspec -f d'
+alias calendar="gcalcli agenda --details url"
+alias week="gcalcli calw"
+alias month='gcalcli calm'
+alias mastodon='toot tui'
+alias pw='pwgen -sync 16 -1 | pbcopy && echo Password copied to the clipboard.'
+alias music='ncmpcpp'
+
+# Git
+alias g="git"
+alias gP="git push"
+alias gup="git push -f origin HEAD^:master"
+alias gc="git commit"
+alias gf="git fetch"
+alias gp="git pull"
+alias gr="git rebase -i HEAD~"
+alias gco="git checkout"
+alias gb="git branch"
+alias gs="git status"
+alias gl="git log --oneline"
+alias ga="git add"
+
+# Homesick
+alias hs="homesick status"
+alias hc="homesick commit dotfiles"
+alias hl="homesick link dotfiles"
+alias ht="homesick track"
+alias hp="homesick pull"
+alias hP="homesick push"
+alias hd="homesick diff"
+
+alias howdoi='howdoi -c -a'
+
+# Faster npm for europeans
+command -v npm > /dev/null && alias npme="npm --registry http://registry.npmjs.eu"
+
+# tldr
+alias help='tldr'
