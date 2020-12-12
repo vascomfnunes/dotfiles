@@ -1,22 +1,7 @@
-setlocal formatoptions=tcqj
-
-" Lsp server settings
-setlocal omnifunc=lsp#complete
-setlocal foldmethod=expr
-  \ foldexpr=lsp#ui#vim#folding#foldexpr()
-  \ foldtext=lsp#ui#vim#folding#foldtext()
-if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
+set foldmethod=syntax
 
 let g:ruby_operators = 1
-let g:rubycomplete_buffer_loading = 1
-let g:rubycomplete_classes_in_global = 1
 let g:ruby_pseudo_operators = 1
-let g:ruby_fold = 1
-let g:rubycomplete_rails = 1
-
-" RAILS STUFF
-
-let g:rails_ctags_arguments = ['--languages=Ruby', '--exclude=.git', '--exclude=log']
 
 " Autocomplete Rails routes
 " Use with <leader>r

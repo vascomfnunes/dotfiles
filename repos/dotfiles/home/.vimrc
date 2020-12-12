@@ -5,18 +5,20 @@
 " ********************************************/
 
 call plug#begin('~/.vim/plugged')
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } | Plug 'junegunn/fzf.vim'
+Plug 'prabirshrestha/vim-lsp' | Plug 'prabirshrestha/async.vim' | Plug 'mattn/vim-lsp-settings'
+Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
+Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-endwise'
-Plug 'tpope/vim-ragtag'
-Plug 'sheerun/vim-polyglot'
+Plug 'tpope/vim-endwise', { 'for': 'ruby' }
+Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
 Plug 'mhinz/vim-signify'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'RyanMillerC/better-vim-tmux-resizer'
@@ -25,17 +27,16 @@ Plug 'vim-test/vim-test'
 Plug 'vimwiki/vimwiki'
 Plug 'sunaku/vim-dasht'
 Plug 'mattn/webapi-vim'
-Plug 'alexbel/vim-rubygems'
+Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
 Plug 'lambdalisue/fern.vim'
-Plug 'AndrewRadev/tagalong.vim'
-Plug 'tweekmonster/startuptime.vim'
+Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
-Plug 'ap/vim-css-color'
-Plug 'prabirshrestha/vim-lsp'
-Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim'
-Plug 'prabirshrestha/asyncomplete-lsp.vim'
+Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
 Plug 'chriskempson/base16-vim'
+Plug 'tweekmonster/startuptime.vim'
 call plug#end()
 
 let g:mapleader=" "
@@ -53,7 +54,7 @@ set hidden
 set nojoinspaces
 set path+=**
 set updatetime=100
-set signcolumn=yes
+set signcolumn=number
 set nowildignorecase
 set wildignore+=.git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*
 set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
@@ -66,17 +67,17 @@ set expandtab
 set smartindent
 set mouse=a
 set nowrap
+set undodir=~/.vim/undo
 set undofile
-set undodir='~/.vim/undo'
 set undolevels=100
 set ignorecase
 set smartcase
 set foldlevelstart=99
 set cmdheight=2
 set completeopt=menu,menuone,noselect,noinsert,preview
-set omnifunc=syntaxcomplete#Complete
-set dictionary='/usr/share/dict/words'
-set thesaurus='~/.vim/thesaurii.txt'
+set omnifunc=lsp#complete
+set dictionary=/usr/share/dict/words
+set thesaurus=~/.vim/thesaurii.txt
 
 " STATUSLINE {{{
 set statusline=
@@ -128,7 +129,6 @@ nnoremap <leader>ss :mks ~/.vim/sessions/
 nnoremap <leader>sl :source ~/.vim/sessions/
 " }}}
 
-
 " PLUGINS {{{
 " Tmux
 let g:tmux_navigator_no_mappings = 1
@@ -152,6 +152,11 @@ nnoremap <leader>fs :Snippets<cr>
 nnoremap <leader>fh :HelpTags<cr>
 nnoremap <leader>fg :Rg<cr>
 nnoremap <expr> <leader>fG ':Rg '.expand('<cword>').'<cr>'
+
+" UltiSnippets
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<tab>"
+let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
 
 " Highlight Yank
 let g:highlightedyank_highlight_duration = 300
@@ -217,6 +222,9 @@ nnoremap <leader>wt :VimwikiTable cols rows
 " Fugitive
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
+" Markdown preview
+nnoremap <leader>mp :MarkdownPreview
+
 " Fern
 nnoremap e :Fern %:h -reveal=%<CR>
 
@@ -267,7 +275,10 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> K <plug>(lsp-hover)
 
   let g:asyncomplete_auto_completeopt = 0
-  let g:asyncomplete_auto_popup = 0
+  let g:asyncomplete_auto_popup = 1
+  set foldmethod=expr
+        \ foldexpr=lsp#ui#vim#folding#foldexpr()
+        \ foldtext=lsp#ui#vim#folding#foldtext()
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 endfunction
@@ -283,16 +294,15 @@ augroup END
 set background=dark
 colorscheme base16-gruvbox-dark-pale
 
-hi LineNr ctermbg=none ctermfg=gray
-hi SignColumn ctermbg=none
+hi LineNr ctermbg=none ctermfg=11
 hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
-hi LspInformationVirtual ctermfg=6
-hi LspInformationText ctermbg=none ctermfg=5
-hi SignifySignChange ctermbg=none ctermfg=3
-hi SignifySignAdd ctermbg=none ctermfg=2
-hi SignifySignDelete ctermbg=none ctermfg=1
-hi SignifySignDeleteFirstLine ctermbg=none ctermfg=1
-hi SpellBad ctermbg=none ctermfg=5
-hi SpellLocal ctermbg=none ctermfg=5
+hi LspInformationVirtual ctermfg=2
+hi LspInformationText ctermbg=NONE ctermfg=4
+hi SignifySignChange ctermbg=NONE ctermfg=3
+hi SignifySignAdd ctermbg=NONE ctermfg=2
+hi SignifySignDelete ctermbg=NONE ctermfg=1
+hi SignifySignDeleteFirstLine ctermbg=NONE ctermfg=1
+hi SpellBad ctermbg=NONE ctermfg=3
+hi SpellLocal ctermbg=NONE ctermfg=3
 "}}}

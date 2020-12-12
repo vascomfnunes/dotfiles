@@ -12,6 +12,8 @@
 # * Creation Date - Nov 24 2020
 # * *******************************************/
 
+# export TERM=xterm
+
 # This needs to come first to use homebrew packages over system ones
 export PATH="/usr/local/bin:$PATH"
 

@@ -8,5 +8,5 @@ set foldmethod=expr
 
 if exists('+tagfunc') | setlocal tagfunc=lsp#tagfunc | endif
 
-nnoremap <leader>cf :Dispatch prettier % -w<cr>
-nnoremap <leader>cl :Dispatch! eslint %<cr>
+nnoremap <leader>cf :Dispatch! prettier % -w<cr>
+nnoremap <leader>cl :Dispatch eslint %<cr>
