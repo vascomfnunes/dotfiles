@@ -9,5 +9,5 @@ let g:surround_33 = "```\r```"
 setlocal iskeyword=@,48-57,_,192-255,$,-
 setlocal foldmethod=manual
 
-nnoremap <leader>cl :Dispatch html-linter %<cr>
-nnoremap <leader>cf ggVG=<cr>
+nmap <leader>cl :Dispatch html-linter %<cr>
+nmap <leader>cf ggVG=<cr>

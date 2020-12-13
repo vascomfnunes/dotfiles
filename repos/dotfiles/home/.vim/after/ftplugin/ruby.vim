@@ -35,8 +35,8 @@ nmap <leader>rgs :RubygemsSearch<space>
 nnoremap <leader>a :A<CR>
 
 " Linting and fixing
-nnoremap <leader>cl :Dispatch rubocop %<cr>
-nnoremap <leader>cf :LspDocumentFormat<cr>
+nmap <leader>cl :Dispatch rubocop %<cr>
+nmap <leader>cf :LspDocumentFormat<cr>
 
 " Insert debug breakpoint
 nnoremap <leader>cb obinding.pry<esc>==:w<cr>

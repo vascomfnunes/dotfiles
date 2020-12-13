@@ -287,7 +287,7 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
   nmap <buffer> K <plug>(lsp-hover)
 
-  let g:asyncomplete_auto_completeopt = 0
+  let g:asyncomplete_auto_completeopt = 1
   let g:asyncomplete_auto_popup = 1
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
