@@ -102,6 +102,7 @@ set statusline+=%#CursorIM# " colour
 set statusline+=\ %3l:%-2c\ " line + column
 set statusline+=%#Cursor# " colour
 set statusline+=\ %3p%%\ " percentage
+set foldmethod=manual
 " }}}
 
 " FUNCTIONS {{{
@@ -276,9 +277,6 @@ function! s:on_lsp_buffer_enabled() abort
 
   let g:asyncomplete_auto_completeopt = 0
   let g:asyncomplete_auto_popup = 1
-  set foldmethod=expr
-        \ foldexpr=lsp#ui#vim#folding#foldexpr()
-        \ foldtext=lsp#ui#vim#folding#foldtext()
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
 endfunction
