@@ -1,7 +1,7 @@
 " /*********************************************
-" * Description - Vim configuration
+" * Description - VIM configuration
 " * Author - Vasco Nunes <contact@vasco.dev>
-" * Creation Date - Dec 12 2020
+" * Creation Date - Dec 13 2020
 " ********************************************/
 
 call plug#begin('~/.vim/plugged')
@@ -35,6 +35,7 @@ Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
+Plug 'gera2ld/markmap', { 'for': 'markdown' }
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
 call plug#end()
@@ -224,7 +225,14 @@ nnoremap <leader>wt :VimwikiTable cols rows
 autocmd BufReadPost fugitive://* set bufhidden=delete
 
 " Markdown preview
-nnoremap <leader>mp :MarkdownPreview
+let vim_markdown_preview_github=1
+let vim_markdown_preview_toggle=1
+let vim_markdown_preview_browser='Google Chrome'
+
+" Remove the rendered preview
+let vim_markdown_preview_temp_file=1
+
+nnoremap <leader>mp :MarkdownPreview<CR>
 
 " Fern
 nnoremap e :Fern %:h -reveal=%<CR>
