@@ -105,6 +105,13 @@ set statusline+=\ %3p%%\ " percentage
 set foldmethod=manual
 " }}}
 
+" AUTOCOMMANDS {{{
+" Source the vimrc file after saving it
+if has("autocmd")
+  autocmd bufwritepost .vimrc source $MYVIMRC
+endif
+" }}}
+
 " FUNCTIONS {{{
 function FileHeading()
   let s:line=line(".")
