@@ -15,7 +15,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
+Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
@@ -23,19 +23,18 @@ Plug 'mhinz/vim-signify'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'RyanMillerC/better-vim-tmux-resizer'
 Plug 'tmux-plugins/vim-tmux-focus-events'
-Plug 'vim-test/vim-test'
+Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
 Plug 'vimwiki/vimwiki'
-Plug 'sunaku/vim-dasht'
-Plug 'mattn/webapi-vim'
+Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
+Plug 'mattn/webapi-vim', { 'on': 'Dasht' }
 Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
-Plug 'lambdalisue/fern.vim'
+Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
 Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'gera2ld/markmap', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'on': 'MarkdownPreview'}
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
 call plug#end()
