@@ -126,6 +126,11 @@ nnoremap <silent> vv <c-w>v
 nnoremap <silent> ss <c-w>s
 " Clear highlights
 nnoremap <leader>n :noh<cr>
+" Tabs
+nnoremap <leader><tab>n :tabnew<cr>
+nnoremap <leader><tab>q :tabclose<cr>
+nnoremap <tab> :tabnext<cr>
+nnoremap <S-tab> :tabprevious<cr>
 " Sessions
 nnoremap <leader>ss :mks ~/.vim/sessions/
 nnoremap <leader>sl :source ~/.vim/sessions/
@@ -277,7 +282,6 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gr <plug>(lsp-references)
   nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> gt <plug>(lsp-type-definition)
   nmap <buffer> <leader>rn <plug>(lsp-rename)
   nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
