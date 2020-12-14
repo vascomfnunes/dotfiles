@@ -308,7 +308,6 @@ let g:gutentags_ctags_exclude = [
       \ '*sites/*/files/*',
       \ 'bin',
       \ 'node_modules',
-      \ 'bower_components',
       \ 'cache',
       \ 'compiled',
       \ 'docs',
@@ -337,16 +336,12 @@ let g:gutentags_ctags_exclude = [
       \ '*.pdb',
       \ 'tags*',
       \ 'cscope.*',
-      \ '*.css',
-      \ '*.less',
-      \ '*.scss',
       \ '*.exe', '*.dll',
       \ '*.mp3', '*.ogg', '*.flac',
       \ '*.swp', '*.swo',
       \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
       \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
       \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
-      \
       \ ]
 
 " Lsp
