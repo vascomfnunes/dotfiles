@@ -6,8 +6,8 @@ let g:surround_61 = "<%= \r %>"
 let g:surround_33 = "```\r```"
 
 " Add the '-' as a keyword in erb files
-setlocal iskeyword=@,48-57,_,192-255,$,-
-setlocal foldmethod=manual
+setlocal iskeyword=@,48-57,_,192-255,$,-,@-@
+setlocal foldmethod=syntax
 
-nmap <leader>cl :Dispatch html-linter %<cr>
-nmap <leader>cf ggVG=<cr>
+nmap <leader>cl :Dispatch erblint %<cr>
+nmap <leader>cf :w<bar>:Dispatch! erblint -a %<cr>
