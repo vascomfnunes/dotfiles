@@ -5,6 +5,7 @@
 " ********************************************/
 
 " Bootstrap vim-plug automatically
+
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -79,6 +80,7 @@ set splitbelow
 set splitright
 set expandtab
 set smartindent
+set formatoptions-=o
 set mouse=a
 set nowrap
 set undodir=~/.vim/undo

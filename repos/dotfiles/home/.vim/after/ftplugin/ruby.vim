@@ -1,3 +1,4 @@
+set formatoptions-=o
 setlocal foldmethod=syntax
 setlocal iskeyword+=_,@-@
 
