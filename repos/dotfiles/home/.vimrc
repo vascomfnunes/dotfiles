@@ -150,6 +150,8 @@ nnoremap <S-tab> :tabprevious<cr>
 " Sessions
 nnoremap <leader>ss :mks ~/.vim/sessions/
 nnoremap <leader>sl :source ~/.vim/sessions/
+" Jump to tag for css and scss classes
+nnoremap <leader>] :tag /<c-r>=expand('<cword>')<cr><cr>
 " }}}
 
 " PLUGINS {{{
@@ -397,3 +399,4 @@ hi SignifySignDeleteFirstLine ctermbg=NONE ctermfg=1
 hi SpellBad ctermbg=NONE ctermfg=3
 hi SpellLocal ctermbg=NONE ctermfg=3
 "}}}
+"
