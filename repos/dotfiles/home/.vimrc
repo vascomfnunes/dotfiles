@@ -198,7 +198,6 @@ nnoremap <leader>fs :Snippets<cr>
 nnoremap <leader>fh :Helptags<cr>
 nnoremap <leader>ft :Tags<cr>
 nnoremap <leader>fg :Rg<cr>
-" nnoremap <expr> <leader>fG ':Rg '.expand('<cword>').'<cr>'
 nnoremap <silent> <Leader>fG :Rg <C-R><C-W><CR>
 
 " UltiSnippets
