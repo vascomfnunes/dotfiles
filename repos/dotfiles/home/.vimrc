@@ -28,9 +28,6 @@ Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
 Plug 'mhinz/vim-signify'
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'RyanMillerC/better-vim-tmux-resizer'
-Plug 'tmux-plugins/vim-tmux-focus-events'
 Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
 Plug 'vimwiki/vimwiki'
 Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
@@ -46,6 +43,12 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 Plug 'mzlogin/vim-markdown-toc', { 'for': 'markdown' }
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
+
+if exists('$TMUX')
+  Plug 'christoomey/vim-tmux-navigator'
+  Plug 'RyanMillerC/better-vim-tmux-resizer'
+  Plug 'tmux-plugins/vim-tmux-focus-events'
+endif
 call plug#end()
 
 let g:mapleader=" "
@@ -172,17 +175,19 @@ nnoremap <leader>] :tag /<c-r>=expand('<cword>')<cr><cr>
 
 " PLUGINS {{{
 " Tmux
-let g:tmux_navigator_no_mappings = 1
-let g:tmux_resizer_no_mappings = 1
+if exists('$TMUX')
+  let g:tmux_navigator_no_mappings = 1
+  let g:tmux_resizer_no_mappings = 1
 
-nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
-nnoremap <silent> <s-j> :TmuxResizeDown<cr>
-nnoremap <silent> <s-k> :TmuxResizeUp<cr>
-nnoremap <silent> <s-l> :TmuxResizeRight<cr>
+  nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+  nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+  nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+  nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+  nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
+  nnoremap <silent> <s-j> :TmuxResizeDown<cr>
+  nnoremap <silent> <s-k> :TmuxResizeUp<cr>
+  nnoremap <silent> <s-l> :TmuxResizeRight<cr>
+endif
 
 " Fzf
 nnoremap <leader>ff :GFiles<cr>
