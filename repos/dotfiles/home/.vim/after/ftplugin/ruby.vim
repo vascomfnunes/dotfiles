@@ -1,4 +1,5 @@
-set foldmethod=syntax
+setlocal foldmethod=syntax
+setlocal iskeyword+=_,@-@
 
 let g:ruby_operators = 1
 let g:ruby_pseudo_operators = 1

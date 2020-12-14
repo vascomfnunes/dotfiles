@@ -22,3 +22,4 @@ Library/LaunchAgents
 .vim/after
 .vim/snippets
 .vim
+.config/nvim

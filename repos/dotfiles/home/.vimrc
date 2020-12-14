@@ -12,12 +12,12 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-fugitive'
+Plug 'ludovicchabant/vim-gutentags'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
 Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-endwise', { 'for': 'ruby' }
 Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
 Plug 'mhinz/vim-signify'
 Plug 'christoomey/vim-tmux-navigator'
@@ -54,7 +54,7 @@ set hidden
 set nojoinspaces
 set path+=**
 set updatetime=100
-set signcolumn=number
+set signcolumn=yes
 set nowildignorecase
 set wildignore+=.git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*
 set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
@@ -124,6 +124,16 @@ function FileHeading()
 endfunction
 
 nmap <leader>h <Esc>mz:execute FileHeading()<cr>
+
+" Delete all whitespaces on save
+
+fun! TrimWhitespace()
+  let l:save = winsaveview()
+  keeppatterns %s/\s\+$//e
+  call winrestview(l:save)
+endfun
+
+autocmd BufWritePre * :call TrimWhitespace()
 " }}}
 
 " MAPPINGS {{{
@@ -162,9 +172,11 @@ nnoremap <leader>fF :Files<cr>
 nnoremap <leader>fo :BTags<cr>
 nnoremap <leader>fb :Buffers<cr>
 nnoremap <leader>fs :Snippets<cr>
-nnoremap <leader>fh :HelpTags<cr>
+nnoremap <leader>fh :Helptags<cr>
+nnoremap <leader>ft :Tags<cr>
 nnoremap <leader>fg :Rg<cr>
-nnoremap <expr> <leader>fG ':Rg '.expand('<cword>').'<cr>'
+" nnoremap <expr> <leader>fG ':Rg '.expand('<cword>').'<cr>'
+nnoremap <silent> <Leader>fG :Rg <C-R><C-W><CR>
 
 " UltiSnippets
 let g:UltiSnipsExpandTrigger="<tab>"
@@ -274,9 +286,72 @@ let g:dasht_filetype_docsets['markdown'] = ['Markdown']
 let g:dasht_filetype_docsets['docker'] = ['Docker', 'Man_Pages']
 let g:dasht_filetype_docsets['bash'] = ['Bash']
 
+" Guttentags
+let g:gutentags_add_default_project_roots = 0
+let g:gutentags_project_root = ['package.json', '.git']
+let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
+let g:gutentags_generate_on_new = 1
+let g:gutentags_generate_on_missing = 1
+let g:gutentags_generate_on_write = 1
+let g:gutentags_generate_on_empty_buffer = 0
+let g:gutentags_ctags_extra_args = [
+      \ '--tag-relative=yes',
+      \ '--fields=+ailmnS',
+      \
+      \ ]
+
+let g:gutentags_ctags_exclude = [
+      \ '*.git', '*.svg', '*.hg',
+      \ '*/tests/*',
+      \ 'build',
+      \ 'dist',
+      \ '*sites/*/files/*',
+      \ 'bin',
+      \ 'node_modules',
+      \ 'bower_components',
+      \ 'cache',
+      \ 'compiled',
+      \ 'docs',
+      \ 'example',
+      \ 'bundle',
+      \ 'vendor',
+      \ '*.md',
+      \ '*-lock.json',
+      \ '*.lock',
+      \ '*bundle*.js',
+      \ '*build*.js',
+      \ '.*rc*',
+      \ '*.json',
+      \ '*.min.*',
+      \ '*.map',
+      \ '*.bak',
+      \ '*.zip',
+      \ '*.pyc',
+      \ '*.class',
+      \ '*.sln',
+      \ '*.Master',
+      \ '*.csproj',
+      \ '*.tmp',
+      \ '*.csproj.user',
+      \ '*.cache',
+      \ '*.pdb',
+      \ 'tags*',
+      \ 'cscope.*',
+      \ '*.css',
+      \ '*.less',
+      \ '*.scss',
+      \ '*.exe', '*.dll',
+      \ '*.mp3', '*.ogg', '*.flac',
+      \ '*.swp', '*.swo',
+      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
+      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
+      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
+      \
+      \ ]
+
 " Lsp
 let g:lsp_diagnostics_enabled = 1
-let g:lsp_signs_enabled = 1 
+let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_highlights_enabled = 0
 let g:lsp_textprop_enabled = 0
@@ -310,7 +385,12 @@ augroup END
 set background=dark
 colorscheme base16-gruvbox-dark-pale
 
+" Change cursor between normal/insert mode
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
 hi LineNr ctermbg=none ctermfg=11
+hi SignColumn ctermbg=none
 hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
 hi LspInformationVirtual ctermfg=2
