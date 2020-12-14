@@ -4,6 +4,13 @@
 " * Creation Date - Dec 13 2020
 " ********************************************/
 
+" Bootstrap vim-plug automatically
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall | source $MYVIMRC
+endif
+
 call plug#begin('~/.vim/plugged')
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } | Plug 'junegunn/fzf.vim'
 Plug 'prabirshrestha/vim-lsp' | Plug 'prabirshrestha/async.vim' | Plug 'mattn/vim-lsp-settings'
@@ -44,6 +51,12 @@ let g:mapleader=" "
 
 let g:python3_host_prog = "/usr/local/bin/python3"
 let g:python_host_prog = "/usr/local/bin/python"
+
+" Automatically install missing plugins on startup
+autocmd VimEnter *
+      \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
+      \|   PlugInstall --sync | q
+      \| endif
 
 set number
 set relativenumber
