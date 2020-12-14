@@ -34,7 +34,8 @@ Plug 'machakann/vim-highlightedyank'
 Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'on': 'MarkdownPreview'}
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'mzlogin/vim-markdown-toc', { 'for': 'markdown' }
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
 call plug#end()
