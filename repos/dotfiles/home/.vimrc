@@ -216,7 +216,7 @@ let g:highlightedyank_highlight_duration = 300
 highlight HighlightedyankRegion ctermbg=red ctermfg=black
 
 " Tests
-let test#strategy = "dispatch"
+let test#strategy = "vimterminal"
 let test#ruby#rspec#executable = 'RUBYOPT="-W0" bundle exec rspec'
 let g:test#javascript#runner = 'jest'
 let test#ruby#rspec#options = {
