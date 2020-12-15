@@ -19,6 +19,7 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'easymotion/vim-easymotion'
@@ -407,6 +408,36 @@ augroup lsp_install
 augroup END
 " }}}
 
+" Goyo
+function! s:goyo_enter()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status off
+    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+  endif
+  set noshowmode
+  set noshowcmd
+  set scrolloff=999
+endfunction
+
+function! s:goyo_leave()
+  if executable('tmux') && strlen($TMUX)
+    silent !tmux set status on
+    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+  endif
+  set showmode
+  set showcmd
+  set scrolloff=5
+  hi LineNr ctermbg=none ctermfg=11
+  hi SignColumn ctermbg=none
+  hi SpellBad ctermbg=NONE ctermfg=3
+  hi SpellLocal ctermbg=NONE ctermfg=3
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+nnoremap <leader>z :Goyo<cr>
+
 " THEME {{{
 set background=dark
 colorscheme base16-gruvbox-dark-pale
@@ -417,6 +448,8 @@ let &t_EI = "\e[2 q"
 
 hi LineNr ctermbg=none ctermfg=11
 hi SignColumn ctermbg=none
+hi SpellBad ctermbg=NONE ctermfg=3
+hi SpellLocal ctermbg=NONE ctermfg=3
 hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
 hi LspInformationVirtual ctermfg=2
