@@ -19,8 +19,9 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-fugitive'
 Plug 'ludovicchabant/vim-gutentags'
+Plug 'easymotion/vim-easymotion'
+Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -171,6 +172,8 @@ nnoremap <leader>ss :mks ~/.vim/sessions/
 nnoremap <leader>sl :source ~/.vim/sessions/
 " Jump to tag for css and scss classes
 nnoremap <leader>] :tag /<c-r>=expand('<cword>')<cr><cr>
+" Easy motion
+nmap f <Plug>(easymotion-s2)
 " }}}
 
 " PLUGINS {{{
