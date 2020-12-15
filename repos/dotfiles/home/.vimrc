@@ -158,6 +158,8 @@ autocmd BufWritePre * :call TrimWhitespace()
 " }}}
 
 " MAPPINGS {{{
+" Open quickfix
+nnoremap <leader>q :copen<cr>
 " Windows splits
 nnoremap <silent> vv <c-w>v
 nnoremap <silent> ss <c-w>s
