@@ -198,6 +198,8 @@ if exists('$TMUX')
 endif
 
 " Fzf
+let g:fzf_buffers_jump = 1
+
 nnoremap <leader>ff :GFiles<cr>
 nnoremap <leader>fF :Files<cr>
 nnoremap <leader>fo :BTags<cr>
