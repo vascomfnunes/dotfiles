@@ -17,6 +17,7 @@ Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } | Plug 'junegunn/fzf.vim'
 Plug 'prabirshrestha/vim-lsp' | Plug 'prabirshrestha/async.vim' | Plug 'mattn/vim-lsp-settings'
 Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.vim'
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -395,10 +396,17 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
   nmap <buffer> K <plug>(lsp-hover)
 
-  let g:asyncomplete_auto_completeopt = 1
+  let g:asyncomplete_auto_completeopt = 0
   let g:asyncomplete_auto_popup = 1
+  set completeopt=menuone,noinsert,noselect,preview
   inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
   autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
+  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
+        \ 'name': 'ultisnips',
+        \ 'allowlist': ['*'],
+        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
+        \
+        \ }))
 endfunction
 
 augroup lsp_install
