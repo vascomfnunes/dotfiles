@@ -19,6 +19,7 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
+Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
@@ -310,6 +311,9 @@ let g:dasht_filetype_docsets['ruby'] = ['Ruby_2', 'Ruby_onRails_6', 'Ruby_Instal
 let g:dasht_filetype_docsets['markdown'] = ['Markdown']
 let g:dasht_filetype_docsets['docker'] = ['Docker', 'Man_Pages']
 let g:dasht_filetype_docsets['bash'] = ['Bash']
+
+" Editor config
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " Guttentags
 let g:gutentags_add_default_project_roots = 0
