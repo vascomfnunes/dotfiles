@@ -20,6 +20,7 @@ Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'jiangmiao/auto-pairs'
+Plug 'voldikss/vim-floaterm'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
@@ -37,7 +38,7 @@ Plug 'vimwiki/vimwiki'
 Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
 Plug 'mattn/webapi-vim', { 'on': 'Dasht' }
 Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
-Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
+" Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
 Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
@@ -300,8 +301,8 @@ let vim_markdown_preview_temp_file=1
 
 nnoremap <leader>mp :MarkdownPreview<CR>
 
-" Fern
-nnoremap e :Fern %:h -reveal=%<CR>
+" Floaterm
+nnoremap e :FloatermNew vifm<CR>
 
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit<cr>
