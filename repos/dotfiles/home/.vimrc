@@ -38,7 +38,6 @@ Plug 'vimwiki/vimwiki'
 Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
 Plug 'mattn/webapi-vim', { 'on': 'Dasht' }
 Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
-" Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
 Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
@@ -408,7 +407,7 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> <leader>rn <plug>(lsp-rename)
   nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-  nmap <buffer> K <plug>(lsp-hover)
+  nmap <buffer> gk <plug>(lsp-hover)
 
   let g:asyncomplete_auto_completeopt = 0
   let g:asyncomplete_auto_popup = 1
