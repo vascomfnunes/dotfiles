@@ -1,6 +1,5 @@
-set foldmethod=expr
-  \ foldexpr=lsp#ui#vim#folding#foldexpr()
-  \ foldtext=lsp#ui#vim#folding#foldtext()
+set tabstop=4
+set shiftwidth=4
 
-nmap <leader>cf :w<bar>:Dispatch! prettier % -w<cr>
+nmap <leader>cf :w<bar>:Dispatch! eslint % --fix<cr>
 nmap <leader>cl :Dispatch eslint %<cr>

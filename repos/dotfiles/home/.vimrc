@@ -41,10 +41,17 @@ Plug 'lambdalisue/fern.vim', { 'on': 'Fern' }
 Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
 Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
 Plug 'mzlogin/vim-markdown-toc', { 'for': 'markdown' }
+Plug 'maxmellon/vim-jsx-pretty', { 'for': 'javascriptreact' }
+Plug 'sheerun/html5.vim', { 'for': [ 'html', 'eruby' ]}
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
+Plug 'keith/rspec.vim', { 'for': 'ruby' }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'posva/vim-vue', { 'for': 'vue' }
+Plug 'noprompt/vim-yardoc', { 'for': 'ruby' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
 
@@ -68,6 +75,7 @@ autocmd VimEnter *
 
 set number
 set relativenumber
+set ttyfast
 set clipboard=unnamed
 set tabstop=2
 set shiftwidth=2
@@ -94,6 +102,7 @@ set undodir=~/.vim/undo
 set undofile
 set undolevels=100
 set ignorecase
+set lazyredraw
 set smartcase
 set foldlevelstart=99
 set cmdheight=2
