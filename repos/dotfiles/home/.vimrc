@@ -111,6 +111,8 @@ set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
 
+let loaded_matchparen = 1
+
 " STATUSLINE {{{
 set statusline=
 set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
@@ -425,7 +427,6 @@ augroup lsp_install
   " call s:on_lsp_buffer_enabled only for languages that has the server registered.
   autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
 augroup END
-" }}}
 
 " Goyo
 function! s:goyo_enter()
@@ -456,6 +457,7 @@ autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <leader>z :Goyo<cr>
+" }}}
 
 " THEME {{{
 set background=dark
@@ -480,4 +482,3 @@ hi SignifySignDeleteFirstLine ctermbg=NONE ctermfg=1
 hi SpellBad ctermbg=NONE ctermfg=3
 hi SpellLocal ctermbg=NONE ctermfg=3
 "}}}
-"
