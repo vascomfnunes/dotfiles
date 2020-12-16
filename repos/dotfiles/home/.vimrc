@@ -19,7 +19,8 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-" Plug 'jiangmiao/auto-pairs'
+Plug 'justinmk/vim-gtfo' " use with got in normal mode
+Plug 'DataWraith/auto_mkdir'
 Plug 'voldikss/vim-floaterm'
 Plug 'cohama/lexima.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
@@ -53,6 +54,7 @@ Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'noprompt/vim-yardoc', { 'for': 'ruby' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
 Plug 'chriskempson/base16-vim'
 Plug 'tweekmonster/startuptime.vim'
 
@@ -113,6 +115,10 @@ set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
 
 let loaded_matchparen = 1
+
+" Visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
 
 " STATUSLINE {{{
 set statusline=
