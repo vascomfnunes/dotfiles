@@ -3,7 +3,6 @@ setlocal conceallevel=2
 syn spell toplevel
 syn case ignore
 syn sync linebreaks=1
-setlocal spell spelllang=en_gb
 setlocal complete+=kspell
 setlocal textwidth=80
 

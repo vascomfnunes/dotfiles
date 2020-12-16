@@ -1,3 +1,3 @@
-set formatoptions-=o
-set foldmethod=marker
+setlocal formatoptions-=o
+setlocal foldmethod=marker
 normal zM

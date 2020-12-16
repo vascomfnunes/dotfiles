@@ -19,9 +19,10 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-Plug 'justinmk/vim-gtfo' " use with got in normal mode
+Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
 Plug 'DataWraith/auto_mkdir'
-Plug 'voldikss/vim-floaterm'
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
+Plug 'voldikss/vim-floaterm', { 'on': 'FloatermNew' }
 Plug 'cohama/lexima.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
@@ -34,7 +35,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
-Plug 'mhinz/vim-signify'
+Plug 'airblade/vim-gitgutter'
 Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
 Plug 'vimwiki/vimwiki'
 Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
@@ -79,9 +80,11 @@ autocmd VimEnter *
 set number
 set relativenumber
 set ttyfast
+set showcmd
 set clipboard=unnamed
 set tabstop=2
 set shiftwidth=2
+set softtabstop=2
 set noswapfile
 set hidden
 set nojoinspaces
@@ -97,6 +100,8 @@ set hlsearch incsearch
 set splitbelow
 set splitright
 set expandtab
+set spell
+set spell spelllang=en_gb
 set smartindent
 set formatoptions-=o
 set mouse=a
@@ -105,6 +110,8 @@ set undodir=~/.vim/undo
 set undofile
 set undolevels=100
 set ignorecase
+set synmaxcol=500
+set diffopt+=iwhite
 set lazyredraw
 set smartcase
 set foldlevelstart=99
@@ -467,6 +474,13 @@ nnoremap <leader>z :Goyo<cr>
 
 " Lexima
 let g:lexima_enable_endwise_rules = 1
+
+" Doge
+let g:doge_enable_mappings = 0
+nnoremap <leader>cd :DogeGenerate<CR>
+
+" Gitgutter
+let g:gitgutter_set_sign_backgrounds = 1
 " }}}
 
 " THEME {{{
@@ -485,10 +499,6 @@ hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
 hi LspInformationVirtual ctermfg=2
 hi LspInformationText ctermbg=NONE ctermfg=4
-hi SignifySignChange ctermbg=NONE ctermfg=3
-hi SignifySignAdd ctermbg=NONE ctermfg=2
-hi SignifySignDelete ctermbg=NONE ctermfg=1
-hi SignifySignDeleteFirstLine ctermbg=NONE ctermfg=1
-hi SpellBad ctermbg=NONE ctermfg=3
-hi SpellLocal ctermbg=NONE ctermfg=3
+hi SpellBad ctermbg=NONE ctermfg=3 cterm=undercurl
+hi SpellLocal ctermbg=NONE ctermfg=3 cterm=undercurl
 "}}}
