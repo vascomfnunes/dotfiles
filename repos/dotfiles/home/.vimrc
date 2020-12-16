@@ -19,8 +19,9 @@ Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.v
 Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
 Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-Plug 'jiangmiao/auto-pairs'
+" Plug 'jiangmiao/auto-pairs'
 Plug 'voldikss/vim-floaterm'
+Plug 'cohama/lexima.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
@@ -457,6 +458,9 @@ autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <leader>z :Goyo<cr>
+
+" Lexima
+let g:lexima_enable_endwise_rules = 1
 " }}}
 
 " THEME {{{
