@@ -25,6 +25,7 @@ Plug 'osyo-manga/vim-over'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
 Plug 'voldikss/vim-floaterm', { 'on': 'FloatermNew' }
 Plug 'cohama/lexima.vim'
+Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
@@ -129,32 +130,6 @@ let loaded_matchparen = 1
 vnoremap < <gv
 vnoremap > >gv
 
-" STATUSLINE {{{
-set statusline=
-set statusline+=%#DiffAdd#%{(mode()=='n')?'\ \ NORMAL\ ':''}
-set statusline+=%#DiffChange#%{(mode()=='i')?'\ \ INSERT\ ':''}
-set statusline+=%#DiffDelete#%{(mode()=='r')?'\ \ RPLACE\ ':''}
-set statusline+=%#Cursor#%{(mode()=='v')?'\ \ VISUAL\ ':''}
-set statusline+=%#Visual# " colour
-set statusline+=%{&paste?'\ PASTE\ ':''}
-set statusline+=%{&spell?'\ SPELL\ ':''}
-set statusline+=%#CursorIM# " colour
-set statusline+=%{exists('g:loaded_fugitive')?fugitive#statusline():''}
-set statusline+=%R " readonly flag
-set statusline+=%M " modified [+] flag
-set statusline+=%#Cursor# " colour
-set statusline+=%#CursorLine# " colour
-set statusline+=\ %t\ " short file name
-set statusline+=%= " right align
-set statusline+=%#CursorLine# " colour
-set statusline+=\ %Y\ " file type
-set statusline+=%#CursorIM# " colour
-set statusline+=\ %3l:%-2c\ " line + column
-set statusline+=%#Cursor# " colour
-set statusline+=\ %3p%%\ " percentage
-set foldmethod=manual
-" }}}
-
 " AUTOCOMMANDS {{{
 " Source the vimrc file after saving it
 if has("autocmd")
@@ -211,6 +186,21 @@ nmap f <Plug>(easymotion-s2)
 " PLUGINS {{{
 " Over
 nnoremap <leader>sr :OverCommandLine<CR>
+
+" Lightline
+let g:lightline = {}
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste'  ],
+      \             [ 'gitbranch', 'readonly', 'filename', 'modified'  ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead'
+      \ },
+      \ }
+
+let g:lightline.colorscheme = 'jellybeans'
 
 " Tmux
 if exists('$TMUX')
