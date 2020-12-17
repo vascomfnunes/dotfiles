@@ -25,6 +25,7 @@ Plug 'osyo-manga/vim-over'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
 Plug 'voldikss/vim-floaterm', { 'on': 'FloatermNew' }
 Plug 'cohama/lexima.vim'
+Plug 'rhysd/committia.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'editorconfig/editorconfig-vim'
@@ -296,9 +297,6 @@ nnoremap <leader>wr :VimwikiRenameFile<CR>
 nnoremap <leader>ws :VimwikiUISelect<CR>
 nnoremap <leader>wt :VimwikiTable cols rows
 
-" Fugitive
-autocmd BufReadPost fugitive://* set bufhidden=delete
-
 " Markdown preview
 let vim_markdown_preview_github=1
 let vim_markdown_preview_toggle=1
@@ -312,6 +310,8 @@ nnoremap <leader>mp :MarkdownPreview<CR>
 " Floaterm
 nnoremap e :FloatermNew vifm<CR>
 
+" Fugitive
+autocmd BufReadPost fugitive://* set bufhidden=delete
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit<cr>
 nnoremap <leader>gb :Gblame<cr>
@@ -488,8 +488,6 @@ let &t_EI = "\e[2 q"
 
 hi LineNr ctermbg=none ctermfg=11
 hi SignColumn ctermbg=none
-hi SpellBad ctermbg=NONE ctermfg=3
-hi SpellLocal ctermbg=NONE ctermfg=3
 hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
 hi LspInformationVirtual ctermfg=2
