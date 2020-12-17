@@ -29,6 +29,7 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'easymotion/vim-easymotion'
 Plug 'tpope/vim-fugitive'
+Plug 'AndrewRadev/splitjoin.vim' " adds gS and gJ to syntactically aware split/join constructs
 Plug 'romainl/vim-cool'
 Plug 'tpope/vim-rails', { 'for': 'ruby' }
 Plug 'tpope/vim-surround'
