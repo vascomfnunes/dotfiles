@@ -21,6 +21,7 @@ Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
 Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
 Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
 Plug 'DataWraith/auto_mkdir'
+Plug 'osyo-manga/vim-over'
 Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
 Plug 'voldikss/vim-floaterm', { 'on': 'FloatermNew' }
 Plug 'cohama/lexima.vim'
@@ -208,6 +209,9 @@ nmap f <Plug>(easymotion-s2)
 " }}}
 
 " PLUGINS {{{
+" Over
+nnoremap <leader>sr :OverCommandLine<CR>
+
 " Tmux
 if exists('$TMUX')
   let g:tmux_navigator_no_mappings = 1
@@ -419,7 +423,7 @@ function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gd <plug>(lsp-definition)
   nmap <buffer> gr <plug>(lsp-references)
   nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> <leader>rn <plug>(lsp-rename)
+  nmap <buffer> <leader>cr <plug>(lsp-rename)
   nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
   nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
   nmap <buffer> gk <plug>(lsp-hover)
