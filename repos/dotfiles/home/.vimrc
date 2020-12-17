@@ -49,7 +49,6 @@ Plug 'mzlogin/vim-markdown-toc', { 'for': 'markdown' }
 Plug 'maxmellon/vim-jsx-pretty', { 'for': 'javascriptreact' }
 Plug 'sheerun/html5.vim', { 'for': [ 'html', 'eruby' ]}
 Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'plasticboy/vim-markdown', { 'for': 'markdown' }
 Plug 'keith/rspec.vim', { 'for': 'ruby' }
 Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
 Plug 'posva/vim-vue', { 'for': 'vue' }
