@@ -96,6 +96,15 @@ function killport() {
 # Fuzzy finder
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+# enable vim mode on commmand line
+bindkey -v
+
+# edit command with editor
+# usage: type something then hit Esc+v
+autoload -U edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+
 #===============================================================================
 #                             Sources
 #===============================================================================
