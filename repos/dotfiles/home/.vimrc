@@ -43,8 +43,8 @@ Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
 Plug 'airblade/vim-gitgutter'
 Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
 Plug 'vimwiki/vimwiki'
-Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
-Plug 'mattn/webapi-vim', { 'on': 'Dasht' }
+Plug 'sunaku/vim-dasht'
+Plug 'mattn/webapi-vim', { 'for': 'Ruby' }
 Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
 Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
 Plug 'machakann/vim-highlightedyank'
