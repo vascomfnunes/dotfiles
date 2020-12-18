@@ -60,7 +60,7 @@ Plug 'posva/vim-vue', { 'for': 'vue' }
 Plug 'noprompt/vim-yardoc', { 'for': 'ruby' }
 Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
 Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
-" Plug 'chriskempson/base16-vim'
+Plug 'vascomfnunes/vimbox'
 Plug 'tweekmonster/startuptime.vim'
 
 if exists('$TMUX')
@@ -480,8 +480,7 @@ let g:gitgutter_set_sign_backgrounds = 1
 
 " THEME {{{
 set background=dark
-" colorscheme base16-gruvbox-dark-pale
-source ~/.vim/theme.vim
+colorscheme vimbox
 
 " Change cursor between normal/insert mode
 let &t_SI = "\e[6 q"
