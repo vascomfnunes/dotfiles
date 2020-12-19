@@ -456,10 +456,6 @@ function! s:goyo_leave()
   set showmode
   set showcmd
   set scrolloff=5
-  hi LineNr ctermbg=none ctermfg=11
-  hi SignColumn ctermbg=none
-  hi SpellBad ctermbg=NONE ctermfg=3
-  hi SpellLocal ctermbg=NONE ctermfg=3
 endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
@@ -486,12 +482,8 @@ colorscheme vimbox
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
 
-hi LineNr ctermbg=none ctermfg=11
-hi SignColumn ctermbg=none
 hi LspWarningVirtual ctermfg=3
 hi LspErrorVirtual ctermfg=1
 hi LspInformationVirtual ctermfg=2
 hi LspInformationText ctermbg=NONE ctermfg=4
-hi SpellBad ctermbg=NONE ctermfg=3 cterm=undercurl
-hi SpellLocal ctermbg=NONE ctermfg=3 cterm=undercurl
 "}}}
