@@ -13,6 +13,7 @@
 # * *******************************************/
 
 export TERM=xterm
+export BAT_THEME='TwoDark'
 
 # This needs to come first to use homebrew packages over system ones
 export PATH="/usr/local/bin:$PATH"
