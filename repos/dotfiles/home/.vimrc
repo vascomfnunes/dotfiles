@@ -124,7 +124,6 @@ set completeopt=menu,menuone,noselect,noinsert,preview
 set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
-set termguicolors
 
 let loaded_matchparen = 1
 
