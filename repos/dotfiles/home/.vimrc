@@ -124,6 +124,7 @@ set completeopt=menu,menuone,noselect,noinsert,preview
 set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
+set termguicolors
 
 let loaded_matchparen = 1
 
@@ -405,9 +406,10 @@ let g:lsp_signs_enabled = 1
 let g:lsp_diagnostics_echo_cursor = 1
 let g:lsp_highlights_enabled = 0
 let g:lsp_textprop_enabled = 0
-let g:lsp_signs_error = {'text': 'x'}
-let g:lsp_signs_warning = {'text': '!'}
-let g:lsp_signs_hint = {'text': 'i'}
+let g:lsp_signs_error = {'text': ''}
+let g:lsp_signs_warning = {'text': ''}
+let g:lsp_signs_hint = {'text': '!'}
+let g:lsp_signs_information = {'text': '🛈'}
 
 function! s:on_lsp_buffer_enabled() abort
   nmap <buffer> gd <plug>(lsp-definition)
@@ -481,9 +483,4 @@ colorscheme vimbox
 " Change cursor between normal/insert mode
 let &t_SI = "\e[6 q"
 let &t_EI = "\e[2 q"
-
-hi LspWarningVirtual ctermfg=3
-hi LspErrorVirtual ctermfg=1
-hi LspInformationVirtual ctermfg=2
-hi LspInformationText ctermbg=NONE ctermfg=4
 "}}}
