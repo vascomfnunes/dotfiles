@@ -8,6 +8,7 @@ lua require 'plugins.ultisnips'
 lua require 'plugins.gitgutter'
 lua require 'plugins.lexima'
 lua require 'plugins.fugitive'
+lua require 'plugins.telescope'
 lua require 'theme'
 
 " AUTOCOMMANDS {{{
@@ -68,17 +69,6 @@ if exists('$TMUX')
   nnoremap <silent> <s-k> :TmuxResizeUp<cr>
   nnoremap <silent> <s-l> :TmuxResizeRight<cr>
 endif
-
-" Telescope
-nnoremap <leader>ff :Telescope git_files<cr>
-nnoremap <leader>fF :Telescope find_files<cr>
-nnoremap <leader>fo :Telescope lsp_document_symbols<cr>
-nnoremap <leader>fb :Telescope buffers<cr>
-nnoremap <leader>fs :Snippets<cr>
-nnoremap <leader>fh :Telescope help_tags<cr>
-nnoremap <leader>ft :Telescope tags<cr>
-nnoremap <leader>fg :Telescope live_grep<cr>
-nnoremap <silent> <Leader>fG :Telescope grep_string<CR>
 
 " Tests
 let test#strategy = "vimterminal"
@@ -200,9 +190,6 @@ nnoremap <leader>z :Goyo<cr>
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
-nnoremap gr :Telescope lsp_references<cr>
-nnoremap <leader>ca :Telescope lsp_code_actions<cr>
 " }}}
 
 lua require('colorizer').setup()
