@@ -78,10 +78,10 @@ echo -ne '\e[5 q'
 preexec() { echo -ne '\e[5 q' ;}
 
 # Preferred editor for local and remote sessions
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # Use nvim as manpager `:h Man`
-export MANPAGER='vim +Man!'
+export MANPAGER='nvim +Man!'
 
 # Function to kill all running processes using a specific port
 function killport() {
