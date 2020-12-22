@@ -13,6 +13,4 @@ nnoremap <silent><Leader>mt :GenTocGitLab<CR>
 nnoremap <silent><leader>mm :!markmap %<CR>
 
 nmap <leader>cl :Dispatch markdownlint %<cr>
-" nmap <leader>cf :w<bar>:Dispatch! markdownlint % -f<cr>
-nmap <leader>cf :lua vim.lsp.buf.formatting()<cr>
 nmap <leader>cg :Dispatch languagetool -l en-GB %<cr>

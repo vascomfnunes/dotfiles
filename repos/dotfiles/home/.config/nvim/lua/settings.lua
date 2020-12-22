@@ -19,14 +19,10 @@ vim.o.path = vim.o.path .. "**"
 vim.o.updatetime = 100
 vim.o.signcolumn = 'yes'
 vim.o.wildignorecase = false
-vim.o.wildignore = vim.o.wildignore ..
-                       ".git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*"
-vim.o.wildignore = vim.o.wildignore ..
-                       "*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store"
-vim.o.wildignore = vim.o.wildignore ..
-                       "**/node_modules/**,**/bower_modules/**,*/.sass-cache/*"
-vim.o.wildignore = vim.o.wildignore ..
-                       "__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**"
+vim.o.wildignore = vim.o.wildignore .. ".git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*"
+vim.o.wildignore = vim.o.wildignore .. "*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store"
+vim.o.wildignore = vim.o.wildignore .. "**/node_modules/**,**/bower_modules/**,*/.sass-cache/*"
+vim.o.wildignore = vim.o.wildignore .. "__pycache__,*.egg-info,.pytest_cache,.mypy_cache/**"
 vim.o.hlsearch = true
 vim.o.incsearch = true
 vim.o.splitbelow = true

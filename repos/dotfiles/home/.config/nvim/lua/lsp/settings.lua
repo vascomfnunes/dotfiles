@@ -14,6 +14,7 @@ local on_attach = function(client)
   mapper('n', 'gd', 'vim.lsp.buf.definition()')
   mapper('n', 'gs', 'vim.lsp.buf.signature_help()')
   mapper('n', 'K', 'vim.lsp.buf.hover()')
+  mapper('n', '<leader>cf', 'vim.lsp.buf.formatting()')
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.g.completion_enable_snippet = "UltiSnips"
 end
@@ -21,11 +22,9 @@ end
 local default_lsp_config = {on_attach = on_attach}
 
 local servers = {
-  -- diagnosticls = diagnostics.options,
   bashls = {},
   vimls = {},
   dockerls = {},
-  yamlls = {},
   jsonls = {},
   tsserver = {},
   html = {},
@@ -39,6 +38,9 @@ local servers = {
       'css',
       'scss',
       'html',
+      'yaml',
+      'lua',
+      'vue',
       'markdown',
     },
     init_options = {
@@ -91,7 +93,8 @@ local servers = {
         javascriptreact = 'eslint',
         typescript = 'eslint',
         typescriptreact = 'eslint',
-        markdown = 'markdownlint'
+        markdown = 'markdownlint',
+        vue = 'prettier'
       },
       formatters = {
         prettierEslint = {
@@ -102,19 +105,26 @@ local servers = {
         prettier = {
           command = 'prettier',
           args = { '--stdin-filepath', '%filename' }
+        },
+        luaformat = {
+          command = 'lua-format',
+          args = { '%filename', '-i' },
+          doesWriteToFile = true
         }
       },
       formatFiletypes = {
         javascript = 'prettierEslint',
         javascriptreact = 'prettierEslint',
         json = 'prettier',
-        scss = 'prettier',
         typescript = 'prettierEslint',
         typescriptreact = 'prettierEslint',
         markdown = 'prettier',
         scss = 'prettier',
         css = 'prettier',
-        html = 'prettier'
+        html = 'prettier',
+        lua = 'luaformat',
+        yaml = 'prettier',
+        vue = 'prettier'
       }
     }
   },

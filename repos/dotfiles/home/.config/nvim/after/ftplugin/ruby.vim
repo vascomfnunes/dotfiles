@@ -41,4 +41,3 @@ nmap <leader>cl :Dispatch rubocop %<cr>
 
 " Insert debug breakpoint
 nnoremap <leader>cb obinding.pry<esc>==:w<cr>
-nmap <leader>cf :lua vim.lsp.buf.formatting()<cr>
