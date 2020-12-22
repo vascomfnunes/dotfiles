@@ -1,3 +1,2 @@
 nmap <leader>cl :Dispatch html-linter %<cr>
-nmap <leader>cf :w<bar>:Dispatch! prettier % -w<cr>
-
+nmap <leader>cf :lua vim.lsp.buf.formatting()<cr>

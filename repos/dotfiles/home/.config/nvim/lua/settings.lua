@@ -48,6 +48,7 @@ vim.o.smartcase = true
 vim.o.foldlevelstart = 99
 vim.o.cmdheight = 2
 vim.o.completeopt = "menu,menuone,noselect,noinsert,preview"
+vim.o.pumblend = 7
 vim.o.dictionary = "/usr/share/dict/words"
 vim.o.thesaurus = "/Users/vasco.nunes/.vim/thesaurii.txt"
 
