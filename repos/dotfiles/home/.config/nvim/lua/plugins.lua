@@ -25,6 +25,7 @@ return require('packer').startup(function()
   use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
   use {'tjdevries/express_line.nvim'}
   use {'vifm/vifm.vim'}
+  use {'junegunn/vim-peekaboo'}
   use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[TSUpdate]] end}
   use {'SirVer/ultisnips'}
   use {'honza/vim-snippets'}
