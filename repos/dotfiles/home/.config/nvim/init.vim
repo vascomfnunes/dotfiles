@@ -6,9 +6,9 @@ lua require 'plugins.treesitter'
 lua require 'plugins.vifm'
 lua require 'plugins.ultisnips'
 lua require 'plugins.gitgutter'
-lua require 'plugins.lexima'
 lua require 'plugins.fugitive'
 lua require 'plugins.telescope'
+lua require 'plugins.emmet'
 lua require 'theme'
 
 " AUTOCOMMANDS {{{
@@ -16,6 +16,8 @@ lua require 'theme'
 if has("autocmd")
   autocmd bufwritepost init.vim source $MYVIMRC
 endif
+
+au FileType html,css,scss EmmetInstall
 
 au TextYankPost * silent! lua vim.highlight.on_yank()
 " }}}
@@ -185,6 +187,9 @@ autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <leader>z :Goyo<cr>
+
+" FFF
+" let g:fff#split = "30vnew"
 
 " LSP
 " Use <Tab> and <S-Tab> to navigate through popup menu

@@ -25,6 +25,7 @@ return require('packer').startup(function()
   use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
   use {'tjdevries/express_line.nvim'}
   use {'vifm/vifm.vim'}
+  -- use {'dylanaraps/fff.vim'}
   use {'junegunn/vim-peekaboo'}
   use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[TSUpdate]] end}
   use {'SirVer/ultisnips'}
@@ -48,6 +49,7 @@ return require('packer').startup(function()
   use {'airblade/vim-gitgutter'}
   use {'vim-test/vim-test'}
   use {'vimwiki/vimwiki'}
+  use {'mattn/emmet-vim'}
   use {'sunaku/vim-dasht'}
   use {'mattn/webapi-vim'}
   use {'alexbel/vim-rubygems'}
