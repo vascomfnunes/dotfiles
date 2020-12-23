@@ -73,7 +73,7 @@ if exists('$TMUX')
 endif
 
 " Tests
-let test#strategy = "vimterminal"
+let test#strategy = "neovim"
 let test#ruby#rspec#executable = 'RUBYOPT="-W0" bundle exec rspec'
 let g:test#javascript#runner = 'jest'
 let test#ruby#rspec#options = {
