@@ -77,13 +77,13 @@ let test#strategy = "neovim"
 let test#ruby#rspec#executable = 'RUBYOPT="-W0" bundle exec rspec'
 let g:test#javascript#runner = 'jest'
 let test#ruby#rspec#options = {
-      \ 'all': '--require ~/bin/rspec_quick_fix_formatter.rb --format QuickfixFormatter --out ~/quickfix.out --format progress --color'
+      \ 'all': '--require $HOME/bin/rspec_quick_fix_formatter.rb --format QuickfixFormatter --out $HOME/quickfix.out --format progress --color'
       \}
 
 nnoremap <leader>tn :TestNearest<cr>
 nnoremap <leader>tf :TestFile<cr>
 nnoremap <leader>ts :TestSuite<cr>
-nnoremap <leader>tl :cg ~/quickfix.out \| cwindow<cr>
+nnoremap <leader>tl :cg $HOME/quickfix.out \| cwindow<cr>
 
 " Vimwiki
 let g:markdown_folding = 1
@@ -116,7 +116,7 @@ let g:vimwiki_key_mappings =
       \ }
 
 let g:vimwiki_listsyms = '✗○◐●✓'
-let g:vimwiki_folding='expr'
+let g:vimwiki_folding ='expr'
 
 nnoremap <leader>di :VimwikiDiaryIndex<CR>
 nnoremap <leader>dn :VimwikiMakeDiaryNote<CR>
@@ -130,12 +130,12 @@ nnoremap <leader>ws :VimwikiUISelect<CR>
 nnoremap <leader>wt :VimwikiTable cols rows
 
 " Markdown preview
-let vim_markdown_preview_github=1
-let vim_markdown_preview_toggle=1
-let vim_markdown_preview_browser='Google Chrome'
+let vim_markdown_preview_github = 1
+let vim_markdown_preview_toggle = 1
+let vim_markdown_preview_browser = 'Google Chrome'
 
 " Remove the rendered preview
-let vim_markdown_preview_temp_file=1
+let vim_markdown_preview_temp_file = 1
 
 nnoremap <leader>mp :MarkdownPreview<CR>
 
@@ -145,8 +145,8 @@ autocmd BufReadPost fugitive://* set bufhidden=delete
 " Dasht
 nnoremap <Leader>k :Dasht<Space>
 nnoremap <silent> <Leader>K :call Dasht(dasht#cursor_search_terms())<Return>
-let g:dasht_results_window = 'vnew'
 
+let g:dasht_results_window = 'vnew'
 let g:dasht_filetype_docsets = {}
 let g:dasht_filetype_docsets['html'] = ['CSS', 'Javascript', 'Bootstrap_4', 'Emmet', 'Font_Awesome', 'HTML', 'JavaScript', 'MomentJS', 'jQuery']
 let g:dasht_filetype_docsets['eruby'] = ['CSS', 'Javascript', 'Bootstrap_4', 'Emmet', 'Font_Awesome', 'HTML', 'JavaScript', 'MomentJS', 'jQuery', 'Ruby_2', 'Ruby_on_Rails_6']
@@ -187,9 +187,6 @@ autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
 
 nnoremap <leader>z :Goyo<cr>
-
-" FFF
-" let g:fff#split = "30vnew"
 
 " LSP
 " Use <Tab> and <S-Tab> to navigate through popup menu

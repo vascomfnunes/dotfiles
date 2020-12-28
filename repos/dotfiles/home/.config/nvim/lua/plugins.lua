@@ -24,9 +24,8 @@ return require('packer').startup(function()
   use {'nvim-lua/completion-nvim'}
   use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
   use {'tjdevries/express_line.nvim'}
-  use {'vifm/vifm.vim'}
-  use {'RishabhRD/popfix'}
-  use {'RishabhRD/nvim-cheat.sh'}
+  use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
+  use {'RishabhRD/nvim-cheat.sh', requires = {{'RishabhRD/popfix'}}, opt = true, cmd = 'Cheat'}
   use {'junegunn/vim-peekaboo'}
   use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[TSUpdate]] end}
   use {'SirVer/ultisnips'}
@@ -37,7 +36,7 @@ return require('packer').startup(function()
   use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install', cmd = 'MarkdownPreview'}
   use {'cohama/lexima.vim'}
   use {'rhysd/committia.vim'}
-  use {'junegunn/goyo.vim', opt = true, cmd = {'Goyo'}}
+  use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
   use {'editorconfig/editorconfig-vim'}
   use {'easymotion/vim-easymotion'}
   use {'AndrewRadev/splitjoin.vim'}
@@ -48,18 +47,17 @@ return require('packer').startup(function()
   use {'tpope/vim-commentary'}
   use {'tpope/vim-ragtag'}
   use {'airblade/vim-gitgutter'}
-  use {'vim-test/vim-test'}
+  use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
   use {'vimwiki/vimwiki'}
   use {'mattn/emmet-vim'}
-  use {'sunaku/vim-dasht'}
-  use {'mattn/webapi-vim'}
-  use {'alexbel/vim-rubygems'}
+  use {'sunaku/vim-dasht', opt = true, cmd = 'Dasht'}
+  use {'alexbel/vim-rubygems', opt = true, requires = {{'mattn/webapi-vim'}}, cmd = {'RubygemsGemInfo', 'RubygemsAppendVersion'}}
   use {'AndrewRadev/tagalong.vim'}
   use {'mzlogin/vim-markdown-toc'}
-  use {'vascomfnunes/vimbox'}
   use {'kkoomen/vim-doge', run = function() vim.cmd [[call doge#install()]] end}
   use {'christoomey/vim-tmux-navigator'}
   use {'RyanMillerC/better-vim-tmux-resizer'}
   use {'tmux-plugins/vim-tmux-focus-events'}
   use {'norcalli/nvim-colorizer.lua'}
+  use {'vascomfnunes/vimbox'}
 end)
