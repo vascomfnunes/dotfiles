@@ -23,9 +23,9 @@ require('el').setup {
     return {
       extensions.gen_mode {format_string = ' %s '}, git_branch, ' ', sections.split, git_icon,
       sections.maximum_width(builtin.responsive_file(140, 90), 0.30),
-      sections.collapse_builtin {' ', builtin.modified_flag}, sections.split,
-      git_changes, '[', builtin.line_with_width(3), ':', builtin.column_with_width(2),
-      ']', sections.collapse_builtin {'[', builtin.help_list, builtin.readonly_list, ']'}, builtin.filetype
+      sections.collapse_builtin {' ', builtin.modified_flag}, sections.split, git_changes, '[',
+      builtin.line_with_width(3), ':', builtin.column_with_width(2), ']',
+      sections.collapse_builtin {'[', builtin.help_list, builtin.readonly_list, ']'}, builtin.filetype
     }
   end
 }

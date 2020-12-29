@@ -6,7 +6,7 @@ local function mapper(mode, key, result)
 end
 
 local on_attach = function(client)
-  print("'" .. client.name .. "' language server started" );
+  print("'" .. client.name .. "' language server started");
 
   if client.config.flags then client.config.flags.allow_incremental_sync = true end
 
@@ -16,6 +16,7 @@ local on_attach = function(client)
   mapper('n', 'K', 'vim.lsp.buf.hover()')
   mapper('n', '<leader>cf', 'vim.lsp.buf.formatting()')
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
   vim.g.completion_enable_snippet = "UltiSnips"
 end
 
@@ -31,25 +32,16 @@ local servers = {
   cssls = {},
   diagnosticls = {
     filetypes = {
-      'javascript',
-      'javascriptreact',
-      'typescript',
-      'typescriptreact',
-      'css',
-      'scss',
-      'html',
-      'yaml',
-      'lua',
-      'vue',
-      'markdown',
+      'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'scss', 'html', 'yaml', 'lua', 'vue',
+      'markdown'
     },
     init_options = {
       linters = {
         eslint = {
           command = 'eslint',
-          rootPatterns = { '.git' },
+          rootPatterns = {'.git'},
           debounce = 100,
-          args = { '--stdin', '--stdin-filename', '%filepath', '--format', 'json' },
+          args = {'--stdin', '--stdin-filename', '%filepath', '--format', 'json'},
           sourceName = 'eslint',
           parseJson = {
             errorsRoot = '[0].messages',
@@ -60,32 +52,20 @@ local servers = {
             message = '[eslint] ${message} [${ruleId}]',
             security = 'severity'
           },
-          securities = {
-            [2] = 'error',
-            [1] = 'warning'
-          }
+          securities = {[2] = 'error', [1] = 'warning'}
         },
         markdownlint = {
           command = 'markdownlint',
-          rootPatterns = { '.git' },
+          rootPatterns = {'.git'},
           isStderr = true,
           debounce = 100,
-          args = { '--stdin' },
+          args = {'--stdin'},
           offsetLine = 0,
           offsetColumn = 0,
           sourceName = 'markdownlint',
-          securities = {
-            undefined = 'hint'
-          },
+          securities = {undefined = 'hint'},
           formatLines = 1,
-          formatPattern = {
-            '^.*:(\\d+)\\s+(.*)$',
-            {
-              line = 1,
-              column = -1,
-              message = 2,
-            }
-          }
+          formatPattern = {'^.*:(\\d+)\\s+(.*)$', {line = 1, column = -1, message = 2}}
         }
       },
       filetypes = {
@@ -97,20 +77,9 @@ local servers = {
         vue = 'prettier'
       },
       formatters = {
-        prettierEslint = {
-          command = 'prettier-eslint',
-          args = { '--stdin' },
-          rootPatterns = { '.git' },
-        },
-        prettier = {
-          command = 'prettier',
-          args = { '--stdin-filepath', '%filename' }
-        },
-        luaformat = {
-          command = 'lua-format',
-          args = { '%filename', '-i' },
-          doesWriteToFile = true
-        }
+        prettierEslint = {command = 'prettier-eslint', args = {'--stdin'}, rootPatterns = {'.git'}},
+        prettier = {command = 'prettier', args = {'--stdin-filepath', '%filename'}},
+        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true}
       },
       formatFiletypes = {
         javascript = 'prettierEslint',
@@ -129,37 +98,26 @@ local servers = {
     }
   },
 
-  solargraph = {
-    settings = {
-      solargraph = {
-        diagnostics = true,
-        formatting = true,
-      },
-    },
-  },
+  solargraph = {settings = {solargraph = {diagnostics = true, formatting = true}}},
 
-  yamlls = {
-    settings = {
-      yaml = {
-        format = {
-          enable = true,
-          singleQuote = true,
-        },
-        validate = true}
-      }
-    },
+  yamlls = {settings = {yaml = {format = {enable = true, singleQuote = true}, validate = true}}},
 
-    sumneko_lua = {
+  sumneko_lua = {
     cmd = {'/home/vasco.nunes/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/Linux/lua-language-server'},
     settings = {
-      Lua = {
-        diagnostics = {
-          globals = {'vim', 'use', 'imap', 'nmap', 'vmap', 'tmap', 'inoremap', 'nnoremap', 'vnoremap', 'tnoremap'}
-        },
-        workspace = {library = {['$VIMRUNTIME/lua'] = true}}
-      }
+      Lua = {diagnostics = {enable = true, globals = {"vim", "use"}}, workspace = {library = {['$VIMRUNTIME/lua'] = true}}}
     }
+  },
+
+  clangd = {
+    cmd = {"clangd", "--background-index", "--suggest-missing-includes", "--clang-tidy", "--header-insertion=iwyu"}
   }
 }
 
 for server, config in pairs(servers) do lsp[server].setup(vim.tbl_deep_extend("force", default_lsp_config, config)) end
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+  underline = true,
+  virtual_text = true,
+  update_in_insert = false
+})

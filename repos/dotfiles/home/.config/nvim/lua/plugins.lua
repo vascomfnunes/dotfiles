@@ -2,16 +2,11 @@
 local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
 
 if not packer_exists then
-  -- TODO: Maybe handle windows better?
   if vim.fn.input("Download Packer? (y for yes)") ~= "y" then return end
-
   local directory = string.format('%s/site/pack/packer/opt/', vim.fn.stdpath('data'))
-
   vim.fn.mkdir(directory, 'p')
-
   local out = vim.fn.system(string.format('git clone %s %s', 'https://github.com/wbthomason/packer.nvim',
                                           directory .. '/packer.nvim'))
-
   print(out)
   print("Downloading packer.nvim...")
 
@@ -22,10 +17,11 @@ return require('packer').startup(function()
   use {'wbthomason/packer.nvim', opt = true}
   use {'neovim/nvim-lspconfig'}
   use {'nvim-lua/completion-nvim'}
-  use {'nvim-telescope/telescope.nvim', requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}}
+  use {'kyazdani42/nvim-web-devicons'}
+  use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
   use {'tjdevries/express_line.nvim'}
   use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
-  use {'RishabhRD/nvim-cheat.sh', requires = {{'RishabhRD/popfix'}}, opt = true, cmd = 'Cheat'}
+  use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
   use {'junegunn/vim-peekaboo'}
   use {'nvim-treesitter/nvim-treesitter', run = function() vim.cmd [[TSUpdate]] end}
   use {'SirVer/ultisnips'}
@@ -51,7 +47,12 @@ return require('packer').startup(function()
   use {'vimwiki/vimwiki'}
   use {'mattn/emmet-vim'}
   use {'sunaku/vim-dasht', opt = true, cmd = 'Dasht'}
-  use {'alexbel/vim-rubygems', opt = true, requires = {{'mattn/webapi-vim'}}, cmd = {'RubygemsGemInfo', 'RubygemsAppendVersion'}}
+  use {
+    'alexbel/vim-rubygems',
+    opt = true,
+    requires = {'mattn/webapi-vim'},
+    cmd = {'RubygemsGemInfo', 'RubygemsAppendVersion'}
+  }
   use {'AndrewRadev/tagalong.vim'}
   use {'mzlogin/vim-markdown-toc'}
   use {'kkoomen/vim-doge', run = function() vim.cmd [[call doge#install()]] end}
