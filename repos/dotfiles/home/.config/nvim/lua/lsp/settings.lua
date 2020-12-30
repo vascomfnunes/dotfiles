@@ -1,9 +1,6 @@
 local lsp = require 'lspconfig'
 local completion = require 'completion'
-
-local function mapper(mode, key, result)
-  vim.api.nvim_buf_set_keymap(0, mode, key, "<cmd>lua " .. result .. "<CR>", {noremap = true, silent = true})
-end
+local remap = vim.api.nvim_set_keymap
 
 local on_attach = function(client)
   print("'" .. client.name .. "' language server started");
@@ -11,10 +8,10 @@ local on_attach = function(client)
   if client.config.flags then client.config.flags.allow_incremental_sync = true end
 
   completion.on_attach(client)
-  mapper('n', 'gd', 'vim.lsp.buf.definition()')
-  mapper('n', 'gs', 'vim.lsp.buf.signature_help()')
-  mapper('n', 'K', 'vim.lsp.buf.hover()')
-  mapper('n', '<leader>cf', 'vim.lsp.buf.formatting()')
+  remap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
+  remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
+  remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
+  remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {noremap = true, silent = true})
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
   vim.g.completion_enable_snippet = "UltiSnips"
@@ -105,7 +102,10 @@ local servers = {
   sumneko_lua = {
     cmd = {'/home/vasco.nunes/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/Linux/lua-language-server'},
     settings = {
-      Lua = {diagnostics = {enable = true, globals = {"vim", "use"}}, workspace = {library = {['$VIMRUNTIME/lua'] = true}}}
+      Lua = {
+        diagnostics = {enable = true, globals = {"vim", "use"}},
+        workspace = {library = {['$VIMRUNTIME/lua'] = true}}
+      }
     }
   },
 

@@ -1,6 +1,7 @@
 lua require 'plugins'
 lua require 'settings'
 lua require 'lsp.init'
+lua require 'mappings'
 lua require 'plugins.express_line'
 lua require 'plugins.treesitter'
 lua require 'plugins.vifm'
@@ -34,23 +35,6 @@ autocmd BufWritePre * :call TrimWhitespace()
 " }}}
 
 " MAPPINGS {{{
-" Open quickfix
-nnoremap <leader>q :copen<cr>
-" Windows splits
-nnoremap <silent> vv <c-w>v
-nnoremap <silent> ss <c-w>s
-" Clear highlights
-nnoremap <leader>n :noh<cr>
-" Tabs
-nnoremap <leader><tab>n :tabnew<cr>
-nnoremap <leader><tab>q :tabclose<cr>
-nnoremap <tab> :tabnext<cr>
-nnoremap <S-tab> :tabprevious<cr>
-" Sessions
-nnoremap <leader>ss :mks $HOME/.config/nvim/sessions/
-nnoremap <leader>sl :source $HOME/.config/nvim/sessions/
-" Jump to tag for css and scss classes
-nnoremap <leader>] :tag /<c-r>=expand('<cword>')<cr><cr>
 " Easy motion
 nmap f <Plug>(easymotion-s2)
 " }}}
