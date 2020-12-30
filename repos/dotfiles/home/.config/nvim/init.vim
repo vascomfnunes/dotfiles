@@ -2,7 +2,7 @@ lua require 'plugins'
 lua require 'settings'
 lua require 'mappings'
 lua require 'lsp.init'
-lua require 'plugins.express_line'
+" lua require 'plugins.express_line'
 lua require 'plugins.treesitter'
 lua require 'plugins.vifm'
 " lua require 'plugins.nvimtree'.setup()

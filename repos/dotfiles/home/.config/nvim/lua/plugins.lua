@@ -24,7 +24,7 @@ return require('packer').startup(function()
   use {'kyazdani42/nvim-web-devicons'}
   -- use {'kyazdani42/nvim-tree.lua'}
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-  use {'tjdevries/express_line.nvim'}
+  -- use {'tjdevries/express_line.nvim'}
   use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
   use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
   use {'junegunn/vim-peekaboo'}
@@ -51,6 +51,34 @@ return require('packer').startup(function()
   use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
   use {'vimwiki/vimwiki'}
   use {'mattn/emmet-vim'}
+  use {
+    'hoob3rt/lualine.nvim',
+    requires = {'kyazdani42/nvim-web-devicons', opt = true},
+    config = function()
+      local lualine = require('lualine')
+      lualine.theme = 'gruvbox'
+      lualine.separator = '|'
+      lualine.sections = {
+        lualine_a = { 'mode' },
+        lualine_b = { 'branch' },
+        lualine_c = { 'filename' },
+        lualine_x = { 'encoding', 'fileformat', 'filetype' },
+        lualine_y = { 'progress' },
+        lualine_z = { 'location'  },
+        lualine_diagnostics = {  }
+      }
+      lualine.inactiveSections = {
+        lualine_a = {  },
+        lualine_b = {  },
+        lualine_c = { 'filename' },
+        lualine_x = { 'location' },
+        lualine_y = {  },
+        lualine_z = {   }
+      }
+      lualine.extensions = { 'fzf' }
+      lualine.status()
+    end
+  }
   use {'sunaku/vim-dasht', opt = true, cmd = 'Dasht'}
   use {
     'alexbel/vim-rubygems',
