@@ -10,7 +10,6 @@ lua require 'plugins.ultisnips'
 lua require 'plugins.gitgutter'
 lua require 'plugins.fugitive'
 lua require 'plugins.telescope'
-lua require 'plugins.emmet'
 lua require 'theme'
 
 " AUTOCOMMANDS {{{
