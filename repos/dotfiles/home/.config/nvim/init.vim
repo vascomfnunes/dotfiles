@@ -1,10 +1,11 @@
 lua require 'plugins'
 lua require 'settings'
-lua require 'lsp.init'
 lua require 'mappings'
+lua require 'lsp.init'
 lua require 'plugins.express_line'
 lua require 'plugins.treesitter'
 lua require 'plugins.vifm'
+" lua require 'plugins.nvimtree'.setup()
 lua require 'plugins.ultisnips'
 lua require 'plugins.gitgutter'
 lua require 'plugins.fugitive'

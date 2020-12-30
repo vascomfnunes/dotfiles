@@ -1,4 +1,5 @@
 require'nvim-treesitter.configs'.setup {
-  ensure_installed = 'maintained',
-  highlight = {enable = true, disable = {"json"}, use_languagetree = false}
+  ensure_installed = 'all',
+  highlight = {enable = true},
+  refactor = {highlight_definitions = {enable = true}, highlight_current_scope = {enable = true}}
 }

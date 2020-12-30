@@ -1,4 +1,5 @@
 local g = vim.g
+local wo = vim.wo
 local o = vim.o
 local api = vim.api
 local fn = vim.fn
@@ -6,11 +7,32 @@ local basedir = "/Users/vasco.nunes/.config/nvim/"
 
 g.mapleader = " "
 
-g.python3_host_prog = "/usr/local/bin/python3"
+g.python_host_skip_check = 1
 g.python_host_prog = "/usr/local/bin/python"
+g.python3_host_skip_check = 1
+g.python3_host_prog = "/usr/local/bin/python3"
+g.loaded_node_provider = 0
+g.loaded_ruby_provider = 0
+g.loaded_perl_provider = 0
 
-o.number = true
-o.relativenumber = true
+g.loaded_gzip              = 1
+g.loaded_tar               = 1
+g.loaded_tarPlugin         = 1
+g.loaded_zip               = 1
+g.loaded_zipPlugin         = 1
+g.loaded_getscript         = 1
+g.loaded_getscriptPlugin   = 1
+g.loaded_vimball           = 1
+g.loaded_vimballPlugin     = 1
+g.loaded_2html_plugin      = 1
+g.loaded_logiPat           = 1
+g.loaded_rrhelper          = 1
+g.loaded_netrwPlugin       = 1
+g.loaded_netrwSettings     = 1
+g.loaded_netrwFileHandlers = 1
+
+wo.number = true
+wo.relativenumber = true
 o.ttyfast = true
 o.showcmd = true
 o.clipboard = "unnamed"
