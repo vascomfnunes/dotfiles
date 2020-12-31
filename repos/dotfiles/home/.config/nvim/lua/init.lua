@@ -9,3 +9,5 @@ require 'plugins.vifm'
 require 'plugins.fugitive'
 require 'plugins.telescope'
 require'theme'.init()
+-- Colorizer should be required after the theme settings
+require'colorizer'.setup()

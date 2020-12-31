@@ -48,8 +48,13 @@ local function load()
     }
     use {'cohama/lexima.vim'}
     use {'rhysd/committia.vim'}
-    use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
-    use {'editorconfig/editorconfig-vim'}
+    -- use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
+    use {
+      'editorconfig/editorconfig-vim',
+      config = function()
+        vim.g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
+      end
+    }
     use {'easymotion/vim-easymotion'}
     use {'AndrewRadev/splitjoin.vim'}
     use {'romainl/vim-cool'}
@@ -66,9 +71,65 @@ local function load()
       config = function()
         vim.g.user_emmet_leader_key = '<C-e>'
         vim.g.user_emmet_install_global = 0
+        local wikis = {
+          {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
+          {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
+        }
+        vim.g.vimwiki_list = wikis
+        vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
+        vim.g.vimwiki_global_ext = 0
+        vim.g.vimwiki_listsyms = '✗○◐●✓'
+        vim.g.vimwiki_folding = 'expr'
       end
     }
-    use {'sunaku/vim-dasht', opt = true, cmd = 'Dasht'}
+    use {
+      'sunaku/vim-dasht',
+      opt = true,
+      cmd = 'Dasht',
+      config = function()
+        vim.g.dasht_results_window = 'vnew'
+        vim.g.dasht_filetypes_docsets = {}
+        vim.g.dasht_filetype_docsets['html'] = {
+          'CSS',
+          'Javascript',
+          'Bootstrap_4',
+          'Emmet',
+          'Font_Awesome',
+          'HTML',
+          'JavaScript',
+          'MomentJS',
+          'jQuery'
+        }
+        vim.g.dasht_filetype_docsets['eruby'] = {
+          'CSS',
+          'Javascript',
+          'Bootstrap_4',
+          'Emmet',
+          'Font_Awesome',
+          'HTML',
+          'JavaScript',
+          'MomentJS',
+          'jQuery',
+          'Ruby_2',
+          'Ruby_on_Rails_6'
+        }
+        vim.g.dasht_filetype_docsets['vim'] = {'Vim'}
+        vim.g.dasht_filetype_docsets['css'] = {'CSS'}
+        vim.g.dasht_filetype_docsets['scss'] = {'CSS', 'Sass'}
+        vim.g.dasht_filetype_docsets['javascript'] = {
+          'JavasScript',
+          'Mocha',
+          'MomentJS',
+          'jQuery',
+          'jQuery_Mobile',
+          'jQuery_UI'
+        }
+        vim.g.dasht_filetype_docsets['ruby'] = {'Ruby_2', 'Ruby_onRails_6', 'Ruby_Installed_Gems'}
+        vim.g.dasht_filetype_docsets['markdown'] = {'Markdown'}
+        vim.g.dasht_filetype_docsets['docker'] = {'Docker', 'Man_Pages'}
+        vim.g.dasht_filetype_docsets['bash'] = {'Bash'}
+      end
+    }
     use {
       'alexbel/vim-rubygems',
       opt = true,
