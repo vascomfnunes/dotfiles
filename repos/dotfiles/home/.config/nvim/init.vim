@@ -1,29 +1,7 @@
-lua require 'plugins'
-lua require 'settings'
-lua require 'mappings'
-lua require 'lsp.init'
-" lua require 'plugins.express_line'
-lua require 'plugins.treesitter'
-lua require 'plugins.vifm'
-" lua require 'plugins.nvimtree'.setup()
-lua require 'plugins.ultisnips'
-lua require 'plugins.gitgutter'
-lua require 'plugins.fugitive'
-lua require 'plugins.telescope'
-lua require 'theme'
+lua require 'init'
 
-" AUTOCOMMANDS {{{
-" Source the init.vim file after saving it
-if has("autocmd")
-  autocmd bufwritepost init.vim source $MYVIMRC
-endif
-
-au FileType html,css,scss EmmetInstall
-
-au TextYankPost * silent! lua vim.highlight.on_yank()
-" }}}
-
-" Delete all whitespaces on save
+" Colorizer should be required after the theme configuration
+lua require('colorizer').setup()
 
 fun! TrimWhitespace()
   let l:save = winsaveview()
@@ -31,30 +9,7 @@ fun! TrimWhitespace()
   call winrestview(l:save)
 endfun
 
-autocmd BufWritePre * :call TrimWhitespace()
-" }}}
-
-" MAPPINGS {{{
-" Easy motion
-nmap f <Plug>(easymotion-s2)
-" }}}
-
 " PLUGINS {{{
-
-" Tmux
-if exists('$TMUX')
-  let g:tmux_navigator_no_mappings = 1
-  let g:tmux_resizer_no_mappings = 1
-
-  nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-  nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-  nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-  nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-  nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
-  nnoremap <silent> <s-j> :TmuxResizeDown<cr>
-  nnoremap <silent> <s-k> :TmuxResizeUp<cr>
-  nnoremap <silent> <s-l> :TmuxResizeRight<cr>
-endif
 
 " Tests
 let test#strategy = "neovim"
@@ -64,14 +19,9 @@ let test#ruby#rspec#options = {
       \ 'all': '--require $HOME/bin/rspec_quick_fix_formatter.rb --format QuickfixFormatter --out $HOME/quickfix.out --format progress --color'
       \}
 
-nnoremap <leader>tn :TestNearest<cr>
-nnoremap <leader>tf :TestFile<cr>
-nnoremap <leader>ts :TestSuite<cr>
 nnoremap <leader>tl :cg $HOME/quickfix.out \| cwindow<cr>
 
 " Vimwiki
-let g:markdown_folding = 1
-
 let wiki_1 = {}
 let wiki_1.path = '~/vimwiki_work_md/'
 let wiki_1.syntax = 'markdown'
@@ -113,21 +63,7 @@ nnoremap <leader>wr :VimwikiRenameFile<CR>
 nnoremap <leader>ws :VimwikiUISelect<CR>
 nnoremap <leader>wt :VimwikiTable cols rows
 
-" Markdown preview
-let vim_markdown_preview_github = 1
-let vim_markdown_preview_toggle = 1
-let vim_markdown_preview_browser = 'Google Chrome'
-
-" Remove the rendered preview
-let vim_markdown_preview_temp_file = 1
-
-nnoremap <leader>mp :MarkdownPreview<CR>
-
-" Fugitive
-autocmd BufReadPost fugitive://* set bufhidden=delete
-
 " Dasht
-nnoremap <Leader>k :Dasht<Space>
 nnoremap <silent> <Leader>K :call Dasht(dasht#cursor_search_terms())<Return>
 
 let g:dasht_results_window = 'vnew'
@@ -167,15 +103,9 @@ function! s:goyo_leave()
   set scrolloff=5
 endfunction
 
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
-nnoremap <leader>z :Goyo<cr>
-
 " LSP
 " Use <Tab> and <S-Tab> to navigate through popup menu
 inoremap <expr> <Tab>   pumvisible() ? "\<C-n>" : "\<Tab>"
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
 " }}}
 
-lua require('colorizer').setup()

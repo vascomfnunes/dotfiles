@@ -26,3 +26,30 @@ remap('n', '<S-tab>', ':tabprevious<cr>', {silent = true})
 
 -- Jump to tag for css and scss classes
 remap('n', '<leader>]', ":tag /<c-r>=expand('<cword>')<cr>", {silent = true})
+
+-- Tmux
+remap('n', '<c-h>', ':TmuxNavigateLeft<cr>', {silent = true})
+remap('n', '<c-j>', ':TmuxNavigateDown<cr>', {silent = true})
+remap('n', '<c-k>', ':TmuxNavigateUp<cr>', {silent = true})
+remap('n', '<c-l>', ':TmuxNavigateRight<cr>', {silent = true})
+remap('n', '<s-h>', ':TmuxResizeLeft<cr>', {silent = true})
+remap('n', '<s-j>', ':TmuxResizeDown<cr>', {silent = true})
+remap('n', '<s-k>', ':TmuxResizeUp<cr>', {silent = true})
+remap('n', '<s-l>', ':TmuxResizeRight<cr>', {silent = true})
+
+-- Dasht
+remap('n', '<leader>k', ':Dasht<space>', {silent = true})
+
+-- Markdown
+remap('n', '<leader>mp', ':MarkdownPreview<cr>', {silent = true})
+
+-- Goyo
+remap('n', '<leader>z', ':Goyo<cr>', {silent = true})
+
+-- Easymotion
+remap('n', 'f', '<Plug>(easymotion-s2)', {silent = true})
+
+-- Tests
+remap('n', '<leader>tn', ':TestNearest<cr>', {silent = true})
+remap('n', '<leader>tf', ':TestFile<cr>', {silent = true})
+remap('n', '<leader>ts', ':TestSuite<cr>', {silent = true})

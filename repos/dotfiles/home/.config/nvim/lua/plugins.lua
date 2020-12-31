@@ -14,17 +14,14 @@ if not packer_exists then
 
   return
 end
--- Automatically run :PackerCompile whenever plugins.lua is updated
-cmd [[ autocmd BufWritePost plugins.lua PackerCompile ]]
 
 return require('packer').startup(function()
   use {'wbthomason/packer.nvim', opt = true}
   use {'neovim/nvim-lspconfig'}
   use {'nvim-lua/completion-nvim'}
   use {'kyazdani42/nvim-web-devicons'}
-  -- use {'kyazdani42/nvim-tree.lua'}
   use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-  -- use {'tjdevries/express_line.nvim'}
+  use {'tjdevries/express_line.nvim'}
   use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
   use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
   use {'junegunn/vim-peekaboo'}
@@ -34,7 +31,16 @@ return require('packer').startup(function()
   use {'justinmk/vim-gtfo'}
   use {'DataWraith/auto_mkdir'}
   use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
-  use {'iamcco/markdown-preview.nvim', run = 'cd app && yarn install'}
+  use {
+    'iamcco/markdown-preview.nvim',
+    run = 'cd app && yarn install',
+    config = function()
+      vim.g.vim_markdown_preview_github = 1
+      vim.g.vim_markdown_preview_toggle = 1
+      vim.g.vim_markdown_preview_browser = 'Google Chrome'
+      vim.g.vim_markdown_preview_temp_file = 1
+    end
+  }
   use {'cohama/lexima.vim'}
   use {'rhysd/committia.vim'}
   use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
@@ -50,33 +56,11 @@ return require('packer').startup(function()
   use {'airblade/vim-gitgutter'}
   use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
   use {'vimwiki/vimwiki'}
-  use {'mattn/emmet-vim'}
   use {
-    'hoob3rt/lualine.nvim',
-    requires = {'kyazdani42/nvim-web-devicons', opt = true},
+    'mattn/emmet-vim',
     config = function()
-      local lualine = require('lualine')
-      lualine.theme = 'gruvbox'
-      lualine.separator = '|'
-      lualine.sections = {
-        lualine_a = { 'mode' },
-        lualine_b = { 'branch' },
-        lualine_c = { 'filename' },
-        lualine_x = { 'encoding', 'fileformat', 'filetype' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location'  },
-        lualine_diagnostics = {  }
-      }
-      lualine.inactiveSections = {
-        lualine_a = {  },
-        lualine_b = {  },
-        lualine_c = { 'filename' },
-        lualine_x = { 'location' },
-        lualine_y = {  },
-        lualine_z = {   }
-      }
-      lualine.extensions = { 'fzf' }
-      lualine.status()
+      vim.g.user_emmet_leader_key = '<C-e>'
+      vim.g.user_emmet_install_global = 0
     end
   }
   use {'sunaku/vim-dasht', opt = true, cmd = 'Dasht'}
@@ -89,8 +73,18 @@ return require('packer').startup(function()
   use {'AndrewRadev/tagalong.vim', opt = true, ft = {'html', 'eruby'}}
   use {'mzlogin/vim-markdown-toc'}
   use {'kkoomen/vim-doge', run = function() vim.cmd [[call doge#install()]] end}
-  use {'christoomey/vim-tmux-navigator'}
-  use {'RyanMillerC/better-vim-tmux-resizer'}
+  use {
+    'christoomey/vim-tmux-navigator',
+    config = function()
+      vim.g.tmux_navigator_no_mappings = 1
+    end
+  }
+  use {
+    'RyanMillerC/better-vim-tmux-resizer',
+    config = function()
+      vim.g.tmux_resizer_no_mappings = 1
+    end
+  }
   use {'tmux-plugins/vim-tmux-focus-events'}
   use {'norcalli/nvim-colorizer.lua'}
   use 'vascomfnunes/vimbox'
