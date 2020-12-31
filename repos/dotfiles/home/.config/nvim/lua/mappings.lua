@@ -1,5 +1,8 @@
 local remap = vim.api.nvim_set_keymap
 
+-- Disable annoying visual mode
+remap('n', 'Q', '<nop>', {silent = true})
+
 -- Visual shifting
 remap('v', '<', '<gv', {silent = true})
 remap('v', '>', '>gv', {silent = true})
