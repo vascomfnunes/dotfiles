@@ -1,2 +1,2 @@
-require('lsp.settings')
-require('lsp.signs')
+require 'lsp.settings'
+require 'lsp.signs'

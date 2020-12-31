@@ -5,7 +5,9 @@ local remap = vim.api.nvim_set_keymap
 local on_attach = function(client)
   print("'" .. client.name .. "' language server started");
 
-  if client.config.flags then client.config.flags.allow_incremental_sync = true end
+  if client.config.flags then
+    client.config.flags.allow_incremental_sync = true
+  end
 
   completion.on_attach(client)
   remap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
@@ -29,7 +31,16 @@ local servers = {
   cssls = {},
   diagnosticls = {
     filetypes = {
-      'javascript', 'javascriptreact', 'typescript', 'typescriptreact', 'css', 'scss', 'html', 'yaml', 'lua', 'vue',
+      'javascript',
+      'javascriptreact',
+      'typescript',
+      'typescriptreact',
+      'css',
+      'scss',
+      'html',
+      'yaml',
+      'lua',
+      'vue',
       'markdown'
     },
     init_options = {
@@ -114,7 +125,9 @@ local servers = {
   }
 }
 
-for server, config in pairs(servers) do lsp[server].setup(vim.tbl_deep_extend("force", default_lsp_config, config)) end
+for server, config in pairs(servers) do
+  lsp[server].setup(vim.tbl_deep_extend("force", default_lsp_config, config))
+end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,

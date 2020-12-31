@@ -1,58 +1,91 @@
+local M = {}
 local remap = vim.api.nvim_set_keymap
 
--- Disable annoying visual mode
-remap('n', 'Q', '<nop>', {silent = true})
+local function vim()
+  -- Disable annoying visual mode
+  remap('n', 'Q', '<nop>', {silent = true})
+  -- Clear highlights
+  remap('n', '<leader>n', ':noh<cr>', {silent = true})
+end
 
--- Visual shifting
-remap('v', '<', '<gv', {silent = true})
-remap('v', '>', '>gv', {silent = true})
+local function sessions()
+  remap('n', '<leader>ss', ':mks $HOME/.config/nvim/sessions/', {silent = true})
+  remap('n', '<leader>sl', ':source $HOME/.config/nvim/sessions/', {silent = true})
+end
 
--- Open quickfix
-remap('n', '<leader>q', ':copen<cr>', {silent = true})
+local function indent()
+  remap('v', '<', '<gv', {silent = true})
+  remap('v', '>', '>gv', {silent = true})
+end
 
--- Sessions
-remap('n', '<leader>ss', ':mks $HOME/.config/nvim/sessions/', {silent = true})
-remap('n', '<leader>sl', ':source $HOME/.config/nvim/sessions/', {silent = true})
+local function quickfix()
+  remap('n', '<leader>q', ':copen<cr>', {silent = true})
+end
 
--- Window splits
-remap('n', 'vv', '<c-w>v', {silent = true})
-remap('n', 'ss', '<c-w>s', {silent = true})
+local function splits()
+  remap('n', 'vv', '<c-w>v', {silent = true})
+  remap('n', 'ss', '<c-w>s', {silent = true})
+end
 
--- Clear highlights
-remap('n', '<leader>n', ':noh<cr>', {silent = true})
+local function tabs()
+  remap('n', '<leader><tab>n', ':tabnew<cr>', {silent = true})
+  remap('n', '<leader><tab>q', ':tabclose<cr>', {silent = true})
+  remap('n', '<tab>', ':tabnext<cr>', {silent = true})
+  remap('n', '<S-tab>', ':tabprevious<cr>', {silent = true})
+end
 
--- Tabs
-remap('n', '<leader><tab>n', ':tabnew<cr>', {silent = true})
-remap('n', '<leader><tab>q', ':tabclose<cr>', {silent = true})
-remap('n', '<tab>', ':tabnext<cr>', {silent = true})
-remap('n', '<S-tab>', ':tabprevious<cr>', {silent = true})
+local function tmux()
+  remap('n', '<c-h>', ':TmuxNavigateLeft<cr>', {silent = true})
+  remap('n', '<c-j>', ':TmuxNavigateDown<cr>', {silent = true})
+  remap('n', '<c-k>', ':TmuxNavigateUp<cr>', {silent = true})
+  remap('n', '<c-l>', ':TmuxNavigateRight<cr>', {silent = true})
+  remap('n', '<s-h>', ':TmuxResizeLeft<cr>', {silent = true})
+  remap('n', '<s-j>', ':TmuxResizeDown<cr>', {silent = true})
+  remap('n', '<s-k>', ':TmuxResizeUp<cr>', {silent = true})
+  remap('n', '<s-l>', ':TmuxResizeRight<cr>', {silent = true})
+end
 
--- Jump to tag for css and scss classes
-remap('n', '<leader>]', ":tag /<c-r>=expand('<cword>')<cr>", {silent = true})
+local function tests()
+  remap('n', '<leader>tn', ':TestNearest<cr>', {silent = true})
+  remap('n', '<leader>tf', ':TestFile<cr>', {silent = true})
+  remap('n', '<leader>ts', ':TestSuite<cr>', {silent = true})
+end
 
--- Tmux
-remap('n', '<c-h>', ':TmuxNavigateLeft<cr>', {silent = true})
-remap('n', '<c-j>', ':TmuxNavigateDown<cr>', {silent = true})
-remap('n', '<c-k>', ':TmuxNavigateUp<cr>', {silent = true})
-remap('n', '<c-l>', ':TmuxNavigateRight<cr>', {silent = true})
-remap('n', '<s-h>', ':TmuxResizeLeft<cr>', {silent = true})
-remap('n', '<s-j>', ':TmuxResizeDown<cr>', {silent = true})
-remap('n', '<s-k>', ':TmuxResizeUp<cr>', {silent = true})
-remap('n', '<s-l>', ':TmuxResizeRight<cr>', {silent = true})
+local function tags()
+  -- Jump to tag for css and scss classes
+  remap('n', '<leader>]', ":tag /<c-r>=expand('<cword>')<cr>", {silent = true})
+end
 
--- Dasht
-remap('n', '<leader>k', ':Dasht<space>', {silent = true})
+local function dasht()
+  remap('n', '<leader>k', ':Dasht<space>', {silent = true})
+end
 
--- Markdown
-remap('n', '<leader>mp', ':MarkdownPreview<cr>', {silent = true})
+local function markdown()
+  remap('n', '<leader>mp', ':MarkdownPreview<cr>', {silent = true})
+end
 
--- Goyo
-remap('n', '<leader>z', ':Goyo<cr>', {silent = true})
+local function goyo()
+  remap('n', '<leader>z', ':Goyo<cr>', {silent = true})
+end
 
--- Easymotion
-remap('n', 'f', '<Plug>(easymotion-s2)', {silent = true})
+local function easy_motion()
+  remap('n', 'f', '<Plug>(easymotion-s2)', {silent = true})
+end
 
--- Tests
-remap('n', '<leader>tn', ':TestNearest<cr>', {silent = true})
-remap('n', '<leader>tf', ':TestFile<cr>', {silent = true})
-remap('n', '<leader>ts', ':TestSuite<cr>', {silent = true})
+function M.init()
+  vim()
+  sessions()
+  indent()
+  quickfix()
+  splits()
+  tabs()
+  tmux()
+  tests()
+  tags()
+  dasht()
+  markdown()
+  goyo()
+  easy_motion()
+end
+
+return M

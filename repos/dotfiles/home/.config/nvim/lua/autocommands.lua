@@ -1,17 +1,28 @@
-require'utils'
+local utils = require 'utils'
 
-nvim_create_augroups(
-  {
-    general = {
-      -- Source the init.vim file after saving it
+local M = {}
+local augroups = {}
+
+local function set_groups()
+  augroups = {
+    vim = {
       {"BufWritePost", "init.vim", "source $MYVIMRC"},
       {"TextYankPost", "*", "silent! lua vim.highlight.on_yank()"},
-      {"FileType", "html,css,scss,eruby", "EmmetInstall"},
-      {"BufReadPost", "fugitive://*", "set bufhidden=delete"},
+      {"BufWritePre", "*", ":call TrimWhitespace()"}
+    },
+    emmet = {{"FileType", "html,css,scss,eruby", "EmmetInstall"}},
+    fugitive = {{"BufReadPost", "fugitive://*", "set bufhidden=delete"}},
+    goyo = {
       {"User", "GoyoEnter", "nested call <SID>goyo_enter()"},
-      {"User", "GoyoLeave", "nested call <SID>goyo_leave()"},
-      {"BufWritePre", "*", ":call TrimWhitespace()"},
-      {"BufWritePost", "plugins.lua", "PackerCompile"}
-    }
+      {"User", "GoyoLeave", "nested call <SID>goyo_leave()"}
+    },
+    packer = {{"BufWritePost", "plugins.lua", "PackerCompile"}}
   }
-)
+end
+
+function M.init()
+  set_groups()
+  utils.nvim_create_augroups(augroups)
+end
+
+return M

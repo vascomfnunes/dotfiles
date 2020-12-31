@@ -1,13 +1,11 @@
-require'plugins'
-require'settings'
-require'autocommands'
-require'mappings'
-require'lsp.init'
-require'plugins.express_line'
-require'plugins.treesitter'
-require'plugins.vifm'
-require'plugins.ultisnips'
-require'plugins.gitgutter'
-require'plugins.fugitive'
-require'plugins.telescope'
-require'theme'
+require'plugins'.init()
+require'settings'.init()
+require'autocommands'.init()
+require'mappings'.init()
+require 'lsp.init'
+require 'plugins.express_line'
+require 'plugins.treesitter'
+require 'plugins.vifm'
+require 'plugins.fugitive'
+require 'plugins.telescope'
+require'theme'.init()
