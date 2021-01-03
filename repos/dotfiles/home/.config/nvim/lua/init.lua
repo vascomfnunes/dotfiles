@@ -8,6 +8,7 @@ require 'plugins.treesitter'
 require 'plugins.vifm'
 require 'plugins.fugitive'
 require 'plugins.telescope'
+require'gitsigns'.setup()
 require'theme'.init()
 -- Colorizer should be required after the theme settings
 require'colorizer'.setup()

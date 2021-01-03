@@ -2,7 +2,7 @@ local M = {}
 local cmd = vim.cmd
 
 local function install()
-  local packer_exists = pcall(vim.cmd, [[packadd packer.nvim]])
+  local packer_exists = pcall(cmd, [[packadd packer.nvim]])
 
   if not packer_exists then
     if vim.fn.input("Download Packer? (y for yes)") ~= "y" then
@@ -55,6 +55,12 @@ local function load()
         vim.g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
       end
     }
+    use {
+      'lewis6991/gitsigns.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim'
+      }
+    }
     use {'easymotion/vim-easymotion'}
     use {'AndrewRadev/splitjoin.vim'}
     use {'romainl/vim-cool'}
@@ -63,7 +69,7 @@ local function load()
     use {'tpope/vim-surround'}
     use {'tpope/vim-commentary'}
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
-    use {'airblade/vim-gitgutter'}
+    -- use {'airblade/vim-gitgutter'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
     use {'vimwiki/vimwiki'}
     use {
