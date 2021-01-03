@@ -27,12 +27,14 @@ local function load()
     use {'kyazdani42/nvim-web-devicons'}
     use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'tjdevries/express_line.nvim'}
-    -- use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use {'junegunn/vim-peekaboo'}
     use {'voldikss/vim-floaterm'}
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-    use {'SirVer/ultisnips'}
+    use {'SirVer/ultisnips', config = function()
+      vim.g.UltiSnipsExpandTrigger = '<c-s>'
+    end
+    }
     use {'honza/vim-snippets'}
     use {'justinmk/vim-gtfo'}
     use {'DataWraith/auto_mkdir'}

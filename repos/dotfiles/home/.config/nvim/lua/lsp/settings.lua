@@ -111,7 +111,7 @@ local servers = {
   yamlls = {settings = {yaml = {format = {enable = true, singleQuote = true}, validate = true}}},
 
   sumneko_lua = {
-    cmd = {'/home/vasco.nunes/.cache/nvim/lspconfig/sumneko_lua/lua-language-server/bin/Linux/lua-language-server'},
+    cmd = {'/Users/vasco.nunes/bin/lua-language-server'},
     settings = {
       Lua = {
         diagnostics = {enable = true, globals = {"vim", "use"}},
