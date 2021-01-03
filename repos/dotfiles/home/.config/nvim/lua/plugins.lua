@@ -27,9 +27,10 @@ local function load()
     use {'kyazdani42/nvim-web-devicons'}
     use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'tjdevries/express_line.nvim'}
-    use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
+    -- use {'vifm/vifm.vim', opt = true, cmd = 'Vifm'}
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use {'junegunn/vim-peekaboo'}
+    use {'voldikss/vim-floaterm'}
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
     use {'SirVer/ultisnips'}
     use {'honza/vim-snippets'}
@@ -69,7 +70,6 @@ local function load()
     use {'tpope/vim-surround'}
     use {'tpope/vim-commentary'}
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
-    -- use {'airblade/vim-gitgutter'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
     use {'vimwiki/vimwiki'}
     use {

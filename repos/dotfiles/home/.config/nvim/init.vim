@@ -7,7 +7,7 @@ fun! TrimWhitespace()
 endfun
 
 " Tests
-let test#strategy = "dispatch"
+let test#strategy = "floaterm"
 let test#ruby#rspec#executable = 'RUBYOPT="-W0" bundle exec rspec'
 let g:test#javascript#runner = 'jest'
 let test#ruby#rspec#options = {

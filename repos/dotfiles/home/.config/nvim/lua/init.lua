@@ -5,7 +5,7 @@ require'mappings'.init()
 require 'lsp.init'
 require 'plugins.express_line'
 require 'plugins.treesitter'
-require 'plugins.vifm'
+require 'plugins.floaterm'
 require 'plugins.fugitive'
 require 'plugins.telescope'
 require'gitsigns'.setup()
