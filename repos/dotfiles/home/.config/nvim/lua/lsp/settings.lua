@@ -111,7 +111,11 @@ local servers = {
   yamlls = {settings = {yaml = {format = {enable = true, singleQuote = true}, validate = true}}},
 
   sumneko_lua = {
-    cmd = {"/Users/vasco.nunes/bin/lua-language-server-repo/bin/macOS/lua-language-server", "-E", "/Users/vasco.nunes/bin/lua-language-server-repo/main.lua"},
+    cmd = {
+      "/Users/vasco.nunes/bin/lua-language-server-repo/bin/macOS/lua-language-server",
+      "-E",
+      "/Users/vasco.nunes/bin/lua-language-server-repo/main.lua"
+    },
     settings = {
       Lua = {
         diagnostics = {enable = true, globals = {"vim", "use"}},
@@ -131,9 +135,6 @@ end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
   underline = true,
-  virtual_text = {
-    spacing = 4,
-    prefix = ' ',
-  },
+  virtual_text = {spacing = 4, prefix = ' '},
   update_in_insert = false
 })

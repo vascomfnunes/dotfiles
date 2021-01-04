@@ -65,10 +65,6 @@ local function markdown()
   remap('n', '<leader>mp', ':MarkdownPreview<cr>', {silent = true})
 end
 
--- local function goyo()
---   remap('n', '<leader>z', ':Goyo<cr>', {silent = true})
--- end
-
 local function easy_motion()
   remap('n', 'f', '<Plug>(easymotion-s2)', {silent = true})
 end
@@ -97,7 +93,6 @@ function M.init()
   tags()
   dasht()
   markdown()
-  -- goyo()
   easy_motion()
   vimwiki()
 end
