@@ -22,13 +22,13 @@ end
 local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
-    use {'neovim/nvim-lspconfig'}
-    use {'nvim-lua/completion-nvim'}
-    use {'kyazdani42/nvim-web-devicons'}
+    use 'neovim/nvim-lspconfig'
+    use 'nvim-lua/completion-nvim'
+    use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-    use {'tjdevries/express_line.nvim'}
+    use 'tjdevries/express_line.nvim'
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
-    use {'junegunn/vim-peekaboo'}
+    use 'junegunn/vim-peekaboo'
     use {
       'voldikss/vim-floaterm',
       config = function()
@@ -42,9 +42,9 @@ local function load()
         vim.g.UltiSnipsExpandTrigger = '<c-s>'
       end
     }
-    use {'honza/vim-snippets'}
-    use {'justinmk/vim-gtfo'}
-    use {'DataWraith/auto_mkdir'}
+    use 'honza/vim-snippets'
+    use 'justinmk/vim-gtfo'
+    use 'DataWraith/auto_mkdir'
     use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
     use {
       'iamcco/markdown-preview.nvim',
@@ -56,9 +56,8 @@ local function load()
         vim.g.vim_markdown_preview_temp_file = 1
       end
     }
-    use {'cohama/lexima.vim'}
-    use {'rhysd/committia.vim'}
-    -- use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
+    use 'cohama/lexima.vim'
+    use 'rhysd/committia.vim'
     use {
       'editorconfig/editorconfig-vim',
       config = function()
@@ -66,16 +65,16 @@ local function load()
       end
     }
     use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
-    use {'easymotion/vim-easymotion'}
-    use {'AndrewRadev/splitjoin.vim'}
-    use {'romainl/vim-cool'}
-    use {'tpope/vim-fugitive'}
+    use 'easymotion/vim-easymotion'
+    use 'AndrewRadev/splitjoin.vim'
+    use 'romainl/vim-cool'
+    use 'tpope/vim-fugitive'
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
-    use {'tpope/vim-surround'}
-    use {'tpope/vim-commentary'}
+    use 'tpope/vim-surround'
+    use 'tpope/vim-commentary'
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
-    use {'vimwiki/vimwiki'}
+    use 'vimwiki/vimwiki'
     use {
       'mattn/emmet-vim',
       config = function()
@@ -147,7 +146,7 @@ local function load()
       cmd = {'RubygemsGemInfo', 'RubygemsAppendVersion'}
     }
     use {'AndrewRadev/tagalong.vim', opt = true, ft = {'html', 'eruby'}}
-    use {'mzlogin/vim-markdown-toc'}
+    use 'mzlogin/vim-markdown-toc'
     use {
       'kkoomen/vim-doge',
       run = function()
@@ -169,8 +168,8 @@ local function load()
         vim.g.tmux_resizer_no_mappings = 1
       end
     }
-    use {'tmux-plugins/vim-tmux-focus-events'}
-    use {'norcalli/nvim-colorizer.lua'}
+    use 'tmux-plugins/vim-tmux-focus-events'
+    use 'norcalli/nvim-colorizer.lua'
     use 'vascomfnunes/vimbox'
   end)
 end
