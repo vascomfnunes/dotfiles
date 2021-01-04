@@ -29,11 +29,18 @@ local function load()
     use {'tjdevries/express_line.nvim'}
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use {'junegunn/vim-peekaboo'}
-    use {'voldikss/vim-floaterm'}
+    use {
+      'voldikss/vim-floaterm',
+      config = function()
+        vim.g.floaterm_keymap_toggle = '<c-t>'
+      end
+    }
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
-    use {'SirVer/ultisnips', config = function()
-      vim.g.UltiSnipsExpandTrigger = '<c-s>'
-    end
+    use {
+      'SirVer/ultisnips',
+      config = function()
+        vim.g.UltiSnipsExpandTrigger = '<c-s>'
+      end
     }
     use {'honza/vim-snippets'}
     use {'justinmk/vim-gtfo'}
@@ -58,12 +65,7 @@ local function load()
         vim.g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
       end
     }
-    use {
-      'lewis6991/gitsigns.nvim',
-      requires = {
-        'nvim-lua/plenary.nvim'
-      }
-    }
+    use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
     use {'easymotion/vim-easymotion'}
     use {'AndrewRadev/splitjoin.vim'}
     use {'romainl/vim-cool'}
