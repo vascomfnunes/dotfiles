@@ -26,9 +26,27 @@ local function load()
     use 'nvim-lua/completion-nvim'
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+    use {
+      'nvim-telescope/telescope-fzy-native.nvim',
+      opt = true,
+      requires = {
+        {'nvim-telescope/telescope.nvim'}
+      }
+    }
     use 'tjdevries/express_line.nvim'
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
+    use {
+      'dhruvasagar/vim-table-mode',
+      ft = {'txt', 'markdown'}
+    } -- table alignment
+    use {
+      'kyazdani42/nvim-tree.lua',
+      opt = true,
+      requires = {
+        {'kyazdani42/nvim-web-devicons', opt = true}
+      },
+    }
     use {
       'voldikss/vim-floaterm',
       config = function()
@@ -74,21 +92,25 @@ local function load()
     use 'tpope/vim-commentary'
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
-    use 'vimwiki/vimwiki'
+    use {'vimwiki/vimwiki',
+      config = function()
+          local wikis = {
+            {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
+            {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
+          }
+          vim.g.vimwiki_list = wikis
+          vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
+          vim.g.vimwiki_global_ext = 0
+          vim.g.vimwiki_listsyms = '✗○◐●✓'
+          vim.g.vimwiki_folding = 'expr'
+      end
+    }
     use {
       'mattn/emmet-vim',
+      cmd = 'EmmetInstall',
       config = function()
         vim.g.user_emmet_leader_key = '<C-e>'
         vim.g.user_emmet_install_global = 0
-        local wikis = {
-          {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
-          {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
-        }
-        vim.g.vimwiki_list = wikis
-        vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
-        vim.g.vimwiki_global_ext = 0
-        vim.g.vimwiki_listsyms = '✗○◐●✓'
-        vim.g.vimwiki_folding = 'expr'
       end
     }
     use {

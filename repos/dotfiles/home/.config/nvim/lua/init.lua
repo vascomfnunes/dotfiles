@@ -5,9 +5,9 @@ require'mappings'.init()
 require 'lsp.init'
 require 'plugins.express_line'
 require 'plugins.treesitter'
-require 'plugins.floaterm'
 require 'plugins.fugitive'
 require 'plugins.telescope'
+require 'plugins.nvimtree'
 require'gitsigns'.setup()
 require'theme'.init()
 -- Colorizer should be required after the theme settings

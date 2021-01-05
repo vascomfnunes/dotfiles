@@ -1,46 +1,59 @@
-local api = vim.api
-local g = vim.g
-local tree = {}
+vim.cmd[[packadd nvim-tree.lua]]
 
-function tree.setup()
-  g.nvim_tree_width = 40
-  g.nvim_tree_ignore = {'.git', 'node_modules', '.DS_Store'}
-  g.nvim_tree_auto_open = 0
-  g.nvim_tree_auto_close = 1
-  g.nvim_tree_quit_on_open = 1
-  g.nvim_tree_follow = 1
-  g.nvim_tree_git_hl = 1
-  g.nvim_tree_tab_open = 1
-  g.nvim_tree_width_allow_resize = 1
-  g.nvim_tree_show_icons = {git = 1, folders = 0, files = 0}
-  g.nvim_tree_icons = {
-    default = '',
-    git = {unstaged = "✗", staged = "✓", unmerged = "", renamed = "➜", untracked = "★"},
-    folder = {default = "", open = ""}
-  }
-  g.nvim_tree_bindings = {
-    edit = {'<cr>', 'l', 'o'},
-    edit_vsplit = '<c-v>',
-    edit_split = '<c-s>',
-    edit_tab = '<c-t>',
-    close_node = {'<s-cr>', 'h'},
-    refresh = 'R',
-    create = 'a',
-    remove = 'd',
-    rename = 'r',
-    cut = 'x',
-    copy = 'y',
-    paste = 'p'
-  }
+-- Set some variables
+vim.g.nvim_tree_side = 'left'
+vim.g.nvim_tree_width = 40
+vim.g.nvim_tree_ignore = {
+  '.git', 'node_modules', 'dist', '.cache'
+}
+vim.g.nvim_tree_auto_open = 0
+vim.g.nvim_tree_auto_close = 1
+vim.g.nvim_tree_follow = 1
+vim.g.nvim_tree_indent_markers = 0
+vim.g.nvim_tree_hide_dotfiles = 0
+vim.g.nvim_tree_git_hl = 1
+vim.g.nvim_tree_quit_on_open = 1
+vim.g.nvim_tree_root_folder_modifier = ':~'
+vim.g.nvim_tree_tab_open = 0
+vim.g.nvim_tree_show_icons = {git = 1, folders = 1, files = 1}
 
-  api.nvim_set_keymap('n', 'e', ':NvimTreeToggle<CR>', {noremap = true})
+-- Mappings for luatree
+vim.g.nvim_tree_bindings = {
+  edit = {'<CR>', 'o', 'l'},
+  close_node = {'h'},
+  edit_vsplit = '<C-v>',
+  edit_split = '<C-x>',
+  edit_tab = '<C-t>',
+  toggle_ignored = 'I',
+  toggle_dotfiles = 'H',
+  refresh = 'R',
+  preview = '<Tab>',
+  cd = 'cd',
+  create = 'a',
+  remove = 'd',
+  rename = 'r',
+  cut = 'x',
+  copy = 'y',
+  paste = 'p',
+  prev_git_item = '[c',
+  next_git_item = ']c'
+}
 
-  api.nvim_exec([[
-  augroup LuaTreeOverride
-    au!
-    au FileType NvimTree setlocal nowrap
-  augroup END
-  ]], '')
-end
+-- default will show icon by default if no icon is provided
+-- default shows no icon by default
+vim.g.nvim_tree_icons = {
+  default = ' ',
+  symlink = ' ',
 
-return tree
+  git = {
+    unstaged = "✗",
+    staged = "✓",
+    unmerged = "",
+    renamed = "➜",
+    untracked = "★"
+  },
+
+  folder = {default = "", open = " "}
+}
+
+vim.api.nvim_set_keymap('n', 'e', ':NvimTreeToggle<CR>', {noremap = true, silent = true})
