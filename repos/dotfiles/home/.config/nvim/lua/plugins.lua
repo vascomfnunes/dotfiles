@@ -40,13 +40,13 @@ local function load()
       'dhruvasagar/vim-table-mode',
       ft = {'txt', 'markdown'}
     } -- table alignment
-    use {
-      'kyazdani42/nvim-tree.lua',
-      opt = true,
-      requires = {
-        {'kyazdani42/nvim-web-devicons', opt = true}
-      },
-    }
+    -- use {
+    --   'kyazdani42/nvim-tree.lua',
+    --   opt = true,
+    --   requires = {
+    --     {'kyazdani42/nvim-web-devicons', opt = true}
+    --   },
+    -- }
     use {
       'voldikss/vim-floaterm',
       config = function()
