@@ -26,20 +26,11 @@ local function load()
     use 'nvim-lua/completion-nvim'
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-    use {
-      'nvim-telescope/telescope-fzy-native.nvim',
-      opt = true,
-      requires = {
-        {'nvim-telescope/telescope.nvim'}
-      }
-    }
+    use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = {{'nvim-telescope/telescope.nvim'}}}
     use 'tjdevries/express_line.nvim'
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
-    use {
-      'dhruvasagar/vim-table-mode',
-      ft = {'txt', 'markdown'}
-    } -- table alignment
+    use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
     -- use {
     --   'kyazdani42/nvim-tree.lua',
     --   opt = true,
@@ -74,7 +65,12 @@ local function load()
         vim.g.vim_markdown_preview_temp_file = 1
       end
     }
-    use {'cohama/lexima.vim', config = function() vim.g.lexima_accept_pum_with_enter = 1 end}
+    use {
+      'cohama/lexima.vim',
+      config = function()
+        vim.g.lexima_accept_pum_with_enter = 1
+      end
+    }
     use 'rhysd/committia.vim'
     use {
       'editorconfig/editorconfig-vim',
@@ -92,17 +88,18 @@ local function load()
     use 'tpope/vim-commentary'
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
-    use {'vimwiki/vimwiki',
+    use {
+      'vimwiki/vimwiki',
       config = function()
-          local wikis = {
-            {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
-            {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
-          }
-          vim.g.vimwiki_list = wikis
-          vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
-          vim.g.vimwiki_global_ext = 0
-          vim.g.vimwiki_listsyms = '✗○◐●✓'
-          vim.g.vimwiki_folding = 'expr'
+        local wikis = {
+          {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
+          {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
+        }
+        vim.g.vimwiki_list = wikis
+        vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
+        vim.g.vimwiki_global_ext = 0
+        vim.g.vimwiki_listsyms = '✗○◐●✓'
+        vim.g.vimwiki_folding = 'expr'
       end
     }
     use {
