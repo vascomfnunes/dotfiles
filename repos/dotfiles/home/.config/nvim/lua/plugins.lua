@@ -53,7 +53,7 @@ local function load()
         vim.g.floaterm_keymap_toggle = '<c-t>'
       end
     }
-    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate'}
+    use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', opt = true}
     use {
       'SirVer/ultisnips',
       config = function()
@@ -74,7 +74,7 @@ local function load()
         vim.g.vim_markdown_preview_temp_file = 1
       end
     }
-    use 'cohama/lexima.vim'
+    use {'cohama/lexima.vim', config = function() vim.g.lexima_accept_pum_with_enter = 1 end}
     use 'rhysd/committia.vim'
     use {
       'editorconfig/editorconfig-vim',
