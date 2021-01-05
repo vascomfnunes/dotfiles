@@ -28,7 +28,7 @@ local servers = {
   jsonls = {},
   tsserver = {},
   html = {},
-  cssls = {},
+  cssls = {cmd = {'css-languageserver', '--stdio'}},
   diagnosticls = {
     filetypes = {
       'javascript',
