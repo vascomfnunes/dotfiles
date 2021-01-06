@@ -32,7 +32,6 @@ local function load()
     use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
     use {
       'voldikss/vim-floaterm',
-      opt = true,
       config = function()
         vim.g.floaterm_keymap_toggle = '<c-t>'
       end
