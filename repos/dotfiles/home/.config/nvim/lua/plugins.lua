@@ -8,13 +8,12 @@ local function install()
     if vim.fn.input("Download Packer? (y for yes)") ~= "y" then
       return
     end
+
     local directory = string.format('%s/site/pack/packer/opt/', vim.fn.stdpath('data'))
     vim.fn.mkdir(directory, 'p')
     local out = vim.fn.system(string.format('git clone %s %s', 'https://github.com/wbthomason/packer.nvim',
                                             directory .. '/packer.nvim'))
     print(out)
-    print("Downloading packer.nvim...")
-
     return
   end
 end
@@ -25,21 +24,15 @@ local function load()
     use 'neovim/nvim-lspconfig'
     use 'nvim-lua/completion-nvim'
     use 'kyazdani42/nvim-web-devicons'
-    use {'nvim-telescope/telescope.nvim', requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
+    use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = {{'nvim-telescope/telescope.nvim'}}}
-    use 'tjdevries/express_line.nvim'
+    use {'tjdevries/express_line.nvim', opt = true, requires = 'nvim-lua/plenary.nvim'}
     use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
     use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
-    -- use {
-    --   'kyazdani42/nvim-tree.lua',
-    --   opt = true,
-    --   requires = {
-    --     {'kyazdani42/nvim-web-devicons', opt = true}
-    --   },
-    -- }
     use {
       'voldikss/vim-floaterm',
+      opt = true,
       config = function()
         vim.g.floaterm_keymap_toggle = '<c-t>'
       end
@@ -52,11 +45,11 @@ local function load()
       end
     }
     use 'honza/vim-snippets'
-    use 'justinmk/vim-gtfo'
     use 'DataWraith/auto_mkdir'
     use {'tpope/vim-dispatch', opt = true, cmd = {'Dispatch', 'Make', 'Focus', 'Start'}}
     use {
       'iamcco/markdown-preview.nvim',
+      ft = 'markdown',
       run = 'cd app && yarn install',
       config = function()
         vim.g.vim_markdown_preview_github = 1
@@ -82,7 +75,7 @@ local function load()
     use 'easymotion/vim-easymotion'
     use 'AndrewRadev/splitjoin.vim'
     use 'romainl/vim-cool'
-    use 'tpope/vim-fugitive'
+    use {'tpope/vim-fugitive', opt = true}
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
     use 'tpope/vim-surround'
     use 'tpope/vim-commentary'
@@ -102,11 +95,12 @@ local function load()
         vim.g.vimwiki_folding = 'expr'
       end
     }
+    use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
     use {
       'mattn/emmet-vim',
+      opt = true,
       cmd = 'EmmetInstall',
       config = function()
-        vim.g.user_emmet_leader_key = '<C-e>'
         vim.g.user_emmet_install_global = 0
       end
     }

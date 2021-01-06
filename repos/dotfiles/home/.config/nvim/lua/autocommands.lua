@@ -6,16 +6,11 @@ local augroups = {}
 local function set_groups()
   augroups = {
     vim = {
-      {"BufWritePost", "init.vim", "source $MYVIMRC"},
       {"TextYankPost", "*", "silent! lua vim.highlight.on_yank()"},
       {"BufWritePre", "*", ":call TrimWhitespace()"}
     },
     emmet = {{"FileType", "html,css,scss,eruby", "EmmetInstall"}},
     fugitive = {{"BufReadPost", "fugitive://*", "set bufhidden=delete"}},
-    goyo = {
-      {"User", "GoyoEnter", "nested call <SID>goyo_enter()"},
-      {"User", "GoyoLeave", "nested call <SID>goyo_leave()"}
-    },
     packer = {{"BufWritePost", "plugins.lua", "PackerCompile"}}
   }
 end

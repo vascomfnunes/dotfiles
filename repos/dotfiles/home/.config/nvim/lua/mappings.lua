@@ -22,6 +22,10 @@ local function quickfix()
   remap('n', '<leader>q', ':copen<cr>', {silent = true})
 end
 
+local function goyo()
+  remap('n', '<leader>z', ':Goyo<cr>', {silent = true})
+end
+
 local function splits()
   remap('n', 'vv', '<c-w>v', {silent = true})
   remap('n', 'ss', '<c-w>s', {silent = true})
@@ -95,6 +99,7 @@ function M.init()
   markdown()
   easy_motion()
   vimwiki()
+  goyo()
 end
 
 return M

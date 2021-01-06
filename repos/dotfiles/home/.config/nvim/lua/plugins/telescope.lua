@@ -1,3 +1,7 @@
+vim.cmd [[packadd popup.nvim]]
+vim.cmd [[packadd plenary.nvim]]
+vim.cmd [[packadd telescope.nvim]]
+
 vim.api.nvim_set_keymap('n', '<leader>ff', ':Telescope git_files<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fF', ':Telescope find_files<CR>', {noremap = true, silent = true})
 vim.api.nvim_set_keymap('n', '<leader>fo', ':Telescope lsp_document_symbols<CR>', {noremap = true, silent = true})
@@ -10,5 +14,5 @@ vim.api.nvim_set_keymap('n', 'gr', ':Telescope lsp_references<CR>', {noremap = t
 vim.api.nvim_set_keymap('n', '<leader>ca', ':Telescope lsp_code_actions<CR>', {noremap = true, silent = true})
 
 -- depends on `nvim-telescope/telescope-fzy-native.nvim`
-vim.cmd[[packadd telescope-fzy-native.nvim]]
+vim.cmd [[packadd telescope-fzy-native.nvim]]
 require('telescope').load_extension('fzy_native') -- superfast sorter
