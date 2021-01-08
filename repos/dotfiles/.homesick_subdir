@@ -20,8 +20,8 @@ Library/LaunchAgents
 .weechat/plugins
 .ncmpcpp
 .vim/after
-.vim/snippets
 .vim
 .config/nvim
 .iterm
 .config/bat
+.config/coc/extensions

@@ -12,6 +12,8 @@
 # * Creation Date - Nov 24 2020
 # * *******************************************/
 
+export TERM='xterm'
+
 ## Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then
 	print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
@@ -87,10 +89,12 @@ echo -ne '\e[5 q'
 preexec() { echo -ne '\e[5 q' ;}
 
 # Preferred editor for local and remote sessions
-export EDITOR="$HOME/bin/nvim/bin/nvim"
+# export EDITOR="$HOME/bin/nvim/bin/nvim"
+export EDITOR="/usr/local/bin/vim"
 
 # Use nvim as manpager `:h Man`
-export MANPAGER="$HOME/bin/nvim/bin/nvim +Man!"
+# export MANPAGER="$HOME/bin/nvim/bin/nvim +Man!"
+export MANPAGER="/usr/local/bin/vim +Man!"
 
 # Function to kill all running processes using a specific port
 function killport() {

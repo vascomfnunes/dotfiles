@@ -14,6 +14,7 @@ alias c='clear'
 # alias w3m='W3M_IMG2SIXEL=/Users/vasco.nunes/bin/libsixel/converters/img2sixel /Users/vasco.nunes/bin/w3m -sixel -o display_image=1'
 alias vim='$EDITOR'
 alias e="$EDITOR"
+alias nvim='$HOME/bin/nvim/bin/nvim'
 alias tmux='tmux -2'
 alias vimdiff='$EDITOR -d'
 alias firefox="open -a '/Applications/Firefox Developer Edition.app'"

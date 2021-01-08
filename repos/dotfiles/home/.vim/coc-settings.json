@@ -1,0 +1,23 @@
+{
+  "explorer.quitOnOpen": true,
+  "explorer.toggle": true,
+  "explorer.width": 30,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.file.showHiddenFiles": true,
+  "explorer.keyMappings.global": {
+    "<cr>": ["expandable?", "expand", "open"],
+    "v": "open:vsplit",
+    "s": "open:split"
+  },
+  "snippets.userSnippetsDirectory": "~/.vim/snippets",
+  "solargraph.diagnostics": true,
+  "solargraph.formatting": true,
+  "scss.lint.zeroUnits": "warning",
+  "scss.lint.emptyRules": "warning",
+  "scss.lint.duplicateProperties": "warning",
+  "highlight.document.enable": false,
+  "yank.highlight.duration": 300,
+  "session.saveOnVimLeave": false,
+  "session.directory": "~/.vim/sessions/"
+}

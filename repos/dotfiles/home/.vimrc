@@ -1,11 +1,10 @@
-" /*********************************************
-" * Description - VIM configuration
-" * Author - Vasco Nunes <contact@vasco.dev>
-" * Creation Date - Dec 13 2020
-" ********************************************/
+" File: .vimrc
+" Author: Vasco Nunes <contact@vasco.dev>
+" Description: Vim 8.x configuration file
+" Last Modified: January 09, 2021
 
-" Bootstrap vim-plug automatically
-
+" Plugins {{{
+" Download and install Plug if not installed
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -13,73 +12,54 @@ if empty(glob('~/.vim/autoload/plug.vim'))
 endif
 
 call plug#begin('~/.vim/plugged')
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } | Plug 'junegunn/fzf.vim'
-Plug 'prabirshrestha/vim-lsp' | Plug 'prabirshrestha/async.vim' | Plug 'mattn/vim-lsp-settings'
-Plug 'prabirshrestha/asyncomplete.vim' | Plug 'prabirshrestha/asyncomplete-lsp.vim'
-Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-Plug 'prabirshrestha/asyncomplete-ultisnips.vim'
-Plug 'thomasfaingnaert/vim-lsp-snippets' | Plug 'thomasfaingnaert/vim-lsp-ultisnips'
-Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
-Plug 'DataWraith/auto_mkdir'
-Plug 'osyo-manga/vim-over'
-Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
-Plug 'voldikss/vim-floaterm', { 'on': 'FloatermNew' }
-Plug 'cohama/lexima.vim'
-Plug 'rhysd/committia.vim'
-Plug 'itchyny/lightline.vim'
-Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
-Plug 'editorconfig/editorconfig-vim'
-Plug 'ludovicchabant/vim-gutentags'
-Plug 'easymotion/vim-easymotion'
-Plug 'tpope/vim-fugitive'
-Plug 'AndrewRadev/splitjoin.vim' " adds gS and gJ to syntactically aware split/join constructs
-Plug 'romainl/vim-cool'
-Plug 'tpope/vim-rails', { 'for': 'ruby' }
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
-Plug 'airblade/vim-gitgutter'
-Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
-Plug 'vimwiki/vimwiki'
-Plug 'sunaku/vim-dasht'
-Plug 'mattn/webapi-vim', { 'for': 'Ruby' }
-Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
-Plug 'AndrewRadev/tagalong.vim', { 'for': 'html' }
-Plug 'machakann/vim-highlightedyank'
-Plug 'ap/vim-css-color', { 'for': ['css', 'scss', 'html'] }
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
-Plug 'mzlogin/vim-markdown-toc', { 'for': 'markdown' }
-Plug 'maxmellon/vim-jsx-pretty', { 'for': 'javascriptreact' }
-Plug 'sheerun/html5.vim', { 'for': [ 'html', 'eruby' ]}
-Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
-Plug 'keith/rspec.vim', { 'for': 'ruby' }
-Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
-Plug 'posva/vim-vue', { 'for': 'vue' }
-Plug 'noprompt/vim-yardoc', { 'for': 'ruby' }
-Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
-Plug 'stephpy/vim-yaml', { 'for': 'yaml' }
-Plug 'vascomfnunes/vimbox'
-Plug 'tweekmonster/startuptime.vim'
 
 if exists('$TMUX')
+  " Only use these if Tmux is running
   Plug 'christoomey/vim-tmux-navigator'
   Plug 'RyanMillerC/better-vim-tmux-resizer'
   Plug 'tmux-plugins/vim-tmux-focus-events'
 endif
+
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-fugitive'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'itchyny/lightline.vim'
+Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
+Plug 'DataWraith/auto_mkdir'
+Plug 'rhysd/committia.vim'
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
+Plug 'cohama/lexima.vim'
+Plug 'mattn/emmet-vim', { 'for': ['html', 'eruby', 'css', 'scss'] }
+Plug 'dbeniamine/cheat.sh-vim', { 'on': 'Cheat' }
+Plug 'editorconfig/editorconfig-vim'
+Plug 'easymotion/vim-easymotion'
+Plug 'AndrewRadev/splitjoin.vim' " adds gS and gJ to syntactically aware split/join constructs
+Plug 'romainl/vim-cool'
+Plug 'tpope/vim-rails', { 'for': 'ruby' }
+Plug 'tpope/vim-surround'
+Plug 'kkoomen/vim-doge', { 'do': { -> doge#install()  }  }
+Plug 'tpope/vim-dispatch', { 'on': [ 'Dispatch', 'Dispatch!' ] }
+Plug 'tpope/vim-ragtag', { 'for': 'eruby' }
+Plug 'vim-test/vim-test', { 'on': [ 'TestNearest', 'TestFile', 'TestSuite' ] }
+Plug 'vimwiki/vimwiki'
+Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
+Plug 'mattn/webapi-vim', { 'for': 'Ruby' }
+Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
+Plug 'honza/vim-snippets'
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }}
+Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+Plug 'junegunn/vim-peekaboo'
+Plug 'vascomfnunes/vimbox'
+Plug 'tweekmonster/startuptime.vim'
+
 call plug#end()
+" }}}
 
+" Settings {{{
 let g:mapleader=" "
-
-let g:python3_host_prog = "/usr/local/bin/python3"
-let g:python_host_prog = "/usr/local/bin/python"
-
-" Automatically install missing plugins on startup
-autocmd VimEnter *
-      \  if len(filter(values(g:plugs), '!isdirectory(v:val.dir)'))
-      \|   PlugInstall --sync | q
-      \| endif
 
 set number
 set relativenumber
@@ -94,7 +74,7 @@ set hidden
 set nojoinspaces
 set path+=**
 set updatetime=100
-set signcolumn=yes
+set signcolumn=number
 set nowildignorecase
 set wildignore+=.git,.hg,.svn,*.pyc,*.spl,*.o,*.out,*~,%*
 set wildignore+=*.jpg,*.jpeg,*.png,*.gif,*.zip,**/tmp/**,*.DS_Store
@@ -116,6 +96,7 @@ set undolevels=100
 set ignorecase
 set synmaxcol=500
 set diffopt+=iwhite
+set shortmess+=c
 set lazyredraw
 set smartcase
 set foldlevelstart=99
@@ -124,35 +105,23 @@ set completeopt=menu,menuone,noselect,noinsert,preview
 set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
-
-let loaded_matchparen = 1
-
-" Visual shifting (does not exit Visual mode)
-vnoremap < <gv
-vnoremap > >gv
-
-" AUTOCOMMANDS {{{
-" Source the vimrc file after saving it
-if has("autocmd")
-  autocmd bufwritepost .vimrc source $MYVIMRC
-endif
 " }}}
 
-" FUNCTIONS {{{
-function FileHeading()
-  let s:line=line(".")
-  call setline(s:line,"/*********************************************")
-  call append(s:line,"* Description - ")
-  call append(s:line+1,"* Author - Vasco Nunes <contact@vasco.dev>")
-  call append(s:line+2,"* Creation Date - ".strftime("%b %d %Y"))
-  call append(s:line+4,"********************************************/")
-  unlet s:line
-endfunction
+" Theme {{{
+set termguicolors
+colorscheme vimbox
+set background=dark
 
-nmap <leader>h <Esc>mz:execute FileHeading()<cr>
+" Change cursor between normal/insert mode
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+" }}}
+
+" Autocommands {{{
+" Source the vimrc file after saving it
+autocmd bufwritepost .vimrc source $MYVIMRC
 
 " Delete all whitespaces on save
-
 fun! TrimWhitespace()
   let l:save = winsaveview()
   keeppatterns %s/\s\+$//e
@@ -160,85 +129,47 @@ fun! TrimWhitespace()
 endfun
 
 autocmd BufWritePre * :call TrimWhitespace()
+
+" Update lightline when Coc status changes
+autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 " }}}
 
-" MAPPINGS {{{
-" Open quickfix
-nnoremap <leader>q :copen<cr>
+" General remaps {{{
 " Windows splits
 nnoremap <silent> vv <c-w>v
 nnoremap <silent> ss <c-w>s
+
 " Clear highlights
 nnoremap <leader>n :noh<cr>
+
 " Tabs
 nnoremap <leader><tab>n :tabnew<cr>
 nnoremap <leader><tab>q :tabclose<cr>
 nnoremap <tab> :tabnext<cr>
 nnoremap <S-tab> :tabprevious<cr>
+
 " Sessions
-nnoremap <leader>ss :mks ~/.vim/sessions/
-nnoremap <leader>sl :source ~/.vim/sessions/
-" Jump to tag for css and scss classes
-nnoremap <leader>] :tag /<c-r>=expand('<cword>')<cr><cr>
-" Easy motion
-nmap f <Plug>(easymotion-s2)
+nnoremap <silent><leader>ss :CocCommand session.save<cr>
+nnoremap <silent><leader>sl :CocList sessions<cr>
+
+" Explorer
+nnoremap <leader>e :CocCommand explorer<cr>
+
+" Fuzzy finder
+nnoremap <leader>ff :CocList files<cr>
+nnoremap <leader>fF :CocList gfiles<cr>
+nnoremap <leader>fs :CocList symbols<cr>
+nnoremap <leader>fo :CocList outline<cr>
+nnoremap <leader>fd :CocList diagnostics --current-buf<cr>
+nnoremap <leader>fb :CocList buffers<cr>
+nnoremap <leader>ft :CocList tags<cr>
+nnoremap <leader>fg :CocList grep<space>
+nnoremap <leader>fG :CocList grep <C-R><C-W><cr>
 " }}}
 
-" PLUGINS {{{
-" Over
-nnoremap <leader>sr :OverCommandLine<CR>
-
-" Lightline
-let g:lightline = {}
-let g:lightline = {
-      \ 'colorscheme': 'wombat',
-      \ 'active': {
-      \   'left': [ [ 'mode', 'paste'  ],
-      \             [ 'gitbranch', 'readonly', 'filename', 'modified'  ] ]
-      \ },
-      \ 'component_function': {
-      \   'gitbranch': 'FugitiveHead'
-      \ },
-      \ }
-
-let g:lightline.colorscheme = 'jellybeans'
-
-" Tmux
-if exists('$TMUX')
-  let g:tmux_navigator_no_mappings = 1
-  let g:tmux_resizer_no_mappings = 1
-
-  nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
-  nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
-  nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
-  nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
-  nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
-  nnoremap <silent> <s-j> :TmuxResizeDown<cr>
-  nnoremap <silent> <s-k> :TmuxResizeUp<cr>
-  nnoremap <silent> <s-l> :TmuxResizeRight<cr>
-endif
-
-" Fzf
-let g:fzf_buffers_jump = 1
-
-nnoremap <leader>ff :GFiles<cr>
-nnoremap <leader>fF :Files<cr>
-nnoremap <leader>fo :BTags<cr>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>fs :Snippets<cr>
-nnoremap <leader>fh :Helptags<cr>
-nnoremap <leader>ft :Tags<cr>
-nnoremap <leader>fg :Rg<cr>
-nnoremap <silent> <Leader>fG :Rg <C-R><C-W><CR>
-
-" UltiSnippets
-let g:UltiSnipsExpandTrigger="<tab>"
-let g:UltiSnipsJumpForwardTrigger="<tab>"
-let g:UltiSnipsJumpBackwardTrigger="<s-tab>"
-
-" Highlight Yank
-let g:highlightedyank_highlight_duration = 300
-highlight HighlightedyankRegion ctermbg=red ctermfg=black
+" Plugin settings {{{
+" Easy motion
+nmap f <Plug>(easymotion-s2)
 
 " Tests
 let test#strategy = "vimterminal"
@@ -307,23 +238,8 @@ let vim_markdown_preview_temp_file=1
 
 nnoremap <leader>mp :MarkdownPreview<CR>
 
-" Floaterm
-nnoremap e :FloatermNew vifm<CR>
-
-" Fugitive
-autocmd BufReadPost fugitive://* set bufhidden=delete
-nnoremap <leader>gs :Gstatus<cr>
-nnoremap <leader>gc :Gcommit<cr>
-nnoremap <leader>gb :Gblame<cr>
-nnoremap <leader>gp :Gpull<cr>
-nnoremap <leader>gl :Glog<cr>
-nnoremap <leader>gf :Gfetch<cr>
-nnoremap <leader>gP :Gpush<cr>
-nnoremap <leader>gd :Gdiffsplit!<cr>
-
 " Dasht
-nnoremap <Leader>k :Dasht<Space>
-nnoremap <silent> <Leader>K :call Dasht(dasht#cursor_search_terms())<Return>
+nnoremap <leader>K :Dasht <C-R><C-W><cr>
 let g:dasht_results_window = 'vnew'
 
 let g:dasht_filetype_docsets = {}
@@ -341,145 +257,185 @@ let g:dasht_filetype_docsets['bash'] = ['Bash']
 " Editor config
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
-" Guttentags
-let g:gutentags_add_default_project_roots = 0
-let g:gutentags_project_root = ['package.json', '.git']
-let g:gutentags_cache_dir = expand('~/.cache/vim/ctags/')
-let g:gutentags_generate_on_new = 1
-let g:gutentags_generate_on_missing = 1
-let g:gutentags_generate_on_write = 1
-let g:gutentags_generate_on_empty_buffer = 0
-let g:gutentags_ctags_extra_args = [
-      \ '--tag-relative=yes',
-      \ '--fields=+ailmnS',
-      \
-      \ ]
+" Fugitive
+autocmd BufReadPost fugitive://* set bufhidden=delete
+nnoremap <leader>gs :Gstatus<cr>
+nnoremap <leader>gc :Gcommit<cr>
+nnoremap <leader>gb :Gblame<cr>
+nnoremap <leader>gp :Gpull<cr>
+nnoremap <leader>gl :Glog<cr>
+nnoremap <leader>gf :Gfetch<cr>
+nnoremap <leader>gP :Gpush<cr>
+nnoremap <leader>gd :Gdiffsplit!<cr>
 
-let g:gutentags_ctags_exclude = [
-      \ '*.git', '*.svg', '*.hg',
-      \ '*/tests/*',
-      \ 'build',
-      \ 'dist',
-      \ '*sites/*/files/*',
-      \ 'bin',
-      \ 'node_modules',
-      \ 'cache',
-      \ 'compiled',
-      \ 'docs',
-      \ 'example',
-      \ 'bundle',
-      \ 'vendor',
-      \ '*.md',
-      \ '*-lock.json',
-      \ '*.lock',
-      \ '*bundle*.js',
-      \ '*build*.js',
-      \ '.*rc*',
-      \ '*.json',
-      \ '*.min.*',
-      \ '*.map',
-      \ '*.bak',
-      \ '*.zip',
-      \ '*.pyc',
-      \ '*.class',
-      \ '*.sln',
-      \ '*.Master',
-      \ '*.csproj',
-      \ '*.tmp',
-      \ '*.csproj.user',
-      \ '*.cache',
-      \ '*.pdb',
-      \ 'tags*',
-      \ 'cscope.*',
-      \ '*.exe', '*.dll',
-      \ '*.mp3', '*.ogg', '*.flac',
-      \ '*.swp', '*.swo',
-      \ '*.bmp', '*.gif', '*.ico', '*.jpg', '*.png',
-      \ '*.rar', '*.zip', '*.tar', '*.tar.gz', '*.tar.xz', '*.tar.bz2',
-      \ '*.pdf', '*.doc', '*.docx', '*.ppt', '*.pptx',
-      \ ]
+" Lightline
+let g:lightline = {}
+let g:lightline = {
+      \ 'colorscheme': 'wombat',
+      \ 'active': {
+      \   'left': [ [ 'mode', 'paste'  ],
+      \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename', 'modified'  ] ]
+      \ },
+      \ 'component_function': {
+      \   'gitbranch': 'FugitiveHead',
+	    \   'cocstatus': 'coc#status'
+      \ },
+      \ }
 
-" Lsp
-let g:lsp_diagnostics_enabled = 1
-let g:lsp_signs_enabled = 1
-let g:lsp_diagnostics_echo_cursor = 1
-let g:lsp_highlights_enabled = 0
-let g:lsp_textprop_enabled = 0
-let g:lsp_signs_error = {'text': ''}
-let g:lsp_signs_warning = {'text': ''}
-let g:lsp_signs_hint = {'text': '!'}
-let g:lsp_signs_information = {'text': '🛈'}
+let g:lightline.colorscheme = 'seoul256'
 
-function! s:on_lsp_buffer_enabled() abort
-  nmap <buffer> gd <plug>(lsp-definition)
-  nmap <buffer> gr <plug>(lsp-references)
-  nmap <buffer> gi <plug>(lsp-implementation)
-  nmap <buffer> <leader>cr <plug>(lsp-rename)
-  nmap <buffer> [g <Plug>(lsp-previous-diagnostic)
-  nmap <buffer> ]g <Plug>(lsp-next-diagnostic)
-  nmap <buffer> gk <plug>(lsp-hover)
+" Tmux
+if exists('$TMUX')
+  let g:tmux_navigator_no_mappings = 1
+  let g:tmux_resizer_no_mappings = 1
 
-  let g:asyncomplete_auto_completeopt = 0
-  let g:asyncomplete_auto_popup = 1
-  set completeopt=menuone,noinsert,noselect,preview
-  inoremap <expr> <cr>    pumvisible() ? asyncomplete#close_popup() : "\<cr>"
-  autocmd! CompleteDone * if pumvisible() == 0 | pclose | endif
-  call asyncomplete#register_source(asyncomplete#sources#ultisnips#get_source_options({
-        \ 'name': 'ultisnips',
-        \ 'allowlist': ['*'],
-        \ 'completor': function('asyncomplete#sources#ultisnips#completor'),
-        \
-        \ }))
+  nnoremap <silent> <c-h> :TmuxNavigateLeft<cr>
+  nnoremap <silent> <c-j> :TmuxNavigateDown<cr>
+  nnoremap <silent> <c-k> :TmuxNavigateUp<cr>
+  nnoremap <silent> <c-l> :TmuxNavigateRight<cr>
+  nnoremap <silent> <s-h> :TmuxResizeLeft<cr>
+  nnoremap <silent> <s-j> :TmuxResizeDown<cr>
+  nnoremap <silent> <s-k> :TmuxResizeUp<cr>
+  nnoremap <silent> <s-l> :TmuxResizeRight<cr>
+endif
+
+" Coc {{{
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-augroup lsp_install
-  au!
-  " call s:on_lsp_buffer_enabled only for languages that has the server registered.
-  autocmd User lsp_buffer_enabled call s:on_lsp_buffer_enabled()
-augroup END
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-@> coc#refresh()
+
+" Make <CR> auto-select the first completion item and notify coc.nvim to
+" format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+      \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+
+" Use `[g` and `]g` to navigate diagnostics
+" Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
+nmap <silent> [g <Plug>(coc-diagnostic-prev)
+nmap <silent> ]g <Plug>(coc-diagnostic-next)
+
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window.
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  elseif (coc#rpc#ready())
+    call CocActionAsync('doHover')
+  else
+    execute '!' . &keywordprg . " " . expand('<cword>')
+  endif
+endfunction
+
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Symbol renaming.
+nmap <leader>cr <Plug>(coc-rename)
+
+" Formatting code.
+nmap <leader>cf :call CocAction('format')<cr>
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder.
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap keys for applying codeAction to the current buffer.
+nmap <leader>ca  <Plug>(coc-codeaction)
+
+" Apply AutoFix to problem on the current line.
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Remap <C-n> and <C-p> for scroll float windows/popups.
+nnoremap <silent><nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+nnoremap <silent><nowait><expr> <C-p> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+inoremap <silent><nowait><expr> <C-n> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(1)\<cr>" : "\<Right>"
+inoremap <silent><nowait><expr> <C-p> coc#float#has_scroll() ? "\<c-r>=coc#float#scroll(0)\<cr>" : "\<Left>"
+vnoremap <silent><nowait><expr> <C-n> coc#float#has_scroll() ? coc#float#scroll(1) : "\<C-f>"
+vnoremap <silent><nowait><expr> <C-p> coc#float#has_scroll() ? coc#float#scroll(0) : "\<C-b>"
+
+" Add `:Format` command to format current buffer.
+command! -nargs=0 Format :call CocAction('format')
+
+" Add `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organizeImport')
+
+" Mappings for CoCList
+" Show all diagnostics.
+nnoremap <silent><nowait> <space>cd  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>ce  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>cc  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>co  :<C-u>CocList outline<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>cs  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+
+nnoremap <leader>cp :call CocAction('pickColor')<cr>
+
+let g:coc_global_extensions = [
+      \ 'coc-solargraph', 'coc-css', 'coc-yaml',
+      \ 'coc-markdownlint', 'coc-explorer', 'coc-lists',
+      \ 'coc-html', 'coc-yank', 'coc-vimlsp', 'coc-snippets',
+      \ 'coc-eslint', 'coc-prettier', 'coc-emmet', 'coc-git', 'coc-highlight'
+      \ ]
+" }}}
 
 " Goyo
-function! s:goyo_enter()
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status off
-    silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
-  endif
-  set noshowmode
-  set noshowcmd
-  set scrolloff=999
-endfunction
-
-function! s:goyo_leave()
-  if executable('tmux') && strlen($TMUX)
-    silent !tmux set status on
-    silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
-  endif
-  set showmode
-  set showcmd
-  set scrolloff=5
-endfunction
-
-autocmd! User GoyoEnter nested call <SID>goyo_enter()
-autocmd! User GoyoLeave nested call <SID>goyo_leave()
-
 nnoremap <leader>z :Goyo<cr>
 
 " Lexima
 let g:lexima_enable_endwise_rules = 1
 
-" Doge
-let g:doge_enable_mappings = 0
-nnoremap <leader>cd :DogeGenerate<CR>
+" Visual shifting (does not exit Visual mode)
+vnoremap < <gv
+vnoremap > >gv
 
-" Gitgutter
-let g:gitgutter_set_sign_backgrounds = 1
+" Snippets
+" Use <C-l> for trigger snippet expand.
+imap <C-l> <Plug>(coc-snippets-expand)
+
+" Use <C-j> for select text for visual placeholder of snippet.
+vmap <C-j> <Plug>(coc-snippets-select)
+
+" Use <C-j> for both expand and jump (make expand higher priority.)
+imap <C-j> <Plug>(coc-snippets-expand-jump)
+
+" Cheat
+let g:CheatSheetStayInOrigBuf = 0
+nnoremap <leader>cc :Cheat<space>
 " }}}
 
-" THEME {{{
-set background=dark
-colorscheme vimbox
-
-" Change cursor between normal/insert mode
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
-"}}}
+let g:coc_fzf_preview = ''
+let g:coc_fzf_opts = []

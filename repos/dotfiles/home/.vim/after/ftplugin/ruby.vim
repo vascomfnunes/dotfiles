@@ -36,9 +36,5 @@ nmap <leader>rgs :RubygemsSearch<space>
 " Edit alternate files on Rails
 nnoremap <leader>a :A<CR>
 
-" Linting and fixing
-nmap <leader>cl :Dispatch rubocop %<cr>
-nmap <leader>cf :LspDocumentFormat<cr>
-
 " Insert debug breakpoint
 nnoremap <leader>cb obinding.pry<esc>==:w<cr>
