@@ -434,6 +434,3 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 let g:CheatSheetStayInOrigBuf = 0
 nnoremap <leader>cc :Cheat<space>
 " }}}
-
-let g:coc_fzf_preview = ''
-let g:coc_fzf_opts = []
