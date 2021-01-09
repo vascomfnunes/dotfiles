@@ -28,8 +28,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
 Plug 'DataWraith/auto_mkdir'
 Plug 'rhysd/committia.vim'
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'junegunn/goyo.vim', { 'on': 'Goyo' }
 Plug 'cohama/lexima.vim'
 Plug 'mattn/emmet-vim', { 'for': ['html', 'eruby', 'css', 'scss'] }
