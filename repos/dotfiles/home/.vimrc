@@ -447,6 +447,10 @@ nnoremap <leader>cc :Cheat<space>
 " Fzf
 let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
 
+" Emmet
+let g:user_emmet_install_global = 0
+autocmd FileType html,css,scss EmmetInstall
+
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
 \ { 'fg':      ['fg', 'Normal'],
