@@ -24,8 +24,6 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
 Plug 'DataWraith/auto_mkdir'
@@ -149,25 +147,15 @@ nnoremap <silent><leader>sl :CocList sessions<cr>
 nnoremap <leader>e :CocCommand explorer<cr>
 
 " Fuzzy finder
-" nnoremap <leader>ff :CocList files<cr>
-" nnoremap <leader>fF :CocList gfiles<cr>
-" nnoremap <leader>fs :CocList symbols<cr>
-" nnoremap <leader>fo :CocList outline<cr>
-" nnoremap <leader>fd :CocList diagnostics --current-buf<cr>
-" nnoremap <leader>fb :CocList buffers<cr>
-" nnoremap <leader>ft :CocList tags<cr>
-" nnoremap <leader>fg :CocList grep<space>
-" nnoremap <leader>fG :CocList grep <C-R><C-W><cr>
-nnoremap <leader>ff :Files<cr>
-nnoremap <leader>fF :GFiles<cr>
+nnoremap <leader>ff :CocList files<cr>
+nnoremap <leader>fF :CocList gfiles<cr>
 nnoremap <leader>fs :CocList symbols<cr>
 nnoremap <leader>fo :CocList outline<cr>
 nnoremap <leader>fd :CocList diagnostics --current-buf<cr>
-nnoremap <leader>fb :Buffers<cr>
-nnoremap <leader>ft :Tags<cr>
-nnoremap <leader>fh :Helptags<cr>
-nnoremap <leader>fg :Rg<space>
-nnoremap <leader>fG :Rg <C-R><C-W><cr>
+nnoremap <leader>fb :CocList buffers<cr>
+nnoremap <leader>ft :CocList tags<cr>
+nnoremap <leader>fg :CocList grep<space>
+nnoremap <leader>fG :CocList grep <C-R><C-W><cr>
 " }}}
 
 " Plugin settings {{{
@@ -444,28 +432,9 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 let g:CheatSheetStayInOrigBuf = 0
 nnoremap <leader>cc :Cheat<space>
 
-" Fzf
-let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
-
 " Emmet
 let g:user_emmet_install_global = 0
 autocmd FileType html,css,scss EmmetInstall
-
-" Customize fzf colors to match your color scheme
-let g:fzf_colors =
-\ { 'fg':      ['fg', 'Normal'],
-  \ 'bg':      ['bg', 'Normal'],
-  \ 'hl':      ['fg', 'Comment'],
-  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
-  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
-  \ 'hl+':     ['fg', 'Statement'],
-  \ 'info':    ['fg', 'PreProc'],
-  \ 'border':  ['fg', 'Ignore'],
-  \ 'prompt':  ['fg', 'Conditional'],
-  \ 'pointer': ['fg', 'Exception'],
-  \ 'marker':  ['fg', 'Keyword'],
-  \ 'spinner': ['fg', 'Label'],
-  \ 'header':  ['fg', 'Comment'] }
 " }}}
 
 " Theme {{{
