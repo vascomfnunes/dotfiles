@@ -82,15 +82,13 @@ local servers = {
         },
         scsslint = {
           command = 'scss-lint',
-          args = {'-f', 'Default'},
-          isStderr = true,
-          debounce = 100,
-          offsetLine = 0,
-          offsetColumn = 0,
-          sourceName = 'scss-lint',
-          securities = {undefined = 'hint'},
+          rootPatterns = {'.git'},
+          args = {'-f', 'Default', '%file'},
           formatLines = 1,
-          formatPattern = {'^[:\\d]$', {line = 2, column = -1, message = 2}}
+          debounce = 100,
+          formatPattern = {"^[^:]+:(\\d+) (.*)$", {line = 1, message = 2}},
+          sourceName = 'scss-lint',
+          securities = {[2] = 'error', [1] = 'warning'}
         },
         markdownlint = {
           command = 'markdownlint',
@@ -119,7 +117,7 @@ local servers = {
       formatters = {
         prettierEslint = {command = 'prettier-eslint', args = {'--stdin'}, rootPatterns = {'.git'}},
         prettier = {command = 'prettier', args = {'--stdin-filepath', '%filename'}},
-        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true}
+        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true},
       },
       formatFiletypes = {
         javascript = 'prettierEslint',
