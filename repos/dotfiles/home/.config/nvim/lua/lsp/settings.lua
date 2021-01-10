@@ -14,7 +14,7 @@ local on_attach = function(client)
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
   remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
   remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {noremap = true, silent = true})
-    vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
   vim.g.completion_enable_snippet = "UltiSnips"
 end
@@ -28,7 +28,10 @@ local servers = {
   jsonls = {},
   tsserver = {},
   html = {},
-  cssls = {cmd = {'css-languageserver', '--stdio'}},
+  cssls = {
+    cmd = {'css-languageserver', '--stdio'},
+    capabilities = {textDocument = {completion = {completionItem = {snippetSupport = true}}}}
+  },
   diagnosticls = {
     filetypes = {
       'javascript',
@@ -118,7 +121,7 @@ local servers = {
     },
     settings = {
       Lua = {
-        runtime = { version = "LuaJIT", path = vim.split(package.path, ';'), },
+        runtime = {version = "LuaJIT", path = vim.split(package.path, ';')},
         diagnostics = {enable = true, globals = {"vim", "use"}},
         workspace = {library = {['$VIMRUNTIME/lua'] = true}}
       }
