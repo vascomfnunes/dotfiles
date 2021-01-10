@@ -149,6 +149,7 @@ local function load()
         vim.g.dasht_filetype_docsets['markdown'] = {'Markdown'}
         vim.g.dasht_filetype_docsets['docker'] = {'Docker', 'Man_Pages'}
         vim.g.dasht_filetype_docsets['bash'] = {'Bash'}
+        vim.g.dasht_filetype_docsets['lua'] = {'Lua'}
       end
     }
     use {

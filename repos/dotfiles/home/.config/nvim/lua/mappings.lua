@@ -61,8 +61,7 @@ local function tags()
 end
 
 local function dasht()
-  remap('n', '<leader>k', ':Dasht<space>', {silent = true})
-  remap('n', '<leader>K', "':Dasht '.expand('<cword>').'<cr>'", {expr = true, silent = true})
+  remap('n', '<leader>K', ':Dasht <C-R><C-W><cr>', {silent = true})
 end
 
 local function markdown()
