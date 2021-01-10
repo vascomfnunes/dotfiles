@@ -1,7 +1,7 @@
 " File: .vimrc
 " Author: Vasco Nunes <contact@vasco.dev>
 " Description: Vim 8.x configuration file
-" Last Modified: January 09, 2021
+" Last Modified: January 10, 2021
 
 " Plugins {{{
 " Download and install Plug if not installed

@@ -1,5 +1,11 @@
 {
   "coc.preferences.bracketEnterImprove": true,
+  "diagnostic.warningSign": " ",
+  "diagnostic.errorSign": " ",
+  "diagnostic.infoSign": " ",
+  "diagnostic.hintSign": "ﯦ ",
+  "diagnostic.showUnused": true,
+  "diagnostic.virtualText": true,
   "explorer.quitOnOpen": true,
   "explorer.toggle": true,
   "explorer.width": 40,
