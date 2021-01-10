@@ -44,10 +44,25 @@ local servers = {
       'yaml',
       'lua',
       'vue',
-      'markdown'
+      'markdown',
+      'sh'
     },
     init_options = {
       linters = {
+        shellcheck = {
+          sourceName = "shellcheck",
+          command = "shellcheck",
+          debounce = 100,
+          args = {"--format=gcc", "-"},
+          offsetLine = 0,
+          offsetColumn = 0,
+          formatLines = 1,
+          formatPattern = {
+            "^[^:]+:(\\d+):(\\d+):\\s+([^:]+):\\s+(.*)$",
+            {line = 1, column = 2, message = 4, security = 3}
+          },
+          securities = {error = "error", warning = "warning"}
+        },
         eslint = {
           command = 'eslint',
           rootPatterns = {'.git'},
@@ -64,6 +79,18 @@ local servers = {
             security = 'severity'
           },
           securities = {[2] = 'error', [1] = 'warning'}
+        },
+        scsslint = {
+          command = 'scss-lint',
+          args = {'-f', 'Default'},
+          isStderr = true,
+          debounce = 100,
+          offsetLine = 0,
+          offsetColumn = 0,
+          sourceName = 'scss-lint',
+          securities = {undefined = 'hint'},
+          formatLines = 1,
+          formatPattern = {'^[:\\d]$', {line = 2, column = -1, message = 2}}
         },
         markdownlint = {
           command = 'markdownlint',
@@ -85,7 +112,9 @@ local servers = {
         typescript = 'eslint',
         typescriptreact = 'eslint',
         markdown = 'markdownlint',
-        vue = 'prettier'
+        vue = 'prettier',
+        scss = 'scsslint',
+        sh = "shellcheck"
       },
       formatters = {
         prettierEslint = {command = 'prettier-eslint', args = {'--stdin'}, rootPatterns = {'.git'}},
