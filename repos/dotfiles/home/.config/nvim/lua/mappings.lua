@@ -84,6 +84,10 @@ local function vimwiki()
   remap('n', '<leader>ws', ':VimwikiUISelect<cr>', {silent = true})
 end
 
+local function vcoolor()
+  remap('n', '<leader>cc', ':VCoolor<cr>', {silent = true})
+end
+
 function M.init()
   vim()
   sessions()
@@ -99,6 +103,7 @@ function M.init()
   easy_motion()
   vimwiki()
   goyo()
+  vcoolor()
 end
 
 return M

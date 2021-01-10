@@ -73,6 +73,7 @@ local function load()
     use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
     use 'easymotion/vim-easymotion'
     use 'AndrewRadev/splitjoin.vim'
+    use {'KabbAmine/vCoolor.vim', opt = true, cmd= 'VCoolor'}
     use 'romainl/vim-cool'
     use {'tpope/vim-fugitive', opt = true}
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
