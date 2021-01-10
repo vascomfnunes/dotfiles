@@ -66,8 +66,8 @@ cleanup-on-quit yes
 color background         color247 default
 color listnormal         color241 default
 color listnormal_unread  color248 default
-color listfocus          color4 color11
-color listfocus_unread   color4 color11
+color listfocus          black yellow
+color listfocus_unread   black yellow
 color info               color11   color236
 color article            color8   default
 
