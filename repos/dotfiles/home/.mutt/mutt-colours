@@ -2,7 +2,7 @@
 #                             Index
 #===============================================================================
 
-color indicator cyan color11
+color indicator black yellow
 # color normal default default
 color status blue default
 
