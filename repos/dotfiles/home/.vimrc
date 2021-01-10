@@ -416,7 +416,7 @@ let g:coc_global_extensions = [
       \ 'coc-markdownlint', 'coc-explorer', 'coc-lists',
       \ 'coc-html', 'coc-yank', 'coc-vimlsp', 'coc-snippets',
       \ 'coc-eslint', 'coc-prettier', 'coc-emmet', 'coc-git', 'coc-highlight',
-      \ 'coc-stylelintplus'
+      \ 'coc-stylelintplus', 'coc-sh'
       \ ]
 " }}}
 

@@ -1,4 +1,5 @@
 {
+  "coc.preferences.bracketEnterImprove": true,
   "explorer.quitOnOpen": true,
   "explorer.toggle": true,
   "explorer.width": 40,
