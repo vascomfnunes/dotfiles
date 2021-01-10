@@ -1,7 +1,9 @@
 {
   "explorer.quitOnOpen": true,
   "explorer.toggle": true,
-  "explorer.width": 30,
+  "explorer.width": 40,
+  "explorer.git.showIgnored": true,
+  "explorer.file.column.indent.indentLine": false,
   "explorer.icon.enableNerdfont": true,
   "explorer.previewAction.onHover": false,
   "explorer.file.showHiddenFiles": true,
@@ -19,5 +21,9 @@
   "highlight.document.enable": false,
   "yank.highlight.duration": 300,
   "session.saveOnVimLeave": false,
-  "session.directory": "~/.vim/sessions/"
+  "session.directory": "~/.vim/sessions/",
+  "css.validate": false,
+  "less.validate": false,
+  "scss.validate": false,
+  "wxss.validate": false
 }

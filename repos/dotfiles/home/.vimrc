@@ -24,6 +24,8 @@ Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
 Plug 'DataWraith/auto_mkdir'
@@ -61,7 +63,6 @@ let g:mapleader=" "
 
 set number
 set relativenumber
-set ttyfast
 set showcmd
 set clipboard=unnamed
 set tabstop=2
@@ -103,16 +104,7 @@ set completeopt=menu,menuone,noselect,noinsert,preview
 set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
-" }}}
-
-" Theme {{{
 set termguicolors
-colorscheme vimbox
-set background=dark
-
-" Change cursor between normal/insert mode
-let &t_SI = "\e[6 q"
-let &t_EI = "\e[2 q"
 " }}}
 
 " Autocommands {{{
@@ -133,6 +125,9 @@ autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
 " }}}
 
 " General remaps {{{
+" Disable annoying visual mode
+nnoremap Q <nop>
+
 " Windows splits
 nnoremap <silent> vv <c-w>v
 nnoremap <silent> ss <c-w>s
@@ -154,15 +149,25 @@ nnoremap <silent><leader>sl :CocList sessions<cr>
 nnoremap <leader>e :CocCommand explorer<cr>
 
 " Fuzzy finder
-nnoremap <leader>ff :CocList files<cr>
-nnoremap <leader>fF :CocList gfiles<cr>
+" nnoremap <leader>ff :CocList files<cr>
+" nnoremap <leader>fF :CocList gfiles<cr>
+" nnoremap <leader>fs :CocList symbols<cr>
+" nnoremap <leader>fo :CocList outline<cr>
+" nnoremap <leader>fd :CocList diagnostics --current-buf<cr>
+" nnoremap <leader>fb :CocList buffers<cr>
+" nnoremap <leader>ft :CocList tags<cr>
+" nnoremap <leader>fg :CocList grep<space>
+" nnoremap <leader>fG :CocList grep <C-R><C-W><cr>
+nnoremap <leader>ff :Files<cr>
+nnoremap <leader>fF :GFiles<cr>
 nnoremap <leader>fs :CocList symbols<cr>
 nnoremap <leader>fo :CocList outline<cr>
 nnoremap <leader>fd :CocList diagnostics --current-buf<cr>
-nnoremap <leader>fb :CocList buffers<cr>
-nnoremap <leader>ft :CocList tags<cr>
-nnoremap <leader>fg :CocList grep<space>
-nnoremap <leader>fG :CocList grep <C-R><C-W><cr>
+nnoremap <leader>fb :Buffers<cr>
+nnoremap <leader>ft :Tags<cr>
+nnoremap <leader>fh :Helptags<cr>
+nnoremap <leader>fg :Rg<space>
+nnoremap <leader>fG :Rg <C-R><C-W><cr>
 " }}}
 
 " Plugin settings {{{
@@ -313,7 +318,11 @@ function! s:check_back_space() abort
 endfunction
 
 " Use <c-space> to trigger completion.
-inoremap <silent><expr> <c-@> coc#refresh()
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
 
 " Make <CR> auto-select the first completion item and notify coc.nvim to
 " format on enter, <cr> could be remapped by other vim plugin
@@ -403,10 +412,11 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <leader>cp :call CocAction('pickColor')<cr>
 
 let g:coc_global_extensions = [
-      \ 'coc-solargraph', 'coc-css', 'coc-yaml',
+      \ 'coc-solargraph', 'coc-css', 'coc-yaml', 'coc-json',
       \ 'coc-markdownlint', 'coc-explorer', 'coc-lists',
       \ 'coc-html', 'coc-yank', 'coc-vimlsp', 'coc-snippets',
-      \ 'coc-eslint', 'coc-prettier', 'coc-emmet', 'coc-git', 'coc-highlight'
+      \ 'coc-eslint', 'coc-prettier', 'coc-emmet', 'coc-git', 'coc-highlight',
+      \ 'coc-stylelintplus'
       \ ]
 " }}}
 
@@ -433,4 +443,35 @@ imap <C-j> <Plug>(coc-snippets-expand-jump)
 " Cheat
 let g:CheatSheetStayInOrigBuf = 0
 nnoremap <leader>cc :Cheat<space>
+
+" Fzf
+let $FZF_DEFAULT_COMMAND = 'rg --files --hidden --follow --glob "!.git/*"'
+
+" Customize fzf colors to match your color scheme
+let g:fzf_colors =
+\ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+" }}}
+
+" Theme {{{
+set background=dark
+colorscheme vimbox
+
+" Change cursor between normal/insert mode
+let &t_SI = "\e[6 q"
+let &t_EI = "\e[2 q"
+
+nnoremap <leader>bd :set background=dark<cr>
+nnoremap <leader>bl :set background=light<cr>
 " }}}
