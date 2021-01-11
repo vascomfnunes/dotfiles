@@ -57,9 +57,9 @@ set mail_check_stats
 set mail_check_stats_interval = 10
 
 # put dashes between message and signature
-set sig_dashes=yes
+set sig_dashes = yes
 
-set wrap=80
+set wrap = 80
 set mail_check = 0
 set markers = no
 set mark_old = no
@@ -90,9 +90,9 @@ set include			# include message in replies
 alternative_order text/plain text/enriched text/html
 
 set pgp_use_gpg_agent        = yes
-#set pgp_autosign             = yes
+set pgp_autosign             = yes
 set pgp_verify_sig           = yes
-set pgp_sign_as              = 0xBC9C8902
+set pgp_sign_as              = 0x90D2E0B5D6212D1E2EBC0EA4B8C3CCF5B2D6CDD9
 set pgp_replyencrypt         = yes
 set pgp_timeout              = 3600
 set pgp_good_sign            = "^gpg: Signed by "
