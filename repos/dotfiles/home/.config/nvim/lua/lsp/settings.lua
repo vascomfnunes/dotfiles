@@ -117,7 +117,7 @@ local servers = {
       formatters = {
         prettierEslint = {command = 'prettier-eslint', args = {'--stdin'}, rootPatterns = {'.git'}},
         prettier = {command = 'prettier', args = {'--stdin-filepath', '%filename'}},
-        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true},
+        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true}
       },
       formatFiletypes = {
         javascript = 'prettierEslint',
