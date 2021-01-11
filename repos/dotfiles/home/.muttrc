@@ -16,8 +16,7 @@ macro index 2 '<sync-mailbox><enter-command>source ~/.mutt/accounts/vasco@vnws.u
 macro index 3 '<sync-mailbox><enter-command>source ~/.mutt/accounts/contact@vasco.dev/account<enter><change-folder>!<enter>'
 
 # Set editor
-# set editor='vim + -c "setlocal wrapmargin=0 textwidth=80 wrap nocp linebreak spell digraph nolist norelativenumber nonumber"  -c "?^$"'
-set editor='vim'
+set editor='$EDITOR'
 
 # Set mailcap
 set mailcap_path = "~/.mailcap"
