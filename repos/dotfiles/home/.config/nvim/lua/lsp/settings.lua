@@ -83,7 +83,7 @@ local servers = {
         scsslint = {
           command = 'scss-lint',
           rootPatterns = {'.git'},
-          args = {'-f', 'Default', '%file'},
+          args = {'-f', 'Default', '%file', '-c', '/Users/vasco.nunes/.scss-lint.yml'},
           formatLines = 1,
           debounce = 100,
           formatPattern = {"^[^:]+:(\\d+) (.*)$", {line = 1, message = 2}},
