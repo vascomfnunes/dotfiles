@@ -18,6 +18,9 @@ macro index 3 '<sync-mailbox><enter-command>source ~/.mutt/accounts/contact@vasc
 # Set editor
 set editor='$EDITOR'
 
+# Set notmuch database location
+set nm_default_url = "notmuch:///Users/vasco.nunes/.mail"
+
 # Set mailcap
 set mailcap_path = "~/.mailcap"
 
@@ -25,7 +28,7 @@ auto_view text/html
 
 set sig_on_top = yes
 
-set sidebar_width	 = 35
+set sidebar_width	 = 15
 set sidebar_visible	 = yes
 set sidebar_sort_method  = unsorted
 set sidebar_divider_char = │
@@ -83,10 +86,6 @@ alternative_order text/plain text/enriched text/html
 
 bind index c noop
 bind pager c noop
-
-# use Ctrl-b to list your URLs; press enter to select/open it in the default browser
-macro index cb |urlviewn 'call urlview to extract URLs out of a message'
-macro pager cb |urlviewn 'call urlview to extract URLs out of a message'
 
 set reply_to
 set smileys="(>From )|(:[-^]?[][)(><}{|/DP])"
@@ -226,77 +225,5 @@ macro index,pager s "<save-message>?<toggle-mailboxes>" "move a message to a mai
 
 # default
 source $HOME/.mutt/accounts/vasco.m.nunes@me.com/account
-
-# Example NeoMutt config file for the notmuch feature.
-
-# --------------------------------------------------------------------------
-# VARIABLES – shown with their default values
-# --------------------------------------------------------------------------
-# This variable specifies notmuch query limit.
-set nm_db_limit = 999
-# This variable specifies the default Notmuch database in format:
-# notmuch://<absolute path>
-set nm_default_url = "notmuch:///Users/vasco.nunes/.mail"
-# The messages tagged with these tags are excluded and not loaded
-# from notmuch DB to NeoMutt unless specified explicitly.
-set nm_exclude_tags = ""
-# This option specifies timeout for Notmuch database. Default is 5 seconds.
-set nm_open_timeout = 5
-# This variable specifies notmuch query type, supported types: 'threads' and
-# 'messages'.
-set nm_query_type = messages
-# Add messages stored to the NeoMutt record (see $record in the NeoMutt docs)
-# also to notmuch DB. If you reply to an email then the new email inherits
-# tags from the original email.
-set nm_record = no
-# Tags that should be removed or added to the to the messages stored in the NeoMutt record.
-# example:
-#   set record = "~/sent-mails"
-#   set nm_record = yes
-#   set nm_record_tags = "-inbox,archive,me"
-set nm_record_tags = ""
-# This variable specifies notmuch tag which is used for unread messages.
-set nm_unread_tag = unread
-# This variable allows you to customize the file browser display for virtual
-# folders to your personal taste.
-# %C   current folder number
-# %f   folder name (description)
-# %m   number of messages in the mailbox *
-# %n   number of unread messages in the mailbox *
-# %N   N if mailbox has new mail, blank otherwise
-# %>X  right justify the rest of the string and pad with character ``X''
-# %|X  pad to the end of the line with character ``X''
-# %*X  soft-fill with character ``X'' as pad
-set vfolder_format = "%6n(%6N) %f"
-# When set, NeoMutt will use the first virtual mailbox (see virtual-mailboxes)
-# as a spoolfile.
-set virtual_spoolfile = no
-# setup time window preferences
-# first setup the duration, and then the time unit of that duration
-# when set to 0 (the default) the search window feature is disabled
-set nm_query_window_duration=2
-set nm_query_window_timebase="week" # or "hour", "day", "week", "month", "year"
-# --------------------------------------------------------------------------
-# FUNCTIONS – shown with an example mapping
-# --------------------------------------------------------------------------
-# open a different virtual folder
-bind index,pager X change-vfolder
-# read entire thread of the current message
-bind index,pager + entire-thread
-# generate virtual folder from query
-bind index,pager S vfolder-from-query
-# generate virtual folder from query with time window
-bind index < vfolder-window-backward
-bind index > vfolder-window-forward
-# toggle between mailboxes and virtual mailboxes
-# bind index,pager ??? sidebar-toggle-virtual
-# --------------------------------------------------------------------------
-# COMMANDS – shown with an example
-# --------------------------------------------------------------------------
-# virtual-mailboxes description notmuch-URL { description notmuch-URL ...}
-# virtual-mailboxes "Climbing" "notmuch://?query=climbing"
-# unvirtual-mailboxes { * | mailbox ...}
-#
-# --------------------------------------------------------------------------
 
 # vim: set ts=8 sw=4 tw=0 ft=muttrc :
