@@ -69,11 +69,18 @@ auto_view text/html
 auto_view application/pgp-encrypted
 alternative_order text/plain text/enriched text/html
 
+bind index c noop
+bind pager c noop
+
+# use Ctrl-b to list your URLs; press enter to select/open it in the default browser
+macro index cb |urlviewn 'call urlview to extract URLs out of a message'
+macro pager cb |urlviewn 'call urlview to extract URLs out of a message'
+
 set reply_to
 set smileys="(>From )|(:[-^]?[][)(><}{|/DP])"
 set date_format="%d/%m/%y %I:%M%p"
 set index_format="%4C %Z %{%d %b} %-35.35L (%4l) %s"
-set sort = 'reverse-date'
+set sort = reverse-date
 set rfc2047_parameters = yes
 set sleep_time = 0		# Pause 0 seconds for informational messages
 set markers = no		# Disables the `+` displayed at line wraps
@@ -150,10 +157,10 @@ bind pager <down> next-line
 bind pager <up> previous-line
 
 # Threads
-set sort="threads"
-set strict_threads="yes"
-set sort_browser="reverse-date"
-set sort_aux="reverse-last-date-received"
+set sort = threads
+set strict_threads = yes
+set sort_browser = reverse-date
+set sort_aux = reverse-last-date-received
 unset collapse_unread
 
 # ----------------------------------------------------------------------------
