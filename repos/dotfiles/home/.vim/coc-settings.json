@@ -1,5 +1,8 @@
 {
   "coc.preferences.bracketEnterImprove": true,
+  "prettier.singleQuote": true,
+  "prettier.eslintIntegration": true,
+  "prettier.disableLanguages": [""],
   "diagnostic.warningSign": " ",
   "diagnostic.errorSign": " ",
   "diagnostic.infoSign": " ",
@@ -32,5 +35,51 @@
   "css.validate": false,
   "less.validate": false,
   "scss.validate": false,
-  "wxss.validate": false
+  "wxss.validate": false,
+  "diagnostic-languageserver.linters": {
+    "scsslint": {
+      "command": "scss-lint",
+      "args": [
+        "-f",
+        "Default",
+        "%file",
+        "-c",
+        "/Users/vasco.nunes/.scss-lint.yml"
+      ],
+      "formatLines": 1,
+      "debounce": 100,
+      "formatPattern": [
+        "^[^:]+:(\\d+) (.*)$",
+        {
+          "line": 1,
+          "message": 2
+        }
+      ],
+      "sourceName": "scss-lint"
+    }
+  },
+  "diagnostic-languageserver.formatters": {
+    "scsslint": {
+      "command": "scss-lint",
+      "args": [
+        "-f",
+        "Default",
+        "-o",
+        "%file",
+        "%file",
+        "-c",
+        "/Users/vasco.nunes/.scss-lint.yml"
+      ],
+      "rootPatterns": [],
+      "isStdout": false,
+      "isStderr": false,
+      "doesWriteToFile": true
+    }
+  },
+  "diagnostic-languageserver.filetypes": {
+    "scss": "scsslint"
+  },
+  "diagnostic-languageserver.formatFiletypes": {
+    "scss": "scsslint"
+  }
 }
