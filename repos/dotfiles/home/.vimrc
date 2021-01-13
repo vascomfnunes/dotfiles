@@ -8,7 +8,10 @@
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
         \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall | source $MYVIMRC
+  augroup plug
+    autocmd!
+    autocmd VimEnter * PlugInstall | source $MYVIMRC
+  augroup END
 endif
 
 call plug#begin('~/.vim/plugged')
@@ -107,7 +110,10 @@ set termguicolors
 
 " Autocommands {{{
 " Source the vimrc file after saving it
-autocmd bufwritepost .vimrc source $MYVIMRC
+augroup vim
+  autocmd!
+  autocmd bufwritepost .vimrc source $MYVIMRC
+augroup END
 
 " Delete all whitespaces on save
 fun! TrimWhitespace()
@@ -116,10 +122,16 @@ fun! TrimWhitespace()
   call winrestview(l:save)
 endfun
 
-autocmd BufWritePre * :call TrimWhitespace()
+augroup whitespace
+  autocmd!
+  autocmd BufWritePre * :call TrimWhitespace()
+augroup END
 
 " Update lightline when Coc status changes
-autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+augroup lightline
+  autocmd!
+  autocmd User CocStatusChange,CocDiagnosticChange call lightline#update()
+augroup END
 " }}}
 
 " General remaps {{{
@@ -249,7 +261,11 @@ let g:dasht_filetype_docsets['bash'] = ['Bash']
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " Fugitive
-autocmd BufReadPost fugitive://* set bufhidden=delete
+augroup fugitive
+  autocmd!
+  autocmd BufReadPost fugitive://* set bufhidden=delete
+augroup END
+
 nnoremap <leader>gs :Gstatus<cr>
 nnoremap <leader>gc :Gcommit<cr>
 nnoremap <leader>gb :Gblame<cr>
@@ -342,7 +358,10 @@ function! s:show_documentation()
 endfunction
 
 " Highlight the symbol and its references when holding the cursor.
-autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup coc
+  autocmd!
+  autocmd CursorHold * silent call CocActionAsync('highlight')
+augroup END
 
 " Symbol renaming.
 nmap <leader>rr <Plug>(coc-rename)
@@ -350,7 +369,7 @@ nmap <leader>rr <Plug>(coc-rename)
 " Formatting code.
 nmap <leader>cf :call CocAction('format')<cr>
 
-augroup mygroup
+augroup coc
   autocmd!
   " Setup formatexpr specified filetype(s).
   autocmd FileType typescript,json setl formatexpr=CocAction('formatSelected')
@@ -436,7 +455,10 @@ nnoremap <leader>cc :Cheat<space>
 
 " Emmet
 let g:user_emmet_install_global = 0
-autocmd FileType html,css,scss EmmetInstall
+augroup emmet
+  autocmd!
+  autocmd FileType html,css,scss EmmetInstall
+augroup END
 " }}}
 
 " Theme {{{
