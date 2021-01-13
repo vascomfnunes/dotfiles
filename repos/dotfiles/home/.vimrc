@@ -345,7 +345,7 @@ endfunction
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 " Symbol renaming.
-nmap <leader>cr <Plug>(coc-rename)
+nmap <leader>rr <Plug>(coc-rename)
 
 " Formatting code.
 nmap <leader>cf :call CocAction('format')<cr>
@@ -396,6 +396,8 @@ nnoremap <silent><nowait> <space>cs  :<C-u>CocList -I symbols<cr>
 nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
+" Find and jump to references
+nnoremap <silent><nowait> <space>cr  :<C-u>call CocAction('jumpReferences')<CR>
 
 nnoremap <leader>cp :call CocAction('pickColor')<cr>
 
