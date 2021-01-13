@@ -27,3 +27,8 @@ Tmux
 Coc
 imap
 plugin
+metadata
+url
+channels
+api
+main
