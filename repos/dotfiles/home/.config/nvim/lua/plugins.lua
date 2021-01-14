@@ -40,7 +40,7 @@ local function load()
     use {
       'SirVer/ultisnips',
       config = function()
-        vim.g.UltiSnipsExpandTrigger = '<c-s>'
+        vim.g.UltiSnipsExpandTrigger = '<c-l>'
       end
     }
     use 'honza/vim-snippets'
@@ -184,7 +184,7 @@ local function load()
     }
     use 'tmux-plugins/vim-tmux-focus-events'
     use 'norcalli/nvim-colorizer.lua'
-    use {'sheerun/html4.vim', ft = {'html', 'eruby'} }
+    use {'sheerun/html5.vim', ft = {'html', 'eruby'} }
     use {'pangloss/vim-javascript', ft = 'javascript'}
     use {'martinda/Jenkinsfile-vim-syntax', ft = 'jenkins'}
     use {'elzr/vim-json', ft = 'json'}
