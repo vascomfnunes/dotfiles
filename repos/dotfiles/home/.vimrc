@@ -50,9 +50,23 @@ Plug 'sunaku/vim-dasht', { 'on': 'Dasht' }
 Plug 'mattn/webapi-vim', { 'for': 'Ruby' }
 Plug 'alexbel/vim-rubygems', { 'for': 'ruby' }
 Plug 'honza/vim-snippets'
-Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vim-plug']}
-Plug 'dhruvasagar/vim-table-mode', { 'for': 'markdown' }
+Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': ['markdown', 'vimwiki', 'vim-plug']}
+Plug 'dhruvasagar/vim-table-mode', { 'for': ['markdown', 'vimwiki'] }
 Plug 'junegunn/vim-peekaboo'
+Plug 'sheerun/html5.vim', { 'for': ['html', 'eruby'] }
+Plug 'pangloss/vim-javascript', { 'for': 'javascript' }
+Plug 'martinda/Jenkinsfile-vim-syntax', { 'for': 'jenkins' }
+Plug 'elzr/vim-json', { 'for': 'json' }
+Plug 'MaxMEllon/vim-jsx-pretty', { 'for': 'javascriptreact' }
+Plug 'plasticboy/vim-markdown', { 'for': ['markdown', 'vimwiki'] }
+Plug 'keith/rspec.vim', { 'for': 'rspec.ruby' }
+Plug 'vim-ruby/vim-ruby', { 'for': 'ruby' }
+Plug 'cakebaker/scss-syntax.vim', { 'for': 'scss' }
+Plug 'arzg/vim-sh', { 'for': 'sh' }
+Plug 'ericpruitt/tmux.vim', { 'for': 'tmux' }
+Plug 'HerringtonDarkholme/yats.vim', { 'for': 'typescript' }
+Plug 'posva/vim-vue', { 'for': 'vue' }
+Plug 'noprompt/vim-yardoc', { 'for': 'ruby' }
 Plug 'vascomfnunes/vimbox'
 Plug 'tweekmonster/startuptime.vim'
 
@@ -93,7 +107,6 @@ set nowrap
 set undodir=~/.vim/undo
 set undofile
 set undolevels=100
-set ignorecase
 set synmaxcol=500
 set diffopt+=iwhite
 set shortmess+=c
@@ -102,7 +115,6 @@ set smartcase
 set foldlevelstart=99
 set cmdheight=2
 set completeopt=menu,menuone,noselect,noinsert,preview
-set omnifunc=lsp#complete
 set dictionary=/usr/share/dict/words
 set thesaurus=~/.vim/thesaurii.txt
 set termguicolors
@@ -459,6 +471,10 @@ augroup emmet
   autocmd!
   autocmd FileType html,css,scss EmmetInstall
 augroup END
+
+" Filetypes syntax
+let g:javascript_plugin_jsdoc = 1
+let g:vim_json_syntax_conceal = 0
 " }}}
 
 " Theme {{{

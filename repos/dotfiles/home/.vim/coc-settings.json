@@ -56,30 +56,54 @@
         }
       ],
       "sourceName": "scss-lint"
+    },
+    "erblint": {
+      "command": "erblint",
+      "args": ["%file"],
+      "formatLines": 1,
+      "debounce": 100,
+      "formatPattern": [
+        "^\\n(.*)\\nIn file:.*:(\\d)+$",
+        {
+          "line": 2,
+          "message": 1
+        }
+      ],
+      "sourceName": "erblint"
+    },
+    "languagetool": {
+      "command": "languagetool",
+      "debounce": 200,
+      "args": ["-"],
+      "offsetLine": 0,
+      "offsetColumn": 0,
+      "sourceName": "languagetool",
+      "formatLines": 2,
+      "formatPattern": [
+        "^\\d+?\\.\\)\\s+Line\\s+(\\d+),\\s+column\\s+(\\d+),\\s+([^\\n]+)\nMessage:\\s+(.*)$",
+        {
+          "line": 1,
+          "column": 2,
+          "message": [4, 3]
+        }
+      ]
     }
   },
   "diagnostic-languageserver.formatters": {
-    "scsslint": {
-      "command": "scss-lint",
-      "args": [
-        "-f",
-        "Default",
-        "-o",
-        "%file",
-        "%file",
-        "-c",
-        "/Users/vasco.nunes/.scss-lint.yml"
-      ],
+    "erblint": {
+      "command": "erblint",
+      "args": ["%file", "-a"],
       "rootPatterns": [],
-      "isStdout": false,
+      "isStdout": true,
       "isStderr": false,
-      "doesWriteToFile": true
+      "doesWriteToFile": false
     }
   },
   "diagnostic-languageserver.filetypes": {
+    "eruby": "erblint",
+    "markdown": "languagetool",
+    "vimwiki": "languagetool",
     "scss": "scsslint"
   },
-  "diagnostic-languageserver.formatFiletypes": {
-    "scss": "scsslint"
-  }
+  "diagnostic-languageserver.formatFiletypes": {}
 }
