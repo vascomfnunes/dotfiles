@@ -1,14 +1,14 @@
 [theme]
 ;<element>            = <foreground>  <background>  <attributes>
-Normal                = ansi_8      ansi_236        normal
+Normal                = ansi_8      ansi_235        normal
 Selected              = ansi_248    ansi_237        normal
 SelectedCursor        = default     -               reverse
 
-TitleBar              = ansi_3      ansi_236        bold
+TitleBar              = ansi_3      ansi_235        bold
 OrderBar              = ansi_1      -               bold
 OrderBarHighlight     = ansi_3      -               bold+reverse
-HelpBar               = ansi_1      ansi_236        bold
-Prompt                = ansi_15     ansi_236        bold
+HelpBar               = ansi_1      ansi_235        bold
+Prompt                = ansi_15     ansi_235        bold
 NoticeInfo            = -           -               bold
 NoticeLoading         = -           -               bold
 NoticeError           = -           -               bold

@@ -1,5 +1,4 @@
-set formatoptions-=o
-setlocal foldmethod=syntax
+setlocal formatoptions-=o
 setlocal iskeyword+=_,@-@
 
 let g:ruby_operators = 1

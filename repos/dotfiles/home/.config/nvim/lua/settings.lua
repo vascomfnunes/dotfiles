@@ -143,6 +143,8 @@ local function set_general_options()
   o.undolevels = 100
   o.updatetime = 100
   o.wrap = false
+  o.foldmethod = 'expr'
+  o.foldexpr = 'nvim_treesitter#foldexpr()'
   wo.number = true
   wo.relativenumber = true
 end
