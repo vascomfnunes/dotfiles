@@ -163,7 +163,7 @@ local servers = {
       },
       formatFiletypes = {
         javascript = 'eslint',
-        javascriptreact = 'prettierEslint',
+        javascriptreact = 'eslint',
         json = 'prettier',
         typescript = 'prettierEslint',
         typescriptreact = 'prettierEslint',

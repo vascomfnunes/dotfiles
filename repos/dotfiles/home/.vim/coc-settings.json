@@ -71,6 +71,20 @@
       ],
       "sourceName": "erblint"
     },
+    "reek": {
+      "command": "reek",
+      "args": ["-s", "%file"],
+      "sourceName": "reek",
+      "formatLines": 1,
+      "formatPattern": ["^[^:]+:(\\d+): (.*)$", { "line": 1, "message": 2 }]
+    },
+    "rails_best_practices": {
+      "command": "rails_best_practices",
+      "args": ["--without-color", "%file"],
+      "formatLines": 2,
+      "formatPattern": ["^[^*rb](\\d) - (.*)$", { "line": 1, "message": 2 }],
+      "sourceName": "rails_best_practices"
+    },
     "languagetool": {
       "command": "languagetool",
       "debounce": 200,
@@ -103,7 +117,8 @@
     "eruby": "erblint",
     "markdown": "languagetool",
     "vimwiki": "languagetool",
-    "scss": "scsslint"
+    "scss": "scsslint",
+    "ruby": ["reek", "rails_best_practices"]
   },
   "diagnostic-languageserver.formatFiletypes": {
     "eruby": "erblint"
