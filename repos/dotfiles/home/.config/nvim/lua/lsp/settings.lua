@@ -43,6 +43,7 @@ local servers = {
       'html',
       'yaml',
       'lua',
+      'ruby',
       'eruby',
       'vue',
       'markdown',
@@ -92,6 +93,14 @@ local servers = {
           sourceName = 'scss-lint',
           securities = {[2] = 'error', [1] = 'warning'}
         },
+        rails_best_practices = {
+          command = 'rails_best_practices',
+          args = {'--without-color', '%file'},
+          formatLines = 2,
+          debounce = 100,
+          formatPattern = {"^[^*rb](\\d) - (.*)$", {line = 1, message = 2}},
+          sourceName = 'rails_best_practices'
+        },
         markdownlint = {
           command = 'markdownlint',
           rootPatterns = {'.git'},
@@ -113,6 +122,14 @@ local servers = {
           formatLines = 3,
           formatPattern = {'^\\n(.*)\\nIn file:.*:(\\d)+$', {line = 2, column = -1, message = 1}}
         },
+        reek = {
+          command = 'reek',
+          debounce = 100,
+          args = {'-s', '%file'},
+          sourceName = 'reek',
+          formatLines = 1,
+          formatPattern = {'^[^:]+:(\\d+): (.*)$', {line = 1, message = 2}}
+        },
         languagetool = {
           command = 'languagetool',
           offsetLine = 0,
@@ -132,6 +149,7 @@ local servers = {
         markdown = { 'markdownlint', 'languagetool' },
         vimwiki = { 'markdownlint', 'languagetool' },
         vue = 'prettier',
+        ruby = {'reek', 'rails_best_practices'},
         scss = 'scsslint',
         sh = "shellcheck",
         eruby = "erblint"
