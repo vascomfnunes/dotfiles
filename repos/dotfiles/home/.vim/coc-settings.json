@@ -60,8 +60,8 @@
     "erblint": {
       "command": "erblint",
       "args": ["%file"],
-      "formatLines": 1,
-      "debounce": 100,
+      "formatLines": 3,
+      "debounce": 200,
       "formatPattern": [
         "^\\n(.*)\\nIn file:.*:(\\d)+$",
         {
@@ -94,9 +94,9 @@
       "command": "erblint",
       "args": ["%file", "-a"],
       "rootPatterns": [],
-      "isStdout": true,
+      "isStdout": false,
       "isStderr": false,
-      "doesWriteToFile": false
+      "doesWriteToFile": true
     }
   },
   "diagnostic-languageserver.filetypes": {
@@ -105,5 +105,7 @@
     "vimwiki": "languagetool",
     "scss": "scsslint"
   },
-  "diagnostic-languageserver.formatFiletypes": {}
+  "diagnostic-languageserver.formatFiletypes": {
+    "eruby": "erblint"
+  }
 }
