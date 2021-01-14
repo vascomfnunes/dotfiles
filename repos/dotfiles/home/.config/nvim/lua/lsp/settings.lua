@@ -43,8 +43,10 @@ local servers = {
       'html',
       'yaml',
       'lua',
+      'eruby',
       'vue',
       'markdown',
+      'vimwiki',
       'sh'
     },
     init_options = {
@@ -102,6 +104,24 @@ local servers = {
           securities = {undefined = 'hint'},
           formatLines = 1,
           formatPattern = {'^.*:(\\d+)\\s+(.*)$', {line = 1, column = -1, message = 2}}
+        },
+        erblint = {
+          command = 'erblint',
+          debounce = 200,
+          args = {'%file'},
+          sourceName = 'erblint',
+          formatLines = 3,
+          formatPattern = {'^\\n(.*)\\nIn file:.*:(\\d)+$', {line = 2, column = -1, message = 1}}
+        },
+        languagetool = {
+          command = 'languagetool',
+          offsetLine = 0,
+          offsetColumn = 0,
+          debounce = 200,
+          args = {'-'},
+          sourceName = 'languagetool',
+          formatLines = 2,
+          formatPattern = {'^\\d+?\\.\\)\\s+Line\\s+(\\d+),\\s+column\\s+(\\d+),\\s+([^\\n]+)\nMessage:\\s+(.*)$', {line = 1, column = 2, message = {4,3}}}
         }
       },
       filetypes = {
@@ -109,19 +129,21 @@ local servers = {
         javascriptreact = 'eslint',
         typescript = 'eslint',
         typescriptreact = 'eslint',
-        markdown = 'markdownlint',
+        markdown = { 'markdownlint', 'languagetool' },
+        vimwiki = { 'markdownlint', 'languagetool' },
         vue = 'prettier',
         scss = 'scsslint',
-        sh = "shellcheck"
+        sh = "shellcheck",
+        eruby = "erblint"
       },
       formatters = {
         prettierEslint = {command = 'prettier-eslint', args = {'--stdin'}, rootPatterns = {'.git'}},
         eslint = {command = 'eslint', args = {'--stdin', '--fix'}, rootPatterns = {'.git'}},
-        prettier = {command = 'prettier', args = {'--stdin-filepath', '%filename'}},
-        luaformat = {command = 'lua-format', args = {'%filename', '-i'}, doesWriteToFile = true}
+        prettier = {command = 'prettier', args = {'--stdin-filepath', '%file'}},
+        luaformat = {command = 'lua-format', args = {'%file', '-i'}, doesWriteToFile = true},
+        erblint = {command = 'erblint', args = {'%file', '-a'}, doesWriteToFile = true}
       },
       formatFiletypes = {
-        -- javascript = 'prettierEslint',
         javascript = 'eslint',
         javascriptreact = 'prettierEslint',
         json = 'prettier',
@@ -133,7 +155,8 @@ local servers = {
         html = 'prettier',
         lua = 'luaformat',
         yaml = 'prettier',
-        vue = 'prettier'
+        vue = 'prettier',
+        eruby = 'erblint'
       }
     }
   },
