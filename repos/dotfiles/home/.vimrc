@@ -98,7 +98,7 @@ set hlsearch incsearch
 set splitbelow
 set splitright
 set expandtab
-set spell
+set nospell
 set spell spelllang=en_gb
 set smartindent
 set formatoptions-=o

@@ -1,9 +1,7 @@
 setlocal autoindent formatoptions=tcroqn2 comments=n:>
 setlocal conceallevel=2
-syn spell toplevel
 syn case ignore
 syn sync linebreaks=1
-setlocal complete+=kspell
 setlocal textwidth=80
 
 " Markdown TOC

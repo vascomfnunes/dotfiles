@@ -114,6 +114,21 @@ local servers = {
           formatLines = 1,
           formatPattern = {'^.*:(\\d+)\\s+(.*)$', {line = 1, column = -1, message = 2}}
         },
+        writegood = {
+          command = 'write-good',
+          args = { '--text=%text' },
+          offsetLine = 0,
+          offsetColumn = 1,
+          sourceName = 'write-good',
+          formatLines = 1,
+          formatPattern = {'(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$',
+            {
+              line = 2,
+              column = 3,
+              message = 1
+            }
+          }
+        },
         erblint = {
           command = 'erblint',
           debounce = 200,
@@ -146,8 +161,8 @@ local servers = {
         javascriptreact = 'eslint',
         typescript = 'eslint',
         typescriptreact = 'eslint',
-        markdown = { 'markdownlint', 'languagetool' },
-        vimwiki = { 'markdownlint', 'languagetool' },
+        markdown = { 'markdownlint', 'languagetool', 'writegood' },
+        vimwiki = { 'markdownlint', 'languagetool', 'writegood' },
         vue = 'prettier',
         ruby = {'reek', 'rails_best_practices'},
         scss = 'scsslint',
