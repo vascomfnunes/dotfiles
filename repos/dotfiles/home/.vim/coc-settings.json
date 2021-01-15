@@ -1,6 +1,4 @@
 {
-  "coc.preferences.bracketEnterImprove": true,
-  "prettier.singleQuote": true,
   "prettier.eslintIntegration": true,
   "prettier.disableLanguages": [""],
   "diagnostic.warningSign": " ",
@@ -85,6 +83,23 @@
       "formatPattern": ["^[^*rb](\\d) - (.*)$", { "line": 1, "message": 2 }],
       "sourceName": "rails_best_practices"
     },
+    "write-good": {
+      "command": "write-good",
+      "debounce": 100,
+      "args": [ "--text=%text" ],
+      "offsetLine": 0,
+      "offsetColumn": 1,
+      "sourceName": "write-good",
+      "formatLines": 1,
+      "formatPattern": [
+        "(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$",
+        {
+          "line": 2,
+          "column": 3,
+          "message": 1
+        }
+      ]
+    },
     "languagetool": {
       "command": "languagetool",
       "debounce": 200,
@@ -116,7 +131,7 @@
   "diagnostic-languageserver.filetypes": {
     "eruby": "erblint",
     "markdown": "languagetool",
-    "vimwiki": "languagetool",
+    "vimwiki": ["languagetool", "write-good"],
     "scss": "scsslint",
     "ruby": ["reek", "rails_best_practices"]
   },
