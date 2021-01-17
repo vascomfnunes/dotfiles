@@ -73,12 +73,18 @@ local function load()
     use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
     use 'easymotion/vim-easymotion'
     use 'AndrewRadev/splitjoin.vim'
-    use {'KabbAmine/vCoolor.vim', opt = true, cmd= 'VCoolor'}
+    use {'KabbAmine/vCoolor.vim', opt = true, cmd = 'VCoolor'}
     use 'romainl/vim-cool'
     use {'tpope/vim-fugitive', opt = true}
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
     use 'tpope/vim-surround'
     use 'tpope/vim-commentary'
+    use {
+      'puremourning/vimspector',
+      config = function()
+        vim.g.vimspector_base_dir = '/Users/vasco.nunes/.config/nvim/vimspector'
+      end
+    }
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
     use {
@@ -184,20 +190,20 @@ local function load()
     }
     use 'tmux-plugins/vim-tmux-focus-events'
     use 'norcalli/nvim-colorizer.lua'
-    use {'sheerun/html5.vim', ft = {'html', 'eruby'} }
+    use {'sheerun/html5.vim', ft = {'html', 'eruby'}}
     use {'pangloss/vim-javascript', ft = 'javascript'}
     use {'martinda/Jenkinsfile-vim-syntax', ft = 'jenkins'}
     use {'elzr/vim-json', ft = 'json'}
-    use {'MaxMEllon/vim-jsx-pretty', ft = 'javascriptreact' }
-    use {'plasticboy/vim-markdown', ft = {'markdown', 'vimwiki'} }
-    use {'keith/rspec.vim', ft = 'rspec.ruby' }
-    use {'vim-ruby/vim-ruby', ft = 'ruby' }
-    use {'cakebaker/scss-syntax.vim', ft = 'scss' }
-    use {'arzg/vim-sh', ft = 'sh' }
-    use {'ericpruitt/tmux.vim', ft = 'tmux' }
-    use {'HerringtonDarkholme/yats.vim', ft = 'typescript' }
-    use {'posva/vim-vue', ft = 'vue' }
-    use {'noprompt/vim-yardoc', ft = 'ruby' }
+    use {'MaxMEllon/vim-jsx-pretty', ft = 'javascriptreact'}
+    use {'plasticboy/vim-markdown', ft = {'markdown', 'vimwiki'}}
+    use {'keith/rspec.vim', ft = 'rspec.ruby'}
+    use {'vim-ruby/vim-ruby', ft = 'ruby'}
+    use {'cakebaker/scss-syntax.vim', ft = 'scss'}
+    use {'arzg/vim-sh', ft = 'sh'}
+    use {'ericpruitt/tmux.vim', ft = 'tmux'}
+    use {'HerringtonDarkholme/yats.vim', ft = 'typescript'}
+    use {'posva/vim-vue', ft = 'vue'}
+    use {'noprompt/vim-yardoc', ft = 'ruby'}
     use 'vascomfnunes/vimbox'
   end)
 end

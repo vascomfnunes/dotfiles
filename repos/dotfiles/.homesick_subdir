@@ -25,3 +25,5 @@ Library/LaunchAgents
 .iterm
 .config/bat
 .config/coc/extensions
+.vim/plugged/vimspector/configurations/macos/_all
+.vim/plugged/vimspector/gadgets

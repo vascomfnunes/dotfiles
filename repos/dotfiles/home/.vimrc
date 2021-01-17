@@ -26,6 +26,7 @@ endif
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
+Plug 'puremourning/vimspector'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'itchyny/lightline.vim'
 Plug 'justinmk/vim-gtfo' " use with got in normal mode to open terminal in current dir
@@ -149,6 +150,9 @@ augroup END
 " General remaps {{{
 " Disable annoying visual mode
 nnoremap Q <nop>
+
+" Open terminal
+nnoremap <c-t> :terminal<cr>
 
 " Windows splits
 nnoremap <silent> vv <c-w>v
@@ -475,6 +479,16 @@ augroup END
 " Filetypes syntax
 let g:javascript_plugin_jsdoc = 1
 let g:vim_json_syntax_conceal = 0
+
+" Vimspector
+nmap <leader>B <Plug>VimspectorToggleBreakpoint
+nmap <leader>R <Plug>VimspectorRestart
+nmap <leader>S <Plug>VimspectorStop
+nmap <leader>H <Plug>VimspectorStepOver
+nmap <leader>I <Plug>VimspectorStepInto
+nmap <leader>O <Plug>VimspectorStepOut
+nmap <leader>C <Plug>VimspectorRunToCursor
+
 " }}}
 
 " Theme {{{

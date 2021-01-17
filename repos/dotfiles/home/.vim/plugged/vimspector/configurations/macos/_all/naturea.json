@@ -1,0 +1,18 @@
+{
+  "configurations": {
+    "rails": {
+      "adapter": "cust_vscode-ruby",
+      "configuration": {
+        "name": "Rails server",
+        "type": "Ruby",
+        "request": "launch",
+        "cwd": "/Users/vasco.nunes/code/grain_free/naturea/",
+        "program": "/Users/vasco.nunes/code/grain_free/naturea/bin/rails",
+        "useBundler": true,
+        "pathToRDebugIDE": "~/.rbenv/shims/rdebug-ide",
+        "showDebuggerOutput": true,
+        "args": ["server"]
+      }
+    }
+  }
+}
