@@ -13,6 +13,7 @@ local on_attach = function(client)
   remap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
   remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
+  remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {noremap = true, silent = true})
   remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {noremap = true, silent = true})
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
@@ -223,7 +224,7 @@ for server, config in pairs(servers) do
 end
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = true,
-  virtual_text = {spacing = 2, prefix = ' '},
+  underline = false,
+  virtual_text = {spacing = 1, prefix = ' '},
   update_in_insert = true
 })

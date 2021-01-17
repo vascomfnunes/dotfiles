@@ -27,3 +27,4 @@ Library/LaunchAgents
 .config/coc/extensions
 .vim/plugged/vimspector/configurations/macos/_all
 .vim/plugged/vimspector/gadgets
+.local/share/nvim/site/pack/packer/start/vimspector

@@ -38,6 +38,16 @@ local function tabs()
   remap('n', '<S-tab>', ':tabprevious<cr>', {silent = true})
 end
 
+local function vimspector()
+  remap('n', 'B', '<Plug>VimspectorToggleBreakpoint', {silent = true})
+  remap('n', 'R', '<Plug>VimspectorRestart', {silent = true})
+  remap('n', 'S', '<Plug>VimspectorStop', {silent = true})
+  remap('n', 'H', '<Plug>VimspectorStepHover', {silent = true})
+  remap('n', 'I', '<Plug>VimspectorStepInto', {silent = true})
+  remap('n', 'O', '<Plug>VimspectorStepOut', {silent = true})
+  remap('n', 'C', '<Plug>VimspectorRunToCursor', {silent = true})
+end
+
 local function tmux()
   remap('n', '<c-h>', ':TmuxNavigateLeft<cr>', {silent = true})
   remap('n', '<c-j>', ':TmuxNavigateDown<cr>', {silent = true})
@@ -104,6 +114,7 @@ function M.init()
   vimwiki()
   goyo()
   vcoolor()
+  vimspector()
 end
 
 return M
