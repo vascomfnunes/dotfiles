@@ -39,13 +39,13 @@ local function tabs()
 end
 
 local function vimspector()
-  remap('n', 'B', '<Plug>VimspectorToggleBreakpoint', {silent = true})
-  remap('n', 'R', '<Plug>VimspectorRestart', {silent = true})
-  remap('n', 'S', '<Plug>VimspectorStop', {silent = true})
-  remap('n', 'H', '<Plug>VimspectorStepHover', {silent = true})
-  remap('n', 'I', '<Plug>VimspectorStepInto', {silent = true})
-  remap('n', 'O', '<Plug>VimspectorStepOut', {silent = true})
-  remap('n', 'C', '<Plug>VimspectorRunToCursor', {silent = true})
+  remap('n', '<leader>dB', '<Plug>VimspectorToggleBreakpoint', {silent = true})
+  remap('n', '<leader>dR', '<Plug>VimspectorRestart', {silent = true})
+  remap('n', '<leader>dS', '<Plug>VimspectorStop', {silent = true})
+  remap('n', '<leader>dH', '<Plug>VimspectorStepHover', {silent = true})
+  remap('n', '<leader>dI', '<Plug>VimspectorStepInto', {silent = true})
+  remap('n', '<leader>dO', '<Plug>VimspectorStepOut', {silent = true})
+  remap('n', '<leader>dC', '<Plug>VimspectorRunToCursor', {silent = true})
 end
 
 local function tmux()
