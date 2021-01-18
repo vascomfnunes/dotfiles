@@ -65,6 +65,10 @@ local function tests()
   remap('n', '<leader>ts', ':TestSuite<cr>', {silent = true})
 end
 
+local function maximizer()
+  remap('n', 'zz', ':MaximizerToggle!<cr>', {silent = true})
+end
+
 local function tags()
   -- Jump to tag for css and scss classes
   remap('n', '<leader>]', ":tag /<c-r>=expand('<cword>')<cr>", {silent = true})
@@ -115,6 +119,7 @@ function M.init()
   goyo()
   vcoolor()
   vimspector()
+  maximizer()
 end
 
 return M

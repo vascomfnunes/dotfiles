@@ -22,20 +22,15 @@ local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
+    use {
+      'szw/vim-maximizer',
+      cmd = {'MaximizerToggle', 'MaximizerToggle!'},
+      config = function()
+        vim.g.maximizer_set_default_mapping = 0
+        vim.g.maximizer_set_mapping_with_bang = 0
+      end
+    }
     use 'nvim-lua/completion-nvim'
-    -- use {
-    --   'mattn/vim-gist',
-    --   opt = true,
-    --   requires = {'mattn/webapi-vim'},
-    --   cmd = 'Gist',
-    --   config = function()
-    --     vim.g.gist_clip_command = 'pbcopy'
-    --     vim.g.gist_detect_filetype = 1
-    --     vim.g.gist_open_browser_after_post = 1
-    --     vim.g.gist_show_privates = 1
-    --     vim.g.gist_post_private = 1
-    --   end
-    -- }
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
