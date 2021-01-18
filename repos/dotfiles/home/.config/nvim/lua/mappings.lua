@@ -32,8 +32,8 @@ local function splits()
 end
 
 local function tabs()
-  remap('n', '<leader><tab>n', ':tabnew<cr>', {silent = true})
-  remap('n', '<leader><tab>q', ':tabclose<cr>', {silent = true})
+  remap('n', '<leader><tab><tab>', ':tabnew<cr>', {silent = true})
+  remap('n', '<leader><tab>x', ':tabclose<cr>', {silent = true})
   remap('n', '<tab>', ':tabnext<cr>', {silent = true})
   remap('n', '<S-tab>', ':tabprevious<cr>', {silent = true})
 end
