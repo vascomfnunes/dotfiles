@@ -10,7 +10,7 @@ local on_attach = function(client)
   end
 
   completion.on_attach(client)
-  remap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
+  remap('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
   remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
   remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {noremap = true, silent = true})
