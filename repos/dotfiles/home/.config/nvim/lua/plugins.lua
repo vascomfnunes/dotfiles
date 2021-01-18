@@ -23,6 +23,20 @@ local function load()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
     use 'nvim-lua/completion-nvim'
+    -- use {
+    --   'mattn/vim-gist',
+    --   opt = true,
+    --   requires = {'mattn/webapi-vim'},
+    --   cmd = 'Gist',
+    --   config = function()
+    --     vim.g.gist_clip_command = 'pbcopy'
+    --     vim.g.gist_detect_filetype = 1
+    --     vim.g.gist_open_browser_after_post = 1
+    --     vim.g.gist_show_privates = 1
+    --     vim.g.gist_post_private = 1
+    --   end
+    -- }
+    use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = {{'nvim-telescope/telescope.nvim'}}}
