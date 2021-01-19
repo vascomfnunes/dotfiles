@@ -22,21 +22,14 @@ local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
-    use {
-      'szw/vim-maximizer',
-      cmd = {'MaximizerToggle', 'MaximizerToggle!'},
-      config = function()
-        vim.g.maximizer_set_default_mapping = 0
-        vim.g.maximizer_set_mapping_with_bang = 0
-      end
-    }
+    use {'szw/vim-maximizer', cmd = 'MaximizerToggle'}
     use 'nvim-lua/completion-nvim'
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
-    use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = {{'nvim-telescope/telescope.nvim'}}}
+    use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = 'nvim-telescope/telescope.nvim'}
     use {'tjdevries/express_line.nvim', opt = true, requires = 'nvim-lua/plenary.nvim'}
-    use {'RishabhRD/nvim-cheat.sh', requires = {'RishabhRD/popfix'}, opt = true, cmd = 'Cheat'}
+    use {'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix', opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
     use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
     use {
@@ -79,7 +72,7 @@ local function load()
         vim.g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
       end
     }
-    use {'lewis6991/gitsigns.nvim', requires = {'nvim-lua/plenary.nvim'}}
+    use {'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim'}
     use 'easymotion/vim-easymotion'
     use 'AndrewRadev/splitjoin.vim'
     use {'KabbAmine/vCoolor.vim', opt = true, cmd = 'VCoolor'}
