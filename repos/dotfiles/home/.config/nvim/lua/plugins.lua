@@ -22,7 +22,6 @@ local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
-    use {'szw/vim-maximizer', cmd = 'MaximizerToggle'}
     use 'nvim-lua/completion-nvim'
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
@@ -31,6 +30,7 @@ local function load()
     use {'tjdevries/express_line.nvim', opt = true, requires = 'nvim-lua/plenary.nvim'}
     use {'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix', opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
+    -- use {'kyazdani42/nvim-tree.lua'}
     use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
     use {
       'voldikss/vim-floaterm',
@@ -80,6 +80,7 @@ local function load()
     use {'tpope/vim-fugitive', opt = true}
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
     use 'tpope/vim-surround'
+    use {'szw/vim-maximizer', cmd = 'MaximizerToggle'}
     use 'tpope/vim-commentary'
     use {
       'puremourning/vimspector',
