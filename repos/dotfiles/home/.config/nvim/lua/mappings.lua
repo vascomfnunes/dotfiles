@@ -6,6 +6,12 @@ local function vim()
   remap('n', 'Q', '<nop>', {silent = true})
   -- Clear highlights
   remap('n', '<leader>n', ':noh<cr>', {silent = true})
+  remap('n', '<c-j>', '<c-n>', {silent = true})
+  remap('i', '<c-j>', '<c-n>', {silent = true})
+  remap('c', '<c-j>', '<c-n>', {silent = true})
+  remap('n', '<c-k>', '<c-p>', {silent = true})
+  remap('i', '<c-k>', '<c-p>', {silent = true})
+  remap('c', '<c-k>', '<c-p>', {silent = true})
 end
 
 local function sessions()
