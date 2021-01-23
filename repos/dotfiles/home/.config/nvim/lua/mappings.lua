@@ -92,18 +92,6 @@ local function easy_motion()
   remap('n', 'f', '<Plug>(easymotion-s2)', {silent = true})
 end
 
-local function vimwiki()
-  remap('n', '<leader>di', ':VimwikiDiaryIndex<cr>', {silent = true})
-  remap('n', '<leader>dn', ':VimwikiMakeDiaryNote<cr>', {silent = true})
-  remap('n', '<leader>dy', ':VimwikiMakeYesterdayDiaryNote<cr>', {silent = true})
-  remap('n', '<leader>dt', ':VimwikiMakeTomorrowDiaryNote<cr>', {silent = true})
-  remap('n', '<leader>dtt', ':r !~/bin/vimwiki_diary_template %<cr>', {silent = true})
-  remap('n', '<leader>dg', ':VimwikiDiaryGenerateLinks<cr>', {silent = true})
-  remap('n', '<leader>wd', ':VimwikiDeleteFile<cr>', {silent = true})
-  remap('n', '<leader>wr', ':VimwikiRenameFile<cr>', {silent = true})
-  remap('n', '<leader>ws', ':VimwikiUISelect<cr>', {silent = true})
-end
-
 local function vcoolor()
   remap('n', '<leader>cc', ':VCoolor<cr>', {silent = true})
 end
@@ -121,7 +109,6 @@ function M.init()
   dasht()
   markdown()
   easy_motion()
-  vimwiki()
   goyo()
   vcoolor()
   vimspector()

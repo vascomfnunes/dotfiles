@@ -90,20 +90,6 @@ local function load()
     }
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
     use {'vim-test/vim-test', opt = true, cmd = {'TestFile', 'TestSuite', 'TestNearest'}}
-    use {
-      'vimwiki/vimwiki',
-      config = function()
-        local wikis = {
-          {path = '~/vimwiki_work_md/', syntax = 'markdown', ext = '.md'},
-          {path = '~/vimwiki_personal_md/', syntax = 'markdown', ext = '.md'}
-        }
-        vim.g.vimwiki_list = wikis
-        vim.g.vimwiki_ext2syntax = {md = 'markdown', markdown = 'markdown'}
-        vim.g.vimwiki_global_ext = 0
-        vim.g.vimwiki_listsyms = '✗○◐●✓'
-        vim.g.vimwiki_folding = 'expr'
-      end
-    }
     use {'junegunn/goyo.vim', opt = true, cmd = 'Goyo'}
     use {
       'mattn/emmet-vim',
@@ -198,7 +184,7 @@ local function load()
     use {'martinda/Jenkinsfile-vim-syntax', ft = 'jenkins'}
     use {'elzr/vim-json', ft = 'json'}
     use {'MaxMEllon/vim-jsx-pretty', ft = 'javascriptreact'}
-    use {'plasticboy/vim-markdown', ft = {'markdown', 'vimwiki'}}
+    use {'plasticboy/vim-markdown', ft = 'markdown'}
     use {'keith/rspec.vim', ft = 'rspec.ruby'}
     use {'vim-ruby/vim-ruby', ft = 'ruby'}
     use {'cakebaker/scss-syntax.vim', ft = 'scss'}

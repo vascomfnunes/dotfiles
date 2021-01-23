@@ -8,7 +8,6 @@ require 'plugins.treesitter'
 require 'plugins.fugitive'
 require 'plugins.telescope'
 require 'plugins.floaterm'
--- require 'plugins.nvimtree'
 require'gitsigns'.setup()
 require'theme'.init()
 -- Colorizer should be required after the theme settings

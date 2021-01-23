@@ -1,10 +1,11 @@
-setlocal autoindent formatoptions=tcroqn2 comments=n:>
-setlocal conceallevel=2
+" setlocal conceallevel=2
 setlocal spell
-syn spell toplevel
-syn case ignore
-syn sync linebreaks=1
 setlocal textwidth=80
+" setlocal foldlevel=999
+" setlocal foldenable
+" syn spell toplevel
+" syn case ignore
+" syn sync linebreaks=1
 
 " Markdown TOC
 nnoremap <silent><Leader>mt :GenTocGitLab<CR>
