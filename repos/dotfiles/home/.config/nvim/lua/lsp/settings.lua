@@ -17,6 +17,8 @@ local on_attach = function(client)
   remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {noremap = true, silent = true})
   vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
   vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
+  vim.g.completion_trigger_character = {'.', '::'}
+  vim.g.completion_trigger_on_delete = 1
   vim.g.completion_enable_snippet = "UltiSnips"
 end
 
