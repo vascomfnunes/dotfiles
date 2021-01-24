@@ -30,7 +30,6 @@ local function load()
     use {'tjdevries/express_line.nvim', opt = true, requires = 'nvim-lua/plenary.nvim'}
     use {'RishabhRD/nvim-cheat.sh', requires = 'RishabhRD/popfix', opt = true, cmd = 'Cheat'}
     use 'junegunn/vim-peekaboo'
-    -- use {'kyazdani42/nvim-tree.lua'}
     use {'dhruvasagar/vim-table-mode', ft = {'txt', 'markdown'}}
     use {
       'voldikss/vim-floaterm',
