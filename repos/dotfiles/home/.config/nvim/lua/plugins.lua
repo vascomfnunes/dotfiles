@@ -183,7 +183,7 @@ local function load()
     use {'martinda/Jenkinsfile-vim-syntax', ft = 'jenkins'}
     use {'elzr/vim-json', ft = 'json'}
     use {'MaxMEllon/vim-jsx-pretty', ft = 'javascriptreact'}
-    use {'plasticboy/vim-markdown', ft = 'markdown'}
+    use 'tpope/vim-markdown'
     use {'keith/rspec.vim', ft = 'rspec.ruby'}
     use {'vim-ruby/vim-ruby', ft = 'ruby'}
     use {'cakebaker/scss-syntax.vim', ft = 'scss'}
