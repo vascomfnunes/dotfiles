@@ -33,3 +33,17 @@ endfunction
 " Make a new diary entry for today
 command! -nargs=* ZettelDiaryToday call ZettelDiary(strftime("%d-%m-%Y"))
 nnoremap <Leader>zd :ZettelDiaryToday<cr>
+
+" Open index
+function! ZettelEdit(filename) abort
+  let index = g:zettelkasten . a:filename
+  execute "cd " . g:zettelkasten
+  execute "edit " . index
+endfunction
+
+command! -nargs=* ZettelIndex call ZettelEdit("index.md")
+nnoremap <Leader>zi :ZettelIndex<cr>
+
+" Open inbox
+command! -nargs=* ZettelInbox call ZettelEdit("inbox.md")
+nnoremap <Leader>zI :ZettelInbox<cr>
