@@ -50,7 +50,6 @@ local servers = {
       'eruby',
       'vue',
       'markdown',
-      'vimwiki',
       'sh'
     },
     init_options = {
@@ -117,21 +116,21 @@ local servers = {
           formatLines = 1,
           formatPattern = {'^.*:(\\d+)\\s+(.*)$', {line = 1, column = -1, message = 2}}
         },
-        writegood = {
-          command = 'write-good',
-          args = { '--text=%text' },
-          offsetLine = 0,
-          offsetColumn = 1,
-          sourceName = 'write-good',
-          formatLines = 1,
-          formatPattern = {'(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$',
-            {
-              line = 2,
-              column = 3,
-              message = 1
-            }
-          }
-        },
+        -- writegood = {
+        --   command = 'write-good',
+        --   args = { '--text=%text' },
+        --   offsetLine = 0,
+        --   offsetColumn = 1,
+        --   sourceName = 'write-good',
+        --   formatLines = 1,
+        --   formatPattern = {'(.*)\\s+on\\s+line\\s+(\\d+)\\s+at\\s+column\\s+(\\d+)\\s*$',
+        --     {
+        --       line = 2,
+        --       column = 3,
+        --       message = 1
+        --     }
+        --   }
+        -- },
         erblint = {
           command = 'erblint',
           debounce = 200,
@@ -148,24 +147,23 @@ local servers = {
           formatLines = 1,
           formatPattern = {'^[^:]+:(\\d+): (.*)$', {line = 1, message = 2}}
         },
-        languagetool = {
-          command = 'languagetool',
-          offsetLine = 0,
-          offsetColumn = 0,
-          debounce = 200,
-          args = {'-'},
-          sourceName = 'languagetool',
-          formatLines = 2,
-          formatPattern = {'^\\d+?\\.\\)\\s+Line\\s+(\\d+),\\s+column\\s+(\\d+),\\s+([^\\n]+)\nMessage:\\s+(.*)$', {line = 1, column = 2, message = {4,3}}}
-        }
+        -- languagetool = {
+        --   command = 'languagetool',
+        --   offsetLine = 0,
+        --   offsetColumn = 0,
+        --   debounce = 200,
+        --   args = {'-'},
+        --   sourceName = 'languagetool',
+        --   formatLines = 2,
+        --   formatPattern = {'^\\d+?\\.\\)\\s+Line\\s+(\\d+),\\s+column\\s+(\\d+),\\s+([^\\n]+)\nMessage:\\s+(.*)$', {line = 1, column = 2, message = {4,3}}}
+        -- }
       },
       filetypes = {
         javascript = 'eslint',
         javascriptreact = 'eslint',
         typescript = 'eslint',
         typescriptreact = 'eslint',
-        markdown = { 'markdownlint', 'languagetool', 'writegood' },
-        vimwiki = { 'markdownlint', 'languagetool', 'writegood' },
+        markdown = { 'markdownlint' },
         vue = 'prettier',
         ruby = {'reek', 'rails_best_practices'},
         scss = 'scsslint',

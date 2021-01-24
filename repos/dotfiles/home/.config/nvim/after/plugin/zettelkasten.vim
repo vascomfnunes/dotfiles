@@ -1,5 +1,5 @@
 let g:zettelkasten = "/Users/vasco.nunes/zettelkasten/"
-let g:diary = "/Users/vasco.nunes/zettelkasten/diary/"
+let g:diary = "/Users/vasco.nunes/zettelkasten/journal/"
 
 " Create a new Zettel
 function! NewZettel(...) abort
@@ -11,8 +11,6 @@ function! NewZettel(...) abort
   if findfile(zettelname, ".") != zettelname
     execute "normal! i# " . toupper(join(a:000, ' '))
   endif
-
-  execute "read " . g:zettelkasten . "/assets/template.md"
 endfunction
 
 command! -nargs=* NewZettel call NewZettel(<f-args>)
@@ -26,7 +24,7 @@ function! ZettelDiary(date_str) abort
 
   if findfile(diaryname, ".") != diaryname
     execute "normal! i# " . a:date_str
-    execute "read " . g:zettelkasten . "/assets/diary_template.md"
+    execute "read " . g:zettelkasten . "/assets/journal_template.md"
   endif
 endfunction
 
