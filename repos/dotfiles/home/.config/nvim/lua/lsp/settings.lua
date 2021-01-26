@@ -1,6 +1,8 @@
 local lsp = require 'lspconfig'
 local completion = require 'completion'
 local remap = vim.api.nvim_set_keymap
+local bo = vim.bo
+local g = vim.g
 
 local on_attach = function(client)
   print("'" .. client.name .. "' language server started");
@@ -10,16 +12,17 @@ local on_attach = function(client)
   end
 
   completion.on_attach(client)
-  remap('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
-  remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {noremap = true, silent = true})
-  remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {noremap = true, silent = true})
-  remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {noremap = true, silent = true})
-  remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {noremap = true, silent = true})
-  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-  vim.g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
-  vim.g.completion_trigger_character = {'.', '::'}
-  vim.g.completion_trigger_on_delete = 1
-  vim.g.completion_enable_snippet = "UltiSnips"
+  bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
+  g.completion_trigger_character = {'.', '::'}
+  g.completion_trigger_on_delete = 1
+  g.completion_enable_snippet = "UltiSnips"
+
+  remap('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>', {})
+  remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {})
+  remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {})
+  remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {})
+  remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {})
 end
 
 local default_lsp_config = {on_attach = on_attach}
@@ -146,7 +149,7 @@ local servers = {
           sourceName = 'reek',
           formatLines = 1,
           formatPattern = {'^[^:]+:(\\d+): (.*)$', {line = 1, message = 2}}
-        },
+        }
         -- languagetool = {
         --   command = 'languagetool',
         --   offsetLine = 0,
@@ -163,7 +166,7 @@ local servers = {
         javascriptreact = 'eslint',
         typescript = 'eslint',
         typescriptreact = 'eslint',
-        markdown = { 'markdownlint' },
+        markdown = {'markdownlint'},
         vue = 'prettier',
         ruby = {'reek', 'rails_best_practices'},
         scss = 'scsslint',
