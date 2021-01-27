@@ -21,7 +21,7 @@ local on_attach = function(client)
 
   saga.init_lsp_saga()
 
-  remap('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>', {})
+  remap('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', {})
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {})
   remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {})
   remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {})
