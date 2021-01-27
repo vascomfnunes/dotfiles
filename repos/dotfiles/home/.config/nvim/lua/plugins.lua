@@ -22,7 +22,6 @@ local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
-    use 'glepnir/lspsaga.nvim'
     use 'nvim-lua/completion-nvim'
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
@@ -35,7 +34,7 @@ local function load()
     use {
       'voldikss/vim-floaterm',
       config = function()
-        vim.g.floaterm_keymap_toggle = '<c-t>'
+        vim.g.floaterm_keymap_toggle = '<c-x>'
       end
     }
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', opt = true}

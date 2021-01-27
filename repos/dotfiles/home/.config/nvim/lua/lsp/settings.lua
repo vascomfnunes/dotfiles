@@ -1,6 +1,5 @@
 local lsp = require 'lspconfig'
 local completion = require 'completion'
-local saga = require 'lspsaga'
 local remap = vim.api.nvim_set_keymap
 local bo = vim.bo
 local g = vim.g
@@ -19,20 +18,11 @@ local on_attach = function(client)
   g.completion_trigger_on_delete = 1
   g.completion_enable_snippet = "UltiSnips"
 
-  saga.init_lsp_saga()
-
   remap('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', {})
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {})
   remap('n', 'gs', '<cmd>lua vim.lsp.buf.signature_help()<CR>', {})
   remap('n', 'cd', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', {})
   remap('n', '<leader>cf', '<cmd>lua vim.lsp.buf.formatting()<CR>', {})
-
-  -- remap('n', 'gh', "<cmd>lua require'lspsaga.provider'.lsp_finder()<CR>", {noremap = true, silent = true})
-  -- remap('n', 'ga', "<cmd>lua require('lspsaga.codeaction').code_action()<CR>", {noremap = true, silent = true})
-  -- remap('n', 'gd', "<cmd>lua require('lspsaga.provider').preview_definition()<CR>", {noremap = true, silent = true})
-  -- remap('n', 'H', '<cmd>lua vim.lsp.buf.hover()<CR>', {noremap = true, silent = true})
-  remap('n', '[e', "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_prev()<CR>", {noremap = true, silent = true})
-  remap('n', ']e', "<cmd>lua require'lspsaga.diagnostic'.lsp_jump_diagnostic_next()<CR>", {noremap = true, silent = true})
 end
 
 local default_lsp_config = {on_attach = on_attach}
