@@ -1,5 +1,6 @@
 local M = {}
 local cmd = vim.cmd
+local g = vim.g
 
 local function install()
   local packer_exists = pcall(cmd, [[packadd packer.nvim]])
@@ -35,14 +36,14 @@ local function load()
     use {
       'voldikss/vim-floaterm',
       config = function()
-        vim.g.floaterm_keymap_toggle = '<c-t>'
+        g.floaterm_keymap_toggle = '<c-t>'
       end
     }
     use {'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', opt = true}
     use {
       'SirVer/ultisnips',
       config = function()
-        vim.g.UltiSnipsExpandTrigger = '<c-l>'
+        g.UltiSnipsExpandTrigger = '<c-l>'
       end
     }
     use 'honza/vim-snippets'
@@ -53,23 +54,23 @@ local function load()
       ft = 'markdown',
       run = 'cd app && yarn install',
       config = function()
-        vim.g.vim_markdown_preview_github = 1
-        vim.g.vim_markdown_preview_toggle = 1
-        vim.g.vim_markdown_preview_browser = 'Google Chrome'
-        vim.g.vim_markdown_preview_temp_file = 1
+        g.vim_markdown_preview_github = 1
+        g.vim_markdown_preview_toggle = 1
+        g.vim_markdown_preview_browser = 'Google Chrome'
+        g.vim_markdown_preview_temp_file = 1
       end
     }
     use {
       'cohama/lexima.vim',
       config = function()
-        vim.g.lexima_accept_pum_with_enter = 1
+        g.lexima_accept_pum_with_enter = 1
       end
     }
     use 'rhysd/committia.vim'
     use {
       'editorconfig/editorconfig-vim',
       config = function()
-        vim.g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
+        g.EditorConfig_exclude_patterns = {'fugitive://.*', 'scp://.*'}
       end
     }
     use {'lewis6991/gitsigns.nvim', requires = 'nvim-lua/plenary.nvim'}
@@ -85,7 +86,7 @@ local function load()
     use {
       'puremourning/vimspector',
       config = function()
-        vim.g.vimspector_base_dir = '/Users/vasco.nunes/.config/nvim/vimspector'
+        g.vimspector_base_dir = '/Users/vasco.nunes/.config/nvim/vimspector'
       end
     }
     use {'tpope/vim-ragtag', opt = true, ft = 'eruby'}
@@ -96,7 +97,7 @@ local function load()
       opt = true,
       cmd = 'EmmetInstall',
       config = function()
-        vim.g.user_emmet_install_global = 0
+        g.user_emmet_install_global = 0
       end
     }
     use {
@@ -104,9 +105,9 @@ local function load()
       opt = true,
       cmd = 'Dasht',
       config = function()
-        vim.g.dasht_results_window = 'vnew'
-        vim.g.dasht_filetypes_docsets = {}
-        vim.g.dasht_filetype_docsets['html'] = {
+        g.dasht_results_window = 'vnew'
+        g.dasht_filetypes_docsets = {}
+        g.dasht_filetype_docsets['html'] = {
           'CSS',
           'Javascript',
           'Bootstrap_4',
@@ -117,7 +118,7 @@ local function load()
           'MomentJS',
           'jQuery'
         }
-        vim.g.dasht_filetype_docsets['eruby'] = {
+        g.dasht_filetype_docsets['eruby'] = {
           'CSS',
           'Javascript',
           'Bootstrap_4',
@@ -130,10 +131,10 @@ local function load()
           'Ruby_2',
           'Ruby_on_Rails_6'
         }
-        vim.g.dasht_filetype_docsets['vim'] = {'Vim'}
-        vim.g.dasht_filetype_docsets['css'] = {'CSS'}
-        vim.g.dasht_filetype_docsets['scss'] = {'CSS', 'Sass'}
-        vim.g.dasht_filetype_docsets['javascript'] = {
+        g.dasht_filetype_docsets['vim'] = {'Vim'}
+        g.dasht_filetype_docsets['css'] = {'CSS'}
+        g.dasht_filetype_docsets['scss'] = {'CSS', 'Sass'}
+        g.dasht_filetype_docsets['javascript'] = {
           'JavasScript',
           'Mocha',
           'MomentJS',
@@ -141,11 +142,11 @@ local function load()
           'jQuery_Mobile',
           'jQuery_UI'
         }
-        vim.g.dasht_filetype_docsets['ruby'] = {'Ruby_2', 'Ruby_onRails_6', 'Ruby_Installed_Gems'}
-        vim.g.dasht_filetype_docsets['markdown'] = {'Markdown'}
-        vim.g.dasht_filetype_docsets['docker'] = {'Docker', 'Man_Pages'}
-        vim.g.dasht_filetype_docsets['bash'] = {'Bash'}
-        vim.g.dasht_filetype_docsets['lua'] = {'Lua'}
+        g.dasht_filetype_docsets['ruby'] = {'Ruby_2', 'Ruby_onRails_6', 'Ruby_Installed_Gems'}
+        g.dasht_filetype_docsets['markdown'] = {'Markdown'}
+        g.dasht_filetype_docsets['docker'] = {'Docker', 'Man_Pages'}
+        g.dasht_filetype_docsets['bash'] = {'Bash'}
+        g.dasht_filetype_docsets['lua'] = {'Lua'}
       end
     }
     use {
@@ -162,19 +163,19 @@ local function load()
         vim.cmd [[call doge#install()]]
       end,
       config = function()
-        vim.g.doge_enable_mappings = 0
+        g.doge_enable_mappings = 0
       end
     }
     use {
       'christoomey/vim-tmux-navigator',
       config = function()
-        vim.g.tmux_navigator_no_mappings = 1
+        g.tmux_navigator_no_mappings = 1
       end
     }
     use {
       'RyanMillerC/better-vim-tmux-resizer',
       config = function()
-        vim.g.tmux_resizer_no_mappings = 1
+        g.tmux_resizer_no_mappings = 1
       end
     }
     use 'tmux-plugins/vim-tmux-focus-events'
