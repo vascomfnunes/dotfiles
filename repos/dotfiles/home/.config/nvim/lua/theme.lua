@@ -1,16 +1,7 @@
 local M = {}
-local cmd = vim.cmd
 local o = vim.o
 local api = vim.api
-
-local function set_theme(theme)
-  cmd('colorscheme ' .. theme)
-end
-
-local function set_options()
-  o.termguicolors = true
-  o.background = 'dark'
-end
+local cmd = vim.cmd
 
 local function set_background_toggle_keymaps()
   api.nvim_set_keymap('n', '<leader>bd', ':set background=dark<CR>', {noremap = true, silent = true})
@@ -18,8 +9,8 @@ local function set_background_toggle_keymaps()
 end
 
 function M.init()
-  set_theme('vimbox')
-  set_options()
+  cmd('colorscheme vimbox')
+  o.termguicolors = true
   set_background_toggle_keymaps()
 end
 
