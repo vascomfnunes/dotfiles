@@ -27,6 +27,7 @@ alias diff='diff --color=auto'
 alias h='history'
 alias figlet='figlet -f cybermedium'
 alias somafm='somafm -n'
+alias twitter='twterm'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
 alias jukebox='mpsyt'
 alias youtube='youtube-viewer'
