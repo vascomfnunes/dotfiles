@@ -2329,6 +2329,10 @@ class State:
         wtxt.envelope = envelope
         bisect.insort(self.get_chat_for_envelope(envelope), wtxt)
 
+        # Terminal Sound bell
+        sys.stdout.write('\a')
+        sys.stdout.flush()
+
         return txt[1:]
 
     def print_sent_message(self, envelope):
