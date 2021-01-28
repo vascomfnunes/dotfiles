@@ -1,0 +1,2936 @@
+#!/usr/bin/env python3
+
+# pylint: disable=invalid-name, ungrouped-imports, too-many-lines, missing-docstring, line-too-long
+
+import os
+import re
+import sys
+import json
+import subprocess
+import tempfile
+import atexit
+import argparse
+import logging
+import errno
+import textwrap
+import bisect
+import shlex
+from subprocess import PIPE, Popen
+from datetime import datetime
+import base64
+import collections
+import shutil
+
+import urwid
+
+try:
+    from urwid_readline import ReadlineEdit
+    Edit = ReadlineEdit
+except ImportError:
+    Edit = urwid.Edit
+
+# #############################################################################
+# constants
+# #############################################################################
+
+DATA_FOLDER = os.getenv('XDG_DATA_HOME', os.path.expanduser('~/.local/share'))
+CFG_FOLDER = os.getenv('XDG_CONFIG_HOME', os.path.expanduser('~/.config'))
+
+SIGNALCLI_LEGACY_FOLDER = os.path.join(CFG_FOLDER, 'signal')
+SIGNALCLI_LEGACY_DATA_FOLDER = os.path.join(SIGNALCLI_LEGACY_FOLDER, 'data')
+SIGNALCLI_LEGACY_ATTACHMENT_FOLDER = os.path.join(SIGNALCLI_LEGACY_FOLDER, 'attachments')
+
+SIGNALCLI_FOLDER = os.path.join(DATA_FOLDER, 'signal-cli')
+SIGNALCLI_DATA_FOLDER = os.path.join(SIGNALCLI_FOLDER, 'data')
+SIGNALCLI_ATTACHMENT_FOLDER = os.path.join(SIGNALCLI_FOLDER, 'attachments')
+
+SCLI_DATA_FOLDER = os.path.join(DATA_FOLDER, 'scli')
+SCLI_HISTORY_FILE = os.path.join(SCLI_DATA_FOLDER, 'history')
+SCLI_CFG_FILE = os.path.join(CFG_FOLDER, 'sclirc')
+SCLI_LOG_FILE = os.path.join(SCLI_DATA_FOLDER, 'log')
+
+# #############################################################################
+# coloring stuff
+# #############################################################################
+
+# TODO: make customizable
+
+PALETTE = [
+    ('normal', '', ''),
+    ('box_normal', '', ''),
+    ('box_focused', 'dark blue', ''),
+    ('bold', 'bold', ''),
+    ('italic', 'italics', ''),
+    ('strikethrough', 'strikethrough', ''),
+    ('bolditalic', 'italics,bold', ''),
+    ('reversed', 'standout', ''),
+    ('reversed_italic', 'standout,italics', ''),
+    ('reversed_strikethrough', 'standout,strikethrough', ''),
+]
+
+LIST_FOCUS_MAP = {
+    None: 'reversed',
+    'normal': 'reversed',
+    'bold': 'reversed',
+    'italic': 'reversed_italic',
+    'bolditalic': 'reversed',
+    'strikethrough': 'reversed_strikethrough',
+}
+
+FORMAT_MAP = {'_': 'italic', '*': 'bold', '~': 'strikethrough'}
+
+
+def ibtxt(txt):
+    return ('bolditalic', txt)
+
+
+def ntxt(txt):
+    return ('normal', txt)
+
+
+def btxt(txt):
+    return ('bold', txt)
+
+
+def itxt(txt):
+    return ('italic', txt)
+
+
+def to_txt(txt):
+    if isinstance(txt, str):
+        return txt
+    elif isinstance(txt, tuple):
+        return txt[1]
+    else:
+        return ''.join([to_txt(t) for t in txt])
+
+
+# #############################################################################
+# utility
+# #############################################################################
+
+
+def has_key(key, x):
+    if x:
+        return key in x
+    return False
+
+
+def get_nested(dct, *keys, default=None):
+    for key in keys:
+        try:
+            dct = dct[key]
+        except (KeyError, TypeError, IndexError):
+            return default
+    return dct
+
+
+def get_urls(txt):
+    return re.findall(r'(https?://[^\s]+)', txt)
+
+
+def callf(cmd, rmap=None, background=False, capture_output=True, shell=False):
+    if rmap:
+        for key, val in rmap.items():
+            cmd = cmd.replace(key, val)
+
+    if not shell:
+        cmd = shlex.split(cmd)
+    logging.info('callf: `%s`', cmd)
+
+    if background:
+        proc = subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, shell=shell)
+        return proc
+
+    proc = subprocess.run(cmd, capture_output=capture_output, shell=shell, text=True)
+
+    if proc.returncode != 0:
+        logging.error('callf: exit code: %d, stderr: %s', proc.args, proc.returncode, proc.stderr)
+    elif proc.stdout:
+        logging.info('callf: %s', proc.stdout)
+
+    return proc
+
+
+def get_prog_dir():
+    return os.path.dirname(os.path.realpath(__file__))
+
+
+def get_version():
+    """Get this program's version.
+
+    Based on either `git describe`, or, if not available (e.g. for a release downloaded without the `.git` dir), use VERSION file populated during the creation of the release.
+    Does not output the leading `v` if it's present in git tag's name.
+    """
+
+    # Do not use `logging` in this function, as it's called before logging.basicConfig().
+    prog_dir = get_prog_dir()
+    git_dir = os.path.join(prog_dir, '.git')
+    git_cmd = ['git', '--git-dir', git_dir, 'describe']
+    try:
+        proc = subprocess.run(git_cmd, capture_output=True, check=True, text=True)
+        return proc.stdout.strip('v\n')
+    except (FileNotFoundError, subprocess.CalledProcessError):
+        pass
+
+    version_file_path = os.path.join(prog_dir, 'VERSION')
+    # Assumes VERSION file is formatted with `$Format:%h %d$`
+    try:
+        with open(version_file_path) as f:
+            version_str = f.readline()
+    except OSError:
+        return "?"
+    if version_str.startswith('$'):
+        # Neither a release, nor is there a `.git` dir (e.g. manually dl'ed blob)
+        return "?"
+    TAG_RE = re.compile(r"tag: v(.+?)[,)]")
+    tag_re_match = TAG_RE.search(version_str)
+    if tag_re_match:
+        return tag_re_match.group(1)
+    return version_str.split(maxsplit=1)[0]   # commit hash
+
+def get_default_editor():
+    for env_var in ('VISUAL', 'EDITOR'):
+        ret = os.getenv(env_var)
+        if ret is not None:
+            return ret
+    for exe in ('sensible-editor', 'editor', 'nano', 'emacs', 'vi'):
+        ret = shutil.which(exe)
+        if ret is not None:
+            return ret
+    return ret
+
+
+PHONE_NUM_REGEX = re.compile('^\\+[1-9][0-9]{6,14}$')
+# https://github.com/signalapp/libsignal-service-java/blob/master/java/src/main/java/org/whispersystems/signalservice/api/util/PhoneNumberFormatter.java
+def is_number(number):
+    return bool(PHONE_NUM_REGEX.match(number))
+
+
+def is_path(path):
+    return path.startswith(("/", "~/", "./"))
+
+
+PATH_RE = re.compile(
+    r"""
+        # Matches a path-like string, with whitespaces escaped or with the whole path in quotes.
+        (
+            (
+                \\\ |           # escaped whitespace OR ..
+                [^'" ]          # .. not a quote or space
+            )+
+        )                       # Path with escaped whitespace ..
+        |                       # .. OR ..
+        (                       # .. path in quotes.
+            (?P<quote>['"])     # a quote char; name the capture
+            .+?                 # anything, non-greedily
+            (?P=quote)          # matching quote
+        )
+        """,
+    re.VERBOSE,
+)
+def split_path(string):
+    string = string.strip()
+    if not string:
+        return ['', '']
+    re_match = PATH_RE.match(string)
+    if not re_match:
+        return ['', string]
+    path = re_match.group()
+    if re_match.group(1):  # unquoted path
+        path = path.replace(r'\ ', ' ')
+    else:  # path in quotes
+        path = path.strip('\'"')
+    rest = string[re_match.end() :].strip()
+    return [path, rest] if rest else [path]
+
+
+class ObservableConfig:
+    signals = ['changed']
+
+    def __init__(self, cfg_obj):
+        self._cfg_obj = cfg_obj
+
+    def __getattr__(self, name):
+        return getattr(self._cfg_obj, name)
+
+    def __setattr__(self, name, value):
+        if name != '_cfg_obj' and hasattr(self._cfg_obj, name):
+            setattr(self._cfg_obj, name, value)
+            urwid.emit_signal(self, 'changed', name, value)
+        else:
+            super().__setattr__(name, value)
+
+
+urwid.register_signal(ObservableConfig, ObservableConfig.signals)
+
+# #############################################################################
+# signal utility
+# #############################################################################
+
+
+def hash_contact(x):
+    h = get_contact_id(x)
+    if h is None:
+        logging.critical('hash_contact:No number or groupId')
+    return h
+
+
+def get_contact_name(x):
+    if not x:
+        logging.critical('get_contact_name:empty sender')
+        return "NULL"
+
+    if isinstance(x, str):
+        return x
+
+    name = x.get('name')
+    if name and not name.isspace():
+        return name
+
+    return get_contact_number(x)
+
+
+def get_contact_number(x):
+    if not x:
+        logging.critical('get_contact_number:empty sender')
+        return "NULL"
+
+    number = x.get('number')
+    if number:
+        return number
+
+    return "NULL"
+
+
+def get_contact_id(contact):
+    if not contact:
+        logging.critical('get_contact_number:empty sender')
+        return "NULL"
+
+    return contact.get('number') or contact.get('groupId')
+
+
+def get_contact_color(x):
+    color = x.get('color')
+    if color or color.strip(' ') != '':
+        return color
+
+    return 'white'
+
+
+def get_group_members(group, exclude=None):
+    ret = set()
+    if exclude is None:
+        exclude = []
+    try:
+        members = group['members']
+    except KeyError:
+        # Happens for v2 groups before their members have been populated
+        return ret
+    for m in members:
+        try:
+            phone_num = m['number']
+        except TypeError:
+            phone_num = m
+        if phone_num not in exclude:
+            ret.add(phone_num)
+    return ret
+
+
+def is_contact_group(contact):
+    return has_key('groupId', contact)
+
+
+def is_group_v2(group):
+    return len(group['groupId']) == 44
+
+
+def is_envelope_outgoing(envelope):
+    return 'target' in envelope or get_nested(envelope, 'syncMessage', 'sentMessage') is not None
+
+
+def is_envelope_group_message(envelope):
+    return (
+        get_nested(envelope, 'dataMessage', 'groupInfo') is not None
+        or get_nested(envelope, 'syncMessage', 'sentMessage', 'groupInfo') is not None
+        or ('target' in envelope and not is_number(envelope['target']))
+    )
+
+
+def get_envelope_msg(envelope):
+    # If the `message` field is absent from the envelope: return None. If it is present but contains no text (since signal-cli v0.6.8, this is represented as `'message': null`): return ''. Otherwise: return the `message` field's value.
+    for msg in (
+        get_nested(envelope, 'dataMessage', 'message', default=0),
+        get_nested(envelope, 'syncMessage', 'sentMessage', 'message', default=0),
+    ):
+        if msg is None:
+            return ''
+        elif msg != 0:
+            return msg
+    return None
+
+
+def get_envelope_time(envelope):
+    return (
+        get_nested(envelope, 'dataMessage', 'timestamp')
+        or get_nested(envelope, 'syncMessage', 'sentMessage', 'timestamp')
+        or envelope['timestamp']
+    )
+
+
+def get_envelope_contact_id(envelope):
+    return (
+        envelope.get('target')
+        or get_nested(envelope, 'dataMessage', 'groupInfo', 'groupId')
+        or get_nested(envelope, 'syncMessage', 'sentMessage', 'groupInfo', 'groupId')
+        or get_nested(envelope, 'syncMessage', 'sentMessage', 'destination')
+        or envelope['source']
+    )
+
+
+def get_envelope_attachments(envelope):
+    return (
+        get_nested(envelope, 'dataMessage', 'attachments')
+        or get_nested(envelope, 'syncMessage', 'sentMessage', 'attachments')
+        or []
+    )
+
+
+def get_attachment_name(attachment):
+    if isinstance(attachment, dict):
+        filename = attachment['filename']
+        return filename if filename is not None else attachment['contentType']
+    else:
+        return os.path.basename(attachment)
+
+
+def get_attachment_path(attachment):
+    if isinstance(attachment, dict):
+        received_attachment = os.path.join(SIGNALCLI_ATTACHMENT_FOLDER, str(attachment['id']))
+        if not os.path.exists(received_attachment):
+            received_attachment = os.path.join(SIGNALCLI_LEGACY_ATTACHMENT_FOLDER, str(attachment['id']))
+        return received_attachment
+    elif isinstance(attachment, str) and os.path.exists(attachment):
+        return attachment
+
+
+def b64_to_bytearray(group_id):
+    return ','.join(str(i) for i in base64.b64decode(group_id.encode()))
+
+
+def b64_to_hex_str(group_id):
+    return base64.b64decode(group_id.encode()).hex()
+
+
+def strftimestamp(timestamp, strformat='%H:%M:%S (%Y-%m-%d)'):
+    try:
+        date = datetime.utcfromtimestamp(timestamp)
+    except ValueError:
+        date = datetime.utcfromtimestamp(timestamp / 1000)
+    return date.strftime(strformat)
+
+
+# #############################################################################
+# ui utility
+# #############################################################################
+
+
+def listbox_focus_prev(listbox):
+    try:
+        listbox.focus_position = listbox.focus_position - 1
+    except IndexError:
+        pass
+
+
+def listbox_focus_next(listbox):
+    try:
+        listbox.focus_position = listbox.focus_position + 1
+    except IndexError:
+        pass
+
+
+def get_text_markup(text_widget):
+    """Get urwid.Text widget text, in markup format.
+
+    Like urwid.Text.get_text(), but returns a text markup that can be passed on to urwid.Text.set_text() or to urwid.Text() for creating a new text object"""
+
+    text, display_attributes = text_widget.get_text()
+    if not display_attributes:
+        return text
+    markup = []
+    run_len_pos = 0
+    for attr, attr_run_len in display_attributes:
+        attr_run_end = run_len_pos + attr_run_len
+        markup.append((attr, text[run_len_pos: attr_run_end]))
+        run_len_pos = attr_run_end
+    return markup
+
+
+def listbox_set_body(listbox, body_new):
+    # Can't just do `listbox.body = body_new`:
+    # https://github.com/urwid/urwid/issues/428
+    urwid.disconnect_signal(listbox.body, "modified", listbox._invalidate)
+    listbox.body = body_new
+    urwid.connect_signal(listbox.body, "modified", listbox._invalidate)
+
+
+class FocusableText(urwid.AttrMap):
+    def __init__(self, markup, **kwargs):
+        super().__init__(urwid.Text(markup, **kwargs), None, focus_map=LIST_FOCUS_MAP)
+
+    def __lt__(self, wtxt):
+        return get_envelope_time(self.envelope) < get_envelope_time(wtxt.envelope)
+
+
+class NiceBox(urwid.AttrMap):
+    def __init__(self, w, title=''):
+        box = urwid.AttrMap(urwid.LineBox(urwid.AttrMap(w, 'normal'), title_align='center', title=title), 'box_normal')
+        super().__init__(box, None, focus_map={'box_normal': 'box_focused'})
+
+
+class PopUpWrapper(urwid.LineBox):
+    signals = ['closed']
+
+    def __init__(self, widget, buttons=True):
+        self._widget = widget
+        self._widget.result = None
+
+        self._buttons = buttons
+        if buttons:
+            btn_ok = urwid.Button('OK')
+            btn_cancel = urwid.Button('Cancel')
+            self.buttons_grid = urwid.GridFlow([btn_ok, btn_cancel], 10, 1, 1, ('relative', 100))
+            super().__init__(urwid.Frame(widget, footer=self.buttons_grid))
+        else:
+            super().__init__(widget)
+
+    def keypress(self, size, key):
+        if self._buttons:
+            if key == 'tab':
+                if self.original_widget.focus_position == 'footer':
+                    if self.buttons_grid.focus_position == 0:
+                        self.buttons_grid.focus_position = 1
+                    else:
+                        self.original_widget.focus_position = 'body'
+                else:
+                    self.buttons_grid.focus_position = 0
+                    self.original_widget.focus_position = 'footer'
+            # I'm not sure why I need to do this:
+            elif self.original_widget.focus_position == 'body':
+                self.original_widget.keypress(size, key)
+            elif key == 'enter':
+                if self.buttons_grid.focus_position == 0:
+                    self._emit('closed', True, self._widget.result)
+                else:
+                    self._emit('closed', False, None)
+                self._emit('closed', False, None)
+
+        if key == 'q':
+            self._emit('closed', False, None)
+
+
+class MessageInfo(urwid.ListBox):
+    def __init__(self, state, envelope):
+        self.state = state
+
+        source = envelope['source']
+        msg = get_envelope_msg(envelope)
+        date = None
+        timestamp = get_envelope_time(envelope)
+        date = strftimestamp(timestamp)
+        status_detailed = self.state.delivery_status.get_detailed(envelope)
+
+        txt_name = FocusableText([btxt('Name   : '), ntxt(get_contact_name(state.signal.get_contact(source)))])
+        txt_source = FocusableText([btxt('Number : '), ntxt(source)])
+        txt_date = FocusableText([btxt('Date   : '), ntxt(date)])
+        txt_msg = FocusableText([btxt('Message: '), ntxt(msg)])
+
+        status_str = status_detailed.str
+        if status_str:
+            status_when = f': {strftimestamp(status_detailed.when)}' if status_detailed.when else ''
+            txt_status = FocusableText([btxt('Status : '), ntxt(status_str), status_when])
+        else:
+            txt_status = FocusableText('')
+
+        txt_urls = FocusableText([btxt('Links')], align='center')
+
+        urls = []
+        for url in get_urls(msg):
+            txt_url = FocusableText([ntxt(url)])
+            txt_url.full_path = url
+            urls.append(txt_url)
+
+        txt_atchs = FocusableText(btxt('Attachments'), align='center')
+
+        atchs = []
+        for atch in get_envelope_attachments(envelope):
+            txt_atch = FocusableText(ntxt(get_attachment_name(atch)))
+            txt_atch.original_widget.full_path = get_attachment_path(atch)
+            atchs.append(txt_atch)
+
+        items = [txt_name, txt_source, txt_date, txt_msg, txt_status, txt_urls, *urls, txt_atchs, *atchs]
+        super().__init__(urwid.SimpleFocusListWalker(items))
+
+    def keypress(self, size, key):
+        item = self.body[self.focus_position].original_widget
+
+        if key in ('j', 'down'):
+            listbox_focus_next(self)
+        elif key in ('k', 'up'):
+            listbox_focus_prev(self)
+        elif key == 'y':
+            text, _ = item.get_text()
+            try:
+                clip.put(self.state, item.full_path)
+            except AttributeError:
+                try:
+                    clip.put(self.state, text.split(": ")[1])
+                except IndexError:
+                    clip.put(self.state, text)
+        elif key in ('enter', 'o'):
+            try:
+                self.state.commands.open_file(item.full_path)
+            except (AttributeError, TypeError):
+                pass
+
+
+class HelpDialog(urwid.ListBox):
+    def __init__(self):
+        items = []
+        items.append(urwid.Text(btxt("Keybindings")))
+        items.append(urwid.Text(btxt("Commands")))
+        super().__init__(urwid.SimpleFocusListWalker(items))
+
+
+# #############################################################################
+# clipboard
+# #############################################################################
+
+
+class clip:
+    mime_order = ['image/png', 'image/jpeg', 'image/jpg', 'text/uri-list']
+    tempfile_prefix = '_scli-tmp.'
+
+    @staticmethod
+    def xrun(mime):
+        try:
+            p = Popen(['xclip', '-selection', 'clipboard', '-t', mime, '-o'], stdout=PIPE, stderr=PIPE)
+        except OSError:
+            return
+        out, err = p.communicate()
+        return out
+
+    @staticmethod
+    def xrun_lines(mime):
+        out = clip.xrun(mime)
+        if out:
+            return out.decode('utf-8').split('\n')
+
+    @staticmethod
+    def xfiles():
+        out = clip.xrun_lines('TARGETS')
+        if out is None:
+            return
+
+        for otype in out:
+            for mtype in clip.mime_order:
+                if mtype == otype:
+                    if mtype.startswith('image/'):
+                        content = clip.xrun(mtype)
+                        suffix = '.' + mtype.split('/')[1]
+                        tmp = tempfile.NamedTemporaryFile(
+                            mode='w+b', prefix=clip.tempfile_prefix, suffix=suffix, delete=False
+                        )
+                        tmp.write(content)
+                        tmp.flush()
+                        tmp.close()
+                        return [tmp.name]
+                    elif mtype == 'text/uri-list':
+                        content = clip.xrun_lines(mtype)
+                        return [x.replace('file://', '') for x in content[1:]]
+
+    @staticmethod
+    def xput(txt):
+        if not txt:
+            return
+        try:
+            p = Popen(['xclip', '-selection', 'clipboard'], stdout=PIPE, stderr=PIPE, stdin=PIPE)
+        except OSError:
+            return
+        p.stdin.write(bytes(txt, 'utf-8'))
+        p.stdin.close()
+        p.wait()
+
+    @staticmethod
+    def put(state, txt):
+        cmd = state.cfg.clipboard_put_command
+        if cmd is None:
+            return clip.xput(txt)
+
+        return callf(cmd, {'%s': txt})
+
+    @staticmethod
+    def files(state):
+        cmd = state.cfg.clipboard_get_command
+        if cmd is None:
+            return clip.xfiles()
+
+        return callf(cmd).split('\n')
+
+
+# #############################################################################
+# AsyncProc & Daemon
+# #############################################################################
+
+class CallbackQueue:
+
+    def __init__(self):
+        # The _queue is a list with each item a tuple: ({proc1, proc2, ..}, callback, callback_args, proc_callback, proc_callback_kwargs)
+        self._queue = []
+        self._accepting_new_procs_for_item = False
+
+    def new_item(self, callback, callback_kwargs, proc_callback, proc_callback_kwargs):
+        if callback is None and proc_callback is None:
+            return
+        self._queue.append((set(), callback, callback_kwargs, proc_callback, proc_callback_kwargs))
+        self._accepting_new_procs_for_item = True
+
+    def add_proc(self, proc):
+        if not self._accepting_new_procs_for_item:
+            return
+        curr_item = self._queue[-1]
+        procs = curr_item[0]
+        procs.add(proc)
+
+    def finalize_item(self):
+        self._accepting_new_procs_for_item = False
+        if self._queue and not self._queue[-1][0]:
+            # All background procs have already finished, or there had been none started
+            self._pop_callback(-1)
+
+    def on_proc_done(self, proc):
+        for ind, item in enumerate(self._queue):
+            procs, *_ = item
+            if proc not in procs:
+                continue
+            self._run_proc_callback(ind, proc)
+            procs.remove(proc)
+            if not procs and not self._accepting_new_procs_for_item:
+                self._pop_callback(ind)
+            return
+
+    def _run_proc_callback(self, queue_index, proc):
+        *_, proc_callback, proc_callback_kwargs = self._queue[queue_index]
+        if proc_callback is not None:
+            proc_callback(proc, **proc_callback_kwargs)
+
+    def _pop_callback(self, queue_index):
+        _, callback, callback_kwargs, *_ = self._queue.pop(queue_index)
+        if callback is not None:
+            callback(**callback_kwargs)
+
+
+class AsyncProc:
+
+    def __init__(self, urwid_loop):
+        self._urwid_loop = urwid_loop
+        self._callback_queue = CallbackQueue()
+
+    def run(self, args, callback=None, *callback_args, shell=False, **callback_kwargs):
+        """ Run the command composed of `args` in the background (asynchronously); run the `callback` function when it finishes """
+
+        def watchpipe_handler(line):
+            # This function is run when the shell process returns (finishes execution).
+            # The `line` printed to watch pipe is of the form "b'<PID> <RETURN_CODE>\n'"
+            _proc_pid, return_code = [int(i) for i in line.decode().split()]
+            proc.wait()  # reap the child process, to prevent zombies
+
+            proc.returncode = return_code   # overwrite the 'wrapper' command return code (always 0) with the actual command return code
+            proc.output = proc.stderr.read().rstrip('\n')   # stderr stream is not seekable, so can be read only once
+
+            if return_code != 0:
+                logging.error('proc: cmd:`%s`; return_code:%d; output:"%s"', proc.args, return_code, proc.output)
+
+            if callback is not None:
+                callback(proc, *callback_args, **callback_kwargs)
+            self._callback_queue.on_proc_done(proc)
+
+            os.close(watchpipe_fd) # Close the write end of urwid's watch pipe.
+            return False # Close the read end of urwid's watch pipe and remove the watch from event_loop.
+
+        watchpipe_fd = self._urwid_loop.watch_pipe(watchpipe_handler)
+
+        # If the command is run with Popen(.., shell=True), shlex.quote is needed to escape special chars in args.
+        sh_command = " ".join([shlex.quote(arg) for arg in args] if not shell else ['{', args, ';', '}'])
+        # Redirect all the process's output to stderr, and write the process PID and exit status to the watch pipe.
+        sh_command += " 1>&2; echo $$ $?"
+
+        proc = Popen(sh_command, shell=True, stdout=watchpipe_fd, stderr=PIPE, universal_newlines=True)
+        atexit.register(proc.kill)   # prevent orphaned processes surviving after the main program is stopped
+        self._callback_queue.add_proc(proc)
+        return proc
+
+    def func_watch(self, fn, *args, callback=None, callback_kwargs=None, proc_callback=None, proc_callback_kwargs=None, **kwargs):
+        """Watch background processes started by function.
+
+        Call function `fn` and watch background processes started with `AsyncProc.run` by `fn` or by functions `fn` calls; run `proc_callback` when each background process exits; run `callback` when all the background processes exit.
+        """
+
+        callback_kwargs = callback_kwargs or {}
+        proc_callback_kwargs = proc_callback_kwargs or {}
+        self._callback_queue.new_item(callback, callback_kwargs, proc_callback, proc_callback_kwargs)
+        fn_ret = fn(*args, **kwargs)
+        self._callback_queue.finalize_item()
+        return fn_ret
+
+
+class Daemon(AsyncProc):
+
+    def start(self, username, envelope_handler, error_handler):
+        self._envelope_handler = envelope_handler
+        self._error_handler = error_handler
+        self._buffer = b''
+
+        stdout_fd = self._urwid_loop.watch_pipe(self._daemon_handler)
+        stderr_fd = self._urwid_loop.watch_pipe(self._daemon_stderr_handler)
+        cmd_args = ['signal-cli', '-u', username, 'daemon', '--json']
+        try:
+            proc = Popen(cmd_args, stdout=stdout_fd, stderr=stderr_fd, close_fds=True)
+        except FileNotFoundError:
+            sys.exit(f"Error: could not find `{cmd_args[0]}` executable. Make sure it is on system path.")
+        return proc
+
+    def _daemon_handler(self, line):
+        line = self._buffer + line
+        lines = line.split(b'\n')
+        if lines[-1] != b'':
+            # Not a complete message. Store in buffer
+            self._buffer = lines[-1]
+        else:
+            self._buffer = b''
+
+        # The last item is either empty or an incomplete message, so we don't process it
+        for line in lines[:-1]:
+            if not line.strip():
+                continue
+            try:
+                e = json.loads(line.decode('utf-8'))
+                envelope = e['envelope']
+                self._envelope_handler(envelope)
+            except Exception as e:
+                logging.error('input: %s', line)
+                logging.exception(e)
+                # TODO: display error to user
+                continue
+
+    def _daemon_stderr_handler(self, line):
+        line = line.decode().strip()
+        if not line:
+            return
+        logging.error('stderr: %s', line)
+        self._error_handler(line)
+
+    def dbus_send(self, args, *proc_args, async_proc=True, **proc_kwargs):
+        args = [
+                    'dbus-send',
+                    '--session',
+                    '--type=method_call',
+                    '--print-reply',
+                    *args
+                ]
+        if async_proc:
+            proc = self.run(args, *proc_args, **proc_kwargs)
+        else:
+            proc = subprocess.run(args, *proc_args, **proc_kwargs)
+        return proc
+
+    def dbus_send_signal_cli(self, args, *proc_args, **proc_kwargs):
+        """ Send a command to signal-cli daemon through dbus """
+        args = [
+                    '--dest=org.asamk.Signal',
+                    '/org/asamk/Signal',
+                    *args
+                ]
+        return self.dbus_send(args, *proc_args, **proc_kwargs)
+
+    def send_message(self, message, attachments, recipient, is_group=False, *proc_args, **proc_kwargs):
+        args = [
+                ('org.asamk.Signal.sendMessage'
+                    if not is_group else
+                    'org.asamk.Signal.sendGroupMessage'),
+                'string:' + message,
+                'array:string:' + ','.join(attachments),
+                ('string:' + recipient
+                    if not is_group else
+                    'array:byte:' + b64_to_bytearray(recipient))
+                ]
+
+        self.dbus_send_signal_cli(args, *proc_args, **proc_kwargs)
+
+    def rename_contact(self, contact_id, new_name, is_group=False, *proc_args, **proc_kwargs):
+        """Rename a contact or group.
+
+        If a contact does not exist, it will be created. Changes to groups are sent to the server, changes to individual contacts are local.
+        """
+        if not is_group:
+            args = ["org.asamk.Signal.setContactName",
+                    "string:" + contact_id,
+                    "string:" + new_name]
+        else:
+            args = ["org.asamk.Signal.updateGroup",
+                    "array:byte:" + b64_to_bytearray(contact_id),
+                    "string:" + new_name,
+                    "array:string:" + '',   # members
+                    "string:" + '']         # avatar
+        self.dbus_send_signal_cli(args, *proc_args, **proc_kwargs)
+
+    def get_group_name(self, group_id, callback, *cb_args, **cb_kwargs):
+        def proc_callback(proc):
+            name = proc.output.split('\n')[1][11:-1]   # Ad-hoc parsing of `dbus-send` output
+            callback(name, *cb_args, **cb_kwargs)
+        args = ["org.asamk.Signal.getGroupName",
+                "array:byte:" + b64_to_bytearray(group_id)]
+        self.dbus_send_signal_cli(args, callback=proc_callback)
+
+    def get_group_members(self, group_id, callback, *cb_args, **cb_kwargs):
+        def proc_callback(proc):
+            members = []
+            for line in proc.output.split('\n')[2:-1]:
+                # Ad hoc parsing of `dbus-send` output
+                num = line[14:-1]
+                members.append({"number": num})
+            callback(members, *cb_args, **cb_kwargs)
+        args = ["org.asamk.Signal.getGroupMembers",
+                "array:byte:" + b64_to_bytearray(group_id)]
+        self.dbus_send_signal_cli(args, callback=proc_callback)
+
+    def get_signal_cli_version(self, callback, *cb_args, **cb_kwargs):
+        def proc_callback(proc):
+            callback(proc.output, *cb_args, **cb_kwargs)
+        self.run(['signal-cli', '--version'], callback=proc_callback)
+
+    @property
+    def is_dbus_service_running(self):
+        args = [
+                    '--dest=org.freedesktop.DBus',
+                    '/org/freedesktop/DBus',
+                    'org.freedesktop.DBus.ListNames'
+                ]
+        proc = self.dbus_send(args, async_proc=False, stdout=subprocess.PIPE, text=True)
+        signal_cli_str = 'string "org.asamk.Signal"'
+        return signal_cli_str in proc.stdout
+
+    def run_when_dbus_service_started(self, callback):
+        POLL_FREQ = 1       # seconds between polls
+        def set_alarm(urwid_loop, _user_data=None):
+            if self.is_dbus_service_running:
+                callback()
+            else:
+                self._alarm_handle = urwid_loop.set_alarm_in(POLL_FREQ, set_alarm)
+        set_alarm(self._urwid_loop)
+
+    def stop_checking_dbus_service(self):
+        try:
+            self._urwid_loop.remove_alarm(self._alarm_handle)
+        except AttributeError:
+            pass
+
+
+
+# #############################################################################
+# commands
+# #############################################################################
+
+
+class Commands:
+    def __init__(self, state):
+        self.state = state
+        self.cmd_mapping = [
+            (['attach', 'a'], self.attach),
+            (['edit', 'e'], self.external_edit),
+            (['read', 'r'], self.read),
+            (['attachClip', 'c'], self.attach_clip),
+            (['openAttach', 'o'], self.open_last_attach),
+            (['openUrl', 'u'], self.open_last_url),
+            (['toggleNotifications', 'n'], self.toggle_notifications),
+            (['toggleAutohide', 'h'], self.toggle_autohide),
+            (['toggleContactsSort', 's'], self.toggle_sort_contacts),
+            (['renameContact'], self.rename_contact),
+            (['addContact'], self.add_contact),
+            (['reload'], self.reload),
+            (['quit', 'q'], self.quit),
+        ]
+        self.map = {cmd.lower(): fn for cmds, fn in self.cmd_mapping for cmd in cmds}
+
+    def exec(self, cmd, *args):
+        fn = self.map.get(cmd.lower())
+        if fn is None:
+            self.state.set_error(f"Command `{cmd}` not found")
+            return
+        try:
+            return fn(*args)
+        except TypeError as err:
+            # Handle only the exceptions produced by giving the wrong number of arguments to `fn()`, not any exceptions produced inside executing `fn()` (i.e. deeper in the stack trace)
+            if err.__traceback__.tb_next is not None:
+                raise
+            if re.search(r"missing \d+ required positional argument", str(err)):
+                self.state.set_error(f':{cmd} missing arguments')
+            elif re.search(r"takes \d+ positional arguments? but \d+ were given", str(err)):
+                self.state.set_error(f':{cmd} extra arguments')
+            else:
+                raise
+
+    def external_edit(self, *args):
+        if self.state.current_contact is None:
+            self.state.set_error(":edit Error: no contact currently selected")
+            return
+
+        if self.state.cfg.editor_command is None:
+            self.state.set_error(":edit Error: no command for external editor set")
+            return
+
+        filename = ''
+        if args:
+            filename, *message = split_path(*args)
+
+        if is_path(filename):
+            msg_file_path = os.path.expanduser(filename)
+        else:
+            msg_file_path = tmpfile = tempfile.NamedTemporaryFile(suffix='.md', delete=False).name
+            message = args
+        if message:
+            with open(msg_file_path, "w") as msg_file:
+                msg_file.write(*message)
+
+        self.state.loop.stop()
+        cmd = self.state.cfg.editor_command + " " + shlex.quote(msg_file_path)
+        callf(cmd, capture_output=False)
+        self.state.loop.start()
+
+        with open(msg_file_path, 'r') as msg_file:
+            msg = msg_file.read().strip()
+            if msg:
+                self.state.signal.send_message(self.state.current_contact, msg)
+
+        try:
+            os.remove(tmpfile)
+        except NameError:
+            pass
+
+    def read(self, path_or_cmd):
+        if self.state.current_contact is None:
+            self.state.set_error(":read Error: no contact currently selected")
+            return
+
+        message = ''
+        if is_path(path_or_cmd):
+            with open(os.path.expanduser(path_or_cmd), 'r') as file:
+                message = file.read()
+        elif path_or_cmd.startswith('!'):
+            message = subprocess.check_output(['/bin/sh', '-c', path_or_cmd[1:].strip()]).decode("utf-8")
+
+        if message != '':
+            self.state.signal.send_message(self.state.current_contact, message)
+
+    def open_file(self, path):
+        if os.path.exists(path):
+            if isinstance(path, dict):
+                callf(self.state.cfg.open_command, path, background=True)
+            callf(self.state.cfg.open_command, {'%u': path}, background=True)
+
+    def attach(self, args):
+        if self.state.current_contact is None:
+            self.state.set_error(":attach Error: no contact currently selected")
+            return
+
+        attachment, *message = split_path(args)
+        attachment = os.path.expanduser(attachment)
+        if not os.path.isfile(attachment):
+            self.state.set_error('File does not exist: ' + attachment)
+            return
+        self.state.signal.send_message(self.state.current_contact, *message, attachments=[attachment])
+
+    def attach_clip(self, *message):
+        if self.state.current_contact is None:
+            self.state.set_error(":attachClip Error: no contact currently selected")
+            return
+
+        files = clip.files(self.state)
+
+        if files:
+            self.state.signal.send_message(self.state.current_contact, *message, attachments=files)
+        else:
+            self.state.set_notification('Clipboard is empty.')
+
+    def open_attach(self, envelope):
+        result = False
+        attachments = get_envelope_attachments(envelope)
+        for attachment in attachments:
+            file_path = get_attachment_path(attachment)
+            if file_path:
+                self.open_file(file_path)
+                result = True
+
+        return result
+
+    def open_last_attach(self):
+        for txt in reversed(self.state.current_chat):
+            if self.open_attach(txt.envelope):
+                return
+
+    def open_url(self, envelope):
+        txt = get_envelope_msg(envelope)
+        urls = get_urls(txt)
+        if urls:
+            callf(self.state.cfg.open_command, {'%u': urls[0]}, background=True)
+            return True
+
+        return False
+
+    def open_last_url(self):
+        for txt in reversed(self.state.current_chat):
+            if self.open_url(txt.envelope):
+                return
+
+    def toggle_notifications(self):
+        self.state.cfg.enable_notifications = not self.state.cfg.enable_notifications
+        notif = 'Desktop notifications are '
+        if self.state.cfg.enable_notifications:
+            notif = notif + 'ON'
+        else:
+            notif = notif + 'OFF'
+        self.state.set_notification(notif + '.')
+
+    def toggle_autohide(self):
+        self.state.cfg.contacts_autohide = not self.state.cfg.contacts_autohide
+
+    def toggle_sort_contacts(self):
+        self.state.cfg.contacts_sort_alpha = not self.state.cfg.contacts_sort_alpha
+        self.reload()
+
+    def send_notification(self, sender, message):
+        if self.state.cfg.enable_notifications:
+            rmap = {}
+            for token, text in (('%s', sender), ('%m', message)):
+                text = text.replace(r"'", r"'\''")
+                rmap[token] = text
+            callf(self.state.cfg.notification_command, rmap, background=False)
+
+    def rename_contact(self, args):
+        # :renameContact +NUMBER new name here  -> use +NUMBER number
+        # :renameContact "Old Name" new name here  -> use contact named "Old Name"
+        # :renameContact new name here          -> rename current contact or group
+        try:
+            number, new_name = split_path(args)
+            if not is_number(number):
+                for contact_id, contact in self.state.signal.contacts_map.items():
+                    if contact["name"] == number:
+                        is_group = is_contact_group(contact)
+                        break
+                else:  # contact with name `number` not found
+                    raise ValueError
+            elif self.state.signal.get_contact(number) is None:
+                    self.state.set_error(f":renameContact Error: no contact with number {number} found")
+                    return
+            else:
+                is_group = False
+                contact_id = number
+        except ValueError:
+            if self.state.current_contact is None:
+                self.state.set_error(":renameContact Error: no contact currently selected")
+                return
+            contact_id = self.state.current_contact.get('number')
+            is_group = contact_id is None
+            if is_group:
+                contact_id = self.state.current_contact.get('groupId')
+            new_name = args
+
+        self.state.signal.daemon.rename_contact(contact_id, new_name, is_group, lambda *i: self.reload())
+
+    def add_contact(self, args):
+        # :addContact +NUMBER [Contact Name]
+        try:
+            number, name = args.split(maxsplit=1)
+        except ValueError:
+            number, name = args, ""
+        if not is_number(number):
+            self.state.set_error(f':addContact "{number}": not a valid number')
+            return
+        self.state.signal.daemon.rename_contact(number, name, is_group=False, callback=lambda *i: self.reload())
+
+    def reload(self):
+        self.state.reload()
+
+    def quit(self):
+        raise urwid.ExitMainLoop()
+
+
+# #############################################################################
+# signal
+# #############################################################################
+
+
+class Signal:
+    signals = ['receive_message', 'send_message', 'sending_done', 'receive_receipt', 'daemon_started', 'groups_updated', 'daemon_error']
+
+    def __init__(self, user):
+        self.user = user
+        self._data = None
+        self._path = os.path.join(SIGNALCLI_DATA_FOLDER, user)
+
+        if not os.path.exists(self._path):
+            self._path = os.path.join(SIGNALCLI_LEGACY_DATA_FOLDER, user)
+            if not os.path.exists(self._path):
+                raise Exception(self.user + " does not exist!")
+
+        self.daemon = Daemon(None)
+
+        self.reload()
+
+    def start_daemon(self):
+        def on_daemon_started():
+            logging.info("signal-cli dbus service started")
+            self._set_v2_groups_info_async_watch()
+            urwid.emit_signal(self, 'daemon_started')
+        self.daemon.run_when_dbus_service_started(on_daemon_started)
+        return self.daemon.start(self.user, self.envelope_handler, self.error_handler)
+
+    def envelope_handler(self, envelope):
+        if get_nested(envelope, 'syncMessage', 'sentMessage') is not None:
+            urwid.emit_signal(self, 'send_message', envelope)
+            urwid.emit_signal(self, 'sending_done', envelope)
+        elif get_envelope_msg(envelope) or get_envelope_attachments(envelope):
+            urwid.emit_signal(self, 'receive_message', envelope)
+        elif envelope.get('receiptMessage') is not None:
+            urwid.emit_signal(self, 'receive_receipt', envelope)
+        else:
+            logging.info('NOT_A_MESSAGE:%s', envelope)
+
+    def error_handler(self, stderr_line):
+        if stderr_line.startswith("ERR"):
+            self.daemon.stop_checking_dbus_service()
+            urwid.emit_signal(self, 'daemon_error', stderr_line)
+
+    def reload(self):
+        with open(self._path) as f:
+            self._data = json.load(f)
+
+        self.contacts = self._data['contactStore']['contacts']
+        self.groups = []
+        for g in self._data["groupStore"]['groups']:
+            if is_group_v2(g):
+                group_id = g['groupId']
+                g['name'] = self._get_group_v2_cache_name(group_id) or group_id[:10] + '[..]'
+            if g.get('archived') or not g.get('name'):
+                continue
+            self.groups.append(g)
+        self.contacts_map = {c['number']: c for c in self.contacts}
+        self.contacts_map.update({g['groupId']: g for g in self.groups})
+        self._set_v2_groups_info_async_watch()
+
+    def _set_groups_membership(self):
+        self.group_members = {g['groupId']: get_group_members(g, exclude=[self.user]) for g in self.groups}
+        self.groups_w_contact = self._get_groups_w_contacts()
+
+    def _get_groups_w_contacts(self):
+        ret = {}
+        for group_id, group_members in self.group_members.items():
+            for contact_num in group_members:
+                if contact_num in self.contacts_map:
+                    groups_w_contact_num = ret.setdefault(contact_num, set())
+                    groups_w_contact_num.add(group_id)
+        return ret
+
+    def _get_group_v2_cache_name(self, group_id):
+        # This is a crude hack to extract a group name from the group-cache's protobuf binary file without dealing with protobuf or querying signal-cli's `getGroupName`. Does not work for non-ascii group names.
+        # See
+        # https://github.com/AsamK/signal-cli/issues/386
+        for filename in (
+                group_id.replace("/", "_"),
+                b64_to_hex_str(group_id)
+                ):
+            # Since signal-cli v0.7.2, group-cache files' names are `group_id`s with `/` replaced with `_`. Existing group-cache filenames (hex-formatted) from v0.7.{0,1} are kept without renaming, so here we have to try both.
+            path = os.path.join(self._path + '.d', 'group-cache', filename)
+            try:
+                bs = open(path, 'br').readline()
+            except FileNotFoundError:
+                continue
+            else:
+                break
+        for name_end_str in (b'\x1aI', b'"'):
+            name_end = bs.find(name_end_str)
+            if name_end != -1:
+                break
+        grp_name = bs[2:name_end].decode()
+        return grp_name
+
+    def _set_v2_groups_info_async(self):
+        for group in self.groups:
+            if not is_group_v2(group):
+                continue
+            group_id = get_contact_id(group)
+            self.daemon.get_group_name(
+                    group_id,
+                    callback=lambda name, group=group: group.update({'name': name})
+                    )
+            self.daemon.get_group_members(
+                    group_id,
+                    callback=lambda members, group=group: group.update({'members': members})
+                    )
+
+    def _set_v2_groups_info_async_watch(self):
+        if not self.daemon.is_dbus_service_running:
+            self._set_groups_membership()
+            return
+        def on_v2_groups_updated():
+            self._set_groups_membership()
+            urwid.emit_signal(self, 'groups_updated')
+        self.daemon.func_watch(
+                self._set_v2_groups_info_async,
+                callback=on_v2_groups_updated
+                )
+
+    def send_message(self, contact, message="", attachments=[]):
+        target = contact.get('number')
+        is_group = target is None
+        if is_group:
+            target = contact.get('groupId')
+
+        attachment_paths = [os.path.expanduser(attachment) for attachment in attachments]
+        if not all([os.path.exists(attachment_path) for attachment_path in attachment_paths]):
+            logging.warning('send_message: Attached file(s) does not exist.')
+            return
+
+        ts = int(datetime.now().timestamp() * 1000)
+        envelope = {
+            'source': self.user,
+            'target': target,
+            'timestamp': ts,
+            'dataMessage': {'message': message, 'attachments': attachments, 'timestamp': ts},
+        }
+
+        def after_send_proc_returns(proc):
+            # Remove temproary attachments
+            for attachment in envelope['dataMessage']['attachments']:
+                if attachment.startswith(os.path.join(tempfile.gettempdir(), clip.tempfile_prefix)):
+                    os.remove(attachment)
+
+            timestamp_adj = None
+            # Check if send command succeeded
+            if proc.returncode != 0:
+                # Workaround for
+                #     https://github.com/AsamK/signal-cli/issues/348
+                # If group has some members with deleted accounts, some of the envelopes may fail to deliver
+                if is_group and 'Unregistered user' in proc.output:
+                    output_lines = proc.output.strip().rsplit('\n')
+                    member_count = len(contact['members'])
+                    failed_count = len(output_lines) - 2 # 2 lines for error explanation, rest are failed numbers
+                    if member_count > failed_count:
+                        timestamp_adj = int(output_lines[0].rsplit(':')[1])
+                        logging.warning('send_message: Failed to send %s people out of %s. Timestamp: %s', failed_count, member_count, timestamp_adj)
+                    else:
+                        return urwid.emit_signal(self, 'sending_done', envelope, 'send_failed')
+                else:
+                    return urwid.emit_signal(self, 'sending_done', envelope, 'send_failed')
+
+
+            # Set envelope timestamp to that returned by signal-cli
+            try:
+                if timestamp_adj == None:
+                    timestamp_adj = int(proc.output.rsplit(maxsplit=1)[1])
+            except Exception as e:
+                logging.error("send_message: Failed to get adjusted envelope timestamp")
+                logging.exception(e)
+                urwid.emit_signal(self, 'sending_done', envelope)
+            else:
+                urwid.emit_signal(self, 'sending_done', envelope, 'sent', timestamp_adj)
+
+
+        self.daemon.send_message(message, attachment_paths, target, is_group, callback=after_send_proc_returns)
+
+        logging.info('send_message:%s', envelope)
+        urwid.emit_signal(self, 'send_message', envelope)
+
+    def get_contact(self, contact_id):
+        return self.contacts_map.get(contact_id)
+
+    def get_envelope_contact(self, envelope):
+        contact_id = get_envelope_contact_id(envelope)
+        contact = self.get_contact(contact_id)
+        if not contact:
+            logging.critical('NULL_CONTACT:%s', envelope)
+        return contact
+
+    def get_contact_profile_name(self, contact):
+        try:
+            profiles = self._data['profileStore']['profiles']
+            profiles_map = {p['name']: p for p in profiles}
+            contact_id = hash_contact(contact)
+            return profiles_map[contact_id]['profile']['name']
+        except (KeyError, TypeError):
+            return None
+
+
+urwid.register_signal(Signal, Signal.signals)
+
+# #############################################################################
+# ContactsWindow
+# #############################################################################
+
+
+class ContactsWindow(urwid.ListBox):
+    signals = ['notify_count_changed']
+
+    def __init__(self, state):
+        self.state = state
+        self._body = []
+
+        super().__init__(urwid.SimpleFocusListWalker(self._body))
+
+        self.reload()
+
+        for contact_id, notify_count in self.state.notify_counts.items():
+            try:
+                contact_widget = self.contact_widgets_map[contact_id]
+            except KeyError:
+                continue
+            self.set_contact_widget_notify_count(contact_widget, notify_count)
+
+        urwid.connect_signal(self.state.signal, 'receive_message', self.on_new_message)
+        urwid.connect_signal(self.state.signal, 'send_message', self.on_new_message)
+        urwid.connect_signal(self.state.signal, 'sending_done', self.on_sending_done)
+        urwid.connect_signal(self.state, 'current_contact_changed', self.on_current_contact_changed)
+
+    def reload(self):
+        self.set_contacts(self.make_formatted_contacts_list())
+
+    def make_formatted_contacts_list(self):
+        def sorter(contact):
+            contact_name = get_contact_name(contact)
+            if self.state.cfg.contacts_sort_alpha:
+                return contact_name.lower()
+            try:
+                chat = self.state.chats[hash_contact(contact)]
+                last_envelope = chat[-1].envelope
+            except (KeyError, IndexError):
+                return (0, contact_name.lower())
+            return (-get_envelope_time(last_envelope), contact_name.lower())
+
+        if not self.state.cfg.partition_contacts:
+            return sorted(self.state.signal.contacts_map.values(), key=sorter)
+        else:
+            grps = sorted(self.state.signal.groups, key=sorter)
+            conts = sorted(self.state.signal.contacts, key=sorter)
+            return [
+                    'Groups',
+                    '---',
+                    *grps,
+                    '---',
+                    'Contacts',
+                    '---',
+                    *conts
+                ]
+
+    def mk_contact_widget_markup(self, contact):
+        notify_count = self.state.notify_counts.get(hash_contact(contact), 0)
+        markup = [] if notify_count == 0 else [('bold', '({}) '.format(notify_count))]
+
+        name = get_contact_name(contact)
+        markup.append(name)
+        if is_number(name):
+            if name == self.state.cfg.username:
+                markup.append(('italic', ' (Self)'))
+            else:
+                profile_name = self.state.signal.get_contact_profile_name(contact)
+                if profile_name:
+                    markup.append(('italic', ' ~' + profile_name))
+
+        if is_contact_group(contact) and not self.state.cfg.partition_contacts:
+            markup.append(('italic', ' [GRP]'))
+
+        return markup
+
+    def set_contact_notify_count(self, contact, count):
+        self.state.set_contact_notify_count(hash_contact(contact), count)
+        total_notify_count = sum(self.state.notify_counts.values())
+        urwid.emit_signal(self, 'notify_count_changed', total_notify_count)
+
+    def set_contact_widget_notify_count(self, w, count):
+        if not w:
+            return
+        self.set_contact_notify_count(w.contact, count)
+        w.original_widget.set_text(self.mk_contact_widget_markup(w.contact))
+
+    def on_current_contact_changed(self, _old, _current, _focus=False):
+        self.set_contact_widget_notify_count(self.focus, 0)
+
+    def on_new_message(self, envelope):
+        contact_id = get_envelope_contact_id(envelope)
+        contact = self.state.signal.get_contact(contact_id)
+        contact_widget = self.contact_widgets_map.get(contact_id)
+
+        if contact != self.state.current_contact and not is_envelope_outgoing(envelope):
+            if contact_widget is None:
+                self.set_contact_notify_count(contact, '+1')
+            else:
+                self.set_contact_widget_notify_count(contact_widget, '+1')
+
+        if not self.state.cfg.contacts_sort_alpha and contact_widget is not None:
+            self.move_contact_top(contact_widget)
+
+    def on_sending_done(self, envelope, status='sent', _timestamp_adj=None):
+        if status != 'send_failed':
+            return
+        contact_id = get_envelope_contact_id(envelope)
+        if contact_id == get_contact_id(self.state.current_contact):
+            return
+        contact_widget = self.contact_widgets_map[contact_id]
+        contact_widget_markup = get_text_markup(contact_widget.original_widget)
+        if isinstance(contact_widget_markup, str):
+            contact_widget_markup = [contact_widget_markup]
+        contact_widget_markup = [self.state.delivery_status.get_markup('send_failed'), ' ', contact_widget_markup]
+        contact_widget.original_widget.set_text(contact_widget_markup)
+
+    def move_contact_top(self, w):
+        if self.state.cfg.partition_contacts:
+            if is_contact_group(w.contact):
+                offset = 2
+            else:
+                txt_ws = [getattr(w.base_widget, "text", "") for w in self.body]
+                offset = 2 + txt_ws.index('~~ Contacts ~~')
+        else:
+            offset = 0
+
+        ind = self._body.index(w)
+        if ind == offset:
+            return
+        self._body.insert(offset, self._body.pop(ind))
+
+        self.focus_position = offset
+
+    def set_contacts(self, contacts):
+        self._body.clear()
+
+        def mk_contact(x):
+            widget = None
+            contact = None
+            if x == '---':
+                widget = urwid.Divider('-')
+            elif isinstance(x, str):
+                widget = urwid.Text(('bold', '~~ ' + x + ' ~~'), align='center')
+            else:
+                widget = urwid.Text(self.mk_contact_widget_markup(x))
+                contact = x
+
+            am = urwid.AttrMap(widget, None, focus_map=LIST_FOCUS_MAP)
+            am.contact = contact
+            return am
+
+        contact_widgets = [mk_contact(x) for x in contacts]
+        self._body.extend(contact_widgets)
+        self.contact_widgets_map = {hash_contact(w.contact): w for w in contact_widgets if w.contact}
+
+        self.focus_first()
+
+    def get_focused_contact(self):
+        return self.focus.contact
+
+    def focus_next(self, num=1):
+        try:
+            self.focus_position = self.focus_position + num
+            if not self.get_focused_contact():
+                self.focus_next()
+        except IndexError:
+            pass
+
+    def focus_prev(self, num=1):
+        try:
+            if not self.state.cfg.partition_contacts or self.focus_position > 2:
+                self.focus_position = self.focus_position - num
+                if not self.get_focused_contact():
+                    self.focus_prev()
+        except IndexError:
+            pass
+
+    def focus_first(self):
+        try:
+            if self.state.cfg.partition_contacts:
+                self.focus_position = 2
+            else:
+                self.focus_position = 0
+        except IndexError:
+            pass
+
+    def focus_last(self):
+        try:
+            self.focus_position = len(self._body) - 1
+        except IndexError:
+            pass
+
+    def keypress(self, size, key):
+        if key in ('enter', 'l'):
+            if self.get_focused_contact():
+                self.state.set_current_contact(self.get_focused_contact(), key == 'enter')
+        elif key in ('j', 'down'):
+            self.focus_next()
+        elif key in ('k', 'up'):
+            self.focus_prev()
+        elif key == 'page down':
+            self.focus_next(num=10)
+        elif key == 'page up':
+            self.focus_prev(num=10)
+        elif key == 'g':
+            self.focus_first()
+        elif key == 'G':
+            self.focus_last()
+        elif key == 'r':
+            self.state.reload()
+        return key
+
+
+class LeftWindow(urwid.Frame):
+    def __init__(self, state):
+        self.state = state
+        self._wcontacts = ContactsWindow(self.state)
+        self._wsearch = Edit(('bold', '> '))
+
+        urwid.connect_signal(self._wsearch, 'postchange', self.on_search_text_changed)
+
+        super().__init__(self._wcontacts, footer=None)
+
+        if not self.state.cfg.partition_contacts:
+            self.header = urwid.Pile([urwid.Text(btxt('Contacts'), align='center'), urwid.Divider('-')])
+
+    def start_search(self):
+        self.footer = self._wsearch
+        self.focus_position = 'footer'
+        self._formatted_contacts = self._wcontacts.make_formatted_contacts_list()
+
+    def hide_search(self):
+        self.focus_position = 'body'
+        self.footer = None
+
+    def clear_search(self):
+        self._formatted_contacts = self._wcontacts.make_formatted_contacts_list()
+        self._wsearch.set_edit_text('')
+
+    def set_contacts(self, contacts):
+        self._wcontacts.set_contacts(contacts)
+
+    def on_search_text_changed(self, _sender, _old_text):
+        txt = self._wsearch.get_edit_text()
+
+        def contact_match(contact):
+            if isinstance(contact, str):
+                return True
+            return (txt.lower() in get_contact_name(contact).lower()) or (txt in get_contact_number(contact))
+
+        results = [c for c in self._formatted_contacts if contact_match(c)]
+        self.set_contacts(results)
+
+    def keypress(self, size, key):
+        key = super().keypress(size, key)
+        if key == '/':
+            self.start_search()
+        elif key == 'enter' and self.focus_position == 'footer':
+            self.hide_search()
+        elif key == 'esc':
+            self.hide_search()
+            self.clear_search()
+        return key
+
+
+# #############################################################################
+# ChatWindow
+# #############################################################################
+
+class BracketedPasteEdit(Edit):
+    def __init__(self, *args, multiline=False, **kwargs):
+        super().__init__(*args, multiline=True, **kwargs)
+        # Using `multiline=True` in super() and then passing on 'enter' keypress to it. A nicer alternative would be to pass '\n', but Edit does not handle it.
+        self._multiline_arg = multiline
+        self._paste_mode_on = False
+
+    def keypress(self, size, key):
+        if key == 'begin paste':
+            self._paste_mode_on = True
+        elif key == 'end paste':
+            self._paste_mode_on = False
+        elif key == 'enter' and not (self._multiline_arg or self._paste_mode_on):
+            return key
+        elif key == 'meta enter':
+            # Allow inserting new lines with Alt+Enter. This is not a part of "bracketed mode paste" functionality.
+            return super().keypress(size, 'enter')
+        else:
+            return super().keypress(size, key)
+
+
+class ChatWindow(urwid.Frame):
+    def __init__(self, state):
+        self.state = state
+        self.pop_up_action = None
+
+        self.search_mode = False
+        self.search_list = urwid.SimpleFocusListWalker([])
+
+        self._wsearch = urwid.ListBox(self.search_list)
+        self._wtitle = urwid.Text('')
+        self._wline = BracketedPasteEdit(('bold', '> '))
+        self._wdiv = urwid.Divider('-')
+        self._wlist = urwid.ListBox([])
+
+        self._w = urwid.WidgetPlaceholder(self._wlist)
+        wcontext = urwid.Frame(self._w, header=urwid.Divider('-'))
+        self._wcontext = urwid.Frame(wcontext, header=self._wtitle, footer=self._wdiv)
+
+        super().__init__(self._wcontext, footer=self._wline)
+
+        urwid.connect_signal(self._wline, 'postchange', self.on_edit_text_changed)
+        urwid.connect_signal(self.state, 'current_contact_changed', self.on_current_contact_changed)
+        urwid.connect_signal(self.state, 'dialog_requested', self.show_pop_up)
+        urwid.connect_signal(self.state.signal, 'receive_message', self.on_new_message)
+        urwid.connect_signal(self.state.signal, 'send_message', self.on_new_message)
+
+    def show_pop_up(self, widget):
+        def on_pop_up_closed(sender, accepted, result):
+            self.remove_pop_up()
+            urwid.emit_signal(self.state, 'dialog_finished', accepted, result)
+
+        wrapper = PopUpWrapper(widget)
+        urwid.connect_signal(wrapper, 'closed', on_pop_up_closed)
+
+        popup = urwid.Overlay(
+            wrapper,
+            self._w.original_widget,
+            align='center',
+            valign='middle',
+            width=('relative', 85),
+            height=('relative', 75),
+        )
+
+        self._w.original_widget = popup
+        return wrapper
+
+    def remove_pop_up(self, _sender=None):
+        if self.search_mode:
+            self._w.original_widget = self._wsearch
+        else:
+            self._w.original_widget = self._wlist
+
+    def on_edit_text_changed(self, _sender, _old_text):
+        txt = self.get_edit_text()
+        if txt.startswith('/'):
+            if not self.search_mode:
+                self.search_mode = True
+                self._w.original_widget = self._wsearch
+            self.search_in_chat()
+        elif self.search_mode:
+            self.search_mode = False
+            self._w.original_widget = self._wlist
+
+    def search_in_chat(self):
+        if not self.search_mode:
+            return
+
+        search_txt = self.get_edit_text()[1:]
+
+        def setx(i, txt):
+            txt.real_index = i
+            return txt
+
+        found = [
+            setx(i, txt) for i, txt in enumerate(self.state.current_chat) if search_txt in txt.original_widget.text
+        ]
+        self.search_list.clear()
+        self.search_list.extend(found)
+
+    def on_new_message(self, _envelope):
+        self.focus_chatlast()
+
+    def is_focused_input(self):
+        return self.focus_position == 'footer'
+
+    def is_focused_chat(self):
+        return self.focus_position == 'body'
+
+    def focus_input(self):
+        self.focus_position = 'footer'
+
+    def focus_chat(self):
+        self.focus_position = 'body'
+
+    def focus_chatfirst(self):
+        try:
+            self._w.original_widget.focus_position = 0
+        except IndexError:
+            pass
+
+    def focus_chatlast(self):
+        try:
+            self._w.original_widget.focus_position = len(self._w.original_widget.body) - 1
+        except IndexError:
+            pass
+
+    def get_edit_text(self):
+        return self._wline.get_edit_text()
+
+    def set_edit_text(self, txt, move_cursor_to_end=False):
+        self._wline.set_edit_text(txt)
+        if move_cursor_to_end:
+            self._wline.set_edit_pos(len(txt))
+
+    def set_title(self, contact):
+        num = contact.get("number")
+        if not num:
+            # see this: https://github.com/isamert/scli/issues/53#issuecomment-612571462
+            contacts = [
+                self.state.signal.get_contact(contact if isinstance(contact, str) else contact['number']) or contact
+                for contact in contact.get('members') or []
+            ]
+            num = ', '.join([get_contact_name(contact) for contact in contacts])
+
+        self._wtitle.set_text([('bold', get_contact_name(contact)), ' (', num, ')'])
+
+    def on_current_contact_changed(self, old, current, focus=False):
+        self.set_title(current)
+        listbox_set_body(self._wlist, self.state.current_chat)
+        self.focus_chatlast()
+
+    def get_current_envelope(self):
+        try:
+            if self.search_mode:
+                return self.search_list[self._wsearch.focus_position].envelope
+            return self.state.current_chat[self._wlist.focus_position].envelope
+        except (IndexError, AttributeError):
+            return None
+
+    def auto_complete_commands(self, txt):
+        splitted_txt = txt.split(' ')
+        if len(splitted_txt) > 1:
+            path, *messages = split_path(' '.join(splitted_txt[1:]))
+
+            # Check we are trying to complete a path
+            if len(messages) > 0 or not is_path(path):
+                return
+
+            fullpath = os.path.expanduser(path)
+            dirname = os.path.dirname(fullpath)
+            if not os.path.isdir(dirname):
+                return
+
+            possible_paths = [x for x in os.listdir(dirname) if os.path.join(dirname, x).startswith(fullpath)]
+            commonprefix = os.path.commonprefix(possible_paths)
+
+            self.state.set_notification('|'.join(possible_paths))
+
+            completion = ''
+            if commonprefix != '':
+                completion = os.path.join(os.path.dirname(path), commonprefix)
+            if os.path.isdir(os.path.expanduser(completion)) and not completion.endswith('/'):
+                completion = completion + '/'
+            if ' ' in completion:
+                completion = '"' + completion + '"'
+
+            if completion != '':
+                self.set_edit_text(splitted_txt[0] + ' ' + completion, True)
+        else:
+            all_commands = [
+                cmd
+                for cmd in [tupl[0][0] for tupl in self.state.commands.cmd_mapping]
+                if cmd.lower().startswith(txt[1:].lower())
+            ]
+            commonprefix = os.path.commonprefix(all_commands)
+
+            self.state.set_notification('{' + '|'.join(all_commands) + '}')
+
+            if len(all_commands) == 1:
+                self.set_edit_text(':' + all_commands[0] + ' ', True)
+            elif commonprefix != '':
+                self.set_edit_text(':' + commonprefix, True)
+
+    def keypress(self, size, key):
+        key = super().keypress(size, key)
+
+        if self.is_focused_input():
+            txt = self.get_edit_text()
+            if key == 'enter':
+                if txt.startswith(':'):
+                    if txt.strip() == ":":
+                        self.state.set_error('Command missing after `:`')
+                        return key
+                    cmd, *args = txt[1:].split(maxsplit=1)
+                    self.state.commands.exec(cmd, *args)
+                elif txt.startswith('/'):
+                    pass
+                elif txt.strip(' ') != '' and self.state.current_contact:
+                    self.state.signal.send_message(self.state.current_contact, txt)
+                self.set_edit_text('')
+            elif key == 'tab':
+                if txt.startswith(':'):
+                    self.auto_complete_commands(txt)
+                    return
+        elif not self.state.current_chat:
+            return key
+        elif self.is_focused_chat():
+            envelope = self.get_current_envelope()
+            if key in ('enter', 'l'):
+                if self.search_mode:
+                    real_index = self.search_list[self._wsearch.focus_position].real_index
+                    self.set_edit_text('')
+                    self._wlist.focus_position = real_index
+                else:
+                    self.state.commands.open_attach(envelope) or self.state.commands.open_url(envelope)
+            elif key == 'o':
+                self.state.commands.open_url(envelope) or self.state.commands.open_attach(envelope)
+            elif key in ('j', 'down'):
+                listbox_focus_next(self._w.original_widget)
+            elif key in ('k', 'up'):
+                listbox_focus_prev(self._w.original_widget)
+            elif key == 'g':
+                self.focus_chatfirst()
+            elif key == 'G':
+                self.focus_chatlast()
+            elif key == 'y':
+                txt = get_envelope_msg(envelope)
+                clip.put(self.state, txt)
+            elif key == 'd':
+                if self.search_mode:
+                    item = self.search_list[self._wsearch.focus_position]
+                    real_index = item.real_index
+                    del self.search_list[self._wsearch.focus_position]
+                    self.state.delete_message(envelope, real_index)
+                else:
+                    self.state.delete_message(envelope, self._wlist.focus_position)
+            elif key == 'r':
+                if self.state.delivery_status.get_str(envelope) != 'send_failed':
+                    # Only allow re-sending failed messages this way
+                    return
+                self.state.set_error('') # remove 'send-failed' status line
+                if self.search_mode:
+                    real_index = self.search_list[self._wsearch.focus_position].real_index
+                    del self.search_list[self._wsearch.focus_position]
+                    self.state.resend_message(envelope, real_index)
+                    self.search_list.append(self.state.current_chat[-1])
+                else:
+                    self.state.resend_message(envelope, self._wlist.focus_position)
+            elif key == 'i':
+                self.show_pop_up(MessageInfo(self.state, envelope))
+            elif key == 'q':
+                # TODO: quote (https://github.com/AsamK/signal-cli/issues/151)
+                pass
+        return key
+
+
+# #############################################################################
+# MainWindow
+# #############################################################################
+
+
+class MainWindow(urwid.Frame):
+    def __init__(self, state):
+        self.state = state
+
+        # ui
+        self.current_focus = 'contacts'
+        self._wleft = LeftWindow(self.state)
+        self._wchat = ChatWindow(self.state)
+        self._wstatus = urwid.Text("...")
+        self._wnotify_count = urwid.Text("...")
+
+        self._wrapped_left = NiceBox(self._wleft)
+        self._wrapped_chat = NiceBox(self._wchat)
+        self._widgets = [('weight', 1, self._wrapped_left), ('weight', 3, self._wrapped_chat)]
+        self._wcontext = urwid.Columns(widget_list=self._widgets, dividechars=0, focus_column=0)
+        super().__init__(self._wcontext, footer=urwid.Columns([self._wstatus, ('pack', self._wnotify_count)]))
+
+        # signals
+        urwid.connect_signal(self.state, 'current_contact_changed', self.on_current_contact_changed)
+        urwid.connect_signal(self.state, 'status_changed', self.on_status_changed)
+        urwid.connect_signal(self.state, 'reload_request', self.reload)
+        urwid.connect_signal(self.state, 'notification_changed', self.on_notification_changed)
+        urwid.connect_signal(self.state, 'error_changed', self.on_error_changed)
+        urwid.connect_signal(self.state.cfg, 'changed', self.on_cfg_changed)
+        urwid.connect_signal(self._wleft._wcontacts, 'notify_count_changed', self.on_notify_count_changed)
+
+    def reload(self):
+        self._wleft._wcontacts.reload()
+
+    def set_status(self, txt):
+        self._wstatus.set_text(txt)
+
+    def toggle_contacts(self):
+        if len(self._wcontext.contents) == 2:
+            if self.current_focus == 'contacts':
+                self.focus_next()
+
+            self._wcontext.contents.clear()
+            self._wcontext.contents.append((self._wrapped_chat, self._wcontext.options(width_amount=3)))
+        else:
+            self._wcontext.contents.insert(0, (self._wrapped_left, self._wcontext.options(width_amount=1)))
+
+    def body_pos(self):
+        if len(self._wcontext.contents) == 1:
+            return 0
+        return 1
+
+    def focus_input(self, cmd_mode=False, search_mode=False):
+        if self.current_focus == 'contacts' and self.state.cfg.contacts_autohide:
+            self.toggle_contacts()
+
+        self.focus_position = 'body'
+        self._wcontext.set_focus(self.body_pos())
+        self._wchat.focus_input()
+        self.current_focus = 'input'
+
+        if cmd_mode:
+            self._wchat.set_edit_text(':', True)
+        elif search_mode:
+            self._wchat.set_edit_text('/', True)
+
+    def focus_contacts(self):
+        if len(self._wcontext.contents) == 1:
+            self.toggle_contacts()
+
+        self.focus_position = 'body'
+        self._wcontext.set_focus(0)
+        self.current_focus = 'contacts'
+
+    def focus_chat(self):
+        self.focus_position = 'body'
+        self._wcontext.set_focus(self.body_pos())
+        self._wchat.focus_chat()
+        self.current_focus = 'chat'
+
+    def focus_next(self):
+        if self.current_focus == 'contacts':
+            self.focus_chat()
+            if self.state.cfg.contacts_autohide:
+                self.toggle_contacts()
+        elif self.current_focus == 'chat':
+            self.focus_input()
+        elif self.current_focus == 'input':
+            self.focus_contacts()
+
+    def focus_prev(self):
+        if self.current_focus == 'contacts':
+            self.focus_input()
+        elif self.current_focus == 'chat':
+            self.focus_contacts()
+        elif self.current_focus == 'input':
+            self.focus_chat()
+
+    def show_help_pop_up(self):
+        if self.current_focus == 'contacts':
+            self._wchat.show_pop_up(HelpDialog())
+        elif self.current_focus == 'chat':
+            self._wchat.show_pop_up(HelpDialog())
+
+    def on_current_contact_changed(self, old, current, focus=False):
+        if self.state.status_data is self.state.current_contact:
+            self.state.set_status('')
+
+        if focus:
+            self.focus_input()
+
+    def on_status_changed(self, status, data):
+        self.set_status(status)
+
+    def on_notification_changed(self, notif, data):
+        self.set_status(notif)
+
+    def on_error_changed(self, err):
+        self.set_status(err)
+
+    def on_cfg_changed(self, key, val):
+        if key == 'contacts_autohide':
+            self.toggle_contacts()
+
+    def on_notify_count_changed(self, count):
+        self._wnotify_count.set_text(btxt(str(count)))
+
+    def keypress(self, size, key):
+        key = super().keypress(size, key)
+
+        if key == 'tab':
+            self.focus_next()
+        elif key == 'shift tab':
+            self.focus_prev()
+        elif key == ':':
+            self.focus_input(cmd_mode=True)
+        elif key == '/' and self.current_focus == 'chat':
+            self.focus_input(search_mode=True)
+        elif key == '?':
+            self.show_help_pop_up()
+
+        return key
+
+
+# #############################################################################
+# state
+# #############################################################################
+
+
+class State:
+    signals = [
+        'current_contact_changed',
+        'status_changed',
+        'notification_changed',
+        'error_changed',
+        'dialog_requested',
+        'dialog_finished',
+        'reload_request',
+    ]
+
+    def __init__(self, cfg):
+        self.signal = Signal(cfg.username)
+        self.cfg = cfg
+        self.chats = collections.defaultdict(lambda: urwid.SimpleFocusListWalker([]))
+        self.error = ''
+        self.status = ''
+        self.notification = ''
+        self.status_data = None
+        self.current_contact = None
+        self.current_chat = None
+        self.loop = None
+        self.notify_counts = {}
+
+        self.commands = Commands(self)
+
+        self.delivery_status = DeliveryStatus(self.cfg.one_sided)
+
+        self.load_history()
+        atexit.register(self.save_history)
+
+        urwid.connect_signal(self.signal, 'receive_message', self.on_receive_message)
+        urwid.connect_signal(self.signal, 'receive_receipt', self.on_receive_receipt)
+        urwid.connect_signal(self.signal, 'send_message', self.on_send_message)
+        urwid.connect_signal(self.signal, 'sending_done', self.on_sending_done)
+        urwid.connect_signal(self.signal, 'daemon_started', self.on_daemon_started)
+        urwid.connect_signal(self.signal, 'groups_updated', self._update_contacts)
+        urwid.connect_signal(self.signal, 'daemon_error', self.on_daemon_error)
+
+    def reload(self):
+        self.signal.reload()
+        self._update_contacts()
+
+    def _update_contacts(self):
+        if self.current_contact is not None:
+            contact_id = get_contact_id(self.current_contact)
+            current_contact_reloaded = self.signal.get_contact(contact_id)
+            self.set_current_contact(current_contact_reloaded)
+        urwid.emit_signal(self, 'reload_request')
+
+    def on_daemon_started(self):
+        self.set_notification("Initializing signal-cli daemon... Done")
+        def clear_status_line(*_args):
+            self.set_notification("")
+        self.loop.set_alarm_in(2, clear_status_line)
+
+    def on_daemon_error(self, stderr_line):
+        if not self.signal.daemon.is_dbus_service_running:
+            self.set_notification(["ERROR: signal-cli daemon has stopped:\n   ", stderr_line, "\nRestart scli to restart the daemon."])
+
+    def set_current_contact(self, contact, focus=False):
+        old = self.current_contact
+        self.current_contact = contact
+        self.current_chat = self.chats[hash_contact(contact)]
+        urwid.emit_signal(self, 'current_contact_changed', old, contact, focus)
+
+    def set_status(self, status, data=None):
+        self.status = status
+        self.status_data = data
+        urwid.emit_signal(self, 'status_changed', status, data)
+
+    def set_notification(self, notif, data=None):
+        self.notification = notif
+        self.status_data = data
+        urwid.emit_signal(self, 'notification_changed', notif, data)
+
+    def set_error(self, err):
+        self.error = err
+        urwid.emit_signal(self, 'error_changed', err)
+
+    def set_contact_notify_count(self, contact_id, count):
+        if count == '+1':
+            count = self.notify_counts.get(contact_id, 0) + 1
+        self.notify_counts[contact_id] = count
+
+    def show_dialog(self, w):
+        urwid.emit_signal(self, 'dialog_requested', w)
+
+    def get_chat_for_envelope(self, envelope):
+        contact = self.signal.get_envelope_contact(envelope)
+        return self.chats[hash_contact(contact)]
+
+    def get_chat_index_for_envelope(self, chat, envelope):
+        dummy_widget = FocusableText('')
+        dummy_widget.envelope = envelope
+        index = bisect.bisect_left(chat, dummy_widget)
+        if index != len(chat) and chat[index].envelope == envelope:
+            return index
+        raise ValueError
+
+    def get_message_widget(self, contact_num, timestamp):
+        dummy_widget = FocusableText('')
+        dummy_widget.envelope = {'timestamp': timestamp}
+
+        def contact_id_gen():
+            yield contact_num
+            groups_w_contact = self.signal.groups_w_contact.get(contact_num, tuple())
+            for g in groups_w_contact:
+                yield g
+        for contact_id in contact_id_gen():
+            chat = self.chats[contact_id]
+            index = bisect.bisect_left(chat, dummy_widget)
+            if index != len(chat):
+                msg_widget = chat[index]
+                if get_envelope_time(msg_widget.envelope) == timestamp and msg_widget.envelope['source'] == self.cfg.username:
+                    return msg_widget
+
+        raise ValueError
+
+    def delete_message(self, envelope, index=None):
+        self.delivery_status.delete(envelope)
+
+        chat = self.get_chat_for_envelope(envelope)
+        try:
+            if index is None:
+                index = self.get_chat_index_for_envelope(chat, envelope)
+            del chat[index]
+        except (ValueError, IndexError):
+            pass
+
+    def resend_message(self, envelope, index=None):
+        self.delete_message(envelope, index)
+
+        contact = self.signal.get_envelope_contact(envelope)
+        message = get_envelope_msg(envelope)
+        attachments = get_envelope_attachments(envelope)
+        self.signal.send_message(contact, message, attachments)
+
+    def on_send_message(self, envelope):
+        msg_widget = self.print_sent_message(envelope)
+        self.delivery_status.set(msg_widget, 'sending')
+        if is_envelope_group_message(envelope):
+            group_id = get_envelope_contact_id(envelope)
+            group_members = self.signal.group_members[group_id]
+            self.delivery_status.set_group_members(msg_widget, group_members)
+
+    def on_receive_message(self, envelope):
+        logging.info('MESSAGE:%s', envelope)
+
+        msg = get_envelope_msg(envelope)
+        sender = self.signal.get_envelope_contact(envelope)
+        contact_name = get_contact_name(sender)
+
+        if sender != self.current_contact:
+            notif = 'New message from ' + contact_name + ': "' + msg + '"'
+            self.set_notification(notif, sender)
+
+        formatted_message = self.print_received_message(envelope)
+        self.commands.send_notification(contact_name, to_txt(formatted_message))
+
+    def on_receive_receipt(self, envelope):
+        # NOTE: Receipt message structure would be different then assumed here if the sent message was not a "sealed sender" one:
+        # https://github.com/AsamK/signal-cli/issues/346
+        receipt_contact = envelope['source']
+        receipt_message = envelope['receiptMessage']
+        if receipt_message['isDelivery']:
+            status = 'delivered'
+        elif receipt_message['isRead']:
+            status = 'read'
+        timestamps = receipt_message['timestamps']
+        when = receipt_message['when']
+        for timestamp in timestamps:
+            try:
+                msg_widget = self.get_message_widget(receipt_contact, timestamp)
+            except ValueError:
+                # Receipt is received before the msg_widget exists (e.g. before receiving a `sync` message for a message sent from another device)
+                self.delivery_status.buffer_receipt(timestamp, status, receipt_contact)
+            else:
+                self.delivery_status.set(msg_widget, status, when, receipt_contact)
+
+    def on_sending_done(self, envelope, status='sent', timestamp_adj=None):
+        try:
+            chat = self.get_chat_for_envelope(envelope)
+            index = self.get_chat_index_for_envelope(chat, envelope)
+            msg_widget = chat[index]
+        except (KeyError, ValueError, IndexError) as e:
+            logging.error("on_sending_done(): envelope = %s", envelope)
+            logging.exception(e)
+            return
+
+        self.delivery_status.set(msg_widget, status)
+
+        if status == 'send_failed':
+            self.set_error(f'Message "{get_envelope_msg(envelope)[:20]}…" failed to send. Press `r` on message to re-send.')
+            return
+
+        if timestamp_adj is not None:
+            self.delivery_status.adjust_timestamp(get_envelope_time(envelope), timestamp_adj)
+            msg_widget.envelope['timestamp'] = msg_widget.envelope['dataMessage']['timestamp'] = timestamp_adj
+
+        self.delivery_status.process_buffered_receipts(msg_widget)
+
+    def format_msg(self, message):
+        message = '\n'.join(textwrap.fill(line, width=self.cfg.wrap_at, expand_tabs=False, replace_whitespace=False) for line in message.splitlines())
+
+        if not self.cfg.use_formatting:
+            return ntxt(message)
+
+        i, m = 0, []
+        while i < len(message):
+            c = message[i]
+            if c in ('_', '*', '~'):
+                try:
+                    end = message[i + 1 :].index(c)
+                    sub = message[i + 1 : i + 1 + end]
+                    m.append(c)
+                    m.append((FORMAT_MAP[c], sub))
+                    m.append(c)
+                    i = i + 2 + end
+                except ValueError:
+                    m.append(c)
+                    i = i + 1
+            else:
+                m.append(c)
+                i = i + 1
+
+        if not m:
+            m = " "
+        return m
+
+    def print_received_message(self, envelope):
+        source = envelope['source']
+        is_group = is_envelope_group_message(envelope)
+        attachments = get_envelope_attachments(envelope)
+
+        txt = [btxt('>> ')]
+        if is_group or self.cfg.show_names:
+            contact = self.signal.get_contact(source)
+            if contact:
+                txt.append(ibtxt(get_contact_name(contact)))
+            else:
+                txt.append(btxt(source))
+            txt.append(btxt(' | '))
+
+        message = self.format_msg(get_envelope_msg(envelope))
+        attachments = get_envelope_attachments(envelope)
+
+        if attachments != []:
+            attachments_txt = ', '.join(
+                [get_attachment_name(attachment) + ' (' + str(i) + ')' for i, attachment in enumerate(attachments)]
+            )
+            txt.append(ntxt('[attached: ' + attachments_txt + '] '))
+
+        txt.append(message)
+        wtxt = FocusableText(txt)
+        wtxt.envelope = envelope
+        bisect.insort(self.get_chat_for_envelope(envelope), wtxt)
+
+        return txt[1:]
+
+    def print_sent_message(self, envelope):
+        message = self.format_msg(get_envelope_msg(envelope))
+        attachments = get_envelope_attachments(envelope)
+
+        if not attachments:
+            txt = [message]
+        else:
+            anames = ', '.join([get_attachment_name(attachment) for attachment in attachments])
+            txt = [ntxt('[attached: '),
+                    itxt(anames),
+                    ntxt('] '),
+                    ntxt(message)]
+
+        status_markup = self.delivery_status.get_markup_for_envelope(envelope)
+
+        if self.cfg.one_sided:
+            align = 'left'
+            markup = [status_markup,
+                    ' ',
+                    btxt('You | ') if self.cfg.show_names else '',
+                    txt]
+        else:
+            align = 'right'
+            markup = [txt,
+                    btxt(' | You') if self.cfg.show_names else '',
+                    ' ',
+                    status_markup]
+
+        wtxt = FocusableText(markup, align=align)
+        wtxt.envelope = envelope
+        bisect.insort(self.get_chat_for_envelope(envelope), wtxt)
+
+        return wtxt
+
+    def save_history(self):
+        if not self.cfg.save_history:
+            return
+
+        envelopes = [x.envelope for vals in self.chats.values() for x in vals]
+        notify_counts = {contact_id: count for (contact_id, count) in self.notify_counts.items() if count != 0 and contact_id != "NULL"}
+            # TODO: remove the possibility of contact_id being set to "NULL" anywhere
+        items = {'envelopes': envelopes, 'notify_counts': notify_counts, 'delivery_status': self.delivery_status.dump()}
+
+        class JSONSetEncoder(json.JSONEncoder):
+            def default(self, o):
+                try:
+                    return json.JSONEncoder.default(self, o)
+                except TypeError:
+                    if isinstance(o, set):
+                        return tuple(o)
+                    raise
+
+        with open(self.cfg.save_history, 'w') as history_file:
+            json.dump(items, history_file, ensure_ascii=False, cls=JSONSetEncoder)
+
+    def load_history(self):
+        if not self.cfg.save_history or not os.path.exists(self.cfg.save_history):
+            return
+
+        with open(self.cfg.save_history, 'r') as history_file:
+            history = json.load(history_file)
+
+        self.delivery_status.load(history.get('delivery_status', {}))
+
+        for envelope in history['envelopes']:
+            if is_envelope_outgoing(envelope):
+                self.print_sent_message(envelope)
+            else:
+                self.print_received_message(envelope)
+
+        self.notify_counts = history.get('notify_counts', {})
+
+
+urwid.register_signal(State, State.signals)
+
+
+# #############################################################################
+# DeliveryStatus
+# #############################################################################
+
+
+class DeliveryStatus:
+
+    DelivReadConts = collections.namedtuple('DelivReadConts', ['delivered', 'read'])
+
+    class DetailedStatus:
+
+        __slots__ = ("str", "when", "grp_memb_remain_un")
+
+        def __init__(self, status='', when=0, grp_memb_remain_un=None):
+            self.str = status
+            self.when = when
+            if grp_memb_remain_un:
+                self.grp_memb_remain_un = DeliveryStatus.DelivReadConts(*(set(contacts) if contacts else set() for contacts in grp_memb_remain_un))
+
+        def set_grp_memb_status(self, grp_member, status):
+            try:
+                grp_memb_remain_un = self.grp_memb_remain_un
+            except AttributeError:
+                return None
+            grp_memb_remaining = getattr(grp_memb_remain_un, status)
+            try:
+                grp_memb_remaining.remove(grp_member)
+            except (KeyError, AttributeError):
+                # This happens when 'read' receipt arrives before 'delivered', or after getting multiple copies of the same receipt message.
+                grp_memb_remaining = grp_memb_remain_un.delivered
+                try:
+                    grp_memb_remaining.remove(grp_member)
+                except (KeyError, AttributeError):
+                    return None
+                if not grp_memb_remain_un.delivered and grp_memb_remain_un.read:
+                    return 'delivered'
+
+            if status == 'delivered':
+                remaining_unread = grp_memb_remain_un.read
+                remaining_unread.add(grp_member)
+                if grp_memb_remaining:
+                    return None
+                return status
+
+            if any(grp_memb_remain_un):
+                return None
+            del self.grp_memb_remain_un
+            return status
+
+        def serialize(self):
+            ret = []
+            for attr in self.__slots__:
+                val = getattr(self, attr, None)
+                ret.append(val)
+
+            # Skip empty values at the end
+            for ind, val in enumerate(reversed(ret)):
+                if val:
+                    if ind != 0:
+                        ret = ret[:-ind]
+                    break
+            else:
+                ret = []
+
+            return ret
+
+
+    def __init__(self, one_sided):
+        self._one_sided = one_sided
+        self._status_map = {}
+        self._buffered = {}
+        self._init_markup_text()
+        self.MAX_GROUP_SIZE = 15
+
+    def _init_markup_text(self):
+        status_text = {
+                # Order matters: 'higher' status can't be 're-set' to a 'lower' one.
+                '':                 '>>' if self._one_sided else '<<',
+                'sending':          '',
+                'send_failed':      '✖',
+                'sent':             '✓',
+                'delivered':        '✓✓',
+                'read':             '✓✓',
+                'ignore_receipts':  '✓',
+                }
+        status_text_len = max([len(text) for text in status_text.values()])
+
+        self._markup_map = {}
+        for status, text in status_text.items():
+            padding = ' ' * (status_text_len - len(text))
+            text = (text + padding) if self._one_sided else (padding + text)
+            self._markup_map[status] = ('bold', text) if status not in ('read', 'ignore_receipts') else ('strikethrough', text)
+
+        self._markup_index = {key: ind for ind, key in enumerate(status_text.keys())}
+
+    def get_markup(self, status_str):
+        return self._markup_map[status_str]
+
+    def get_markup_for_envelope(self, envelope):
+        status_str = self.get_str(envelope)
+        return self._markup_map[status_str]
+
+    def get_detailed(self, envelope):
+        return self._status_map.get(get_envelope_time(envelope), self.DetailedStatus())
+
+    def get_str(self, envelope):
+        return self.get_detailed(envelope).str
+
+    def adjust_timestamp(self, timestamp_orig, timestamp_adj):
+        self._status_map[timestamp_adj] = self._status_map.pop(timestamp_orig)
+
+    def _set_widget_status_markup(self, msg_widget, status):
+        status_markup = self._markup_map[status]
+        markup = get_text_markup(msg_widget.original_widget)
+        markup[0 if self._one_sided else -1] = status_markup
+        msg_widget.original_widget.set_text(markup)
+
+    def set(self, msg_widget, status, when=None, receipt_contact=None):
+        envelope = msg_widget.envelope
+        timestamp = get_envelope_time(envelope)
+        curr_status_detailed = self._status_map.setdefault(timestamp, self.DetailedStatus())
+        curr_status = curr_status_detailed.str
+
+        if self._markup_index[status] <= self._markup_index[curr_status]:
+            return
+
+        if receipt_contact is not None and is_envelope_group_message(envelope):
+            status = curr_status_detailed.set_grp_memb_status(receipt_contact, status)
+            if status is None:
+                return
+
+        curr_status_detailed.str = status
+        if when is not None:
+            curr_status_detailed.when = when
+        self._set_widget_status_markup(msg_widget, status)
+
+    def set_group_members(self, msg_widget, group_members):
+        envelope = msg_widget.envelope
+        status_detailed = self._status_map[get_envelope_time(envelope)]
+
+        if len(group_members) > self.MAX_GROUP_SIZE:
+            self.set(msg_widget, 'ignore_receipts')
+            return
+
+        status_detailed.grp_memb_remain_un = self.DelivReadConts(set(group_members), set())
+
+    def buffer_receipt(self, timestamp, status, contact):
+        buffered = self._buffered.setdefault(timestamp, self.DelivReadConts(set(), set()))
+        buffered_contacts = getattr(buffered, status)
+        buffered_contacts.add(contact)
+
+    def process_buffered_receipts(self, msg_widget):
+        timestamp = get_envelope_time(msg_widget.envelope)
+        buffered = self._buffered.get(timestamp)
+        if buffered is None:
+            return
+        status_detailed = self._status_map[timestamp]
+        for status in buffered._fields:
+            buffered_contacts = getattr(buffered, status) or []
+            for contact in buffered_contacts:
+                self.set(msg_widget, status, receipt_contact=contact)
+        del self._buffered[timestamp]
+
+    def delete(self, envelope):
+        try:
+            del self._status_map[get_envelope_time(envelope)]
+        except KeyError:
+            pass
+
+    def dump(self):
+        ret = {}
+        for timestamp, status_detailed in self._status_map.items():
+            status_serialized = status_detailed.serialize()
+            if status_serialized:
+                ret[timestamp] = status_serialized
+        return ret
+
+    def load(self, status_map):
+        for timestamp, status_detailed in status_map.items():
+            self._status_map[int(timestamp)] = self.DetailedStatus(*status_detailed)
+
+
+# #############################################################################
+# main
+# #############################################################################
+
+class BracketedPasteMode:
+    """Context manager for enabling/disabling bracketed paste mode."""
+    # Same as tdryer's code
+    # https://github.com/urwid/urwid/issues/119#issuecomment-761424363
+    def __enter__(self):
+        sys.stdout.write('\x1b[?2004h')
+    def __exit__(self, exc_type, exc_value, traceback):
+        sys.stdout.write('\x1b[?2004l')
+
+def link_device(device_name):
+    try:
+        import pyqrcode
+    except ImportError:
+        sys.exit("Error: `pyqrcode` module not found. Please install it with `pip install pyqrcode`")
+    print("Retrieving QR code, please wait...")
+    cmd_link = ['signal-cli', 'link', '-n', device_name]
+    pipe_link = Popen(cmd_link, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    line = pipe_link.stdout.readline().strip()
+
+    if line.startswith('tsdevice:/'):
+        qr = pyqrcode.create(line, version=10)
+        print(qr.terminal(module_color='black', background='white'))
+    else:
+        sys.exit('Encountered an error while linking: \n{}\n{}'.format(line, pipe_link.stderr.read()))
+
+    print('Scan the QR code with Signal app on your phone and wait for the linking process to finish.\nYou might need to zoom out for the QR code to display properly.\nThis may take a moment...')
+
+    pipe_link.wait()
+    if pipe_link.returncode != 0:
+        sys.exit('Something went wrong while linking: {}'.format(pipe_link.stderr.read()))
+
+    print('Receiving data for the first time...')
+
+    cmd_receive = 'signal-cli -u {} receive'.format(detect_user_name())
+    pipe_receive = Popen(cmd_receive.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+
+    for receive_out in iter(pipe_receive.stdout.readline, ''):
+        print(receive_out, end='')
+
+    pipe_receive.wait()
+    if pipe_receive.returncode != 0:
+        sys.exit('Something went wrong receiving: {}'.format(pipe_receive.stderr.read()))
+
+    print('Done.')
+    sys.exit(0)
+
+def detect_user_name():
+    ulist = []
+    for folder in [SIGNALCLI_DATA_FOLDER, SIGNALCLI_LEGACY_DATA_FOLDER]:
+        try:
+            users = [x for x in os.listdir(folder) if os.path.isfile(os.path.join(folder, x))]
+            ulist.extend(users)
+        except FileNotFoundError:
+            pass
+
+    if not ulist:
+        print("Couldn't find any linked device.", file=sys.stderr)
+        sys.exit(1)
+    elif len(ulist) == 1:
+        return ulist[0]
+    else:
+        print("Use one of these:", file=sys.stderr)
+        for u in ulist:
+            print("\tscli --username=" + u, file=sys.stderr)
+        sys.exit(1)
+
+class CustomDefaultsHelpFormatter(argparse.ArgumentDefaultsHelpFormatter):
+    """Show default values in `--help` output for custom-set default values.
+
+    Modified `argparse.ArgumentDefaultsHelpFormatter` class that adds
+    `(default: %(default)s)`
+    to `--help` output, but not for the "implicit" defaults: `None` for `action=store` arguments (default `action` for `argparse.add_argument()`), and `True` for `action=store_true` arguments.
+    """
+    def _get_help_string(self, action):
+        if action.default in (None, False):
+            return action.help
+        return super()._get_help_string(action)
+
+def make_arg_parser():
+    parser = argparse.ArgumentParser(
+            formatter_class=CustomDefaultsHelpFormatter,
+    )
+
+    subparser = parser.add_subparsers(
+            description='Use `%(prog)s <subcommand> -h` for additional help.',
+            dest='subcommand',
+    )
+    parser_link = subparser.add_parser(
+            'link',
+            help='Link to an existing device.',
+            formatter_class=CustomDefaultsHelpFormatter,
+    )
+    parser_link.add_argument(
+            '-n',
+            '--name',
+            default='scli',
+            help='Device name that will be shown in "Linked devices" list on master device.',
+    )
+
+    parser.add_argument(
+        '-c',
+        '--config-file',
+        default=SCLI_CFG_FILE,
+        help='Path to the config file. Arguments on the command line override settings in the file.',
+    )
+
+    parser.add_argument(
+        '-u',
+        '--username',
+        help='Phone number starting with "+" followed by country code. If not given, %(prog)s will look for an existing profile in signal-cli\'s data dir.'
+    )
+
+    parser.add_argument(
+        '-N',
+        '--notification-command',
+        default="notify-send scli '%s - %m'",
+        help='Command to run when a new message arrives. %%m is replaced with the message, %%s is replaced with the sender.',
+    )
+
+    parser.add_argument(
+        '-o',
+        '--open-command',
+        default='xdg-open "%u"',
+        help='File/URL opener command. %%u is replaced with the path.',
+    )
+
+    parser.add_argument(
+        '-e',
+        '--editor-command',
+        help='External text editor command. If not set, %(prog)s checks among `$VISUAL`, `$EDITOR`, `sensible-editor` etc.',
+    )
+
+    parser.add_argument(
+        '-G',
+        '--clipboard-get-command',
+        help='Command used by `:attachClip` to get a list of files to send as attachments. Should return one absolute file path per line. If not set, `xclip` is used.'
+    )
+
+    parser.add_argument(
+        '-P',
+        '--clipboard-put-command',
+        help='Command to put text on clipboard. %%s will be replaced with the text. If not set, `xclip` is used.',
+    )
+
+    parser.add_argument(
+        '-s',
+        '--save-history',
+        nargs='?',
+        const=SCLI_HISTORY_FILE,
+        default=False,
+        metavar='HISTORY_FILE',
+        help='Enable conversations history. History is saved in plain text. (default %(metavar)s: %(const)s)',
+    )
+
+    parser.add_argument(
+        '--log-file',
+        default=SCLI_LOG_FILE,
+        help='Path to the log file. If not explicitly specified, logs are written only if `--debug` or `--save-history` are on.',
+    )
+
+    parser.add_argument(
+        '-n',
+        '--enable-notifications',
+        action='store_true',
+        help='Enable desktop notifications. (Also see --notification-command)',
+    )
+
+    parser.add_argument(
+        '-f',
+        '--use-formatting',
+        action='store_true',
+        help='Use _italic_, *bold*, ~strikethrough~ formatting in messages.',
+    )
+
+    parser.add_argument(
+        '-w',
+        '--wrap-at',
+        type=int,
+        default=300,
+        help='Wrap message lines longer then this value',
+    )
+
+    parser.add_argument(
+        '--one-sided',
+        action='store_true',
+        help='Left-align both sent and received messages',
+    )
+
+    parser.add_argument(
+        '--show-names',
+        action='store_true',
+        help="Show contacts' names next to messages, even in one-to-one conversations.",
+    )
+
+    parser.add_argument(
+        '--group-contacts',
+        action='store_true',
+        help=argparse.SUPPRESS,
+        # The option name can be confusing, e.g. in:
+        # https://github.com/isamert/scli/issues/95#issuecomment-757502271
+        # Keep for backwards compatiability, but don't show in `--help`. Use `--partition-contacts` instead.
+    )
+
+    parser.add_argument(
+        '--partition-contacts',
+       action='store_true',
+        help='Separate groups and individual contacts in the contacts list.',
+    )
+
+    parser.add_argument(
+        '--contacts-autohide',
+        action='store_true',
+        help='Autohide the contacts pane when it loses focus.',
+    )
+
+    parser.add_argument(
+        '--contacts-sort-alpha',
+        action='store_true',
+        help='Sort contacts alphabetically. (default: sort by the most recent message)',
+    )
+
+    parser.add_argument(
+        '--no-daemon',
+        action='store_true',
+        help='Do not start signal-cli daemon. Only useful for debugging scli.',
+    )
+
+    parser.add_argument(
+        '--debug',
+        action='store_true',
+        help='Verbose log output.',
+    )
+
+    parser.add_argument(
+            '--version',
+            action='version',
+            version='%(prog)s ' + __version__
+    )
+
+    return parser
+
+def get_cfg_file_args(file_obj):
+    # Alternatively, can override `ArgumentParser.convert_arg_line_to_args()`
+    ret = {}
+    for line in file_obj:
+        line = line.strip()
+        if not line or line.startswith('#'):
+            continue
+        name, _, val = line.partition("=")
+        ret[name.strip()] = val.strip()
+    return ret
+
+def parse_cfg_file(parser, cli_args):
+    cfg_file_path = os.path.expanduser(cli_args.config_file)
+    try:
+        with open(cfg_file_path) as cfg_f:
+            cfg_f_args_dict = get_cfg_file_args(cfg_f)
+    except FileNotFoundError:
+        if cli_args.config_file == parser.get_default('config_file'):
+            return cli_args
+        sys.exit("Config file not found: " + cfg_file_path)
+
+    args_list = []
+    for arg_name, arg_val in cfg_f_args_dict.items():
+        try:
+            cli_arg_val = getattr(cli_args, arg_name.replace('-', '_'))
+        except AttributeError:
+            logging.error("Error while parsing config file: unrecognized argument: %s", arg_name)
+            continue
+        arg_name = '--' + arg_name
+        if isinstance(cli_arg_val, bool):
+            if arg_val.lower() in ('true', 't', 'yes', 'y'):
+                args_list.append(arg_name)
+        else:
+            args_list.extend((arg_name, arg_val))
+    # Need to actually parse the arguments (rather then simply updating args.__dict__), so that the `type`s would be set correctly.
+    cfg_file_args = parser.parse_args(args_list)
+    parser.parse_args(namespace=cfg_file_args)
+    return cfg_file_args
+
+def parse_args():
+    parser = make_arg_parser()
+    args = parser.parse_args()
+
+    if args.subcommand == 'link':
+        link_device(args.name)
+        sys.exit()
+
+    if args.config_file:
+        args = parse_cfg_file(parser, args)
+    if args.editor_command is None:
+        args.editor_command = get_default_editor()
+    if not args.username:
+        args.username = detect_user_name()
+    args.partition_contacts = args.partition_contacts or args.group_contacts
+    del args.__dict__['group_contacts']
+    return args
+
+
+def main():
+    args = parse_args()
+
+    if args.debug:
+        logging.basicConfig(filename=args.log_file, level=logging.DEBUG)
+    elif args.save_history or args.log_file != SCLI_LOG_FILE:
+        logging.basicConfig(filename=args.log_file, level=logging.WARNING)
+    else:
+        logging.disable()
+    logging.info("scli %s", __version__)
+
+    if not os.path.exists(SCLI_DATA_FOLDER):
+        try:
+            os.makedirs(SCLI_DATA_FOLDER)
+        except OSError as exc:
+            if not (exc.errno == errno.EEXIST and os.path.isdir(SCLI_DATA_FOLDER)):
+                print("Can't create data directory.", file=sys.stderr)
+                sys.exit(3)
+
+    state = State(ObservableConfig(args))
+    window = MainWindow(state)
+
+    loop = urwid.MainLoop(window, palette=PALETTE)
+    state.loop = state.signal.daemon._urwid_loop = loop
+
+    if not args.no_daemon:
+        proc = state.signal.start_daemon()
+        atexit.register(proc.kill)
+        state.set_notification("Initializing signal-cli daemon... ")
+        if args.debug:
+            state.signal.daemon.get_signal_cli_version(
+                    callback=lambda ver: logging.info(ver)
+                    )
+
+    with BracketedPasteMode():
+        loop.run()
+
+
+__version__ = get_version()
+
+if __name__ == "__main__":
+    main()

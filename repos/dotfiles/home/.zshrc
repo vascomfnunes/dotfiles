@@ -36,6 +36,10 @@ zinit wait lucid atload"zicompinit; zicdreplay" blockf for \
 	zinit wait lucid atload'_zsh_autosuggest_start' light-mode for \
 		zsh-users/zsh-autosuggestions
 
+zinit load junegunn/fzf-bin
+zinit ice lucid wait'0'
+zinit light joshskidmore/zsh-fzf-history-search
+
 # This needs to come first to use homebrew packages over system ones
 export PATH="/usr/local/bin:$PATH"
 
@@ -105,7 +109,7 @@ function killport() {
 [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
 
 # Fuzzy finder
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 #===============================================================================
 #                             Sources

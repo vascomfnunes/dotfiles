@@ -1,0 +1,3 @@
+#!/bin/bash
+
+scli -n -f -o 'open -a Preview "%u"' -N 'osascript -e "display notification \"test notification!\""'
