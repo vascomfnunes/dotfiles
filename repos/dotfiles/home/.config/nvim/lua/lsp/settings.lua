@@ -1,22 +1,38 @@
 local lsp = require 'lspconfig'
-local completion = require 'completion'
 local remap = vim.api.nvim_set_keymap
-local bo = vim.bo
-local g = vim.g
+local saga = require 'lspsaga'
 
+-- Auto completion configuration
+require'compe'.setup {
+  enabled = true,
+  debug = false,
+  min_length = 1,
+  preselect = 'enable',
+  allow_prefix_unmatch = false,
+
+  source = {path = true, buffer = true, ultisnips = true, nvim_lsp = true}
+}
+
+remap('i', '<c-space>', 'compe#complete()', {expr = true, silent = true})
+remap('i', '<cr>', "compe#confirm(lexima#expand('<LT>CR>', 'i'))", {expr = true, silent = true})
+remap('i', '<c-e>', "compe#close('<c-e>')", {expr = true, silent = true})
+
+-- Saga configuration
+saga.init_lsp_saga{
+  use_saga_diagnostic_handler = true,
+  use_saga_diagnostic_sign = true
+}
+
+remap('n', '[e', ':LspSagaDiagJumpPrev<cr>', {silent = true})
+remap('n', ']e', ':LspSagaDiagJumpNext<cr>', {silent = true})
+
+-- Attack lsp client
 local on_attach = function(client)
   print("'" .. client.name .. "' language server started");
 
   if client.config.flags then
     client.config.flags.allow_incremental_sync = true
   end
-
-  completion.on_attach(client)
-  bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
-  g.completion_matching_strategy_list = {"exact", "substring", "fuzzy"}
-  g.completion_trigger_character = {'.', '::'}
-  g.completion_trigger_on_delete = 1
-  g.completion_enable_snippet = "UltiSnips"
 
   remap('n', 'gh', '<cmd>lua vim.lsp.buf.hover()<CR>', {})
   remap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<CR>', {})

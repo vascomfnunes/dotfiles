@@ -22,7 +22,8 @@ local function load()
   return require('packer').startup(function()
     use {'wbthomason/packer.nvim', opt = true}
     use 'neovim/nvim-lspconfig'
-    use 'nvim-lua/completion-nvim'
+    use 'glepnir/lspsaga.nvim'
+    use 'hrsh7th/nvim-compe'
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
     use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
