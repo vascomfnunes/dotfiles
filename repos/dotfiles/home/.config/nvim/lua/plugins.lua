@@ -25,7 +25,7 @@ local function load()
     use 'glepnir/lspsaga.nvim'
     use 'hrsh7th/nvim-compe'
     use {'lambdalisue/vim-gista', cmd = 'Gista'}
-    use 'kyazdani42/nvim-web-devicons'
+    -- use 'kyazdani42/nvim-web-devicons'
     use {'nvim-telescope/telescope.nvim', opt = true, requires = {'nvim-lua/popup.nvim', 'nvim-lua/plenary.nvim'}}
     use {'nvim-telescope/telescope-fzy-native.nvim', opt = true, requires = 'nvim-telescope/telescope.nvim'}
     use {'tjdevries/express_line.nvim', opt = true, requires = 'nvim-lua/plenary.nvim'}
