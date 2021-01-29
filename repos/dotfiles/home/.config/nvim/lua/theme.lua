@@ -9,7 +9,7 @@ local function set_background_toggle_keymaps()
 end
 
 function M.init()
-  cmd('colorscheme vimbox')
+  cmd('colorscheme edge')
   o.termguicolors = true
   set_background_toggle_keymaps()
 end

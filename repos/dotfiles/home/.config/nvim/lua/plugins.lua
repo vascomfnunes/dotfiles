@@ -193,7 +193,7 @@ local function load()
     use {'HerringtonDarkholme/yats.vim', ft = 'typescript'}
     use {'posva/vim-vue', ft = 'vue'}
     use {'noprompt/vim-yardoc', ft = 'ruby'}
-    use 'vascomfnunes/vimbox'
+    use 'sainnhe/edge'
   end)
 end
 
