@@ -11,12 +11,14 @@
 # * *******************************************/
 
 alias c='clear'
+alias g='lazygit'
 # alias w3m='W3M_IMG2SIXEL=/Users/vasco.nunes/bin/libsixel/converters/img2sixel /Users/vasco.nunes/bin/w3m -sixel -o display_image=1'
 alias vim='$EDITOR'
 alias e="$EDITOR"
 alias nvim='$HOME/bin/nvim/bin/nvim'
 alias tmux='tmux -2'
 alias vimdiff='$EDITOR -d'
+alias top='bpytop'
 alias firefox="open -a '/Applications/Firefox Developer Edition.app'"
 alias cp='cp -i'
 alias mv='mv -i'
@@ -74,7 +76,6 @@ alias pw='pwgen -sync 16 -1 | pbcopy && echo Password copied to the clipboard.'
 alias music='ncmpcpp'
 
 # Git
-alias g="git"
 alias gP="git push"
 alias gup="git push -f origin HEAD^:master"
 alias gc="git commit"
