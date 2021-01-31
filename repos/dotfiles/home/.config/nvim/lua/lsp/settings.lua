@@ -19,7 +19,6 @@ remap('i', '<c-e>', "compe#close('<c-e>')", {expr = true, silent = true})
 
 -- Saga configuration
 saga.init_lsp_saga{
-  use_saga_diagnostic_handler = true,
   use_saga_diagnostic_sign = true
 }
 

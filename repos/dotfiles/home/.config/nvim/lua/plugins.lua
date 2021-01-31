@@ -81,7 +81,8 @@ local function load()
     use {'tpope/vim-rails', opt = true, ft = 'ruby'}
     use 'tpope/vim-surround'
     use {'szw/vim-maximizer', cmd = 'MaximizerToggle'}
-    use 'tpope/vim-commentary'
+    -- use 'tpope/vim-commentary'
+    use 'b3nj5m1n/kommentary'
     use {
       'puremourning/vimspector',
       config = function()

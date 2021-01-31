@@ -9,6 +9,7 @@ require 'plugins.fugitive'
 require 'plugins.telescope'
 require 'plugins.floaterm'
 require'gitsigns'.setup()
+require 'plugins.kommentary'
 require'theme'.init()
 -- Colorizer should be required after the theme settings
 require'colorizer'.setup()
