@@ -22,14 +22,6 @@ local git_branch = subscribe.buf_autocmd("el_git_branch", "BufEnter", function(w
   end
 end)
 
--- local git_changes = subscribe.buf_autocmd("el_git_changes", "BufWritePost", function(window, buffer)
---   return extensions.git_changes(window, buffer)
--- end)
-
-local clock = function()
-  return os.date(" %a %d/%m | %I:%M ")
-end
-
 require('el').setup {
   generator = function(_, _)
     return {
@@ -38,17 +30,12 @@ require('el').setup {
       ' ',
       sections.split,
       git_icon,
-      -- sections.maximum_width(builtin.responsive_file(140, 90), 0.30),
       sections.maximum_width(builtin.file_relative, 0.30),
       sections.collapse_builtin {' ', builtin.modified_flag},
       sections.split,
-      -- git_changes,
       builtin.line_with_width(3),
-      -- ':',
-      -- builtin.column_with_width(2),
       sections.collapse_builtin {'[', builtin.help_list, builtin.readonly_list, ']'},
-      builtin.filetype,
-      clock
+      builtin.filetype
     }
   end
 }
