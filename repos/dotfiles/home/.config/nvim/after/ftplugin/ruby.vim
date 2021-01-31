@@ -14,6 +14,7 @@ endfunction
 inoremap <expr> § fzf#complete({
       \ 'source':  'rails routes',
       \ 'reducer': '<sid>parse_route'})
+
 nnoremap <leader>rm :Emodel<space>
 nnoremap <leader>rc :Econtroller<space>
 nnoremap <leader>rv :Eview<space>
@@ -34,9 +35,6 @@ nmap <leader>rgs :RubygemsSearch<space>
 
 " Edit alternate files on Rails
 nnoremap <leader>a :A<CR>
-
-" Linting and fixing
-nmap <leader>cl :Dispatch rubocop %<cr>
 
 " Insert debug breakpoint
 nnoremap <leader>cb obinding.pry<esc>==:w<cr>

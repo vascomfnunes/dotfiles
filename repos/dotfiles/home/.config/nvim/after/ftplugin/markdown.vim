@@ -1,11 +1,7 @@
-" setlocal conceallevel=2
 setlocal spell
+setlocal wrap
+setlocal linebreak
 setlocal textwidth=80
-" setlocal foldlevel=999
-" setlocal foldenable
-" syn spell toplevel
-" syn case ignore
-" syn sync linebreaks=1
 
 " Markdown TOC
 nnoremap <silent><Leader>mt :GenTocGitLab<CR>
