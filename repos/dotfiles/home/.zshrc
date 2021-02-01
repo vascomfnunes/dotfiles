@@ -12,7 +12,7 @@
 # * Creation Date - Nov 24 2020
 # * *******************************************/
 
-export TERM='xterm-256color'
+# export TERM='xterm-256color'
 
 ## Added by Zinit's installer
 if [[ ! -f $HOME/.zinit/bin/zinit.zsh ]]; then

@@ -68,7 +68,7 @@ color listnormal         color241 default
 color listnormal_unread  color248 default
 color listfocus          black yellow
 color listfocus_unread   black yellow
-color info               color11   color236
+color info               color11   default
 color article            color8   default
 
 # highlights
