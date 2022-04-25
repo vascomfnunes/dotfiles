@@ -473,9 +473,9 @@ vim.keymap.set('n', '<leader>gb', function()
 end)
 
 -- Copilot
-vim.keymap.set('n', '<leader>ce', ':<Cmd>Copilot enable<cr>') -- enable copilot
-vim.keymap.set('n', '<leader>cd', ':<Cmd>Copilot disable<cr>') -- disable copilot
-vim.keymap.set('n', '<leader>cs', ':<Cmd>Copilot status<cr>') -- copilot status
+vim.keymap.set('n', '<leader>ce', ':Copilot enable<cr>') -- enable copilot
+vim.keymap.set('n', '<leader>cd', ':Copilot disable<cr>') -- disable copilot
+vim.keymap.set('n', '<leader>cs', ':Copilot status<cr>') -- copilot status
 
 vim.keymap.set('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
