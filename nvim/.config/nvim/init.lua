@@ -4,6 +4,25 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- disable some builtin vim plugins
+vim.g.loaded_gzip = 1
+vim.g.loaded_zip = 1
+vim.g.loaded_zipPlugin = 1
+vim.g.loaded_tar = 1
+vim.g.loaded_tarPlugin = 1
+vim.g.loaded_getscript = 1
+vim.g.loaded_getscriptPlugin = 1
+vim.g.loaded_vimball = 1
+vim.g.loaded_vimballPlugin = 1
+vim.g.loaded_2html_plugin = 1
+vim.g.loaded_matchit = 1
+vim.g.loaded_matchparen = 1
+vim.g.loaded_logiPat = 1
+vim.g.loaded_rrhelper = 1
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.g.loaded_netrwSettings = 1
+
 -- Python provider
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 
@@ -108,10 +127,8 @@ require('packer').startup(function()
   use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = function()
-      require('gitsigns').setup()
-    end,
   }
+
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
     requires = {
@@ -119,28 +136,23 @@ require('packer').startup(function()
       'nvim-telescope/telescope-fzy-native.nvim',
     },
   }
+
   use {
     'neovim/nvim-lspconfig',
     'williamboman/nvim-lsp-installer',
   }
 
-  use 'hrsh7th/cmp-nvim-lsp'
-
-  use 'hrsh7th/cmp-buffer'
-
-  use 'hrsh7th/cmp-path'
-
-  use 'hrsh7th/cmp-cmdline'
-
-  use 'hrsh7th/nvim-cmp'
-
-  use 'f3fora/cmp-spell'
-
-  use 'L3MON4D3/LuaSnip'
-
-  use 'saadparwaiz1/cmp_luasnip'
-
-  use 'rafamadriz/friendly-snippets'
+  use {
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
+    'f3fora/cmp-spell',
+    'L3MON4D3/LuaSnip',
+    'saadparwaiz1/cmp_luasnip',
+    'rafamadriz/friendly-snippets',
+  }
 
   use 'jose-elias-alvarez/null-ls.nvim'
 
@@ -158,8 +170,69 @@ require('packer').startup(function()
 
   use { 'rizzatti/dash.vim', cmd = 'Dash' }
 
+  use 'kyazdani42/nvim-tree.lua'
+
   use 'kyazdani42/nvim-web-devicons'
 end)
+
+-- GIT SIGNS
+--
+
+require('gitsigns').setup()
+
+-- NVIM TREE
+--
+
+local g = vim.g
+
+g.nvim_tree_show_icons = { folders = 1, files = 1, git = 0 }
+
+require('nvim-tree').setup {
+  nvim_tree_ignore = { '.git', '.node_modules', '.cache' },
+  update_cwd = true,
+  update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
+  actions = {
+    open_file = {
+      quit_on_open = true,
+    },
+  },
+  trash = {
+    cmd = 'trash',
+    require_confirm = true,
+  },
+  view = {
+    width = 40,
+    side = 'right',
+    mappings = {
+      -- custom only false will merge the list with the default mappings
+      -- if true, it will only use your list to set the mappings
+      custom_only = false,
+      -- list of mappings to set on the tree manually
+      list = {
+        { key = { '<CR>', 'o', 'l' }, action = 'edit' },
+        { key = '<C-v>', action = 'vsplit' },
+        { key = '<C-s>', action = 'split' },
+        { key = '<C-t>', action = 'tabnew' },
+        { key = 'h', action = 'close_node' },
+        { key = '<Tab>', action = 'preview' },
+        { key = 'H', action = 'toggle_dotfiles' },
+        { key = 'R', action = 'refresh' },
+        { key = 'a', action = 'create' },
+        { key = 'd', action = 'remove' },
+        { key = 'r', action = 'rename' },
+        { key = 'x', action = 'cut' },
+        { key = 'y', action = 'copy' },
+        { key = 'p', action = 'paste' },
+        { key = 'Y', action = 'copy_name' },
+        { key = 'C', action = 'copy_path' },
+        { key = 'gy', action = 'copy_absolute_path' },
+        { key = '-', action = 'dir_up' },
+        { key = 'q', action = 'close' },
+        { key = 'g?', action = 'toggle_help' },
+      },
+    },
+  },
+}
 
 -- TREESITTER
 --
@@ -230,11 +303,17 @@ local lsp_installer = require 'nvim-lsp-installer'
 local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 lsp_installer.on_server_ready(function(server)
-  local opts = {
-    capabilities = capabilities,
-  }
+  local opts = { capabilities = capabilities }
   server:setup(opts)
 end)
+
+-- Diagnostic signs
+local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
+
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
 
 -- NULL-LS
 --
@@ -249,9 +328,7 @@ for _, formatter in ipairs(formatter_install.get_installed_formatters()) do
   table.insert(sources, null_ls.builtins.formatting[formatter.name].with(config))
 end
 
-null_ls.setup {
-  sources = sources,
-}
+null_ls.setup { sources = sources }
 
 -- SNIPS
 --
@@ -350,38 +427,60 @@ require('colorizer').setup()
 -- MAPPINGS
 --
 
+vim.keymap.set('n', '<leader>v', ':cd ~/.config/nvim|e init.lua<cr>') -- neovim configuration
 vim.keymap.set('n', 'Q', '<nop>')
 vim.keymap.set('c', 'W', 'w')
+vim.keymap.set('n', '<leader>q', ':copen<cr>') -- open quicklist
+vim.keymap.set('n', '<leader>c', ':nohlsearch<cr>') -- clear search highlights
+vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
+
+-- Splits
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
+
+-- Movement
 vim.keymap.set('n', '<c-h>', '<c-w>h')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<leader>v', ':cd ~/.config/nvim|e init.lua<cr>') -- neovim configuration
-vim.keymap.set('n', '<leader>q', ':copen<cr>') -- open quicklist
-vim.keymap.set('n', '<leader>n', ':nohlsearch<cr>') -- clear search highlights
-vim.keymap.set('n', '<leader>e', ':Explore<cr>') -- explorer
-vim.keymap.set('n', '<leader>gg', ':Neogit<cr>') -- git status
+
+-- Tabs
 vim.keymap.set('n', '<c-t>', ':tabnew<cr>') -- new tab
 vim.keymap.set('n', '<c-x>', ':tabclose<cr>') -- close tab
 vim.keymap.set('n', '<tab>', ':tabnext<cr>') -- next tab
+
+-- Indentation
 vim.keymap.set('v', '<', '<gv') -- indent left
 vim.keymap.set('v', '>', '>gv') -- indent right
+
+-- Buffers
 vim.keymap.set('n', ',', ':bprevious<cr>') -- previous buffer
 vim.keymap.set('n', '.', ':bnext<cr>') -- next buffer
+
+-- Finder
 vim.keymap.set('n', '<leader>ff', ':Telescope find_files<cr>') -- files
 vim.keymap.set('n', '<leader>fh', ':Telescope help_tags<cr>') -- help
 vim.keymap.set('n', '<leader>fg', ':Telescope live_grep<cr>') -- live grep
 vim.keymap.set('n', '<leader>fb', ':Telescope buffers<cr>') -- list buffers
 vim.keymap.set('n', '<leader>fG', ':Telescope grep_string<cr>') -- grep string under cursor
 vim.keymap.set('n', '<leader>fq', ':Telescope quickfix<cr>') -- quickfix
+
+-- Git
+vim.keymap.set('n', '<leader>gg', ':Neogit<cr>') -- git status
+
+vim.keymap.set('n', '<leader>gb', function()
+  require('gitsigns').blame_line() -- git blame line
+end)
+
+-- Copilot
 vim.keymap.set('n', '<leader>ce', ':<Cmd>Copilot enable<cr>') -- enable copilot
 vim.keymap.set('n', '<leader>cd', ':<Cmd>Copilot disable<cr>') -- disable copilot
 vim.keymap.set('n', '<leader>cs', ':<Cmd>Copilot status<cr>') -- copilot status
+
 vim.keymap.set('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
-vim.keymap.set('n', '<leader>ld', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
+-- Lsp
+vim.keymap.set('n', '<leader>fd', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
 vim.keymap.set('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp symbols
 
 vim.keymap.set('n', '<leader>lf', function()
@@ -392,16 +491,32 @@ vim.keymap.set('n', '<leader>lr', function()
   vim.lsp.buf.references() -- lsp references
 end)
 
+vim.keymap.set('n', '<leader>la', function()
+  vim.lsp.buf.code_action() -- lsp code action
+end)
+
+vim.keymap.set('n', '<leader>lR', function()
+  vim.lsp.buf.rename() -- lsp rename
+end)
+
+vim.keymap.set('n', '<leader>ld', function()
+  vim.diagnostic.open_float() -- lsp line diagnostics
+end)
+
+vim.keymap.set('n', '<leader>ln', function()
+  vim.diagnostic.goto_next() -- lsp next diagnostic
+end)
+
+vim.keymap.set('n', '<leader>lp', function()
+  vim.diagnostic.goto_prev() -- lsp previous diagnostic
+end)
+
 vim.keymap.set('n', 'gd', function()
   vim.lsp.buf.definition() -- lsp go to definition
 end)
 
 vim.keymap.set('n', 'K', function()
   vim.lsp.buf.hover() -- lsp hover documentation
-end)
-
-vim.keymap.set('n', '<leader>gb', function()
-  require('gitsigns').blame_line() -- git blame line
 end)
 
 -- HIGHLIGHTS
