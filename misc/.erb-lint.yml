@@ -1,0 +1,6 @@
+---
+EnableDefaultLinters: true
+linters:
+  Rubocop:
+    enabled: false
+

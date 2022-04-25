@@ -1,0 +1,35 @@
+feat: [${MY_BRANCH}] Title
+
+Commit body
+
+footers
+
+# feat/fix/docs/style/refactor/perf/test/ci/chore/revert/ops
+#
+# 1. Use 'chore' for tool changes, configuration changes, and changes
+# to things that do not actually go into production at all
+#
+# 2. append '!' for a breaking change
+# and include a 'BREAKING CHANGE' footer. For example:
+#
+# ---
+#
+# > chore!: [TICKET] drop support for Node 6
+#
+# > BREAKING CHANGE: use JavaScript features not available in Node 6.
+#
+# ---
+#
+# 3. Add references in the footer:
+#
+# ---
+#
+# > fix: [TICKET] prevent racing of requests
+#
+# > Introduce a request id and a reference to latest request.
+#
+# > Refs: #123
+#
+# ---
+#
+# Based on https://www.conventionalcommits.org/en/v1.0.0/

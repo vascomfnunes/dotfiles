@@ -1,0 +1,22 @@
+{
+  "factorybot.factory": {
+    "prefix": "factorybot.factory",
+    "body": ["FactoryBot.define do\n  factory :${1:model} do\n    ${2:attribute} { '${3:value}' }\n  end\nend"],
+    "description": "Generate a new FactoryBot factory"
+  },
+  "rspec.model.valid": {
+    "prefix": "rspec.model.valid",
+    "body": ["it 'should be valid with valid attributes' do\n    expect(build(:${1:factory})).to be_valid\nend"],
+    "description": "Generates a valid model expectation"
+  },
+  "rspec.request.post.params": {
+    "prefix": "rspec.request.post.params",
+    "body": ["post ${1:name}_path, params: { ${2:key}: ${3:property} }"],
+    "description": "Post with params"
+  },
+    "factorybot.include": {
+    "prefix": "factorybot.include",
+    "body": ["config.include FactoryBot::Syntax::Methods"],
+    "description": "Add FactoryBot configuration include line to rails_helper.rb"
+  }
+}
