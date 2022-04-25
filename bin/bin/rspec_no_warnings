@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+RUBYOPT="-W0" bundle exec rspec --format progress --force-color $1

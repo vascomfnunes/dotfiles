@@ -1,0 +1,8 @@
+feat: [${MY_BRANCH}] Title
+
+Commit body
+
+# feat/fix/docs/style/refactor/perf/test
+# append '!' for a breaking change
+# for example, 'refactor!: [ABC-123] Something'
+# Based on https://www.conventionalcommits.org/en/v1.0.0/

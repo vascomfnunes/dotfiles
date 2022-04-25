@@ -1,0 +1,29 @@
+" vimbox color scheme approximation for vifm
+
+" Reset all styles first
+highlight clear
+
+highlight Border	cterm=none	ctermfg=default	ctermbg=default
+
+highlight TopLine	cterm=none	ctermfg=5	ctermbg=default
+highlight TopLineSel	cterm=bold	ctermfg=3	ctermbg=default
+
+highlight Win		cterm=none	ctermfg=223	ctermbg=default
+"highlight OtherWin  cterm=none	ctermfg=223	ctermbg=default
+highlight Directory	cterm=bold	ctermfg=109	ctermbg=default
+highlight CurrLine	cterm=bold	ctermfg=16	ctermbg=4
+highlight OtherLine	cterm=bold	ctermfg=default	ctermbg=default
+highlight Selected	cterm=none	ctermfg=16	ctermbg=default
+
+highlight JobLine	cterm=bold	ctermfg=116	ctermbg=default
+highlight StatusLine	cterm=bold	ctermfg=144	ctermbg=default
+highlight ErrorMsg	cterm=bold	ctermfg=167	ctermbg=default
+highlight WildMenu	cterm=bold	ctermfg=default	ctermbg=144
+highlight CmdLine	cterm=none	ctermfg=223	ctermbg=default
+
+highlight Executable	cterm=bold	ctermfg=142	ctermbg=default
+highlight Link		cterm=none	ctermfg=132	ctermbg=default
+highlight BrokenLink	cterm=bold	ctermfg=167	ctermbg=default
+highlight Device	cterm=none,standout	ctermfg=214	ctermbg=default
+highlight Fifo		cterm=none	ctermfg=172	ctermbg=default
+highlight Socket	cterm=bold	ctermfg=223	ctermbg=default

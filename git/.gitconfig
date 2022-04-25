@@ -1,0 +1,70 @@
+[user]
+  name = Vasco Nunes
+  email = contact@vasco.dev
+  signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
+[core]
+  excludesfile = /Users/vasco.nunes/.gitignore_global
+  editor = nvim
+[web]
+  browser = w3m
+[diff]
+  tool = vimdiff
+[difftool]
+  prompt = false
+[merge]
+  tool = vimdiff
+[github]
+  user = vascomfnunes
+[color]
+  pager = true
+  ui = auto
+  status = auto
+  diff = auto
+  branch = auto
+  showBranch = auto
+  interactive = auto
+  grep = auto
+[color "diff"]
+  plain = normal
+  meta = bold
+  frag = cyan
+  old = red
+  new = green
+  commit = yellow
+  whitespace = normal red
+[color "branch"]
+  current = green
+  local = normal
+  remote = red
+  plain = normal
+[color "status"]
+  header = normal
+  added = red
+  updated = green
+  changed = red
+  untracked = red
+  nobranch = red
+[color "grep"]
+  match = normal
+[color "interactive"]
+  prompt = normal
+  header = normal
+  help = normal
+  error = normal
+[commit]
+  template = ~/.gitmessage
+  gpgsign = true
+[tag]
+  gpgsign = true
+[pull]
+  rebase = false
+[init]
+  defaultBranch = main
+[format]
+	pretty = %Cred%h%Creset - %Cgreen(%ad)%C(yellow)%d%Creset %s %C(bold blue)<%an>%Creset
+[help]
+  autocorrect = 1
+[interactive]
+  diffFilter = delta --color-only
+[includeIf "gitdir:~/workspace/"]
+  path = ~/workspace/.gitconfig

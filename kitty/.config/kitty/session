@@ -1,0 +1,16 @@
+new_tab nvim
+layout grid
+cd ~
+launch zsh
+focus
+
+new_tab zsh
+cd ~
+launch zsh
+
+new_tab
+launch ncmpcpp
+
+new_tab comms
+launch weechat
+launch rainbowstream
