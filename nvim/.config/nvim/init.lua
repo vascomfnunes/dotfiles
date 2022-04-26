@@ -92,27 +92,6 @@ vim.opt.formatoptions = vim.opt.formatoptions
   - 'o' -- O and o, don't continue comments
   - 't' -- Don't auto format my code. I got linters for that.
 
--- AUTOCOMMANDS
---
-
-local custom_group = vim.api.nvim_create_augroup('CustomCmdGroup', { clear = true })
-
--- Highlight line on yank
-vim.api.nvim_create_autocmd('TextYankPost', {
-  callback = function()
-    vim.highlight.on_yank()
-  end,
-  group = custom_group,
-  pattern = '*',
-})
-
--- Trim whitespaces
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  group = custom_group,
-  pattern = { '*' },
-  command = '%s/\\s\\+$//e',
-})
-
 -- PLUGINS
 --
 
@@ -135,6 +114,7 @@ require('packer').startup(function()
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-fzy-native.nvim',
     },
+    command = 'Telescope',
   }
 
   use {
@@ -164,6 +144,19 @@ require('packer').startup(function()
 
   use 'norcalli/nvim-colorizer.lua'
 
+  use {
+    'j-hui/fidget.nvim',
+    config = function()
+      require('fidget').setup()
+    end,
+  }
+
+  use {
+    'rcarriga/nvim-dap-ui',
+    requires = { 'mfussenegger/nvim-dap', 'theHamsta/nvim-dap-virtual-text' },
+    command = { 'DapToggleBreakpoint', 'DapContinue' },
+  }
+
   use { 'TimUntersberger/neogit', cmd = { 'Neogit' } }
 
   use { 'github/copilot.vim', cmd = { 'Copilot' } }
@@ -173,6 +166,8 @@ require('packer').startup(function()
   use 'kyazdani42/nvim-tree.lua'
 
   use 'kyazdani42/nvim-web-devicons'
+
+  use 'stevearc/dressing.nvim'
 end)
 
 -- GIT SIGNS
@@ -188,7 +183,6 @@ local g = vim.g
 g.nvim_tree_show_icons = { folders = 1, files = 1, git = 0 }
 
 require('nvim-tree').setup {
-  nvim_tree_ignore = { '.git', '.node_modules', '.cache' },
   update_cwd = true,
   update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
   actions = {
@@ -424,6 +418,85 @@ require('mini.base16').setup {
 
 require('colorizer').setup()
 
+-- DAP
+--
+
+local dap = require 'dap'
+require('dapui').setup()
+require('nvim-dap-virtual-text').setup()
+
+vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
+
+-- Install chrome debug:
+-- git clone https://github.com/Microsoft/vscode-chrome-debug ~/.local/share/nvim/dap/vscode-chrome-debug
+-- cd ./vscode-chrome-debug && npm install && npm run build
+-- (chrome should be started with '--remote-debugging-port=9222')
+dap.adapters.chrome = {
+  type = 'executable',
+  command = 'node',
+  args = { os.getenv 'HOME' .. '/.local/share/nvim/dap/vscode-chrome-debug/out/src/chromeDebug.js' },
+}
+
+dap.configurations.javascript = {
+  {
+    type = 'chrome',
+    request = 'attach',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
+  },
+}
+
+-- AUTOCOMMANDS
+--
+
+local custom_group = vim.api.nvim_create_augroup('CustomCmdGroup', { clear = true })
+
+-- Highlight line on yank
+vim.api.nvim_create_autocmd('TextYankPost', {
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+  group = custom_group,
+  pattern = '*',
+})
+
+-- Trim whitespaces
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  group = custom_group,
+  pattern = { '*' },
+  command = '%s/\\s\\+$//e',
+})
+
+-- HIGHLIGHTS
+--
+
+vim.api.nvim_set_hl(0, 'MiniStatusLineInactive', { bg = '#444444' })
+vim.api.nvim_set_hl(0, 'MiniStatusLineFilename', { bg = '#444444', fg = '#999999' })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#444444', fg = '#888888' })
+vim.api.nvim_set_hl(0, 'Title', { fg = '#dddddd' })
+vim.api.nvim_set_hl(0, 'SpellBad', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = '#a9b665' })
+vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = '#7daea3' })
+vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = '#e78a4e' })
+vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'DiagnosticSignError', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', { fg = '#e78a4e' })
+vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#dddddd' })
+vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#444444' })
+vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
+vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = '#444444' })
+
 -- MAPPINGS
 --
 
@@ -483,6 +556,19 @@ vim.keymap.set('n', '<leader>ds', ':Dash<cr>') -- search in dash
 vim.keymap.set('n', '<leader>fd', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
 vim.keymap.set('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp symbols
 
+-- Debug
+vim.keymap.set('n', '<leader>dc', ':DapContinue<cr>')
+vim.keymap.set('n', '<leader>db', ':DapToggleBreakpoint<cr>')
+vim.keymap.set('n', '<leader>do', ':DapStepOver<cr>')
+vim.keymap.set('n', '<leader>di', ':DapStepInto<cr>')
+vim.keymap.set('n', '<leader>dx', ':DapStepOut<cr>')
+vim.keymap.set('n', '<leader>dr', ':DapToggleRepl<cr>')
+vim.keymap.set('n', '<leader>dq', ':DapTerminate<cr>')
+
+vim.keymap.set('n', '<leader>dt', function()
+  require('dapui').toggle()
+end)
+
 vim.keymap.set('n', '<leader>lf', function()
   vim.lsp.buf.formatting() -- lsp format
 end)
@@ -518,29 +604,3 @@ end)
 vim.keymap.set('n', 'K', function()
   vim.lsp.buf.hover() -- lsp hover documentation
 end)
-
--- HIGHLIGHTS
---
-
-vim.api.nvim_set_hl(0, 'MiniStatusLineInactive', { bg = '#444444' })
-vim.api.nvim_set_hl(0, 'MiniStatusLineFilename', { bg = '#444444', fg = '#999999' })
-vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#444444', fg = '#888888' })
-vim.api.nvim_set_hl(0, 'Title', { fg = '#dddddd' })
-vim.api.nvim_set_hl(0, 'SpellBad', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = '#a9b665' })
-vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = '#7daea3' })
-vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = '#e78a4e' })
-vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignError', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', { fg = '#e78a4e' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#dddddd' })
-vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#444444' })
-vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
-vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = '#444444' })
