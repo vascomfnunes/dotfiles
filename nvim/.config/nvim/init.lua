@@ -172,8 +172,6 @@ require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
 
   use 'stevearc/dressing.nvim'
-
-  use 'numToStr/FTerm.nvim'
 end)
 
 -- GIT SIGNS
@@ -456,13 +454,6 @@ dap.configurations.javascript = {
   },
 }
 
--- FTERM
---
-
-require('FTerm').setup {
-  border = 'rounded'
-}
-
 -- AUTOCOMMANDS
 --
 
@@ -620,12 +611,4 @@ end)
 
 vim.keymap.set('n', 'K', function()
   vim.lsp.buf.hover() -- lsp hover documentation
-end)
-
-vim.keymap.set('n', '<c-s>', function()
-  require('FTerm').toggle() -- toggle terminal in normal mode
-end)
-
-vim.keymap.set('t', '<c-s>', function()
-  require('FTerm').toggle() -- toggle terminal in terminal mode
 end)
