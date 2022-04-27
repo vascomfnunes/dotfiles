@@ -23,6 +23,10 @@ vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.g.loaded_netrwSettings = 1
 
+-- Disable unused providers
+vim.g.loaded_ruby_provider = 0
+vim.g.loaded_pearl_provider = 0
+
 -- Python provider
 vim.g.python3_host_prog = '/usr/local/bin/python3'
 
