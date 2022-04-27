@@ -168,6 +168,8 @@ require('packer').startup(function()
   use 'kyazdani42/nvim-web-devicons'
 
   use 'stevearc/dressing.nvim'
+
+  use 'numToStr/FTerm.nvim'
 end)
 
 -- GIT SIGNS
@@ -450,6 +452,13 @@ dap.configurations.javascript = {
   },
 }
 
+-- FTERM
+--
+
+require('FTerm').setup {
+  border = 'rounded'
+}
+
 -- AUTOCOMMANDS
 --
 
@@ -496,6 +505,7 @@ vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#444444' })
 vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
 vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
 vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = '#444444' })
+vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = '#888888' })
 
 -- MAPPINGS
 --
@@ -510,12 +520,15 @@ vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 -- Splits
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
-
--- Movement
 vim.keymap.set('n', '<c-h>', '<c-w>h')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
+vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
+vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
+vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
+vim.keymap.set('n', '<leader>z', '<C-w>|<C-w>_') -- maximize split (zoom)
 
 -- Tabs
 vim.keymap.set('n', '<c-t>', ':tabnew<cr>') -- new tab
@@ -603,4 +616,12 @@ end)
 
 vim.keymap.set('n', 'K', function()
   vim.lsp.buf.hover() -- lsp hover documentation
+end)
+
+vim.keymap.set('n', '<c-s>', function()
+  require('FTerm').toggle() -- toggle terminal in normal mode
+end)
+
+vim.keymap.set('t', '<c-s>', function()
+  require('FTerm').toggle() -- toggle terminal in terminal mode
 end)
