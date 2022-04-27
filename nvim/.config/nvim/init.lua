@@ -515,11 +515,16 @@ vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
 
--- Movement
+-- Move/Resize splits
 vim.keymap.set('n', '<c-h>', '<c-w>h')
 vim.keymap.set('n', '<c-l>', '<c-w>l')
 vim.keymap.set('n', '<c-j>', '<c-w>j')
 vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
+vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
+vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
+vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
+vim.keymap.set('n', '<leader>z', '<C-w>|<C-w>_') -- maximize split (zoom)
 
 -- Tabs
 vim.keymap.set('n', '<c-t>', ':tabnew<cr>') -- new tab
