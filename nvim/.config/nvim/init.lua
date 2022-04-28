@@ -138,6 +138,10 @@ require('packer').startup(function()
     'rafamadriz/friendly-snippets',
   }
 
+  use 'aserowy/tmux.nvim'
+
+  use { 'davidgranstrom/nvim-markdown-preview', cmd = 'MarkdownPreview' } -- requires 'npm install -g live-server' and 'brew install pandoc'
+
   use 'jose-elias-alvarez/null-ls.nvim'
 
   use 'PlatyPew/format-installer.nvim'
@@ -178,6 +182,22 @@ end)
 --
 
 require('gitsigns').setup()
+
+-- TMUX
+--
+require('tmux').setup {
+  copy_sync = { enable = false },
+  navigation = {
+    -- enables default keybindings (C-hjkl) for normal mode
+    enable_default_keybindings = true,
+  },
+  resize = {
+    -- enables default keybindings (A-hjkl) for normal mode
+    enable_default_keybindings = true,
+    resize_step_x = 5,
+    resize_step_y = 5,
+  },
+}
 
 -- NVIM TREE
 --
@@ -515,14 +535,6 @@ vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 -- Splits
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
-vim.keymap.set('n', '<c-h>', '<c-w>h')
-vim.keymap.set('n', '<c-l>', '<c-w>l')
-vim.keymap.set('n', '<c-j>', '<c-w>j')
-vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
-vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
-vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
-vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
 vim.keymap.set('n', '<leader>z', '<C-w>|<C-w>_') -- maximize split (zoom)
 
 -- Tabs
@@ -563,6 +575,9 @@ vim.keymap.set('n', '<leader>ds', ':Dash<cr>') -- search in dash
 -- Lsp
 vim.keymap.set('n', '<leader>fd', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
 vim.keymap.set('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp symbols
+
+-- Markdown
+vim.keymap.set('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
 
 -- Debug
 vim.keymap.set('n', '<leader>dc', ':DapContinue<cr>')

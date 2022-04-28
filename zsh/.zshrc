@@ -4,7 +4,7 @@ ZSH_THEME="simple"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 15
 HIST_STAMPS="dd/mm/yyyy"
-plugins=(gitfast z vi-mode)
+plugins=(gitfast z vi-mode pass)
 source $ZSH/oh-my-zsh.sh
 bindkey "^R" history-incremental-search-backward
 
