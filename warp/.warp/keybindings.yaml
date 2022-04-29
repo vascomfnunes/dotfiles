@@ -1,0 +1,4 @@
+---
+"pane_group:add_horizontal": cmd-d
+"pane_group:add_vertical": shift-cmd-D
+"input:search_command_history": cmd-r
