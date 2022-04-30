@@ -375,6 +375,10 @@ lspconfig.yamlls.setup {
   capabilities = capabilities,
 }
 
+lspconfig.solargraph.setup {
+  capabilities = capabilities,
+}
+
 --
 -- Diagnostic signs
 local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
