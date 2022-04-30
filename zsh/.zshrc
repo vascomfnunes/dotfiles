@@ -9,6 +9,7 @@ source $ZSH/oh-my-zsh.sh
 bindkey "^R" history-incremental-search-backward
 
 # aliases
+alias la='ls -la'
 alias e='nvim'
 alias c='clear'
 alias :q='exit'
@@ -36,12 +37,6 @@ alias gs="git status"
 alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
-
-# Tmux
-alias t="tmux -u"
-alias ta="tmux -u a"
-alias tls="tmux ls"
-alias tks="tmux kill-session -t"
 
 # other sources
 source ~/.config/zsh/env_variables

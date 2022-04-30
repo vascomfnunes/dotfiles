@@ -1,4 +1,10 @@
 ---
-"pane_group:add_horizontal": cmd-d
+"pane_group:resize_up": shift-cmd-K
+"pane_group:resize_right": shift-cmd-L
+"pane_group:resize_down": shift-cmd-J
+"pane_group:navigate_next": ctrl-cmd-l
+"pane_group:navigate_prev": ctrl-cmd-h
 "pane_group:add_vertical": shift-cmd-D
+"pane_group:add_horizontal": cmd-d
+"pane_group:resize_left": shift-cmd-H
 "input:search_command_history": cmd-r

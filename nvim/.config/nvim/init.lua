@@ -138,8 +138,6 @@ require('packer').startup(function()
     'rafamadriz/friendly-snippets',
   }
 
-  use 'aserowy/tmux.nvim'
-
   use { 'davidgranstrom/nvim-markdown-preview', cmd = 'MarkdownPreview' } -- requires 'npm install -g live-server' and 'brew install pandoc'
 
   use 'jose-elias-alvarez/null-ls.nvim'
@@ -182,22 +180,6 @@ end)
 --
 
 require('gitsigns').setup()
-
--- TMUX
---
-require('tmux').setup {
-  copy_sync = { enable = false },
-  navigation = {
-    -- enables default keybindings (C-hjkl) for normal mode
-    enable_default_keybindings = true,
-  },
-  resize = {
-    -- enables default keybindings (A-hjkl) for normal mode
-    enable_default_keybindings = true,
-    resize_step_x = 5,
-    resize_step_y = 5,
-  },
-}
 
 -- NVIM TREE
 --
@@ -318,13 +300,82 @@ cmp.setup {
 --
 
 local lsp_installer = require 'nvim-lsp-installer'
-local capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local capabilities = vim.lsp.protocol.make_client_capabilities()
 
-lsp_installer.on_server_ready(function(server)
-  local opts = { capabilities = capabilities }
-  server:setup(opts)
-end)
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
+require('nvim-lsp-installer').setup {
+  automatic_installation = true,
+}
+
+local lspconfig = require 'lspconfig'
+
+lspconfig.sumneko_lua.setup {
+  capabilities = capabilities,
+  settings = {
+    Lua = {
+      runtime = {
+        version = 'LuaJIT',
+        path = vim.split(package.path, ';'),
+      },
+      diagnostics = {
+        globals = { 'vim' },
+      },
+      workspace = {
+        library = vim.api.nvim_get_runtime_file('', true),
+      },
+      telemetry = {
+        enable = false,
+      },
+    },
+  },
+}
+
+lspconfig.cssls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.html.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.tsserver.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.bashls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.cssmodules_ls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.dockerls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.emmet_ls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.eslint.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.grammarly.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.jsonls.setup {
+  capabilities = capabilities,
+}
+
+lspconfig.yamlls.setup {
+  capabilities = capabilities,
+}
+
+--
 -- Diagnostic signs
 local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
 
@@ -536,6 +587,14 @@ vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
 vim.keymap.set('n', '<leader>z', '<C-w>|<C-w>_') -- maximize split (zoom)
+vim.keymap.set('n', '<c-h>', '<c-w>h')
+vim.keymap.set('n', '<c-l>', '<c-w>l')
+vim.keymap.set('n', '<c-j>', '<c-w>j')
+vim.keymap.set('n', '<c-k>', '<c-w>k')
+vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
+vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
+vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
+vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
 
 -- Tabs
 vim.keymap.set('n', '<c-t>', ':tabnew<cr>') -- new tab
