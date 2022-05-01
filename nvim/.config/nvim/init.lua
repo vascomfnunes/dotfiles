@@ -234,6 +234,9 @@ local g = vim.g
 g.nvim_tree_show_icons = { folders = 1, files = 1, git = 0 }
 
 require('nvim-tree').setup {
+  filters = {
+    custom = { '.git', '.DS_Store' },
+  },
   update_cwd = true,
   update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
   actions = {
