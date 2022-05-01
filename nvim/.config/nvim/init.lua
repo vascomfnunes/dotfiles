@@ -470,11 +470,18 @@ lspconfig.tsserver.setup {
   capabilities = capabilities,
 }
 
+lspconfig.html.setup {
+  on_attach = function(client, bufnr)
+    -- Disable the document formatting for tsserver because we want to use null-ls
+    client.resolved_capabilities.document_formatting = false
+  end,
+  capabilities = capabilities,
+}
+
 -- Other servers
 
 local servers = {
   'cssls',
-  'html',
   'bashls',
   'cssmodules_ls',
   'dockerls',
