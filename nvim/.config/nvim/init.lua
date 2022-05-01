@@ -5,6 +5,27 @@
 vim.g.do_filetype_lua = 1
 vim.g.did_load_filetypes = 0
 
+-- Custom filetype detection logic with the new Lua filetype plugin
+vim.filetype.add {
+  extension = {
+    png = 'image',
+    jpg = 'image',
+    jpeg = 'image',
+    gif = 'image',
+    es6 = 'javascript',
+  },
+  filename = {
+    ['.eslintrc'] = 'json',
+    ['.prettierrc'] = 'json',
+    ['.babelrc'] = 'json',
+    ['.stylelintrc'] = 'json',
+  },
+  pattern = {
+    ['.*config/git/config'] = 'gitconfig',
+    ['.env.*'] = 'sh',
+  },
+}
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -40,7 +61,6 @@ vim.o.completeopt = 'menuone,noselect'
 vim.o.dictionary = '/usr/share/dict/words'
 vim.o.fileencoding = 'utf-8'
 vim.o.ruler = false
-vim.o.wildignore = '.git**/node_modules/**'
 vim.o.ignorecase = true
 vim.o.foldmethod = 'expr'
 vim.o.foldexpr = 'nvim_treesitter#foldexpr()'
@@ -50,6 +70,7 @@ vim.o.joinspaces = false
 vim.o.cursorline = false
 vim.o.mouse = 'a'
 vim.o.path = '**'
+vim.o.wildignore = '**/node_modules/**,**/.git/**'
 vim.o.pumheight = 6
 vim.o.scrolloff = 8
 vim.o.shortmess = 'atToOc'
@@ -116,6 +137,8 @@ require('packer').startup(function()
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
   }
+
+  use 'tpope/vim-projectionist'
 
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
@@ -376,6 +399,24 @@ cmp.setup {
   },
 }
 
+-- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = {
+    { name = 'buffer' },
+  },
+})
+
+-- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
+})
+
 -- LSP
 --
 
@@ -561,6 +602,60 @@ require('mini.base16').setup {
   use_cterm = true,
 }
 
+-- PROJECTIONIST
+--
+
+vim.g.projectionist_heuristics = {
+  -- React
+  ['src/*'] = {
+    ['*.js'] = {
+      alternate = {
+        '{dirname}/{basename}.test.js',
+        '{dirname}/__tests__/{basename}.test.js',
+      },
+      type = 'source',
+    },
+    ['*.test.js'] = {
+      alternate = {
+        '{dirname}/{basename}.js',
+        '{dirname}/../{basename}.js',
+      },
+      type = 'test',
+    },
+  },
+  -- Ruby on Rails
+  ['config/routes.rb'] = {
+    ['app/controllers/*_controller.rb'] = {
+      alternate = 'app/models/{singular}.rb',
+      type = 'controller',
+    },
+    ['app/helpers/*_helper.rb'] = {
+      alternate = 'app/controllers/{}_controller.rb',
+      type = 'helper',
+    },
+    ['app/models/*.rb'] = {
+      alternate = 'app/controllers/{plural}_controller.rb',
+      type = 'model',
+    },
+    ['app/views/*.html.erb'] = {
+      alternate = 'app/controllers/{dirname}_controller.rb',
+      type = 'view',
+    },
+    ['config/initializers/*.rb'] = {
+      type = 'initializer',
+    },
+    ['app/javascript/*.js'] = {
+      type = 'javascript',
+    },
+    ['app/javascript/stylesheets/*.scss'] = {
+      type = 'stylesheets',
+    },
+    ['spec/*.rb'] = {
+      type = 'spec',
+    },
+  },
+}
+
 -- COLORIZER
 --
 
@@ -723,6 +818,16 @@ vim.keymap.set('n', '<leader>di', ':DapStepInto<cr>')
 vim.keymap.set('n', '<leader>dx', ':DapStepOut<cr>')
 vim.keymap.set('n', '<leader>dr', ':DapToggleRepl<cr>')
 vim.keymap.set('n', '<leader>dq', ':DapTerminate<cr>')
+
+-- Projectionist
+vim.keymap.set('n', 'ga', ':A<cr>')
+vim.keymap.set('n', 'gv', ':Eview<cr>')
+vim.keymap.set('n', 'gc', ':Econtroller<cr>')
+vim.keymap.set('n', 'gm', ':Emodel<cr>')
+vim.keymap.set('n', 'gh', ':Ehelper<cr>')
+vim.keymap.set('n', 'gt', ':Espec<cr>')
+vim.keymap.set('n', 'gj', ':Ejavascript<cr>')
+vim.keymap.set('n', 'gs', ':Estylesheets<cr>')
 
 vim.keymap.set('n', '<leader>dt', function()
   require('dapui').toggle()
