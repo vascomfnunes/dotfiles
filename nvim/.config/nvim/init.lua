@@ -165,6 +165,7 @@ require('packer').startup(function()
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'hrsh7th/cmp-cmdline',
+    'hrsh7th/cmp-nvim-lsp-signature-help',
     'f3fora/cmp-spell',
     'L3MON4D3/LuaSnip',
     'saadparwaiz1/cmp_luasnip',
@@ -379,6 +380,7 @@ cmp.setup {
     { name = 'luasnip' },
     { name = 'path' },
     { name = 'spell' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
