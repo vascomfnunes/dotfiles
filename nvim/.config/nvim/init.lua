@@ -464,7 +464,6 @@ lspconfig.sumneko_lua.setup {
 
 lspconfig.tsserver.setup {
   on_attach = function(client, bufnr)
-    -- Disable the document formatting for tsserver because we want to use null-ls
     client.resolved_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
@@ -472,7 +471,6 @@ lspconfig.tsserver.setup {
 
 lspconfig.html.setup {
   on_attach = function(client, bufnr)
-    -- Disable the document formatting for tsserver because we want to use null-ls
     client.resolved_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
@@ -537,7 +535,7 @@ local telescope = require 'telescope'
 telescope.setup {
   defaults = {
     preview = { hide_on_startup = false },
-    file_ignore_patterns = { '.node_modules', '.git', 'undo', 'tmp', 'fonts', 'images', 'vendor' },
+    file_ignore_patterns = { 'node_modules', '.git', 'undo', 'tmp', 'fonts', 'images' },
     prompt_prefix = '❯ ',
     selection_caret = '❯ ',
     sorting_strategy = 'ascending',
