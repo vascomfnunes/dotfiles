@@ -348,10 +348,10 @@ cmp.setup {
   },
   sources = cmp.config.sources {
     { name = 'nvim_lsp' },
-    { name = 'path' },
     { name = 'luasnip' },
-    { name = 'buffer' },
+    { name = 'path' },
     { name = 'spell' },
+    { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
     format = require('lspkind').cmp_format {
@@ -367,6 +367,9 @@ cmp.setup {
       border = 'rounded',
       winhighlight = 'FloatBorder:FloatBorder',
     },
+  },
+  experimental = {
+    ghost_text = true,
   },
 }
 
@@ -632,12 +635,15 @@ vim.api.nvim_set_hl(0, 'DiagnosticSignError', { fg = '#ea6962' })
 vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', { fg = '#e78a4e' })
 vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = '#89b482' })
 vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingWarn', { fg = '#e78a4e' })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingInfo', { fg = '#89b482' })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { fg = '#89b482' })
 vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#dddddd' })
 vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = '#ea6962' })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
 vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = '#444444' })
 vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = '#888888' })
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#444444' })
 
@@ -736,7 +742,7 @@ vim.keymap.set('n', '<leader>lR', function()
 end)
 
 vim.keymap.set('n', '<leader>ld', function()
-  vim.diagnostic.open_float() -- lsp line diagnostics
+  vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) -- lsp line diagnostics
 end)
 
 vim.keymap.set('n', '<leader>ln', function()
