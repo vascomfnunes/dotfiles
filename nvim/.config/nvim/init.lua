@@ -1,6 +1,10 @@
 -- GENERAL
 --
 
+-- Disable filetype plugin, use the new Lua version
+vim.g.do_filetype_lua = 1
+vim.g.did_load_filetypes = 0
+
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
@@ -96,6 +100,7 @@ vim.opt.formatoptions = vim.opt.formatoptions
   - 'o' -- O and o, don't continue comments
   - 't' -- Don't auto format my code. I got linters for that.
 
+-- {{{
 -- PLUGINS
 --
 
@@ -121,6 +126,8 @@ require('packer').startup(function()
     command = 'Telescope',
   }
 
+  use 'windwp/nvim-autopairs'
+
   use {
     'neovim/nvim-lspconfig',
     'williamboman/nvim-lsp-installer',
@@ -128,6 +135,7 @@ require('packer').startup(function()
 
   use {
     'hrsh7th/nvim-cmp',
+    'onsails/lspkind.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
@@ -143,6 +151,8 @@ require('packer').startup(function()
   use 'jose-elias-alvarez/null-ls.nvim'
 
   use 'PlatyPew/format-installer.nvim'
+
+  use 'aserowy/tmux.nvim'
 
   use 'windwp/nvim-ts-autotag'
 
@@ -176,10 +186,45 @@ require('packer').startup(function()
   use 'stevearc/dressing.nvim'
 end)
 
+--- }}}
+
 -- GIT SIGNS
 --
 
 require('gitsigns').setup()
+
+-- TMUX
+--
+require('tmux').setup {
+  copy_sync = { enable = false },
+  navigation = {
+    -- enables default keybindings (C-hjkl) for normal mode
+    enable_default_keybindings = true,
+  },
+  resize = {
+    -- enables default keybindings (A-hjkl) for normal mode
+    enable_default_keybindings = true,
+    resize_step_x = 5,
+    resize_step_y = 5,
+  },
+}
+
+-- AUTOPAIRS
+--
+
+require('nvim-autopairs').setup {
+  check_ts = true,
+  enable_afterquote = true,
+  enable_moveright = true,
+  enable_check_bracket_line = true,
+  disable_filetype = { 'TelescopePrompt' },
+  break_line_filetype = nil,
+}
+
+-- handle <CR> mapping with nvim-cmp
+local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
+local cmp = require 'cmp'
+cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done { map_char = { tex = '' } })
 
 -- NVIM TREE
 --
@@ -259,6 +304,23 @@ require('nvim-treesitter.configs').setup {
     'vim',
     'yaml',
   },
+  highlight = {
+    enable = true,
+    use_languagetree = true,
+  },
+  indent = {
+    enable = true,
+  },
+  autotag = {
+    enable = true,
+  },
+  autopairs = {
+    enable = true,
+  },
+  context_commentstring = {
+    enable = true,
+    enable_autocmd = false,
+  },
 }
 
 -- AUTOTAGS
@@ -291,8 +353,20 @@ cmp.setup {
     { name = 'buffer' },
     { name = 'spell' },
   },
-  view = {
-    entries = 'native',
+  formatting = {
+    format = require('lspkind').cmp_format {
+      with_text = true,
+    },
+  },
+  window = {
+    completion = {
+      border = 'rounded',
+      winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+    },
+    documentation = {
+      border = 'rounded',
+      winhighlight = 'FloatBorder:FloatBorder',
+    },
   },
 }
 
@@ -303,6 +377,14 @@ local lsp_installer = require 'nvim-lsp-installer'
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
+vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = 'rounded',
+})
+
+vim.lsp.handlers['textDocument/signatureHelp'] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+  border = 'rounded',
+})
 
 require('nvim-lsp-installer').setup {
   automatic_installation = true,
@@ -331,53 +413,35 @@ lspconfig.sumneko_lua.setup {
   },
 }
 
-lspconfig.cssls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.html.setup {
-  capabilities = capabilities,
-}
-
 lspconfig.tsserver.setup {
+  on_attach = function(client, bufnr)
+    -- Disable the document formatting for tsserver because we want to use null-ls
+    client.resolved_capabilities.document_formatting = false
+  end,
   capabilities = capabilities,
 }
 
-lspconfig.bashls.setup {
-  capabilities = capabilities,
+-- Other servers
+
+local servers = {
+  'cssls',
+  'html',
+  'bashls',
+  'cssmodules_ls',
+  'dockerls',
+  'emmet_ls',
+  'eslint',
+  'grammarly',
+  'jsonls',
+  'yamlls',
+  'solargraph',
 }
 
-lspconfig.cssmodules_ls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.dockerls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.emmet_ls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.eslint.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.grammarly.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.jsonls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.yamlls.setup {
-  capabilities = capabilities,
-}
-
-lspconfig.solargraph.setup {
-  capabilities = capabilities,
-}
+for _, server in ipairs(servers) do
+  lspconfig[server].setup {
+    capabilities = capabilities,
+  }
+end
 
 --
 -- Diagnostic signs
@@ -447,7 +511,6 @@ telescope.load_extension 'fzy_native'
 
 require('mini.comment').setup()
 require('mini.tabline').setup()
-require('mini.pairs').setup()
 require('mini.statusline').setup()
 require('mini.surround').setup {
   mappings = {
@@ -571,11 +634,12 @@ vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = '#89b482' })
 vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = '#89b482' })
 vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#dddddd' })
 vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = '#444444' })
+vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
 vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
 vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = '#444444' })
 vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = '#888888' })
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#444444' })
 
 -- MAPPINGS
 --
@@ -591,14 +655,14 @@ vim.keymap.set('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 vim.keymap.set('n', 'vv', '<c-w>v')
 vim.keymap.set('n', 'ss', '<c-w>s')
 vim.keymap.set('n', '<leader>z', '<C-w>|<C-w>_') -- maximize split (zoom)
-vim.keymap.set('n', '<c-h>', '<c-w>h')
-vim.keymap.set('n', '<c-l>', '<c-w>l')
-vim.keymap.set('n', '<c-j>', '<c-w>j')
-vim.keymap.set('n', '<c-k>', '<c-w>k')
-vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
-vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
-vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
-vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
+-- vim.keymap.set('n', '<c-h>', '<c-w>h')
+-- vim.keymap.set('n', '<c-l>', '<c-w>l')
+-- vim.keymap.set('n', '<c-j>', '<c-w>j')
+-- vim.keymap.set('n', '<c-k>', '<c-w>k')
+-- vim.keymap.set('n', '<c-M-k>', '<c-w>-') -- decrease height
+-- vim.keymap.set('n', '<c-M-j>', '<c-w>+') -- increase height
+-- vim.keymap.set('n', '<c-M-l>', ':10winc><cr>') -- increase width
+-- vim.keymap.set('n', '<c-M-h>', ':10winc<<cr>') -- decrease width
 
 -- Tabs
 vim.keymap.set('n', '<c-t>', ':tabnew<cr>') -- new tab
