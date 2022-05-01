@@ -151,6 +151,8 @@ require('packer').startup(function()
 
   use 'windwp/nvim-autopairs'
 
+  use { 'vim-test/vim-test', command = { 'TestNearest', 'TestFile', 'TestSuite' } }
+
   use {
     'neovim/nvim-lspconfig',
     'williamboman/nvim-lsp-installer',
@@ -818,6 +820,11 @@ vim.keymap.set('n', '<leader>di', ':DapStepInto<cr>')
 vim.keymap.set('n', '<leader>dx', ':DapStepOut<cr>')
 vim.keymap.set('n', '<leader>dr', ':DapToggleRepl<cr>')
 vim.keymap.set('n', '<leader>dq', ':DapTerminate<cr>')
+
+-- Tests
+vim.keymap.set('n', '<leader>tn', ':TestNearest<cr>')
+vim.keymap.set('n', '<leader>tf', ':TestFile<cr>')
+vim.keymap.set('n', '<leader>ts', ':TestSuite<cr>')
 
 -- Projectionist
 vim.keymap.set('n', 'ga', ':A<cr>')
