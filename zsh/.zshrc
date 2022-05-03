@@ -23,7 +23,7 @@ alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
 alias ssh='TERM=xterm-256color ssh'
 # alias ctags="/usr/local/bin/ctags -R --options=$HOME/.ctags --languages=Ruby,RSpec,JavaScript,CSS,SCSS . $(bundle list --paths)"
 alias rspec='rspec -f d'
-alias music='ncmpcpp'
+alias music='ncmpc'
 
 # Git
 alias gP="git push"

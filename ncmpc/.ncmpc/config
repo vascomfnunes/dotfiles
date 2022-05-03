@@ -1,0 +1,5 @@
+enable-mouse = yes
+screen-list = playlist browse library
+set-xterm-title = yes
+xterm-title-format = "ncmpc: [ %name%|[%artist% - ]%title%|%file%]"
+enable-colors = yes
