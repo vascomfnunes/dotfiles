@@ -1,7 +1,6 @@
 mpd/.mpd/state
 nvim/.config/nvim/undo
-nvim/.config/nvim/plugin
-nvim/.config/nvim/lua/packer_compiled.lua
+nvim/.config/nvim/plugin/packer_compiled.lua
 newsboat/.newsboat/cache.db*
 newsboat/.newsboat/cookies.txt
 mpd/.mpd/log

@@ -1,4 +1,3 @@
-require 'general'
 require 'options'
 require 'plugins'
 
@@ -18,5 +17,3 @@ require 'vasco/mini'
 require 'vasco/projectionist'
 require 'vasco/debug'
 require 'vasco/autocommands'
-require 'vasco/highlights'
-require 'vasco/mappings'

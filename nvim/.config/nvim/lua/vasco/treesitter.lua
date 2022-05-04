@@ -29,6 +29,15 @@ treesitter.setup {
     'vim',
     'yaml',
   },
+  incremental_selection = {
+    enable = true,
+    keymaps = {
+      init_selection = 'tt',
+      node_incremental = 'tl',
+      scope_incremental = 'tj',
+      node_decremental = 'th',
+    },
+  },
   highlight = {
     enable = true,
     use_languagetree = true,
