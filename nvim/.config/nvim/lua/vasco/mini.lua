@@ -1,33 +1,57 @@
 -- MINI
 --
 
-local status_ok, comment = pcall(require, 'mini.comment')
+local status_ok, statusline = pcall(require, 'mini.statusline')
 
 if not status_ok then
   return
 end
 
-comment.setup()
+local function lsp_active()
+  local msg = 'No Active Lsp'
+  local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+  local clients = vim.lsp.get_active_clients()
+
+  if next(clients) == nil then
+    return msg
+  end
+
+  for _, client in ipairs(clients) do
+    local filetypes = client.config.filetypes
+
+    if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+      return client.name
+    end
+  end
+
+  return msg
+end
+
+statusline.setup {
+  content = {
+    active = function()
+      local mode, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
+      local spell = vim.wo.spell and (MiniStatusline.is_truncated(120) and 'S' or 'SPELL') or ''
+      local git = MiniStatusline.section_git { trunc_width = 75 }
+      local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
+      local filename = MiniStatusline.section_filename { trunc_width = 140 }
+      local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+      local lsp_active = lsp_active()
+
+      return MiniStatusline.combine_groups {
+        { hl = mode_hl, strings = { mode, spell } },
+        { hl = 'MiniStatuslineDevinfo', strings = { git, diagnostics } },
+        '%<', -- Mark general truncate point
+        { hl = 'MiniStatuslineFilename', strings = { filename } },
+        '%=', -- End left alignment
+        { hl = 'MiniStatuslineFileinfo', strings = { lsp_active, fileinfo } },
+      }
+    end,
+  },
+}
+
 require('mini.tabline').setup()
-require('mini.statusline').setup()
-require('mini.surround').setup {
-  mappings = {
-    add = 'sa', -- Add surrounding
-    delete = 'sd', -- Delete surrounding
-    find = 'sf', -- Find surrounding (to the right)
-    find_left = 'sF', -- Find surrounding (to the left)
-    highlight = 'sh', -- Highlight surrounding
-    replace = 'cs', -- Replace surrounding
-    update_n_lines = 'sn', -- Update `n_lines`
-  },
-}
-require('mini.indentscope').setup {
-  draw = {
-    delay = 100,
-    animation = require('mini.indentscope').gen_animation 'none',
-  },
-  symbol = '│',
-}
+require('mini.jump').setup()
 
 require('mini.base16').setup {
   -- palette based on Gruvbox Material Dark Soft
@@ -51,4 +75,26 @@ require('mini.base16').setup {
   },
   name = 'minischeme',
   use_cterm = true,
+}
+
+require('mini.indentscope').setup {
+  draw = {
+    delay = 100,
+    animation = require('mini.indentscope').gen_animation 'none',
+  },
+  symbol = '│',
+}
+
+require('mini.comment').setup()
+
+require('mini.surround').setup {
+  mappings = {
+    add = 'sa', -- Add surrounding
+    delete = 'sd', -- Delete surrounding
+    find = 'sf', -- Find surrounding (to the right)
+    find_left = 'sF', -- Find surrounding (to the left)
+    highlight = 'sh', -- Highlight surrounding
+    replace = 'cs', -- Replace surrounding
+    update_n_lines = 'sn', -- Update `n_lines`
+  },
 }

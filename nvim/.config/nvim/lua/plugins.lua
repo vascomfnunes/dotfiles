@@ -92,8 +92,6 @@ require('packer').startup(function(use)
 
   use 'norcalli/nvim-colorizer.lua'
 
-  use 'j-hui/fidget.nvim'
-
   use {
     'rcarriga/nvim-dap-ui',
     requires = { 'mfussenegger/nvim-dap', 'theHamsta/nvim-dap-virtual-text' },
