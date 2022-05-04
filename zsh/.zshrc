@@ -7,6 +7,7 @@ HIST_STAMPS="dd/mm/yyyy"
 plugins=(gitfast z vi-mode pass)
 source $ZSH/oh-my-zsh.sh
 bindkey "^R" history-incremental-search-backward
+export EDITOR='nvim'
 
 # aliases
 alias la='ls -la'
