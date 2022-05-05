@@ -1,4 +1,7 @@
-require 'impatient' -- This needs to be first
+if pcall(require, 'impatient') then
+  require 'impatient'
+end
+
 require 'options'
 require 'plugins'
 require 'mappings'
