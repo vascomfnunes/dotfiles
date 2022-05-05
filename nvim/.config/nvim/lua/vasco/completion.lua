@@ -1,11 +1,5 @@
--- COMPLETION
---
-
-local status_ok, cmp = pcall(require, 'cmp')
-
-if not status_ok then
-  return
-end
+local cmp = require 'cmp'
+local lspkind = require 'lspkind'
 
 cmp.setup {
   snippet = {
@@ -29,8 +23,26 @@ cmp.setup {
     { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
-    format = require('lspkind').cmp_format {
+    format = lspkind.cmp_format {
       with_text = true,
+      menu = {
+        nvim_lsp = '[LSP]',
+        luasnip = '[LuaSnip]',
+        spell = '[Spell]',
+        buffer = '[Buffer]',
+        path = '[Path]',
+      },
+    },
+  },
+  sorting = {
+    comparators = {
+      cmp.config.compare.exact,
+      cmp.config.compare.locality,
+      cmp.config.compare.recently_used,
+      cmp.config.compare.score,
+      cmp.config.compare.offset,
+      cmp.config.compare.sort_text,
+      cmp.config.compare.order,
     },
   },
   window = {

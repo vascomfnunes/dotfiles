@@ -1,1 +1,1 @@
-vim.opt_local.iskeyword = vim.opt_local.iskeyword + '_,@-@'
+vim.opt_local.iskeyword:append '_,@-@'

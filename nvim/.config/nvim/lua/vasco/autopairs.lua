@@ -1,13 +1,4 @@
--- AUTOPAIRS
---
-
-local status_ok, autopairs = pcall(require, 'nvim-autopairs')
-
-if not status_ok then
-  return
-end
-
-autopairs.setup {
+require('nvim-autopairs').setup {
   check_ts = true,
   enable_afterquote = true,
   enable_moveright = true,
