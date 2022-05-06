@@ -41,7 +41,7 @@ require('packer').startup(function(use)
 
   use { 'nvim-treesitter/nvim-treesitter', config = "require('vasco.treesitter')" }
 
-  use { 'neovim/nvim-lspconfig', config = "require('vasco.lsp')" }
+  use 'neovim/nvim-lspconfig'
 
   use {
     'lewis6991/gitsigns.nvim',
