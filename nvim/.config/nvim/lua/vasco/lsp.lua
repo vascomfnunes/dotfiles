@@ -79,6 +79,7 @@ local servers = {
   'jsonls',
   'yamlls',
   'solargraph',
+  'tailwindcss'
 }
 
 for _, server in ipairs(servers) do

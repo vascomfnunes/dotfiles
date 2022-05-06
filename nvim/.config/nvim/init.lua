@@ -1,19 +1,8 @@
+if pcall(require, 'impatient') then
+  require 'impatient'
+end
+
 require 'options'
 require 'plugins'
-
-require 'vasco/snips'
-require 'vasco/colorizer'
-require 'vasco/gitsigns'
-require 'vasco/tmux'
-require 'vasco/autopairs'
-require 'vasco/nvim-tree'
-require 'vasco/treesitter'
-require 'vasco/autotag'
-require 'vasco/completion'
-require 'vasco/lsp'
-require 'vasco/null-ls'
-require 'vasco/telescope'
-require 'vasco/mini'
-require 'vasco/projectionist'
-require 'vasco/debug'
+require 'mappings'
 require 'vasco/autocommands'

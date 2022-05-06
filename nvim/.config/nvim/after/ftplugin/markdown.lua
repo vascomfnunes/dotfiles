@@ -9,4 +9,4 @@ vim.opt_local.spell = true
 vim.opt_local.spelllang = 'en_gb'
 vim.opt_local.tw = 80
 vim.opt_local.formatoptions = 'tqlnwa'
-vim.opt_local.complete = vim.opt_local.complete + 'k'
+vim.opt_local.complete:append 'k'

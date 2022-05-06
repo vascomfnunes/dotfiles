@@ -37,14 +37,20 @@ packer.init {
 require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  use 'nvim-treesitter/nvim-treesitter'
+  use 'lewis6991/impatient.nvim' -- Needed to load first
+
+  use { 'nvim-treesitter/nvim-treesitter', config = "require('vasco.treesitter')" }
+
+  use { 'neovim/nvim-lspconfig', config = "require('vasco.lsp')" }
 
   use {
     'lewis6991/gitsigns.nvim',
-    requires = { 'nvim-lua/plenary.nvim' },
+    requires = 'nvim-lua/plenary.nvim',
+    config = "require('vasco.gitsigns')",
+    event = 'BufRead',
   }
 
-  use 'tpope/vim-projectionist'
+  use { 'tpope/vim-projectionist', config = "require('vasco.projectionist')" }
 
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
@@ -53,49 +59,56 @@ require('packer').startup(function(use)
       'nvim-telescope/telescope-fzy-native.nvim',
     },
     command = 'Telescope',
+    config = "require('vasco.telescope')",
   }
 
-  use 'windwp/nvim-autopairs'
+  use { 'windwp/nvim-autopairs', after = { 'nvim-treesitter', 'nvim-cmp' }, config = "require('vasco.autopairs')" }
 
   use { 'vim-test/vim-test', command = { 'TestNearest', 'TestFile', 'TestSuite' } }
 
-  use {
-    'neovim/nvim-lspconfig',
-    'williamboman/nvim-lsp-installer',
-  }
+  use { 'williamboman/nvim-lsp-installer', event = 'BufEnter', after = 'cmp-nvim-lsp' }
+
+  use { 'jose-elias-alvarez/nvim-lsp-ts-utils', after = { 'nvim-treesitter' } }
+
+  use { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' }
 
   use {
-    'hrsh7th/nvim-cmp',
+    { 'hrsh7th/nvim-cmp', config = "require('vasco.completion')" },
+    { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
+    { 'f3fora/cmp-spell', after = 'nvim-cmp' },
+    { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
+    {
+      'L3MON4D3/LuaSnip',
+      requires = 'rafamadriz/friendly-snippets',
+      after = 'cmp_luasnip',
+      config = "require('vasco.snips')",
+    },
     'onsails/lspkind.nvim',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'hrsh7th/cmp-cmdline',
-    'hrsh7th/cmp-nvim-lsp-signature-help',
-    'f3fora/cmp-spell',
-    'L3MON4D3/LuaSnip',
-    'saadparwaiz1/cmp_luasnip',
-    'rafamadriz/friendly-snippets',
   }
 
   use { 'davidgranstrom/nvim-markdown-preview', cmd = 'MarkdownPreview' } -- requires 'npm install -g live-server' and 'brew install pandoc'
 
-  use 'jose-elias-alvarez/null-ls.nvim'
+  use { 'jose-elias-alvarez/null-ls.nvim', config = "require('vasco.null-ls')" }
 
   use 'PlatyPew/format-installer.nvim'
 
-  use 'aserowy/tmux.nvim'
+  use { 'aserowy/tmux.nvim', config = "require('vasco.tmux')" }
 
-  use 'windwp/nvim-ts-autotag'
+  use { 'windwp/nvim-ts-autotag', config = "require('vasco.autotag')" }
 
-  use 'echasnovski/mini.nvim'
+  use { 'echasnovski/mini.nvim', config = "require('vasco.mini')" }
 
-  use 'norcalli/nvim-colorizer.lua'
+  use { 'norcalli/nvim-colorizer.lua', config = "require('vasco.colorizer')" }
 
   use {
     'rcarriga/nvim-dap-ui',
     requires = { 'mfussenegger/nvim-dap', 'theHamsta/nvim-dap-virtual-text' },
     command = { 'DapToggleBreakpoint', 'DapContinue' },
+    config = "require('vasco.dap')",
   }
 
   use { 'TimUntersberger/neogit', cmd = { 'Neogit' } }
@@ -104,11 +117,11 @@ require('packer').startup(function(use)
 
   use { 'rizzatti/dash.vim', cmd = 'Dash' }
 
-  use 'kyazdani42/nvim-tree.lua'
+  use { 'kyazdani42/nvim-tree.lua', config = "require('vasco.nvim-tree')" }
 
   use 'kyazdani42/nvim-web-devicons'
 
-  use 'stevearc/dressing.nvim'
+  use { 'stevearc/dressing.nvim', requires = 'MunifTanjim/nui.nvim' }
 
   if packer_bootstrap then
     require('packer').sync()
