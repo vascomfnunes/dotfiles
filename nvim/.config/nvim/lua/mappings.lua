@@ -61,7 +61,7 @@ keymap('n', '<leader>cs', ':Copilot status<cr>') -- copilot status
 keymap('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
 -- Lsp
-keymap('n', '<leader>fd', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
+keymap('n', '<leader>lD', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
 keymap('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp symbols
 
 -- Markdown
@@ -72,7 +72,7 @@ keymap('n', '<leader>dc', ':DapContinue<cr>')
 keymap('n', '<leader>db', ':DapToggleBreakpoint<cr>')
 keymap('n', '<leader>do', ':DapStepOver<cr>')
 keymap('n', '<leader>di', ':DapStepInto<cr>')
-keymap('n', '<leader>dx', ':DapStepOut<cr>')
+keymap('n', '<leader>dO', ':DapStepOut<cr>')
 keymap('n', '<leader>dr', ':DapToggleRepl<cr>')
 keymap('n', '<leader>dq', ':DapTerminate<cr>')
 
@@ -82,14 +82,14 @@ keymap('n', '<leader>tf', ':TestFile<cr>')
 keymap('n', '<leader>ts', ':TestSuite<cr>')
 
 -- Projectionist
-keymap('n', 'ga', ':A<cr>')
-keymap('n', 'gv', ':Eview<cr>')
-keymap('n', 'gc', ':Econtroller<cr>')
-keymap('n', 'gm', ':Emodel<cr>')
-keymap('n', 'gh', ':Ehelper<cr>')
-keymap('n', 'gt', ':Espec<cr>')
-keymap('n', 'gj', ':Ejavascript<cr>')
-keymap('n', 'gs', ':Estylesheets<cr>')
+keymap('n', '<leader>pa', ':A<cr>')
+keymap('n', '<leader>pv', ':Eview<cr>')
+keymap('n', '<leader>pc', ':Econtroller<cr>')
+keymap('n', '<leader>pm', ':Emodel<cr>')
+keymap('n', '<leader>ph', ':Ehelper<cr>')
+keymap('n', '<leader>pt', ':Espec<cr>')
+keymap('n', '<leader>pj', ':Ejavascript<cr>')
+keymap('n', '<leader>ps', ':Estylesheets<cr>')
 
 -- Refactor with spectre
 keymap('n', '<Leader>pr', "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", silent)

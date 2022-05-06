@@ -103,7 +103,7 @@ local servers = {
   'eslint',
   'graphql',
   'tailwindcss',
-  'sumneko_lua',
+  -- 'sumneko_lua',
 }
 
 for _, server in ipairs(servers) do

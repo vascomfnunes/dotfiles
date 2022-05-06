@@ -102,6 +102,8 @@ require('packer').startup(function(use)
 
   use { 'echasnovski/mini.nvim', config = "require('vasco.mini')" }
 
+  use { 'folke/which-key.nvim', config = "require('vasco.whichkey')", event = 'BufWinEnter' }
+
   use { 'norcalli/nvim-colorizer.lua', config = "require('vasco.colorizer')" }
 
   use 'nvim-pack/nvim-spectre'
