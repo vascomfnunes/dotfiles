@@ -7,6 +7,10 @@ if not status_ok then
   return
 end
 
+local on_attach = function(client, bufnr)
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
+end
+
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
@@ -48,6 +52,7 @@ local lspconfig = require 'lspconfig'
 
 lspconfig.tsserver.setup {
   on_attach = function(client, bufnr)
+    on_attach,
     client.resolved_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
@@ -55,6 +60,7 @@ lspconfig.tsserver.setup {
 
 lspconfig.html.setup {
   on_attach = function(client, bufnr)
+    on_attach,
     client.resolved_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
@@ -77,6 +83,7 @@ local servers = {
 
 for _, server in ipairs(servers) do
   lspconfig[server].setup {
+    on_attach = on_attach,
     capabilities = capabilities,
   }
 end
