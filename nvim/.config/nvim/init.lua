@@ -5,5 +5,5 @@ end
 require 'options'
 require 'plugins'
 require 'mappings'
-require 'vasco.autocommands'
-require 'vasco.lsp'
+require 'autocommands'
+require 'vasco.lsp.config'

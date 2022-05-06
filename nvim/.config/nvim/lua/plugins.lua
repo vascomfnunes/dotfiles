@@ -85,7 +85,7 @@ require('packer').startup(function(use)
       'L3MON4D3/LuaSnip',
       requires = 'rafamadriz/friendly-snippets',
       after = 'cmp_luasnip',
-      config = "require('vasco.snips')",
+      config = "require('vasco.luasnip')",
     },
     'onsails/lspkind.nvim',
   }
@@ -103,6 +103,8 @@ require('packer').startup(function(use)
   use { 'echasnovski/mini.nvim', config = "require('vasco.mini')" }
 
   use { 'norcalli/nvim-colorizer.lua', config = "require('vasco.colorizer')" }
+
+  use 'nvim-pack/nvim-spectre'
 
   use {
     'rcarriga/nvim-dap-ui',
