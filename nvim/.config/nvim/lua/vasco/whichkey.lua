@@ -142,6 +142,7 @@ local mappings = {
     d = { 'Diagnostics' },
     h = { 'Help' },
     q = { 'Quickfix' },
+    s = { 'Sessions' },
   },
 
   m = {

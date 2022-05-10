@@ -94,6 +94,8 @@ require('packer').startup(function(use)
 
   use { 'jose-elias-alvarez/null-ls.nvim', config = "require('vasco.null-ls')" }
 
+  use { 'jedrzejboczar/possession.nvim', config = "require('vasco.possession')" }
+
   use 'PlatyPew/format-installer.nvim'
 
   use { 'aserowy/tmux.nvim', config = "require('vasco.tmux')" }

@@ -45,6 +45,7 @@ keymap('n', '<leader>fg', ':Telescope live_grep<cr>') -- live grep
 keymap('n', '<leader>fb', ':Telescope buffers<cr>') -- list buffers
 keymap('n', '<leader>fG', ':Telescope grep_string<cr>') -- grep string under cursor
 keymap('n', '<leader>fq', ':Telescope quickfix<cr>') -- quickfix
+keymap('n', '<leader>fs', ':Telescope possession list<cr>') -- quickfix
 
 -- Git
 keymap('n', '<leader>gg', ':Neogit<cr>') -- git status
