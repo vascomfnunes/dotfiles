@@ -7,6 +7,25 @@ if not status_ok then
   return
 end
 
+local colors = {
+  base00 = '#32302f', -- Default Background
+  base01 = '#32302f', -- Lighter Background (Used for status bars, line number and folding marks)
+  base02 = '#444444', -- Selection Background
+  base03 = '#666666', -- Comments, Invisibles, Line Highlighting
+  base04 = '#999999', -- Dark Foreground (Used for status bars)
+  base05 = '#d4be98', -- Default Foreground, Caret, Delimiters, Operators
+  base06 = '#666666', -- Light Foreground (Not often used)
+  base07 = '#32302f', -- Light Background (Not often used)
+  base08 = '#7daea3', -- Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
+  base09 = '#e78a4e', -- Integers, Boolean, Constants, XML Attributes, Markup Link Url
+  base0A = '#ea6962', -- Classes, Markup Bold, Search Text Background
+  base0B = '#a9b665', -- Strings, Inherited Class, Markup Code, Diff Inserted
+  base0C = '#d3869b', -- Support, Regular Expressions, Escape Characters, Markup Quotes
+  base0D = '#89b482', -- Functions, Methods, Attribute IDs, Headings
+  base0E = '#d3869b', -- Keywords, Storage, Selector, Markup Italic, Diff Changed
+  base0F = '#d4be98', -- Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
+}
+
 local function lsp_active()
   local msg = 'No Active Lsp'
   local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
@@ -51,28 +70,11 @@ statusline.setup {
 }
 
 require('mini.tabline').setup()
-require('mini.jump').setup()
+require('mini.jump2d').setup()
 
 require('mini.base16').setup {
   -- palette based on Gruvbox Material Dark Soft
-  palette = {
-    base00 = '#32302f', -- Default Background
-    base01 = '#32302f', -- Lighter Background (Used for status bars, line number and folding marks)
-    base02 = '#444444', -- Selection Background
-    base03 = '#666666', -- Comments, Invisibles, Line Highlighting
-    base04 = '#999999', -- Dark Foreground (Used for status bars)
-    base05 = '#d4be98', -- Default Foreground, Caret, Delimiters, Operators
-    base06 = '#666666', -- Light Foreground (Not often used)
-    base07 = '#32302f', -- Light Background (Not often used)
-    base08 = '#7daea3', -- Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-    base09 = '#e78a4e', -- Integers, Boolean, Constants, XML Attributes, Markup Link Url
-    base0A = '#ea6962', -- Classes, Markup Bold, Search Text Background
-    base0B = '#a9b665', -- Strings, Inherited Class, Markup Code, Diff Inserted
-    base0C = '#d3869b', -- Support, Regular Expressions, Escape Characters, Markup Quotes
-    base0D = '#89b482', -- Functions, Methods, Attribute IDs, Headings
-    base0E = '#d3869b', -- Keywords, Storage, Selector, Markup Italic, Diff Changed
-    base0F = '#d4be98', -- Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
-  },
+  palette = colors,
   name = 'minischeme',
   use_cterm = true,
 }
@@ -102,30 +104,31 @@ require('mini.surround').setup {
 -- HIGHLIGHTS
 --
 
-vim.api.nvim_set_hl(0, 'MiniStatusLineInactive', { bg = '#444444' })
-vim.api.nvim_set_hl(0, 'MiniStatusLineFilename', { bg = '#444444', fg = '#999999' })
-vim.api.nvim_set_hl(0, 'Pmenu', { bg = '#444444', fg = '#888888' })
-vim.api.nvim_set_hl(0, 'Title', { fg = '#dddddd' })
-vim.api.nvim_set_hl(0, 'SpellBad', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = '#a9b665' })
-vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = '#7daea3' })
-vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = '#e78a4e' })
-vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignError', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', { fg = '#e78a4e' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { fg = '#ea6962' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingWarn', { fg = '#e78a4e' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingInfo', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { fg = '#89b482' })
-vim.api.nvim_set_hl(0, 'FloatTitle', { fg = '#dddddd' })
-vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = '#ea6962' })
+vim.api.nvim_set_hl(0, 'MiniStatusLineInactive', { bg = colors.base02 })
+vim.api.nvim_set_hl(0, 'MiniStatusLineFilename', { bg = colors.base02, fg = colors.base_04 })
+vim.api.nvim_set_hl(0, 'Pmenu', { bg = colors.base02, fg = colors.base03 })
+vim.api.nvim_set_hl(0, 'Title', { fg = colors.base03 })
+vim.api.nvim_set_hl(0, 'SpellBad', { fg = colors.base0A })
+vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = colors.base0B })
+vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = colors.base0A })
+vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = colors.base08 })
+vim.api.nvim_set_hl(0, 'DiagnosticError', { fg = colors.base0A })
+vim.api.nvim_set_hl(0, 'DiagnosticWarn', { fg = colors.base09 })
+vim.api.nvim_set_hl(0, 'DiagnosticInfo', { fg = colors.base0B })
+vim.api.nvim_set_hl(0, 'DiagnosticHint', { fg = colors.base0B })
+vim.api.nvim_set_hl(0, 'DiagnosticSignError', { fg = colors.base0A })
+vim.api.nvim_set_hl(0, 'DiagnosticSignWarn', { fg = colors.base09 })
+vim.api.nvim_set_hl(0, 'DiagnosticSignInfo', { fg = colors.base0D })
+vim.api.nvim_set_hl(0, 'DiagnosticSignHint', { fg = colors.base0D })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { fg = colors.base0A })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingWarn', { fg = colors.base09 })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingInfo', { fg = colors.base0D })
+vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { fg = colors.base0D })
+vim.api.nvim_set_hl(0, 'FloatTitle', { fg = colors.base05 })
+vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { fg = colors.base0A })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = '#d4be98' })
-vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = '#444444' })
-vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = '#888888' })
-vim.api.nvim_set_hl(0, 'ColorColumn', { bg = '#444444' })
+vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = colors.base05 })
+vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
+vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = colors.base04 })
+vim.api.nvim_set_hl(0, 'ColorColumn', { bg = colors.base02 })
+vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base06, fg = colors.base05 })
