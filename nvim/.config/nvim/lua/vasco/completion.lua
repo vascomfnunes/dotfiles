@@ -25,6 +25,7 @@ cmp.setup {
     { name = 'path' },
     { name = 'spell' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'nvim_lua' },
     { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
@@ -36,6 +37,7 @@ cmp.setup {
         spell = '[Spell]',
         buffer = '[Buffer]',
         path = '[Path]',
+        nvim_lua = '[Lua]',
       },
     },
   },

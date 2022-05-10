@@ -44,12 +44,11 @@ require('nvim-lsp-installer').setup {
 
 local lspconfig = require 'lspconfig'
 
--- lspconfig.sumneko_lua.setup {
--- handlers = handlers,
--- on_attach = on_attach,
--- capabilities = capabilities,
--- settings = require('vasco.lsp.servers.sumneko').settings,
--- }
+lspconfig.sumneko_lua.setup {
+  handlers = handlers,
+  on_attach = on_attach,
+  settings = require('vasco.lsp.servers.sumneko').settings,
+}
 
 lspconfig.eslint.setup {
   capabilities = capabilities,
@@ -104,7 +103,6 @@ local servers = {
   'eslint',
   'graphql',
   'tailwindcss',
-  -- 'sumneko_lua',
 }
 
 for _, server in ipairs(servers) do

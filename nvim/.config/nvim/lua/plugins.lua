@@ -76,7 +76,8 @@ return packer.startup(function(use)
 
   use {
     { 'hrsh7th/nvim-cmp', config = "require('vasco.completion')" },
-    { 'hrsh7th/cmp-nvim-lsp' },
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-nvim-lua',
     { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
