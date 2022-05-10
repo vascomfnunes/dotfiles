@@ -14,8 +14,16 @@ if fn.empty(fn.glob(install_path)) > 0 then
     'https://github.com/wbthomason/packer.nvim',
     install_path,
   }
-  vim.cmd 'packadd packer.nvim'
+  vim.cmd [[packadd packer.nvim]]
 end
+
+-- Autocommand that reloads neovim whenever you save the plugins.lua file
+vim.cmd [[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost plugins.lua source <afile> | PackerSync
+  augroup end
+]]
 
 -- Use a protected call so we don't error out on first use
 local status_ok, packer = pcall(require, 'packer')
@@ -34,14 +42,12 @@ packer.init {
   autoremove = true,
 }
 
-require('packer').startup(function(use)
+return packer.startup(function(use)
   use 'wbthomason/packer.nvim'
 
-  use 'lewis6991/impatient.nvim' -- Needed to load first
-
-  use { 'nvim-treesitter/nvim-treesitter', config = "require('vasco.treesitter')" }
-
   use 'neovim/nvim-lspconfig'
+
+  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = "require('vasco.treesitter')" }
 
   use {
     'lewis6991/gitsigns.nvim',
@@ -62,11 +68,7 @@ require('packer').startup(function(use)
     config = "require('vasco.telescope')",
   }
 
-  use { 'windwp/nvim-autopairs', after = { 'nvim-treesitter', 'nvim-cmp' }, config = "require('vasco.autopairs')" }
-
   use { 'vim-test/vim-test', command = { 'TestNearest', 'TestFile', 'TestSuite' } }
-
-  use { 'williamboman/nvim-lsp-installer', event = 'BufEnter', after = 'cmp-nvim-lsp' }
 
   use { 'jose-elias-alvarez/nvim-lsp-ts-utils', after = { 'nvim-treesitter' } }
 
@@ -74,7 +76,7 @@ require('packer').startup(function(use)
 
   use {
     { 'hrsh7th/nvim-cmp', config = "require('vasco.completion')" },
-    { 'hrsh7th/cmp-nvim-lsp', after = 'nvim-cmp' },
+    { 'hrsh7th/cmp-nvim-lsp' },
     { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
     { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
@@ -89,6 +91,10 @@ require('packer').startup(function(use)
     },
     'onsails/lspkind.nvim',
   }
+
+  use 'williamboman/nvim-lsp-installer'
+
+  use { 'windwp/nvim-autopairs', after = { 'nvim-treesitter', 'nvim-cmp' }, config = "require('vasco.autopairs')" }
 
   use { 'davidgranstrom/nvim-markdown-preview', cmd = 'MarkdownPreview' } -- requires 'npm install -g live-server' and 'brew install pandoc'
 

@@ -83,7 +83,7 @@ local mappings = {
   -- single
   ['z'] = { 'Maximize split' },
   ['c'] = { 'Disable search highlighting' },
-  ['n'] = { 'File explorer' },
+  ['n'] = { 'Toggle file explorer' },
   ['q'] = { 'Quickfix list' },
   ['v'] = { 'Neovim configuration' },
 
