@@ -1,13 +1,23 @@
 # ohmyzsh configuration
+ZVM_INIT_MODE=sourcing # this is important to avoid plugin keybinding conflicts
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="simple"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 15
 HIST_STAMPS="dd/mm/yyyy"
-plugins=(gitfast z vi-mode pass)
+
+# some plugins requires:
+# ----------------------
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH_CUSTOM/plugins/zsh-vi-mode
+#
+# vi-mode: edit with 'vv' when in NORMAL mode
+plugins=(gitfast z zsh-vi-mode pass fzf zsh-autosuggestions zsh-syntax-highlighting)
+
 source $ZSH/oh-my-zsh.sh
-bindkey "^R" history-incremental-search-backward
 export EDITOR='nvim'
+export FZF_BASE=~/.fzf
 
 # aliases
 alias la='ls -la'
@@ -22,7 +32,6 @@ alias rm='rm -i'
 alias diff='diff --color=auto'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
 alias ssh='TERM=xterm-256color ssh'
-# alias ctags="/usr/local/bin/ctags -R --options=$HOME/.ctags --languages=Ruby,RSpec,JavaScript,CSS,SCSS . $(bundle list --paths)"
 alias rspec='rspec -f d'
 alias music='ncmpc'
 
