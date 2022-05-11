@@ -81,9 +81,10 @@ keymap('n', '<leader>dq', ':DapTerminate<cr>')
 keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
 
 -- Tests
-keymap('n', '<leader>tn', ':TestNearest<cr>')
-keymap('n', '<leader>tf', ':TestFile<cr>')
-keymap('n', '<leader>ts', ':TestSuite<cr>')
+keymap('n', '<leader>tn', ':UltestNearest<cr>')
+keymap('n', '<leader>tf', ':Ultest<cr>')
+keymap('n', '<leader>ts', ':UltestSummary<cr>')
+keymap('n', '<leader>tl', ':UltestLast<cr>')
 
 -- Projectionist
 keymap('n', '<leader>pa', ':A<cr>')

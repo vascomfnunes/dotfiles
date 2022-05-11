@@ -84,25 +84,37 @@ return packer.startup(function(use)
     config = "require('vasco.telescope')",
   }
 
-  use { 'vim-test/vim-test', command = { 'TestNearest', 'TestFile', 'TestSuite' } }
+  use {
+    'rcarriga/vim-ultest',
+    config = "require('vasco.ultest')",
+    run = ':UpdateRemotePlugins',
+    requires = { 'vim-test/vim-test' },
+  }
 
   use {
-    { 'hrsh7th/nvim-cmp', config = "require('vasco.completion')" },
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-nvim-lua',
-    { 'hrsh7th/cmp-buffer', after = 'nvim-cmp' },
-    { 'hrsh7th/cmp-path', after = 'nvim-cmp' },
-    { 'hrsh7th/cmp-cmdline', after = 'nvim-cmp' },
-    { 'hrsh7th/cmp-nvim-lsp-signature-help', after = 'nvim-cmp' },
-    { 'f3fora/cmp-spell', after = 'nvim-cmp' },
-    { 'saadparwaiz1/cmp_luasnip', after = 'nvim-cmp' },
-    {
-      'L3MON4D3/LuaSnip',
-      requires = 'rafamadriz/friendly-snippets',
-      config = "require('vasco.luasnip')",
+    'hrsh7th/nvim-cmp',
+    event = 'VimEnter',
+    opt = true,
+    requires = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'f3fora/cmp-spell',
+      'saadparwaiz1/cmp_luasnip',
     },
-    'onsails/lspkind.nvim',
+    config = "require('vasco.completion')",
   }
+
+  use {
+    'L3MON4D3/LuaSnip',
+    requires = 'rafamadriz/friendly-snippets',
+    config = "require('vasco.luasnip')",
+  }
+
+  use 'onsails/lspkind-nvim'
 
   use 'williamboman/nvim-lsp-installer'
 
@@ -133,7 +145,7 @@ return packer.startup(function(use)
 
   use { 'norcalli/nvim-colorizer.lua', config = "require('vasco.colorizer')" }
 
-  use 'nvim-pack/nvim-spectre'
+  use { 'nvim-pack/nvim-spectre', event = 'VimEnter' }
 
   use {
     'rcarriga/nvim-dap-ui',

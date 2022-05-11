@@ -125,7 +125,8 @@ local mappings = {
     name = 'Tests',
     n = { 'Nearest' },
     f = { 'File' },
-    s = { 'Suite' },
+    l = { 'Last' },
+    s = { 'Summary' },
   },
 
   g = {
