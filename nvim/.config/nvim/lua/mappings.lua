@@ -82,9 +82,10 @@ keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
 
 -- Tests
 keymap('n', '<leader>tn', ':UltestNearest<cr>')
-keymap('n', '<leader>tf', ':Ultest<cr>')
+keymap('n', '<leader>tc', ':UltestClear<cr>')
 keymap('n', '<leader>ts', ':UltestSummary<cr>')
 keymap('n', '<leader>tl', ':UltestLast<cr>')
+keymap('n', '<leader>to', ':UltestOutput<cr>')
 
 -- Projectionist
 keymap('n', '<leader>pa', ':A<cr>')
