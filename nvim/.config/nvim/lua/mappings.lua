@@ -67,6 +67,8 @@ keymap('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp sym
 
 -- Markdown
 keymap('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
+keymap('n', '<leader>m[', ':MkdnPrevHeading<cr>') -- previous markdown header
+keymap('n', '<leader>m]', ':MkdnNextHeading<cr>') -- next markdown header
 
 -- Debug
 keymap('n', '<leader>dc', ':DapContinue<cr>')

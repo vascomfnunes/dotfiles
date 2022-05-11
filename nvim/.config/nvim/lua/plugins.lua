@@ -99,6 +99,13 @@ return packer.startup(function(use)
 
   use { 'davidgranstrom/nvim-markdown-preview', cmd = 'MarkdownPreview' } -- requires 'npm install -g live-server' and 'brew install pandoc'
 
+  use {
+    'jakewvincent/mkdnflow.nvim',
+    config = function()
+      require('mkdnflow').setup{}
+    end,
+  }
+
   use { 'jose-elias-alvarez/null-ls.nvim', config = "require('vasco.null-ls')" }
 
   use { 'jedrzejboczar/possession.nvim', config = "require('vasco.possession')" }

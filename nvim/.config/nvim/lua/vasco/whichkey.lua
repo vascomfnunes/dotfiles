@@ -148,6 +148,8 @@ local mappings = {
   m = {
     name = 'Markdown',
     p = { 'Preview in browser' },
+    ['['] = { 'Previous header' },
+    [']'] = { 'Next header' },
   },
 
   p = {
