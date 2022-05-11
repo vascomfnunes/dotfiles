@@ -47,7 +47,23 @@ return packer.startup(function(use)
 
   use 'neovim/nvim-lspconfig'
 
-  use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate', config = "require('vasco.treesitter')" }
+  use {
+    'nvim-treesitter/nvim-treesitter',
+    run = ':TSUpdate',
+    config = "require('vasco.treesitter')",
+    requires = {
+      'jose-elias-alvarez/nvim-lsp-ts-utils',
+      'JoosepAlviste/nvim-ts-context-commentstring',
+    },
+  }
+
+  use {
+    'danymat/neogen',
+    config = function()
+      require('neogen').setup {}
+    end,
+    requires = 'nvim-treesitter/nvim-treesitter',
+  }
 
   use {
     'lewis6991/gitsigns.nvim',
@@ -70,10 +86,6 @@ return packer.startup(function(use)
 
   use { 'vim-test/vim-test', command = { 'TestNearest', 'TestFile', 'TestSuite' } }
 
-  use { 'jose-elias-alvarez/nvim-lsp-ts-utils', after = { 'nvim-treesitter' } }
-
-  use { 'JoosepAlviste/nvim-ts-context-commentstring', after = 'nvim-treesitter' }
-
   use {
     { 'hrsh7th/nvim-cmp', config = "require('vasco.completion')" },
     'hrsh7th/cmp-nvim-lsp',
@@ -87,7 +99,6 @@ return packer.startup(function(use)
     {
       'L3MON4D3/LuaSnip',
       requires = 'rafamadriz/friendly-snippets',
-      after = 'cmp_luasnip',
       config = "require('vasco.luasnip')",
     },
     'onsails/lspkind.nvim',
@@ -102,7 +113,7 @@ return packer.startup(function(use)
   use {
     'jakewvincent/mkdnflow.nvim',
     config = function()
-      require('mkdnflow').setup{}
+      require('mkdnflow').setup {}
     end,
   }
 
@@ -131,7 +142,11 @@ return packer.startup(function(use)
     config = "require('vasco.dap')",
   }
 
-  use { 'TimUntersberger/neogit', cmd = { 'Neogit' } }
+  use {
+    'TimUntersberger/neogit',
+    cmd = { 'Neogit' },
+    config = "require('neogen').setup({ snippet_engine = 'luasnip' })",
+  }
 
   use { 'github/copilot.vim', cmd = { 'Copilot' } }
 

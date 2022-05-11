@@ -118,6 +118,7 @@ local mappings = {
     r = { 'Toggle repl' },
     q = { 'Quit' },
     s = { 'Search in Dash' },
+    g = { 'Generate documentation' },
   },
 
   t = {

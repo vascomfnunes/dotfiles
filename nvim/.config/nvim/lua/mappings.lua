@@ -78,6 +78,7 @@ keymap('n', '<leader>di', ':DapStepInto<cr>')
 keymap('n', '<leader>dO', ':DapStepOut<cr>')
 keymap('n', '<leader>dr', ':DapToggleRepl<cr>')
 keymap('n', '<leader>dq', ':DapTerminate<cr>')
+keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
 
 -- Tests
 keymap('n', '<leader>tn', ':TestNearest<cr>')
