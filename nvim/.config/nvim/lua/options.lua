@@ -91,7 +91,7 @@ local globals = {
   loaded_pearl_provider = 0,
 
   -- Python provider
-  python3_host_prog = '/usr/local/bin/python3',
+  python3_host_prog = '~/homebrew/bin/python3',
 }
 
 vim.opt.iskeyword:append '-'

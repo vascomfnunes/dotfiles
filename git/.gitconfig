@@ -1,7 +1,7 @@
 [user]
   name = Vasco Nunes
   email = contact@vasco.dev
-  signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
+  signingkey = "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQCrwxSEti6VshO3D4kqVScQI1WMkac3bvxd37FD/TgE9Hihu+ucZNpOAKRa2jsh5MaTc6M5Mc7mhphEKPqA6QyNXwk5IywIyvGRSPMaDtVRbtsWYbJsu+2CJeLgmNfQXIoPLmQWI44EZK+I00DGcuBBE/A1/QogDKxBLe2hVYmqpzaWQY0vqkiwnTlvXV1STZ3325NIzfgrVD4FsQ2f5ct6zjpzZipvzS2d2LlYWOmaB3Kmv3Bgsy428qd2WGjKEFod1N91NzpcooPr/87kqAoUZm5DVJy/ZRK3O/UqHJTJ7dtkGjgNOWanALa/aTxtzJ5PyI0BG2RzV0VGvoRq9sHd vasco@imac-de-vasco.lan"
 [core]
   excludesfile = /Users/vasco.nunes/.gitignore_global
   editor = nvim
@@ -68,3 +68,5 @@
   diffFilter = delta --color-only
 [includeIf "gitdir:~/workspace/"]
   path = ~/workspace/.gitconfig
+[gpg]
+	format = ssh
