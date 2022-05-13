@@ -13,7 +13,7 @@ vim.api.nvim_exec(
         let g:test#preserve_screen = 1
         let test#ruby#rspec#runner = 'rspec'
         let test#ruby#cucumber#runner = 'cucumber'
-        let test#javascript#jest#options = "--color=always"
+        let test#javascript#jest#options = "--color=always --silent"
         let test#javascript#reactscripts#options = "--watchAll=false"
         let test#ruby#rspec#options = {
           \ 'all': '--format progress --color'
