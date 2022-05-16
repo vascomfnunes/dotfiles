@@ -49,6 +49,10 @@ keymap('n', '<leader>fs', ':Telescope possession list<cr>') -- quickfix
 
 -- Git
 keymap('n', '<leader>gg', ':Neogit<cr>') -- git status
+keymap('n', '<leader>gs', ':Gitsigns stage_hunk<cr>') -- stage hunk
+keymap('n', '<leader>gu', ':Gitsigns undo_stage_hunk<cr>') -- unstage hunk
+keymap('n', '<leader>gr', ':Gitsigns reset_hunk<cr>') -- reset hunk
+keymap('n', '<leader>gl', ':Gitsigns setloclist<cr>') -- location list
 
 keymap('n', '<leader>gb', function()
   require('gitsigns').blame_line() -- git blame line
@@ -80,6 +84,10 @@ keymap('n', '<leader>dr', ':DapToggleRepl<cr>')
 keymap('n', '<leader>dq', ':DapTerminate<cr>')
 keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
 
+keymap('n', '<leader>dt', function()
+  require('dapui').toggle()
+end)
+
 -- Tests
 keymap('n', '<leader>tn', ':UltestNearest<cr>')
 keymap('n', '<leader>tc', ':UltestClear<cr>')
@@ -100,10 +108,6 @@ keymap('n', '<leader>ps', ':Estylesheets<cr>')
 -- Refactor with spectre
 keymap('n', '<Leader>pr', "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", silent)
 keymap('v', '<Leader>pr', "<cmd>lua require('spectre').open_visual()<CR>")
-
-keymap('n', '<leader>dt', function()
-  require('dapui').toggle()
-end)
 
 keymap('n', '<leader>lf', function()
   vim.lsp.buf.formatting() -- lsp format

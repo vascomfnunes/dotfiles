@@ -116,6 +116,7 @@ local mappings = {
     o = { 'Step over' },
     O = { 'Step out' },
     r = { 'Toggle repl' },
+    t = { 'Toggle debug UI' },
     q = { 'Quit' },
     s = { 'Search in Dash' },
     g = { 'Generate documentation' },
@@ -134,6 +135,10 @@ local mappings = {
     name = 'Git',
     g = { 'Neogit' },
     b = { 'Blame' },
+    s = { 'Stage hunk' },
+    u = { 'Unstage hunk' },
+    r = { 'Reset hunk' },
+    l = { 'View on loclist' },
   },
 
   f = {
