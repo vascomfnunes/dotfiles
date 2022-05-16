@@ -54,6 +54,7 @@ return packer.startup(function(use)
     requires = {
       'jose-elias-alvarez/nvim-lsp-ts-utils',
       'JoosepAlviste/nvim-ts-context-commentstring',
+      'RRethy/nvim-treesitter-endwise',
       {
         'lewis6991/spellsitter.nvim',
         config = function()
