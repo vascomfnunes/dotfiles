@@ -93,8 +93,6 @@ return packer.startup(function(use)
 
   use {
     'hrsh7th/nvim-cmp',
-    event = 'VimEnter',
-    opt = true,
     requires = {
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lua',
