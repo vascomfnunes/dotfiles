@@ -174,6 +174,8 @@ return packer.startup(function(use)
 
   use 'kyazdani42/nvim-web-devicons'
 
+  use 'romainl/vim-cool'
+
   use { 'stevearc/dressing.nvim', requires = 'MunifTanjim/nui.nvim' }
 
   if packer_bootstrap then
