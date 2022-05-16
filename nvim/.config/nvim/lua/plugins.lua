@@ -113,6 +113,8 @@ return packer.startup(function(use)
     config = "require('vasco.completion')",
   }
 
+  use { 'tpope/vim-ragtag', ft = { 'ruby', 'eruby' } }
+
   use {
     'L3MON4D3/LuaSnip',
     requires = 'rafamadriz/friendly-snippets',
@@ -134,6 +136,8 @@ return packer.startup(function(use)
       require('mkdnflow').setup {}
     end,
   }
+
+  use { 'mzlogin/vim-markdown-toc', ft = { 'markdown', 'vimwiki' } }
 
   use { 'jose-elias-alvarez/null-ls.nvim', config = "require('vasco.null-ls')" }
 

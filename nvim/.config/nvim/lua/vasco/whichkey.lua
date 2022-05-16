@@ -155,6 +155,8 @@ local mappings = {
   m = {
     name = 'Markdown',
     p = { 'Preview in browser' },
+    t = { 'Generate TOC' },
+    u = { 'Update TOC' },
     ['['] = { 'Previous header' },
     [']'] = { 'Next header' },
   },

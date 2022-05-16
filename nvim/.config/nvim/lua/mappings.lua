@@ -80,6 +80,8 @@ keymap('n', '<leader>lD', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diag
 keymap('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
 keymap('n', '<leader>m[', ':MkdnPrevHeading<cr>') -- previous markdown header
 keymap('n', '<leader>m]', ':MkdnNextHeading<cr>') -- next markdown header
+keymap('n', '<leader>mt', ':GenTocGFM<cr>') -- generate TOC
+keymap('n', '<leader>mu', ':UpdateToc<cr>') -- update TOC
 
 -- Debug
 keymap('n', '<leader>dc', ':DapContinue<cr>')
