@@ -32,7 +32,7 @@ if not status_ok then
   return
 end
 
--- Have packer to use a popup window
+-- Have packer to use a pop-up window
 packer.init {
   display = {
     open_fn = function()
