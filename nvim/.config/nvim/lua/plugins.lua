@@ -122,6 +122,7 @@ return packer.startup(function(use)
 
   use {
     'jakewvincent/mkdnflow.nvim',
+    ft = 'markdown',
     config = function()
       require('mkdnflow').setup {}
     end,
@@ -139,7 +140,7 @@ return packer.startup(function(use)
 
   use { 'echasnovski/mini.nvim', config = "require('vasco.mini')" }
 
-  use { 'folke/which-key.nvim', config = "require('vasco.whichkey')", event = 'BufWinEnter' }
+  use { 'folke/which-key.nvim', config = "require('vasco.whichkey')", keys = { '<leader>' } }
 
   use { 'norcalli/nvim-colorizer.lua', config = "require('vasco.colorizer')" }
 
@@ -158,11 +159,11 @@ return packer.startup(function(use)
     config = "require('neogen').setup({ snippet_engine = 'luasnip' })",
   }
 
-  use { 'github/copilot.vim', cmd = { 'Copilot' } }
+  use { 'github/copilot.vim', cmd = 'Copilot' }
 
   use { 'rizzatti/dash.vim', cmd = 'Dash' }
 
-  use { 'kyazdani42/nvim-tree.lua', config = "require('vasco.nvim-tree')" }
+  use { 'kyazdani42/nvim-tree.lua', config = "require('vasco.nvim-tree')", cmd = 'NvimTreeToggle' }
 
   use 'kyazdani42/nvim-web-devicons'
 

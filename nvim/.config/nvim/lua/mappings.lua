@@ -11,6 +11,14 @@ keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
 keymap('n', '<leader>c', ':nohlsearch<cr>') -- clear search highlights
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 
+-- Move text up and down
+keymap('n', '<A-j>', ':m .+1<CR>')
+keymap('n', '<A-k>', ':m .-2<CR>')
+keymap('v', '<A-j>', ":m '>+1<CR>gv=gv")
+keymap('v', '<A-k>', ":m '<-2<CR>gv=gv")
+keymap('i', '<A-j>', '<Esc>:m .+1<CR>==gi')
+keymap('i', '<A-k>', '<Esc>:m .-2<CR>==gi')
+
 -- Don't yank on delete char
 keymap('n', 'x', '"_x', silent)
 keymap('n', 'X', '"_X', silent)
@@ -67,7 +75,6 @@ keymap('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
 -- Lsp
 keymap('n', '<leader>lD', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
-keymap('n', '<leader>ls', ':Telescope lsp_document_symbols<cr>') -- show lsp symbols
 
 -- Markdown
 keymap('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
@@ -125,7 +132,7 @@ keymap('n', '<leader>lR', function()
   vim.lsp.buf.rename() -- lsp rename
 end)
 
-keymap('n', '<leader>ld', function()
+keymap('n', '<leader>ll', function()
   vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) -- lsp line diagnostics
 end)
 
