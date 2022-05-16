@@ -24,6 +24,7 @@ local options = {
   smartcase = true,
   smartindent = true,
   spelllang = 'en_gb',
+  spell = true,
   splitbelow = true,
   splitright = true,
   swapfile = false,
