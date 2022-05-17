@@ -3,3 +3,4 @@ if status is-interactive
 end
 
 set -gx GPG_TTY (tty)
+fish_vi_key_bindings
