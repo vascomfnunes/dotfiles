@@ -1,5 +1,6 @@
 if status is-interactive
-  bass export GPG_TTY=$(tty)
-  bass source ~/.env_variables
+  set -gx PATH $PATH ~/homebrew/bin
+  export GPG_TTY=$(tty)
+  source ~/.env_variables_fish
 end
 
