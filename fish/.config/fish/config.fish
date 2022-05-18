@@ -1,5 +1,5 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+  bass export GPG_TTY=$(tty)
+  bass source ~/.env_variables
 end
 
-export GPG_TTY=$(tty)
