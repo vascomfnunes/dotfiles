@@ -58,7 +58,7 @@ alias tks="tmux kill-session -t"
 source ~/.config/zsh/env_variables
 
 # gpg
-export GPG_TTY=$(tty)
+# export GPG_TTY=$(tty)
 
 # rbenv for Ruby
 eval "$(rbenv init -)"
