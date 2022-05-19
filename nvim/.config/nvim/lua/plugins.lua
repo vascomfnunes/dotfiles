@@ -87,7 +87,7 @@ return packer.startup(function(use)
       'nvim-lua/plenary.nvim',
       'nvim-telescope/telescope-fzy-native.nvim',
     },
-    command = 'Telescope',
+    cmd = 'Telescope',
     config = "require('vasco.telescope')",
   }
 
@@ -137,7 +137,7 @@ return packer.startup(function(use)
     end,
   }
 
-  use { 'mzlogin/vim-markdown-toc', ft = { 'markdown', 'vimwiki' } }
+  use { 'mzlogin/vim-markdown-toc', ft = 'markdown' }
 
   use { 'jose-elias-alvarez/null-ls.nvim', config = "require('vasco.null-ls')" }
 
@@ -160,7 +160,6 @@ return packer.startup(function(use)
   use {
     'rcarriga/nvim-dap-ui',
     requires = { 'mfussenegger/nvim-dap', 'theHamsta/nvim-dap-virtual-text' },
-    command = { 'DapToggleBreakpoint', 'DapContinue' },
     config = "require('vasco.dap')",
   }
 
@@ -178,7 +177,7 @@ return packer.startup(function(use)
 
   use 'kyazdani42/nvim-web-devicons'
 
-  use 'romainl/vim-cool'
+  use { 'romainl/vim-cool', event = 'VimEnter' }
 
   use { 'stevearc/dressing.nvim', requires = 'MunifTanjim/nui.nvim' }
 
