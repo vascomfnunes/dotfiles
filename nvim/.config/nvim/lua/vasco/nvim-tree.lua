@@ -7,10 +7,6 @@ if not status_ok then
   return
 end
 
-local g = vim.g
-
-g.nvim_tree_show_icons = { folders = 1, files = 1, git = 0 }
-
 tree.setup {
   filters = {
     custom = { '.git', '.DS_Store' },
@@ -56,6 +52,11 @@ tree.setup {
         { key = 'q', action = 'close' },
         { key = 'g?', action = 'toggle_help' },
       },
+    },
+  },
+  renderer = {
+    icons = {
+      show = { folder = true, file = true, folder_arrow = true },
     },
   },
 }
