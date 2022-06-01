@@ -42,6 +42,7 @@ weechat/.config/weechat/lua.conf
 weechat/.config/weechat/tcl.conf
 weechat/.config/weechat/typing.conf
 mpv/.config/mpv/watch_later
+mpv/.config/mpv/playlists
 gnupg/.gnupg/private*
 gnupg/.gnupg/pub*
 gnupg/.gnupg/sshcontrol
