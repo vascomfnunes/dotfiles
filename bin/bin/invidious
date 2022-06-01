@@ -1,0 +1,109 @@
+#!/usr/bin/env ruby
+
+require 'json'
+require 'rest-client'
+require 'tty-prompt'
+
+INSTANCE_URL = 'https://invidious.snopyta.org'
+PLAYER = ENV['PLAYER'] || 'mpv'
+
+@page = 1
+
+def get_from_api(query, page)
+  begin
+    response = RestClient::Request.execute(
+      method: :get,
+      url: "#{INSTANCE_URL}/api/v1/search?q=#{query}&page=#{page}&fields=videoId,title,description&sort_by=relevance",
+      headers: {
+        user_agent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:85.0) Gecko/20100101 Firefox/85.0'
+      }
+    )
+  rescue StandardError => e
+    abort "API error: #{e.message}"
+  end
+
+  JSON.parse(response, symbolize_names: true)
+end
+
+def clear_screen
+  system 'clear'
+end
+
+def header
+  clear_screen
+  puts 'Invidious Player', ''
+end
+
+def search
+  @page = 1
+  header
+  prompt = TTY::Prompt.new(interrupt: :exit)
+
+  @query = prompt.ask('Search: ') do |q|
+    q.required true
+  end
+
+  abort if @query == 'quit'
+
+  list
+end
+
+def play(option)
+  option.each do |e|
+    clear_screen
+    puts "Playing: #{e[:title]}"
+    system("#{PLAYER} #{INSTANCE_URL}/watch?v=#{e[:videoId]}")
+  end
+end
+
+def list
+  clear_screen
+  puts 'Loading...'
+  response = get_from_api(@query, @page)
+  @prompt = TTY::Prompt.new(interrupt: :exit)
+
+  loop do
+    header
+    puts "Page: #{@page}"
+    handle_key_presses
+
+    options_selected = @prompt.multi_select(
+      nil,
+      per_page: 20,
+      show_help: 'never',
+      cycle: true,
+      echo: false,
+      filter: true
+    ) do |menu|
+      menu.enum '.'
+      response.each do |e|
+        menu.choice name: e[:title], value: e
+      end
+    end
+
+    play(options_selected)
+  end
+end
+
+def handle_key_presses
+  @prompt.on(:keypress) do |event|
+    dispatch_events(event)
+  end
+end
+
+def dispatch_events(event)
+  case event.value
+  when 's' then search
+  when 'n'
+    @page += 1
+    list
+  when 'p'
+    return unless @page > 1
+
+    @page -= 1
+    list
+  when 'q' then exit true
+  end
+end
+
+search
