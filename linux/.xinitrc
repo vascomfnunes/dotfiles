@@ -7,6 +7,6 @@ mpd ~/.mpdconf_pipewire &
 blueman-applet &
 volumeicon &
 nm-applet &
-picom &
+picom --no-fading-openclose &
 redshift -l '53.258949:-1.913020' &
 exec dwm
