@@ -27,23 +27,13 @@ local colors = {
 }
 
 local function lsp_active()
-  local msg = 'No Active LSP'
-  local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-  local clients = vim.lsp.get_active_clients()
+  local clients = {}
 
-  if next(clients) == nil then
-    return msg
+  for _, client in pairs(vim.lsp.buf_get_clients(0)) do
+    clients[#clients + 1] = client.name
   end
 
-  local lsps = ''
-
-  for i, client in ipairs(clients) do
-    local filetypes = client.config.filetypes
-
-    lsps = lsps .. client.name .. ' '
-  end
-
-  return 'LSP: ' .. lsps
+  return 'LSP: ' .. table.concat(clients, ' ')
 end
 
 statusline.setup {
