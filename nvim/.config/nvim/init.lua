@@ -1,3 +1,5 @@
+require 'vasco.impatient'
+require 'vasco.filetype'
 require 'options'
 require 'plugins'
 require 'mappings'
