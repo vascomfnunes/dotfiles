@@ -100,7 +100,8 @@ end)
 -- Tests
 keymap('n', '<leader>tn', ':lua require("neotest").run.run()<cr>')
 keymap('n', '<leader>tf', ':lua require("neotest").run.run(vim.fn.expand("%"))<cr>')
-keymap('n', '<leader>ts', ':lua require("neotest").run.stop()<cr>')
+keymap('n', '<leader>tS', ':lua require("neotest").run.stop()<cr>')
+keymap('n', '<leader>ts', ':lua require("neotest").summary.toggle()<cr>')
 keymap('n', '<leader>td', ':lua require("neotest").run.run({strategy = "dap"})<cr>')
 keymap('n', '<leader>to', ':lua require("neotest").output.open({ enter = true })<cr>')
 
