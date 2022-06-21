@@ -92,10 +92,15 @@ return packer.startup(function(use)
   }
 
   use {
-    'rcarriga/vim-ultest',
-    config = "require('vasco.ultest')",
-    run = ':UpdateRemotePlugins',
-    requires = { 'vim-test/vim-test' },
+    'nvim-neotest/neotest',
+    requires = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'antoinemadec/FixCursorHold.nvim',
+      'olimorris/neotest-rspec',
+      'haydenmeade/neotest-jest',
+    },
+    config = "require('vasco.neotest')",
   }
 
   use {

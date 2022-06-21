@@ -124,10 +124,10 @@ local mappings = {
   t = {
     name = 'Tests',
     n = { 'Run nearest test' },
-    c = { 'Clear all' },
-    l = { 'Run last test' },
-    s = { 'Toggle summary' },
-    s = { 'Show nearest output' },
+    f = { 'Run file tests' },
+    s = { 'Stop' },
+    d = { 'Debug' },
+    o = { 'Show test output' },
   },
 
   g = {

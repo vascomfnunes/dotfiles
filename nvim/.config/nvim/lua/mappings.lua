@@ -98,11 +98,11 @@ keymap('n', '<leader>dt', function()
 end)
 
 -- Tests
-keymap('n', '<leader>tn', ':UltestNearest<cr>')
-keymap('n', '<leader>tc', ':UltestClear<cr>')
-keymap('n', '<leader>ts', ':UltestSummary<cr>')
-keymap('n', '<leader>tl', ':UltestLast<cr>')
-keymap('n', '<leader>to', ':UltestOutput<cr>')
+keymap('n', '<leader>tn', ':lua require("neotest").run.run()<cr>')
+keymap('n', '<leader>tf', ':lua require("neotest").run.run(vim.fn.expand("%"))<cr>')
+keymap('n', '<leader>ts', ':lua require("neotest").run.stop()<cr>')
+keymap('n', '<leader>td', ':lua require("neotest").run.run({strategy = "dap"})<cr>')
+keymap('n', '<leader>to', ':lua require("neotest").output.open({ enter = true })<cr>')
 
 -- Projectionist
 keymap('n', '<leader>pa', ':A<cr>')
