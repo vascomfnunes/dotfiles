@@ -132,7 +132,7 @@ return packer.startup(function(use)
 
   use 'onsails/lspkind-nvim'
 
-  use 'williamboman/nvim-lsp-installer'
+  use { 'williamboman/nvim-lsp-installer', config = "require('vasco.lsp-installer')" }
 
   use { 'windwp/nvim-autopairs', after = { 'nvim-treesitter', 'nvim-cmp' }, config = "require('vasco.autopairs')" }
 
