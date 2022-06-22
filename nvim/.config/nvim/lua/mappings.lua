@@ -66,11 +66,6 @@ keymap('n', '<leader>gb', function()
   require('gitsigns').blame_line() -- git blame line
 end)
 
--- Copilot
-keymap('n', '<leader>ce', ':Copilot enable<cr>') -- enable copilot
-keymap('n', '<leader>cd', ':Copilot disable<cr>') -- disable copilot
-keymap('n', '<leader>cs', ':Copilot status<cr>') -- copilot status
-
 keymap('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
 -- Lsp

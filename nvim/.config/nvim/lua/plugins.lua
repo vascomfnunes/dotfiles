@@ -178,8 +178,6 @@ return packer.startup(function(use)
     config = "require('neogen').setup({ snippet_engine = 'luasnip' })",
   }
 
-  use { 'github/copilot.vim', cmd = 'Copilot' }
-
   use { 'rizzatti/dash.vim', cmd = 'Dash' }
 
   use { 'kyazdani42/nvim-tree.lua', config = "require('vasco.nvim-tree')", cmd = 'NvimTreeToggle' }

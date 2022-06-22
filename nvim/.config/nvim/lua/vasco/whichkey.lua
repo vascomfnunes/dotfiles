@@ -174,13 +174,6 @@ local mappings = {
     s = { 'Stylesheet' },
     r = { 'Search and replace' },
   },
-
-  c = {
-    name = 'Copilot',
-    e = { 'Enable' },
-    d = { 'Disable' },
-    s = { 'Status' },
-  },
 }
 
 local wk = require 'which-key'
