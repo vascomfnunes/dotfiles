@@ -15,7 +15,7 @@ if [[ -n "$PLAYING" ]]; then
     # Capitalize first letter on each word
     PLAYING=`echo $PLAYING | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1'`
 
-    echo 'ﱘ' "$PLAYING"
+    echo ' ' "$PLAYING"
     exit
 else
     echo ""
