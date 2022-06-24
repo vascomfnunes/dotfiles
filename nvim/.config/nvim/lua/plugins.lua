@@ -215,7 +215,11 @@ return packer.startup(function(use)
 
   use {
     'rcarriga/nvim-dap-ui',
-    requires = { 'mfussenegger/nvim-dap', 'theHamsta/nvim-dap-virtual-text' },
+    commit = '52f4840cb95e6638f18a74b71b536c3bd12e9fd8',
+    requires = {
+      { 'mfussenegger/nvim-dap', commit = '2420042482ee7fd30d425e9be9ceab0a9c791ca1' },
+      { 'theHamsta/nvim-dap-virtual-text', commit = '9b731b9748d243b60e61eecbe2d114c39554486e' },
+    },
     config = "require('vasco.dap')",
   }
 
@@ -242,7 +246,7 @@ return packer.startup(function(use)
   use {
     'stevearc/dressing.nvim',
     commit = 'af179837e1cdddfb164f0296883951b2255c46d2',
-    requires = 'MunifTanjim/nui.nvim',
+    requires = { 'MunifTanjim/nui.nvim', commit = 'b26b36ae71b7a4dfde1c633a39a86d8f58d9e0ab' },
   }
 
   if packer_bootstrap then
