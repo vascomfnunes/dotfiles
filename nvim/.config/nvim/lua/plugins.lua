@@ -138,7 +138,7 @@ return packer.startup(function(use)
   use {
     'L3MON4D3/LuaSnip',
     commit = 'a12441e0598e93e67235eba67c8e6fbffc896f06',
-    requires = 'rafamadriz/friendly-snippets',
+    requires = { 'rafamadriz/friendly-snippets', commit = 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }
 
