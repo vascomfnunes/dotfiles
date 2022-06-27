@@ -34,7 +34,7 @@ alias diff='diff --color=auto'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
 alias ssh='TERM=xterm-256color ssh'
 alias rspec='rspec -f d'
-alias music='ncmpc'
+alias music='ncmpcpp'
 
 # Git
 alias gP="git push"
