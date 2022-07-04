@@ -2,7 +2,7 @@
 --
 
 -- Lsp on attach
-local on_attach = function(client, bufnr)
+local on_attach = function(_, bufnr)
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 end
 
@@ -46,7 +46,10 @@ local lspconfig = require 'lspconfig'
 
 lspconfig.sumneko_lua.setup {
   handlers = handlers,
-  on_attach = on_attach,
+  on_attach = function(client, _)
+    client.resolved_capabilities.document_formatting = false
+  end,
+
   settings = require('vasco.lsp.servers.sumneko').settings,
 }
 
@@ -80,8 +83,8 @@ lspconfig.tsserver.setup {
 }
 
 lspconfig.html.setup {
-  on_attach = function(client, bufnr)
-    on_attach, client.resolved_capabilities.document_formatting = false
+  on_attach = function(client, _)
+    client.resolved_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
   handlers = handlers,
@@ -96,7 +99,6 @@ local servers = {
   'dockerls',
   'emmet_ls',
   'eslint',
-  'grammarly',
   'jsonls',
   'yamlls',
   'solargraph',

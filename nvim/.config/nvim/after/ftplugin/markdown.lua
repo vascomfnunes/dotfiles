@@ -1,6 +1,19 @@
 -- Load abreviations
 vim.cmd [[iab <expr> :today: strftime("%d-%m-%Y")]]
 
+vim.g.markdown_fenced_languages = {
+  'html',
+  'python',
+  'lua',
+  'vim',
+  'typescript',
+  'javascript',
+  'ruby',
+  'css',
+  'scss',
+  'bash',
+}
+
 vim.opt_local.linebreak = true
 vim.opt_local.autoindent = true
 vim.opt_local.indentexpr = ''

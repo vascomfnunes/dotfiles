@@ -63,7 +63,7 @@ return packer.startup(function(use)
       { 'RRethy/nvim-treesitter-endwise', commit = 'd618adae7e372df0e5413e8eaa1075b443cf594d' },
       {
         'lewis6991/spellsitter.nvim',
-        commit = 'c1b318f8b959e015f5cc7941624d1ca0f84705dd',
+        commit = '9a79ce2e670a3bbf85a6669ab5a6e5f6f01f2a13',
         config = function()
           require('spellsitter').setup()
         end,
