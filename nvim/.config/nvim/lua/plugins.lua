@@ -68,6 +68,10 @@ return packer.startup(function(use)
           require('spellsitter').setup()
         end,
       },
+      {
+        'p00f/nvim-ts-rainbow',
+        commit = '837167f63445821c55e6eed9dbdac1b0b29afa92',
+      },
     },
   }
 
@@ -197,7 +201,7 @@ return packer.startup(function(use)
     config = "require('vasco.autotag')",
   }
 
-  use { 'echasnovski/mini.nvim', commit = '1ec280c1d000813a268b16028d040824285a043f', config = "require('vasco.mini')" }
+  use { 'echasnovski/mini.nvim', commit = 'ae794fae1515c5a1929d20f7a4ac5f89beab2a1f', config = "require('vasco.mini')" }
 
   use {
     'folke/which-key.nvim',
