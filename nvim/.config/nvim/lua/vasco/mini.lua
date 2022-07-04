@@ -26,7 +26,7 @@ local colors = {
   base0F = '#d4be98', -- Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
 }
 
-local function lsp_active()
+local function get_lsp_active()
   local clients = {}
 
   for _, client in pairs(vim.lsp.buf_get_clients(0)) do
@@ -45,7 +45,7 @@ statusline.setup {
       local diagnostics = MiniStatusline.section_diagnostics { trunc_width = 75 }
       local filename = MiniStatusline.section_filename { trunc_width = 140 }
       local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
-      local lsp_active = lsp_active()
+      local lsp_active = get_lsp_active()
 
       return MiniStatusline.combine_groups {
         { hl = mode_hl, strings = { mode, spell } },
@@ -121,5 +121,5 @@ vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = colors.base05 })
 vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
 vim.api.nvim_set_hl(0, 'VertSplit', { bg = 'NONE', fg = colors.base04 })
 vim.api.nvim_set_hl(0, 'ColorColumn', { bg = colors.base02 })
-vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base00, fg = colors.base05 })
+vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
 vim.api.nvim_set_hl(0, 'Comment', { fg = colors.base03, italic = true })
