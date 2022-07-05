@@ -93,6 +93,13 @@ return packer.startup(function(use)
   }
 
   use {
+    'sitiom/nvim-numbertoggle',
+    config = function()
+      require('numbertoggle').setup()
+    end,
+  }
+
+  use {
     'tpope/vim-projectionist',
     commit = 'd4aee3035699b82b3789cee0e88dad0e38c423ab',
     config = "require('vasco.projectionist')",
