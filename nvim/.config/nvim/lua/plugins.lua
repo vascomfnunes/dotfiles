@@ -101,6 +101,13 @@ return packer.startup(function(use)
   }
 
   use {
+    'kevinhwang91/nvim-ufo',
+    commit = 'f257ff260a7d1500723bfae2e9fed8a77657275b',
+    requires = 'kevinhwang91/promise-async',
+    config = "require('vasco.ufo')",
+  }
+
+  use {
     'tpope/vim-projectionist',
     commit = 'd4aee3035699b82b3789cee0e88dad0e38c423ab',
     config = "require('vasco.projectionist')",
