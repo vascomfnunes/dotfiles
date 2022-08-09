@@ -172,10 +172,12 @@ return packer.startup(function(use)
   use { 'onsails/lspkind-nvim', commit = '57e5b5dfbe991151b07d272a06e365a77cc3d0e7' }
 
   use {
-    'williamboman/nvim-lsp-installer',
-    commit = 'd6f873754b7a5f50d4c70f76de1d7e8ea009bf56',
-    config = "require('vasco.lsp-installer')",
+    'williamboman/mason.nvim',
+    commit = '3458edb7e020c8e1249b307b084f85ec0230175e',
+    config = "require('vasco.mason')",
   }
+
+  use { 'williamboman/mason-lspconfig.nvim' }
 
   use {
     'windwp/nvim-autopairs',
@@ -212,8 +214,6 @@ return packer.startup(function(use)
     commit = 'c138bbcd55d58d21ce12ceea8075dad29bea8c9f',
     config = "require('vasco.possession')",
   }
-
-  use { 'PlatyPew/format-installer.nvim', commit = '41f7be51e269e58f217e2e39ac5b52e61024698b' }
 
   use { 'aserowy/tmux.nvim', commit = '925dc91f569e8db84d0443693efe2321dc3ba7e7', config = "require('vasco.tmux')" }
 
