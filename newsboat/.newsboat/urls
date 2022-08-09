@@ -42,6 +42,10 @@ https://medium.freecodecamp.org/feed "Coding" "~Freecodecamp" #freecodecamp
 https://cprss.s3.amazonaws.com/javascriptweekly.com.xml "JavaScript" "~JavaScript Weekly" #javascript_weekly
 https://frontendfront.com/feed/stories "Frontend" "~Frontend Front" #frontend_front
 " "
+"=[ Vim/Neovim ]="
+" "
+https://this-week-in-neovim.org/rss "Vim" "~This week in Neovim" #this-week-in-neovim
+" "
 "=[ Podcasts ]="
 " "
 http://vidroazul.libsyn.com/rss "Podcasts" "~Vidro Azul" #vidro_azul
