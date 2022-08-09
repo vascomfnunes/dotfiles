@@ -44,23 +44,24 @@ packer.init {
 }
 
 return packer.startup(function(use)
-  use { 'wbthomason/packer.nvim', commit = 'e4c2afb37d31e99b399425e102c58b091fbc16be' }
+  use { 'wbthomason/packer.nvim', commit = 'afab89594f4f702dc3368769c95b782dbdaeaf0a' }
 
-  use { 'lewis6991/impatient.nvim', commit = '2aa872de40dbbebe8e2d3a0b8c5651b81fe8b235' }
+  use { 'lewis6991/impatient.nvim', commit = '49f4ed4a96e0dec3425f270001f341f78400fb49' }
 
   use { 'nathom/filetype.nvim', commit = 'b522628a45a17d58fc0073ffd64f9dc9530a8027' }
 
-  use { 'neovim/nvim-lspconfig', commit = '0da8c129dc27e70770c3247c44988bbf0af6b1af' }
+  use { 'neovim/nvim-lspconfig', commit = 'da7461b596d70fa47b50bf3a7acfaef94c47727d' }
 
   use {
     'nvim-treesitter/nvim-treesitter',
-    commit = '3bd228781bf4a927c5ceaf7a4687fed9f96d12b5',
+    commit = 'e9ab0341394b41ac9fbd197b0a6ceaff3c4d9e51',
     run = ':TSUpdate',
     config = "require('vasco.treesitter')",
     requires = {
+      -- not supported anymore! - check https://github.com/jose-elias-alvarez/typescript.nvim
       { 'jose-elias-alvarez/nvim-lsp-ts-utils', commit = '441385952278a1df5c91ba0d33e72c148d4654d3' },
-      { 'JoosepAlviste/nvim-ts-context-commentstring', commit = '88343753dbe81c227a1c1fd2c8d764afb8d36269' },
-      { 'RRethy/nvim-treesitter-endwise', commit = 'd618adae7e372df0e5413e8eaa1075b443cf594d' },
+      { 'JoosepAlviste/nvim-ts-context-commentstring', commit = '4befb8936f5cbec3b726300ab29edacb891e1a7b' },
+      { 'RRethy/nvim-treesitter-endwise', commit = '301ae86f057b077ee4865065023b0cae5aedb86a' },
       {
         'lewis6991/spellsitter.nvim',
         commit = 'eb74c4b1f4240cf1a7860877423195cec6311bd5',
@@ -70,7 +71,7 @@ return packer.startup(function(use)
       },
       {
         'p00f/nvim-ts-rainbow',
-        commit = '9dd019e84dc3b470dfdb5b05e3bb26158fef8a0c',
+        commit = '0c19f1eda263a1d44b6741e727fef223886c80a8',
       },
     },
   }
@@ -86,7 +87,7 @@ return packer.startup(function(use)
 
   use {
     'lewis6991/gitsigns.nvim',
-    commit = 'bb6c3bf6f584e73945a0913bb3adf77b60d6f6a2',
+    commit = '9c3ca027661136a618c82275427746e481c84a4e',
     requires = 'nvim-lua/plenary.nvim',
     config = "require('vasco.gitsigns')",
     event = 'BufRead',
@@ -94,7 +95,7 @@ return packer.startup(function(use)
 
   use {
     'sitiom/nvim-numbertoggle',
-    commit = '8a6bdd34f40073d8bb813ea4eb2d68eb8366ca2a',
+    commit = '1b10222a338b511a9f54ad4ace9abe1d054fdf3b',
     config = function()
       require('numbertoggle').setup()
     end,
@@ -102,7 +103,7 @@ return packer.startup(function(use)
 
   use {
     'kevinhwang91/nvim-ufo',
-    commit = 'f257ff260a7d1500723bfae2e9fed8a77657275b',
+    commit = '1029fa54fe7c03fd7697e8a9c808a1650923d118',
     requires = 'kevinhwang91/promise-async',
     config = "require('vasco.ufo')",
   }
@@ -115,9 +116,9 @@ return packer.startup(function(use)
 
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
-    commit = 'b79cd6c88b3d96b0f49cb7d240807cd59b610cd8',
+    commit = '8f80e821085bdb4583e78ea685e68dc34209d360',
     requires = {
-      { 'nvim-lua/plenary.nvim', commit = '986ad71ae930c7d96e812734540511b4ca838aa2' },
+      { 'nvim-lua/plenary.nvim', commit = '31807eef4ed574854b8a53ae40ea3292033a78ea' },
       { 'nvim-telescope/telescope-fzy-native.nvim', commit = '7b3d2528102f858036627a68821ccf5fc1d78ce4' },
     },
     cmd = 'Telescope',
@@ -132,14 +133,14 @@ return packer.startup(function(use)
       { 'nvim-treesitter/nvim-treesitter' },
       { 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' },
       { 'olimorris/neotest-rspec', commit = '3fb12ce28599df84ffdeecfd2310b7a46a769be1' },
-      { 'haydenmeade/neotest-jest', commit = '12138a11525e62011cf0e57aee8a5e7c9f81e08c' },
+      { 'haydenmeade/neotest-jest', commit = '71a101d34276c2fd01bb5e908ad1199d091ad1c4' },
     },
     config = "require('vasco.neotest')",
   }
 
   use {
     'hrsh7th/nvim-cmp',
-    commit = '9897465a7663997b7b42372164ffc3635321a2fe',
+    commit = '706371f1300e7c0acb98b346f80dad2dd9b5f679',
     requires = {
       { 'hrsh7th/cmp-nvim-lsp', commit = 'affe808a5c56b71630f17aa7c38e15c59fd648a8' },
       { 'hrsh7th/cmp-nvim-lua', commit = 'd276254e7198ab7d00f117e88e223b4bd8c02d21' },
@@ -157,7 +158,7 @@ return packer.startup(function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    commit = '8f71a7c9d6155413f85df4a2350f59d0abd46dfc',
+    commit = 'c599c560ed26f04f5bdb7e4498b632dc16fb9209',
     requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }
@@ -166,13 +167,13 @@ return packer.startup(function(use)
 
   use {
     'williamboman/nvim-lsp-installer',
-    commit = 'd2c5d9cef4bf310ed3e14e2a8a0dd0f0fec13ac8',
+    commit = 'd6f873754b7a5f50d4c70f76de1d7e8ea009bf56',
     config = "require('vasco.lsp-installer')",
   }
 
   use {
     'windwp/nvim-autopairs',
-    commit = '972a7977e759733dd6721af7bcda7a67e40c010e',
+    commit = 'ca89ab9e7e42aa9279f1cdad15398d6e18ccee86',
     after = { 'nvim-treesitter', 'nvim-cmp' },
     config = "require('vasco.autopairs')",
   }
@@ -196,7 +197,7 @@ return packer.startup(function(use)
 
   use {
     'jose-elias-alvarez/null-ls.nvim',
-    commit = 'ec7764eb86bdae2f3a8fe31624aad67b8d814c71',
+    commit = '5b745e5fa2a18a2c0df8966080f4321fad4f42d7',
     config = "require('vasco.null-ls')",
   }
 
@@ -206,9 +207,9 @@ return packer.startup(function(use)
     config = "require('vasco.possession')",
   }
 
-  use { 'PlatyPew/format-installer.nvim', commit = 'bffe38fbd2453fd2a427363ed28a08c04d4fa6f2' }
+  use { 'PlatyPew/format-installer.nvim', commit = '41f7be51e269e58f217e2e39ac5b52e61024698b' }
 
-  use { 'aserowy/tmux.nvim', commit = '7b19060fccfbd1791ae17ec2372e0bc836f9d519', config = "require('vasco.tmux')" }
+  use { 'aserowy/tmux.nvim', commit = '925dc91f569e8db84d0443693efe2321dc3ba7e7', config = "require('vasco.tmux')" }
 
   use {
     'windwp/nvim-ts-autotag',
@@ -216,7 +217,7 @@ return packer.startup(function(use)
     config = "require('vasco.autotag')",
   }
 
-  use { 'echasnovski/mini.nvim', commit = '5ce21e729f3c7b6cff2c65b6540b154892e1b1c0', config = "require('vasco.mini')" }
+  use { 'echasnovski/mini.nvim', commit = '6d2b59cbdd84a47d080b6936267d7a16ee094b1f', config = "require('vasco.mini')" }
 
   use {
     'folke/which-key.nvim',
@@ -245,7 +246,7 @@ return packer.startup(function(use)
 
   use {
     'TimUntersberger/neogit',
-    commit = 'f9b29244189ed4dab7b4a19e3245365a9d4e9249',
+    commit = 'c9f3d44d2edfbb0bc6f8c5bb4366166e969b2e67',
     cmd = { 'Neogit' },
     config = "require('neogen').setup({ snippet_engine = 'luasnip' })",
   }
@@ -254,7 +255,7 @@ return packer.startup(function(use)
 
   use {
     'kyazdani42/nvim-tree.lua',
-    commit = '449b5bd0cbe08192ded83b2bce8cbec4764da63d',
+    commit = '261a5c380c000e23c4a23dcd55b984c856cdb113',
     config = "require('vasco.nvim-tree')",
     cmd = 'NvimTreeToggle',
   }
@@ -265,7 +266,7 @@ return packer.startup(function(use)
 
   use {
     'stevearc/dressing.nvim',
-    commit = '1e60c07ae9a8557ac6395144606c3a5335ad47e0',
+    commit = 'd886a1bb0b43a81af58e0331fedbe8b02ac414fa',
     requires = { 'MunifTanjim/nui.nvim', commit = '70f2dadb73b5aa15727ec8f7a620818997505be5' },
   }
 
