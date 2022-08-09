@@ -139,6 +139,12 @@ return packer.startup(function(use)
   }
 
   use {
+    'andythigpen/nvim-coverage',
+    commit = '5b4d1749f11ac57bb41a1f5a919f6df25a9801a5',
+    config = "require('vasco.coverage')",
+  }
+
+  use {
     'hrsh7th/nvim-cmp',
     commit = '706371f1300e7c0acb98b346f80dad2dd9b5f679',
     requires = {
