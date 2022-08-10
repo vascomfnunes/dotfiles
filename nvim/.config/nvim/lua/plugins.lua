@@ -58,8 +58,11 @@ return packer.startup(function(use)
     run = ':TSUpdate',
     config = "require('vasco.treesitter')",
     requires = {
-      -- not supported anymore! - check https://github.com/jose-elias-alvarez/typescript.nvim
-      { 'jose-elias-alvarez/nvim-lsp-ts-utils', commit = '441385952278a1df5c91ba0d33e72c148d4654d3' },
+      {
+        'jose-elias-alvarez/typescript.nvim',
+        commit = '4f362c92c1f2f41c9bb13e72106b8719ae3ff379',
+        config = [[ require("typescript").setup({})]],
+      },
       { 'JoosepAlviste/nvim-ts-context-commentstring', commit = '4befb8936f5cbec3b726300ab29edacb891e1a7b' },
       { 'RRethy/nvim-treesitter-endwise', commit = '301ae86f057b077ee4865065023b0cae5aedb86a' },
       {
@@ -106,6 +109,13 @@ return packer.startup(function(use)
     commit = '1029fa54fe7c03fd7697e8a9c808a1650923d118',
     requires = 'kevinhwang91/promise-async',
     config = "require('vasco.ufo')",
+  }
+
+  use {
+    'glepnir/lspsaga.nvim',
+    branch = 'main',
+    commit = '125795c4c725a85932fca6141d945c3c81301b07',
+    config = "require('vasco.saga')",
   }
 
   use {

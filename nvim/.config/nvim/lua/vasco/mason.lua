@@ -4,6 +4,12 @@ if not status_ok then
   return
 end
 
+local status_ok2, lspconfig = pcall(require, 'mason-lspconfig')
+
+if not status_ok2 then
+  return
+end
+
 mason.setup {
   ui = {
     border = 'rounded',
@@ -31,7 +37,7 @@ mason.setup {
   },
 }
 
-require('mason-lspconfig').setup {
+lspconfig.setup {
   ensure_installed = {
     'sumneko_lua',
     'solargraph',
@@ -49,7 +55,7 @@ require('mason-lspconfig').setup {
     'tailwindcss',
     'yamlls',
     'stylelint_lsp',
-    'prettier'
+    'prettier',
   },
   automatic_installation = true,
 }

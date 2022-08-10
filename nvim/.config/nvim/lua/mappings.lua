@@ -70,6 +70,14 @@ keymap('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
 -- Lsp
 keymap('n', '<leader>lD', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
+keymap('n', '<leader>ll', ':Lspsaga show_line_diagnostics<cr>') -- show lsp diagnostics for the current line
+keymap('n', '<leader>la', ':Lspsaga code_action<cr>') -- code action
+keymap('n', '<leader>lK', ':Lspsaga hover_doc<cr>') -- Hover documentation
+keymap('n', '<leader>ls', ':Lspsaga signature_help<cr>') -- Signature help
+keymap('n', '<leader>lR', ':Lspsaga rename<cr>') -- Rename  with preview
+keymap('n', '<leader>lo', ':LSoutlineToggle<cr>') -- Code outline
+keymap('n', '<leader>lr', ':Lspsaga lsp_finder<cr>') -- References
+keymap('n', '<leader>lv', ':Lspsaga preview_definition<cr>') -- Preview definition
 
 -- Markdown
 keymap('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
@@ -118,34 +126,14 @@ keymap('n', '<leader>lf', function()
   vim.lsp.buf.formatting() -- lsp format
 end)
 
-keymap('n', '<leader>lr', function()
-  vim.lsp.buf.references() -- lsp references
-end)
-
-keymap('n', '<leader>la', function()
-  vim.lsp.buf.code_action() -- lsp code action
-end)
-
-keymap('n', '<leader>lR', function()
-  vim.lsp.buf.rename() -- lsp rename
-end)
-
-keymap('n', '<leader>ll', function()
-  vim.diagnostic.open_float(0, { scope = 'line', border = 'rounded' }) -- lsp line diagnostics
-end)
-
 keymap('n', '<leader>ln', function()
-  vim.diagnostic.goto_next() -- lsp next diagnostic
+  require('lspsaga.diagnostic').goto_next() -- lsp next diagnostic
 end)
 
 keymap('n', '<leader>lp', function()
-  vim.diagnostic.goto_prev() -- lsp previous diagnostic
+  require('lspsaga.diagnostic').goto_prev() -- lsp previous diagnostic
 end)
 
 keymap('n', 'gd', function()
   vim.lsp.buf.definition() -- lsp go to definition
-end)
-
-keymap('n', 'K', function()
-  vim.lsp.buf.hover() -- lsp hover documentation
 end)
