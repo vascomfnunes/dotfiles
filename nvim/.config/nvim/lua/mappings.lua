@@ -11,6 +11,16 @@ keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
 keymap('n', '<leader>c', ':nohlsearch<cr>') -- clear search highlights
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 
+-- Yank
+keymap('n', 'x', '"_x') -- send x operations to _ registry
+keymap('n', 'r', '"_r') -- seld r operations to _ registry
+keymap('n', 'ciw', '"_ciw')
+keymap('n', 'ci[', '"_ci[')
+keymap('n', 'ci(', '"_ci(')
+keymap('n', 'ci{', '"_ci{')
+keymap('n', 'ci"', '"_ci"')
+keymap('n', "ci'", '"_ci\'')
+
 -- Move text up and down
 keymap('n', '<A-j>', ':m .+1<CR>')
 keymap('n', '<A-k>', ':m .-2<CR>')
