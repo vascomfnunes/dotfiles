@@ -13,7 +13,7 @@ function set_colorscheme(mode)
       '@',
       'set-colors',
       '-c',
-      string.format(vim.env.HOME .. '.config/kitty/gruvbox-material-soft-%s.conf', name),
+      string.format(vim.env.HOME .. '/.config/kitty/gruvbox-material-soft-' .. mode .. '.conf'),
     },
   }, nil)
 end
