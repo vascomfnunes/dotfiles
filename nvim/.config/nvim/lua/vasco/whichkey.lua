@@ -82,7 +82,6 @@ local mappings = {
 
   -- single
   ['z'] = { 'Maximize split' },
-  ['c'] = { 'Disable search highlighting' },
   ['n'] = { 'Toggle file explorer' },
   ['q'] = { 'Quickfix list' },
   ['v'] = { 'Neovim configuration' },
@@ -91,6 +90,12 @@ local mappings = {
     name = 'Actions',
     n = { '<cmd>set nonumber!<CR>', 'Line numbers' },
     r = { '<cmd>set norelativenumber!<CR>', 'Relative number' },
+  },
+
+  c = {
+    name = 'Colours',
+    l = { 'Light theme' },
+    d = { 'Dark theme' },
   },
 
   l = {

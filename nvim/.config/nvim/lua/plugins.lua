@@ -286,6 +286,11 @@ return packer.startup(function(use)
     requires = { 'MunifTanjim/nui.nvim', commit = '70f2dadb73b5aa15727ec8f7a620818997505be5' },
   }
 
+  use {
+    'sainnhe/gruvbox-material',
+    config = "require('vasco.theme')",
+  }
+
   if packer_bootstrap then
     require('packer').sync()
   end

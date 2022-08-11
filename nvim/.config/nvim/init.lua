@@ -5,3 +5,15 @@ require 'plugins'
 require 'mappings'
 require 'autocommands'
 require 'vasco.lsp.config'
+
+function set_colorscheme(mode)
+  vim.cmd('set background=' .. mode)
+  vim.loop.spawn('kitty', {
+    args = {
+      '@',
+      'set-colors',
+      '-c',
+      string.format(vim.env.HOME .. '.config/kitty/gruvbox-material-soft-%s.conf', name),
+    },
+  }, nil)
+end

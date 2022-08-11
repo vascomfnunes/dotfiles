@@ -8,8 +8,11 @@ keymap('n', '<leader>v', ':cd ~/.config/nvim|e init.lua<cr>') -- neovim configur
 keymap('n', 'Q', '<nop>')
 keymap('c', 'W', 'w')
 keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
-keymap('n', '<leader>c', ':nohlsearch<cr>') -- clear search highlights
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
+
+-- Colours
+keymap('n', '<leader>cl', ':set background=light<cr>') -- Light theme
+keymap('n', '<leader>cd', ':set background=dark<cr>') -- Dark theme
 
 -- Yank
 keymap('n', 'x', '"_x') -- send x operations to _ registry
