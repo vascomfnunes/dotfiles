@@ -49,6 +49,10 @@ alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
 
+# Kitty themes
+alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
+alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
+
 # Tmux
 alias t="tmux -u"
 alias ta="tmux -u a"

@@ -25,18 +25,34 @@ vim.cmd 'colorscheme gruvbox-material'
 -- HIGHLIGHTS
 --
 
-vim.api.nvim_set_hl(0, 'MiniStatusLineInactive', { bg = colors.base02 })
-vim.api.nvim_set_hl(0, 'MiniStatusLineFilename', { bg = colors.base02, fg = colors.base_04 })
-vim.api.nvim_set_hl(0, 'Pmenu', { bg = colors.base02, fg = colors.base03 })
-vim.api.nvim_set_hl(0, 'Title', { fg = colors.base03 })
-vim.api.nvim_set_hl(0, 'SpellBad', { fg = colors.base0A })
-vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = colors.base0B })
-vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = colors.base0A })
-vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = colors.base08 })
-vim.api.nvim_set_hl(0, 'FloatTitle', { fg = colors.base05 })
-vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { bg = colors.base03, fg = colors.base05 })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = colors.base05 })
-vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE', fg = colors.base03 })
-vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
-vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
+local function set_highlights()
+  vim.api.nvim_set_hl(0, 'Pmenu', { bg = colors.base02, fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'Title', { fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'SpellBad', { fg = colors.base0A })
+  vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = colors.base0B })
+  vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = colors.base0A })
+  vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = colors.base08 })
+  vim.api.nvim_set_hl(0, 'FloatTitle', { fg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { bg = colors.base03, fg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE', fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
+  vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
+end
+
+-- Change neovim + kitty theme
+function SetColorscheme(mode)
+  vim.cmd('set background=' .. mode)
+  vim.loop.spawn('kitty', {
+    args = {
+      '@',
+      'set-colors',
+      '-c',
+      string.format(vim.env.HOME .. '/.config/kitty/gruvbox-material-soft-' .. mode .. '.conf'),
+    },
+  }, nil)
+  set_highlights()
+end
+
+set_highlights()

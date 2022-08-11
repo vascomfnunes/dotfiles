@@ -11,8 +11,8 @@ keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 
 -- Colours
-keymap('n', '<leader>cl', ':set background=light<cr>') -- Light theme
-keymap('n', '<leader>cd', ':set background=dark<cr>') -- Dark theme
+keymap('n', '<leader>cl', ":lua SetColorscheme('light')<cr>") -- Light theme
+keymap('n', '<leader>cd', ":lua SetColorscheme('dark')<cr>") -- Dark theme
 
 -- Yank
 keymap('n', 'x', '"_x') -- send x operations to _ registry
