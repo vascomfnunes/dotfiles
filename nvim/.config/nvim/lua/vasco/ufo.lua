@@ -4,9 +4,8 @@ if not status_ok then
   return
 end
 
-vim.wo.foldcolumn = '2'
+vim.wo.foldcolumn = '0'
 vim.wo.foldlevel = 99
-vim.wo.foldnestmax = 0
 vim.wo.foldenable = true
 vim.o.fillchars = [[eob: ,fold: ,foldopen:,foldsep: ,foldclose:]]
 
