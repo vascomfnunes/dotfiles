@@ -149,12 +149,6 @@ return packer.startup(function(use)
   }
 
   use {
-    'andythigpen/nvim-coverage',
-    commit = '5b4d1749f11ac57bb41a1f5a919f6df25a9801a5',
-    config = "require('vasco.coverage')",
-  }
-
-  use {
     'hrsh7th/nvim-cmp',
     commit = '706371f1300e7c0acb98b346f80dad2dd9b5f679',
     requires = {
@@ -233,8 +227,6 @@ return packer.startup(function(use)
     config = "require('vasco.autotag')",
   }
 
-  use { 'echasnovski/mini.nvim', commit = '6d2b59cbdd84a47d080b6936267d7a16ee094b1f', config = "require('vasco.mini')" }
-
   use {
     'folke/which-key.nvim',
     commit = 'bd4411a2ed4dd8bb69c125e339d837028a6eea71',
@@ -284,6 +276,30 @@ return packer.startup(function(use)
     'stevearc/dressing.nvim',
     commit = 'd886a1bb0b43a81af58e0331fedbe8b02ac414fa',
     requires = { 'MunifTanjim/nui.nvim', commit = '70f2dadb73b5aa15727ec8f7a620818997505be5' },
+  }
+
+  use {
+    'nvim-lualine/lualine.nvim',
+    commit = 'c0510ddec86070dbcacbd291736de27aabbf3bfe',
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    config = "require('vasco.lualine')",
+  }
+
+  use {
+    'terrortylor/nvim-comment',
+    commit = 'e9ac16ab056695cad6461173693069ec070d2b23',
+    config = [[require('nvim_comment').setup()]],
+  }
+
+  use {
+    'kylechui/nvim-surround',
+    commit = '328f20c1d0e39ed30df3fc6334c093e8e8b72453',
+    config = [[require('nvim-surround').setup()]],
+  }
+
+  use {
+    'sainnhe/gruvbox-material',
+    config = "require('vasco.theme')",
   }
 
   if packer_bootstrap then
