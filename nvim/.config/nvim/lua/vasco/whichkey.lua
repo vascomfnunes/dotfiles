@@ -92,6 +92,11 @@ local mappings = {
     r = { '<cmd>set norelativenumber!<CR>', 'Relative number' },
   },
 
+  b = {
+    name = 'Buffers',
+    d = { 'Remove buffer' },
+  },
+
   c = {
     name = 'Colours',
     l = { 'Light theme' },

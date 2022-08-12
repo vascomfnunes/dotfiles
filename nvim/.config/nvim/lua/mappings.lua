@@ -58,6 +58,7 @@ keymap('v', '>', '>gv') -- indent right
 -- Buffers
 keymap('n', ',', ':bprevious<cr>') -- previous buffer
 keymap('n', '.', ':bnext<cr>') -- next buffer
+keymap('n', '<leader>bd', ':bwipeout<cr>') -- remove buffer
 
 -- Finder
 keymap('n', '<leader>ff', ':Telescope find_files<cr>') -- files
