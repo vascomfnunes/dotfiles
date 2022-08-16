@@ -54,7 +54,7 @@ return packer.startup(function(use)
 
   use {
     'nvim-treesitter/nvim-treesitter',
-    commit = 'e9ab0341394b41ac9fbd197b0a6ceaff3c4d9e51',
+    commit = '826c951825e94dd57decfbb2dd85781ff4dfc712',
     run = ':TSUpdate',
     config = "require('vasco.treesitter')",
     requires = {
@@ -106,7 +106,7 @@ return packer.startup(function(use)
 
   use {
     'kevinhwang91/nvim-ufo',
-    commit = '1029fa54fe7c03fd7697e8a9c808a1650923d118',
+    commit = '0ed92b53e5f356d1b9dfa2bf39d152620a3874e0',
     requires = 'kevinhwang91/promise-async',
     config = "require('vasco.ufo')",
   }
@@ -114,7 +114,7 @@ return packer.startup(function(use)
   use {
     'glepnir/lspsaga.nvim',
     branch = 'main',
-    commit = '125795c4c725a85932fca6141d945c3c81301b07',
+    commit = '37bb464d55ba068ad14befd048c82cef007cea4d',
     config = "require('vasco.saga')",
   }
 
@@ -126,7 +126,7 @@ return packer.startup(function(use)
 
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
-    commit = '8f80e821085bdb4583e78ea685e68dc34209d360',
+    commit = 'd793de0f12d874c463e81edabee741b802c1a37a',
     requires = {
       { 'nvim-lua/plenary.nvim', commit = '31807eef4ed574854b8a53ae40ea3292033a78ea' },
       { 'nvim-telescope/telescope-fzy-native.nvim', commit = '7b3d2528102f858036627a68821ccf5fc1d78ce4' },
@@ -150,7 +150,7 @@ return packer.startup(function(use)
 
   use {
     'hrsh7th/nvim-cmp',
-    commit = '706371f1300e7c0acb98b346f80dad2dd9b5f679',
+    commit = 'b1ebdb0a17daaad13606b802780313a32e59781b',
     requires = {
       { 'hrsh7th/cmp-nvim-lsp', commit = 'affe808a5c56b71630f17aa7c38e15c59fd648a8' },
       { 'hrsh7th/cmp-nvim-lua', commit = 'd276254e7198ab7d00f117e88e223b4bd8c02d21' },
@@ -177,11 +177,11 @@ return packer.startup(function(use)
 
   use {
     'williamboman/mason.nvim',
-    commit = '3458edb7e020c8e1249b307b084f85ec0230175e',
+    commit = 'fb0c23b42749c52f5f99965eb77b621d50ba2a5b',
     config = "require('vasco.mason')",
   }
 
-  use { 'williamboman/mason-lspconfig.nvim' }
+  use { 'williamboman/mason-lspconfig.nvim', commit = 'f0d0d62273b76fa0ef5154ce9d05b1a2a083e79b' }
 
   use {
     'windwp/nvim-autopairs',
@@ -263,7 +263,7 @@ return packer.startup(function(use)
 
   use {
     'kyazdani42/nvim-tree.lua',
-    commit = '261a5c380c000e23c4a23dcd55b984c856cdb113',
+    commit = '09a51266bca28dd87febd63c66bdbd74f7764a63',
     config = "require('vasco.nvim-tree')",
     cmd = 'NvimTreeToggle',
   }

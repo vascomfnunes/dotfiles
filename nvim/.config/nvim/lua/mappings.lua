@@ -22,7 +22,7 @@ keymap('n', 'ci[', '"_ci[')
 keymap('n', 'ci(', '"_ci(')
 keymap('n', 'ci{', '"_ci{')
 keymap('n', 'ci"', '"_ci"')
-keymap('n', "ci'", '"_ci\'')
+keymap('n', "ci'", "\"_ci'")
 
 -- Move text up and down
 keymap('n', '<A-j>', ':m .+1<CR>')

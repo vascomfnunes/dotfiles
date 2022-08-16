@@ -1,4 +1,10 @@
-require('coverage').setup {
+local status_ok, coverage = pcall(require, 'coverage')
+
+if not status_ok then
+  return
+end
+
+coverage.setup {
   commands = true,
   highlights = {
     covered = { fg = '#C3E88D' }, -- supports style, fg, bg, sp (see :h highlight-gui)
