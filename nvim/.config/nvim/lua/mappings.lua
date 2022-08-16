@@ -108,6 +108,7 @@ keymap('n', '<leader>di', ':DapStepInto<cr>')
 keymap('n', '<leader>dO', ':DapStepOut<cr>')
 keymap('n', '<leader>dr', ':DapToggleRepl<cr>')
 keymap('n', '<leader>dq', ':DapTerminate<cr>')
+keymap('n', '<leader>dK', ":lua require('dap.ui.widgets').hover()<cr>")
 keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
 
 keymap('n', '<leader>dt', function()

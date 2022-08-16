@@ -11,18 +11,32 @@ require('dapui').setup()
 require('nvim-dap-virtual-text').setup()
 
 vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = '⭐️', texthl = '', linehl = '', numhl = '' })
 
--- Install chrome debug:
--- git clone https://github.com/Microsoft/vscode-chrome-debug ~/.local/share/nvim/dap/vscode-chrome-debug
--- cd ./vscode-chrome-debug && npm install && npm run build
--- (chrome should be started with '--remote-debugging-port=9222')
+dap.set_log_level 'TRACE'
+
+-- Install DAP chrome-debug-adapter with Mason
+-- (chrome should be started before e.g. '~/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args -remote-debugging-port=9222')
 dap.adapters.chrome = {
   type = 'executable',
   command = 'node',
-  args = { os.getenv 'HOME' .. '/.local/share/nvim/dap/vscode-chrome-debug/out/src/chromeDebug.js' },
+  args = { vim.fn.stdpath 'data' .. '/mason/packages/chrome-debug-adapter/out/src/chromeDebug.js' },
 }
 
 dap.configurations.javascript = {
+  {
+    type = 'chrome',
+    request = 'attach',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
+  },
+}
+
+dap.configurations.typescript = {
   {
     type = 'chrome',
     request = 'attach',

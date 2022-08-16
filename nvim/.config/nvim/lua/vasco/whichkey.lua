@@ -129,6 +129,7 @@ local mappings = {
     O = { 'Step out' },
     r = { 'Toggle repl' },
     t = { 'Toggle debug UI' },
+    K = { 'Evaluate hover' },
     q = { 'Quit' },
     s = { 'Search in Dash' },
     g = { 'Generate documentation' },
