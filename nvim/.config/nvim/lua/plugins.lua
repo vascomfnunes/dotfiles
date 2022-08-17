@@ -296,6 +296,11 @@ return packer.startup(function(use)
   }
 
   use {
+    'lukas-reineke/indent-blankline.nvim',
+    config = "require('vasco.indent')",
+  }
+
+  use {
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",
   }
