@@ -38,7 +38,37 @@ for type, icon in pairs(signs) do
 end
 
 -- Lsp servers
---
+
+local servers = {
+  'bashls',
+  'cssls',
+  'cssmodules_ls',
+  'dockerls',
+  'emmet_ls',
+  'graphql',
+  'yamlls',
+  'stylelint_lsp',
+  'sumneko_lua',
+  'html',
+  'solargraph',
+  'jsonls',
+  'eslint',
+  'tsserver',
+  -- 'tailwindcss'
+}
+
+mason_lspconfig.setup {
+  ensure_installed = servers,
+  automatic_installation = true,
+}
+
+for _, server in ipairs(servers) do
+  lspconfig[server].setup {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    handlers = handlers,
+  }
+end
 
 lspconfig.sumneko_lua.setup {
   handlers = handlers,
@@ -75,6 +105,7 @@ lspconfig.tsserver.setup {
   capabilities = require('vasco.lsp.servers.tsserver').capabilities,
   on_attach = require('vasco.lsp.servers.tsserver').on_attach,
   handlers = handlers,
+  settings = require('vasco.lsp.servers.tsserver').settings,
 }
 
 lspconfig.html.setup {
@@ -83,46 +114,4 @@ lspconfig.html.setup {
   end,
   capabilities = capabilities,
   handlers = handlers,
-}
-
--- Other servers
-
-local servers = {
-  'bashls',
-  'cssls',
-  'cssmodules_ls',
-  'dockerls',
-  'emmet_ls',
-  'graphql',
-  'yamlls',
-  'stylelint_lsp',
-}
-
-for _, server in ipairs(servers) do
-  lspconfig[server].setup {
-    on_attach = on_attach,
-    capabilities = capabilities,
-    handlers = handlers,
-  }
-end
-
-mason_lspconfig.setup {
-  ensure_installed = {
-    'bashls',
-    'cssls',
-    'cssmodules_ls',
-    'dockerls',
-    'emmet_ls',
-    'graphql',
-    'yamlls',
-    'stylelint_lsp',
-    'sumneko_lua',
-    'html',
-    'solargraph',
-    'jsonls',
-    'eslint',
-    'tsserver',
-    -- 'tailwindcss'
-  },
-  automatic_installation = true,
 }
