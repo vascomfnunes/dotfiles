@@ -62,14 +62,14 @@ lspconfig.jsonls.setup {
   settings = require('vasco.lsp.servers.jsonls').settings,
 }
 
-lspconfig.tailwindcss.setup {
-  capabilities = require('vasco.lsp.servers.tsserver').capabilities,
-  filetypes = require('vasco.lsp.servers.tailwindcss').filetypes,
-  init_options = require('vasco.lsp.servers.tailwindcss').init_options,
-  on_attach = require('vasco.lsp.servers.tailwindcss').on_attach,
-  settings = require('vasco.lsp.servers.tailwindcss').settings,
-  handlers = handlers,
-}
+-- lspconfig.tailwindcss.setup {
+--   capabilities = require('vasco.lsp.servers.tsserver').capabilities,
+--   filetypes = require('vasco.lsp.servers.tailwindcss').filetypes,
+--   init_options = require('vasco.lsp.servers.tailwindcss').init_options,
+--   on_attach = require('vasco.lsp.servers.tailwindcss').on_attach,
+--   settings = require('vasco.lsp.servers.tailwindcss').settings,
+--   handlers = handlers,
+-- }
 
 lspconfig.tsserver.setup {
   capabilities = require('vasco.lsp.servers.tsserver').capabilities,
@@ -120,9 +120,9 @@ mason_lspconfig.setup {
     'html',
     'solargraph',
     'jsonls',
-    'tailwindcss',
     'eslint',
     'tsserver',
+    -- 'tailwindcss'
   },
   automatic_installation = true,
 }
