@@ -22,7 +22,7 @@ keymap('n', 'ci[', '"_ci[')
 keymap('n', 'ci(', '"_ci(')
 keymap('n', 'ci{', '"_ci{')
 keymap('n', 'ci"', '"_ci"')
-keymap('n', "ci'", "\"_ci'")
+keymap('n', "ci'", '"_ci\'')
 
 -- Move text up and down
 keymap('n', '<A-j>', ':m .+1<CR>')
@@ -132,6 +132,24 @@ keymap('n', '<leader>ph', ':Ehelper<cr>')
 keymap('n', '<leader>pt', ':Espec<cr>')
 keymap('n', '<leader>pj', ':Ejavascript<cr>')
 keymap('n', '<leader>ps', ':Estylesheets<cr>')
+
+-- Kitty
+keymap('n', '<c-h>', function()
+  require('vasco.kitty').navigate 'h'
+end)
+keymap('n', '<c-j>', function()
+  require('vasco.kitty').navigate 'j'
+end)
+keymap('n', '<c-k>', function()
+  require('vasco.kitty').navigate 'k'
+end)
+keymap('n', '<c-l>', function()
+  require('vasco.kitty').navigate 'l'
+end)
+keymap('n', '<A-h>', '<C-w><')
+keymap('n', '<A-j>', '<C-w>-')
+keymap('n', '<A-k>', '<C-w>+')
+keymap('n', '<A-l>', '<C-w>>')
 
 -- Refactor with spectre
 keymap('n', '<Leader>pr', "<cmd>lua require('spectre').open_visual({select_word=true})<CR>", silent)

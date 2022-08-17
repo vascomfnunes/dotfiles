@@ -219,8 +219,6 @@ return packer.startup(function(use)
     config = "require('vasco.possession')",
   }
 
-  use { 'aserowy/tmux.nvim', commit = '925dc91f569e8db84d0443693efe2321dc3ba7e7', config = "require('vasco.tmux')" }
-
   use {
     'windwp/nvim-ts-autotag',
     commit = '044a05c4c51051326900a53ba98fddacd15fea22',
