@@ -2,6 +2,9 @@ local M = {}
 
 M.settings = {
   Lua = {
+    runtime = {
+      version = 'LuaJIT',
+    },
     diagnostics = {
       globals = { 'vim' },
     },
@@ -9,6 +12,7 @@ M.settings = {
       library = {
         [vim.fn.expand '$VIMRUNTIME/lua'] = true,
         [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
+        [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp/shared.lua'] = true,
       },
     },
     maxPreload = 100000,

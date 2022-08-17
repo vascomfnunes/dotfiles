@@ -88,26 +88,14 @@ lspconfig.html.setup {
 -- Other servers
 
 local servers = {
-  'sumneko_lua',
-  'solargraph',
   'bashls',
-  'eslint',
-  'tsserver',
   'cssls',
   'cssmodules_ls',
   'dockerls',
   'emmet_ls',
   'graphql',
-  'html',
-  'jsonls',
-  'tailwindcss',
   'yamlls',
   'stylelint_lsp',
-}
-
-mason_lspconfig.setup {
-  ensure_installed = servers,
-  automatic_installation = true,
 }
 
 for _, server in ipairs(servers) do
@@ -117,3 +105,24 @@ for _, server in ipairs(servers) do
     handlers = handlers,
   }
 end
+
+mason_lspconfig.setup {
+  ensure_installed = {
+    'bashls',
+    'cssls',
+    'cssmodules_ls',
+    'dockerls',
+    'emmet_ls',
+    'graphql',
+    'yamlls',
+    'stylelint_lsp',
+    'sumneko_lua',
+    'html',
+    'solargraph',
+    'jsonls',
+    'tailwindcss',
+    'eslint',
+    'tsserver',
+  },
+  automatic_installation = true,
+}
