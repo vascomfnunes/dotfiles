@@ -39,6 +39,7 @@ local function set_highlights()
   vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE', fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
+  vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = '#444444' })
 end
 
 -- Change neovim + kitty theme
