@@ -1,5 +1,7 @@
 -- LSP
---
+
+local lspconfig = require 'lspconfig'
+local mason_lspconfig = require 'mason-lspconfig'
 
 -- Lsp on attach
 local on_attach = function(_, bufnr)
@@ -38,14 +40,11 @@ end
 -- Lsp servers
 --
 
-local lspconfig = require 'lspconfig'
-
 lspconfig.sumneko_lua.setup {
   handlers = handlers,
   on_attach = function(client, _)
     client.resolved_capabilities.document_formatting = false
   end,
-
   settings = require('vasco.lsp.servers.sumneko').settings,
 }
 
@@ -89,18 +88,26 @@ lspconfig.html.setup {
 -- Other servers
 
 local servers = {
-  'cssls',
+  'sumneko_lua',
+  'solargraph',
   'bashls',
+  'eslint',
+  'tsserver',
+  'cssls',
   'cssmodules_ls',
   'dockerls',
   'emmet_ls',
-  'eslint',
-  'jsonls',
-  'yamlls',
-  'solargraph',
-  'eslint',
   'graphql',
+  'html',
+  'jsonls',
   'tailwindcss',
+  'yamlls',
+  'stylelint_lsp',
+}
+
+mason_lspconfig.setup {
+  ensure_installed = servers,
+  automatic_installation = true,
 }
 
 for _, server in ipairs(servers) do
