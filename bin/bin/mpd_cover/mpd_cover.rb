@@ -6,9 +6,13 @@
 # license that can be found in the LICENSE file or at
 # https://opensource.org/licenses/MIT.
 
-# A tiny ruby script to fetch album cover art
-# for the current playing song on MPD
-# using Spotify API
+# A tiny ruby script to fetch the album cover art
+# for the currently playing song on MPD
+# (using Spotify API) and display it on a kitty terminal window.
+#
+# Requires a MPD server and the mpc tool both installed
+#
+# ** ONLY WORKS ON A KITTY TERMINAL **
 
 require 'rspotify'
 require 'shorturl'
