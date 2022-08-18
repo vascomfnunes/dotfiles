@@ -14,13 +14,22 @@
 #
 # ** ONLY WORKS ON A KITTY TERMINAL **
 
+require 'colorize'
 require 'rspotify'
 require 'shorturl'
-require 'colorize'
 
 # Spotify keys should be exported in the shell as environment variables
 client_id = ENV['SPOTIFY_CLIENT_ID']
 client_secret = ENV['SPOTIFY_CLIENT_SECRET']
+
+def no_data
+  puts `clear`
+  puts 'No data available.'.red
+end
+
+def green(string)
+  puts "\n#{string}".green
+end
 
 RSpotify.authenticate(client_id, client_secret)
 
@@ -28,24 +37,30 @@ RSpotify.authenticate(client_id, client_secret)
 Kernel.loop do
   `mpc idle`
   playing = `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`
+
+  if playing == ''
+    no_data
+    next
+  end
+
   result = RSpotify::Track.search(playing, limit: 1)[0]
 
   puts `clear`
 
   if result.nil?
-    puts 'No data available.'.red
+    no_data
   else
     album = result.album
     `kitty +kitten icat --align left --silent #{album.images[0]['url']}`
-    puts 'Artist:'.green
+    green 'Artist:'
     puts album.artists[0].name
-    puts "\nTrack:".green
+    green 'Track:'
     puts result.name
-    puts "\nAlbum:".green
+    green 'Album:'
     puts album.name
-    puts "\nRelease date:".green
+    green 'Release date:'
     puts album.release_date
-    puts "\nSpotify:".green
+    green 'Spotify:'
     puts ShortURL.shorten(result.album.external_urls['spotify'])
   end
 end
