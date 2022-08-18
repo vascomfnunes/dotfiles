@@ -8,7 +8,7 @@ http://ice2.somafm.com/lush-128-mp3
 #EXTINF:4,Folk Forward
 https://ice4.somafm.com/folkfwd-128-mp3
 #EXTINF:4,Covers
-https://somafm.com/covers130.pls
+http://ice2.somafm.com/covers-128-aac
 #EXTINF:5,Suburbs of Goa
 https://ice6.somafm.com/suburbsofgoa-128-mp3
 #EXTINF:6,DEF CON Radio
@@ -25,3 +25,7 @@ http://ice2.somafm.com/beatblender-128-mp3
 http://ice2.somafm.com/bootliquor-128-mp3
 #EXTINF:12,Black Rock FM
 http://ice2.somafm.com/brfm-128-mp3
+#EXTINF:13,Synphaera
+https://ice4.somafm.com/synphaera-256-mp3
+#EXTINF:13,Space Station
+https://ice2.somafm.com/spacestation-128-aac
