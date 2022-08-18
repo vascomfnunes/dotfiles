@@ -60,6 +60,8 @@ alias ta="tmux -u a"
 alias tls="tmux ls"
 alias tks="tmux kill-session -t"
 
+alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
+
 # other sources
 source ~/.env_variables
 
