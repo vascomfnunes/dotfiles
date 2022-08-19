@@ -47,6 +47,8 @@ end
 
 def format_date(string)
   Time.parse(string).strftime('%-d %B %Y')
+rescue StandardError
+  '---'
 end
 
 def clear_screen
