@@ -15,14 +15,10 @@ keymap('n', '<leader>cl', ":lua SetColorscheme('light')<cr>") -- Light theme
 keymap('n', '<leader>cd', ":lua SetColorscheme('dark')<cr>") -- Dark theme
 
 -- Yank
-keymap('n', 'x', '"_x') -- send x operations to _ registry
-keymap('n', 'r', '"_r') -- seld r operations to _ registry
-keymap('n', 'ciw', '"_ciw')
-keymap('n', 'ci[', '"_ci[')
-keymap('n', 'ci(', '"_ci(')
-keymap('n', 'ci{', '"_ci{')
-keymap('n', 'ci"', '"_ci"')
-keymap('n', "ci'", '"_ci\'')
+-- send some operations to _ registry
+keymap('n', 'x', '"_x')
+keymap('n', 'r', '"_r')
+keymap('n', 'c', '"_c')
 
 -- Move text up and down
 keymap('n', '<A-j>', ':m .+1<CR>')
