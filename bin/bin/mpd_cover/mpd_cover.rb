@@ -22,33 +22,46 @@ require 'shorturl'
 client_id = ENV['SPOTIFY_CLIENT_ID']
 client_secret = ENV['SPOTIFY_CLIENT_SECRET']
 
-def no_data
+def no_data(playing)
   puts `clear`
-  puts 'No data available.'.red
+  puts 'No cover art available.'.red
+  green 'Artist:'
+  puts playing[0]
+  green 'Track:'
+  puts playing[1]
 end
 
 def green(string)
   puts "\n#{string}".green
 end
 
-RSpotify.authenticate(client_id, client_secret)
+def now_playing
+  playing = `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`
+  playing.split(' - ')
+end
+
+begin
+  RSpotify.authenticate(client_id, client_secret)
+rescue StandardError
+  puts 'Spotify authentication failed. Missing credentials?'
+  exit
+end
 
 # Infinite loop to intercept mpd changes
 Kernel.loop do
   `mpc idle`
-  playing = `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`
+  playing = now_playing
 
   if playing == ''
     no_data
     next
   end
 
-  result = RSpotify::Track.search(playing, limit: 1)[0]
-
+  result = RSpotify::Track.search("track:#{playing[1]}+artist:#{playing[0]}", limit: 1)[0]
   puts `clear`
 
   if result.nil?
-    no_data
+    no_data(playing)
   else
     album = result.album
     `kitty +kitten icat --align left --silent #{album.images[0]['url']}`
