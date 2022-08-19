@@ -1,6 +1,6 @@
 #EXTM3U
-#EXTINF:1,Classical FM
-http://media-ice.musicradio.com/ClassicFMMP3
+#EXTINF:1,Classic FM
+https://media-ssl.musicradio.com/ClassicFM
 #EXTINF:2,Antena 2
 http://radiocast.rtp.pt/antena280a.mp3
 #EXTINF:3,Antena 2 Opera

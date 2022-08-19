@@ -1,5 +1,5 @@
 #EXTM3U
-#EXTINF:1,Ambient Radio
-http://uk2.internet-radio.com:31491
-#EXTINF:2,Lounge Radio
-https://fr1.streamhosting.ch/lounge128.mp3
+#EXTINF:1,Sleep Radio
+http://149.56.234.138:8169/stream
+#EXTINF:2,Ambient Radio
+http://uk2.internet-radio.com:8171/

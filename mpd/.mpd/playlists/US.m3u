@@ -1,5 +1,3 @@
 #EXTM3U
-#EXTINF:1,Top 80 Radio
-http://uk5.internet-radio.com:8011/listen.pls&t=.m3u
-#EXTINF:2,Radio Paradise
+#EXTINF:1,Radio Paradise
 http://stream.radioparadise.com/aac-320
