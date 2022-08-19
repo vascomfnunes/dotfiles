@@ -23,8 +23,8 @@ require 'time'
 client_id = ENV['SPOTIFY_CLIENT_ID']
 client_secret = ENV['SPOTIFY_CLIENT_SECRET']
 
-def no_data(playing)
-  puts `clear`
+def no_cover_data(playing)
+  clear_screen
   puts 'No cover art available.'.red
   green 'Artist:'
   puts playing[0]
@@ -32,17 +32,25 @@ def no_data(playing)
   puts playing[1]
 end
 
-def green(string)
-  puts "\n#{string}".green
+def not_playing
+  clear_screen
+  puts 'MPD not playing.'.yellow
 end
 
-def now_playing
-  playing = `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`
-  playing.split(' - ')
+def green(string, initial_break: true)
+  puts "#{initial_break ? "\n" : ''}#{string}".green
+end
+
+def now_playing(source: `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`)
+  source.split(' - ')
 end
 
 def format_date(string)
   Time.parse(string).strftime('%-d %B %Y')
+end
+
+def clear_screen
+  puts `clear`
 end
 
 begin
@@ -52,25 +60,28 @@ rescue StandardError
   exit
 end
 
+clear_screen
+puts 'Waiting for next MPD change...'.yellow
+
 # Infinite loop to intercept mpd changes
 Kernel.loop do
   `mpc idle`
   playing = now_playing
 
-  if playing[0] == ''
-    no_data(now_playing)
+  if playing.empty?
+    not_playing
     next
   end
 
   result = RSpotify::Track.search("track:#{playing[1]}+artist:#{playing[0]}", limit: 1)[0]
-  puts `clear`
 
-  if result.nil?
-    no_data(now_playing)
+  if result.nil? || result.album.nil?
+    no_cover_data now_playing
   else
+    clear_screen
     album = result.album
     `kitty +kitten icat --align left --silent #{album.images[0]['url']}`
-    green 'Artist:'
+    green 'Artist:', initial_break: false
     puts album.artists[0].name
     green 'Track:'
     puts result.name
@@ -79,6 +90,9 @@ Kernel.loop do
     green 'Release date:'
     puts format_date(album.release_date)
     green 'Spotify:'
-    puts ShortURL.shorten(result.album.external_urls['spotify'])
+    puts ShortURL.shorten(album.external_urls['spotify'])
   end
+rescue Interrupt
+  puts "\nExiting...".green
+  exit
 end
