@@ -17,6 +17,7 @@
 require 'colorize'
 require 'rspotify'
 require 'shorturl'
+require 'time'
 
 # Spotify keys should be exported in the shell as environment variables
 client_id = ENV['SPOTIFY_CLIENT_ID']
@@ -40,6 +41,10 @@ def now_playing
   playing.split(' - ')
 end
 
+def format_date(string)
+  Time.parse(string).strftime('%-d %B %Y')
+end
+
 begin
   RSpotify.authenticate(client_id, client_secret)
 rescue StandardError
@@ -52,8 +57,8 @@ Kernel.loop do
   `mpc idle`
   playing = now_playing
 
-  if playing == ''
-    no_data
+  if playing[0] == ''
+    no_data(now_playing)
     next
   end
 
@@ -61,7 +66,7 @@ Kernel.loop do
   puts `clear`
 
   if result.nil?
-    no_data(playing)
+    no_data(now_playing)
   else
     album = result.album
     `kitty +kitten icat --align left --silent #{album.images[0]['url']}`
@@ -72,7 +77,7 @@ Kernel.loop do
     green 'Album:'
     puts album.name
     green 'Release date:'
-    puts album.release_date
+    puts format_date(album.release_date)
     green 'Spotify:'
     puts ShortURL.shorten(result.album.external_urls['spotify'])
   end
