@@ -32,7 +32,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias diff='diff --color=auto'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
-alias ssh='kitty +kitten ssh'
 alias icat='kitty +kitten icat --align=left'
 alias rspec='rspec -f d'
 alias music='ncmpcpp'
