@@ -75,7 +75,11 @@ Kernel.loop do
     next
   end
 
-  result = RSpotify::Track.search("track:#{playing[1]}+artist:#{playing[0]}", limit: 1)[0]
+  begin
+    result = RSpotify::Track.search("track:#{playing[1]}+artist:#{playing[0]}", limit: 1)[0]
+  rescue StandardError
+    result = nil
+  end
 
   if result.nil? || result.album.nil?
     no_cover_data now_playing
