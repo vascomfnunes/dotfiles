@@ -12,7 +12,7 @@
 #
 # Requires a MPD server and the mpc tool both installed
 #
-# ** ONLY WORKS ON A KITTY TERMINAL **
+# ** COVER ART ONLY WORKS ON A KITTY TERMINAL **
 
 require 'colorize'
 require 'rspotify'
@@ -26,9 +26,9 @@ client_secret = ENV['SPOTIFY_CLIENT_SECRET']
 def no_cover_data(playing)
   clear_screen
   puts 'No cover art available.'.red
-  green 'Artist:'
+  green_text 'Artist:'
   puts playing[0]
-  green 'Track:'
+  green_text 'Track:'
   puts playing[1]
 end
 
@@ -37,7 +37,7 @@ def not_playing
   puts 'MPD not playing.'.yellow
 end
 
-def green(string, initial_break: true)
+def green_text(string, initial_break: true)
   puts "#{initial_break ? "\n" : ''}#{string}".green
 end
 
@@ -55,10 +55,33 @@ def clear_screen
   puts `clear`
 end
 
+def cover_art(image)
+  `kitty +kitten icat --align left --silent #{image}`
+rescue StandardError
+  nil
+end
+
+def output_track_info(data)
+  album = data.album
+  cover_art album.images[0]['url']
+  track_info 'Artist', album.artists[0].name, initial_break: false
+  track_info 'Track', data.name
+  track_info 'Album', album.name
+  track_info 'Release date', format_date(album.release_date)
+  track_info 'Spotify', ShortURL.shorten(album.external_urls['spotify'])
+end
+
+def track_info(type, data, initial_break: true)
+  green_text "#{type}:", initial_break: initial_break
+  puts data
+end
+
+# Entry point
+
 begin
   RSpotify.authenticate(client_id, client_secret)
 rescue StandardError
-  puts 'Spotify authentication failed. Missing credentials?'
+  puts 'Spotify authentication failed. Missing credentials?'.red
   exit
 end
 
@@ -67,38 +90,28 @@ puts 'Waiting for next MPD change...'.yellow
 
 # Infinite loop to intercept mpd changes
 Kernel.loop do
+  # Wait for MPD changes
   `mpc idle`
-  playing = now_playing
 
-  if playing.empty?
+  if now_playing.empty?
     not_playing
     next
   end
 
   begin
-    result = RSpotify::Track.search("track:#{playing[1]}+artist:#{playing[0]}", limit: 1)[0]
+    track_data = RSpotify::Track.search("track:#{now_playing[1]}+artist:#{now_playing[0]}", limit: 1)[0]
   rescue StandardError
-    result = nil
+    track_data = nil
   end
 
-  if result.nil? || result.album.nil?
+  if track_data.nil? || track_data.album.nil?
     no_cover_data now_playing
   else
     clear_screen
-    album = result.album
-    `kitty +kitten icat --align left --silent #{album.images[0]['url']}`
-    green 'Artist:', initial_break: false
-    puts album.artists[0].name
-    green 'Track:'
-    puts result.name
-    green 'Album:'
-    puts album.name
-    green 'Release date:'
-    puts format_date(album.release_date)
-    green 'Spotify:'
-    puts ShortURL.shorten(album.external_urls['spotify'])
+    output_track_info track_data
   end
 rescue Interrupt
-  puts "\nExiting...".green
+  # Rescue ctr+c
+  green_text 'Exiting...'
   exit
 end
