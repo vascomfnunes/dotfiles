@@ -93,6 +93,9 @@ Kernel.loop do
   # Wait for MPD changes
   `mpc idle`
 
+  # Sleep for a while...
+  sleep 1
+
   if now_playing.empty?
     not_playing
     next
