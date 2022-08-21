@@ -25,7 +25,7 @@ client_secret = ENV['SPOTIFY_CLIENT_SECRET']
 
 def no_cover_data(playing)
   clear_screen
-  puts 'No cover art available.'.red
+  cover_art File.join(File.dirname(__FILE__), 'vinyl.png')
   green_text 'Artist:'
   puts playing[0]
   green_text 'Track:'
@@ -56,7 +56,7 @@ def clear_screen
 end
 
 def cover_art(image)
-  `kitty +kitten icat --align left --silent #{image}`
+  `kitty +kitten icat --align center --silent #{image}`
 rescue StandardError
   nil
 end
