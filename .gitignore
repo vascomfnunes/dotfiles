@@ -47,5 +47,6 @@ gnupg/.gnupg/private*
 gnupg/.gnupg/pub*
 gnupg/.gnupg/sshcontrol
 gnupg/.gnupg/.#*
+gnupg/.gnupg/tofu*
 *.log
 *.gpg
