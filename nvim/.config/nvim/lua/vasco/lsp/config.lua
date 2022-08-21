@@ -54,6 +54,7 @@ local servers = {
   'jsonls',
   'eslint',
   'tsserver',
+  'omnisharp'
   -- 'tailwindcss'
 }
 

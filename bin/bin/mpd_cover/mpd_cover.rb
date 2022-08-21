@@ -37,8 +37,8 @@ def not_playing
   puts 'MPD not playing.'.yellow
 end
 
-def green_text(string, initial_break: true)
-  puts "#{initial_break ? "\n" : ''}#{string}".green
+def green_text(string)
+  puts "\n#{string}".green
 end
 
 def now_playing(source: `mpc current | awk -F':' '{print $NF}' | awk '{$1=$1};1'`)
@@ -71,8 +71,8 @@ def output_track_info(data)
   track_info 'Spotify', ShortURL.shorten(album.external_urls['spotify'])
 end
 
-def track_info(type, data, initial_break: true)
-  green_text "#{type}:", initial_break: initial_break
+def track_info(type, data)
+  green_text "#{type}:"
   puts data
 end
 
@@ -92,6 +92,9 @@ puts 'Waiting for next MPD change...'.yellow
 Kernel.loop do
   # Wait for MPD changes
   `mpc idle`
+
+  # Sleep for a while...
+  sleep 1
 
   if now_playing.empty?
     not_playing
