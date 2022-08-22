@@ -166,3 +166,14 @@ end)
 keymap('n', 'gd', function()
   vim.lsp.buf.definition() -- lsp go to definition
 end)
+
+-- Zettelkasten
+--
+keymap('n', '<CR>', '<Cmd>lua vim.lsp.buf.definition()<CR>')
+keymap('n', '<leader>zn', "<Cmd>ZkNew {title = vim.fn.input('Title: ') }<CR>")
+keymap('v', '<leader>zt', ":'<,'>ZkNewFromTitleSelection<CR>")
+keymap('v', '<leader>zc', ":'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<CR>")
+keymap('n', '<leader>zb', '<Cmd>ZkBacklinks<CR>')
+keymap('n', '<leader>zl', '<Cmd>ZkLinks<CR>')
+keymap('n', '<leader>zv', '<Cmd>ZkNotes<CR>')
+keymap('n', '<leader>zT', '<Cmd>ZkTags<CR>')

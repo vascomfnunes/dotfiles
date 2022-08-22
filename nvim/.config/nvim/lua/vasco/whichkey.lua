@@ -87,7 +87,6 @@ local mappings = {
   ['9'] = 'which_key_ignore',
 
   -- single
-  ['z'] = { 'Maximize split' },
   ['n'] = { 'Toggle file explorer' },
   ['q'] = { 'Quickfix list' },
   ['v'] = { 'Neovim configuration' },
@@ -180,6 +179,17 @@ local mappings = {
     u = { 'Update TOC' },
     ['['] = { 'Previous header' },
     [']'] = { 'Next header' },
+  },
+
+  z = {
+    name = 'Zettelkasten',
+    n = { 'New note' },
+    t = { 'New note with title from selection' },
+    c = { 'New note with content from selection' },
+    b = { 'Backlinks' },
+    l = { 'Links' },
+    T = { 'Tags' },
+    v = { 'View notes' },
   },
 
   p = {
