@@ -64,7 +64,7 @@ end
 def output_track_info(data)
   album = data.album
   cover_art album.images[0]['url']
-  track_info 'Artist', album.artists[0].name, initial_break: false
+  track_info 'Artist', album.artists[0].name
   track_info 'Track', data.name
   track_info 'Album', album.name
   track_info 'Release date', format_date(album.release_date)
