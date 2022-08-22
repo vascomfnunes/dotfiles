@@ -2,6 +2,7 @@
 
 local lspconfig = require 'lspconfig'
 local mason_lspconfig = require 'mason-lspconfig'
+local util = require 'lspconfig/util'
 
 -- Lsp on attach
 local on_attach = function(_, bufnr)
@@ -59,8 +60,8 @@ local servers = {
 }
 
 mason_lspconfig.setup {
-  ensure_installed = servers,
-  automatic_installation = true,
+  -- ensure_installed = servers,
+  -- automatic_installation = true,
 }
 
 for _, server in ipairs(servers) do
@@ -92,7 +93,11 @@ lspconfig.ltex.setup {
   capabilities = capabilities,
   default_config = {
     ltex = {
-      cmd = { ':~/homebrew/Cellar/ltex-ls/15.2.0/bin/ltex-ls' },
+      cmd = { '/homebrew/Cellar/ltex-ls/15.2.0/bin/ltex-ls' },
+      filetypes = { 'tex', 'bib', 'md' },
+      root_dir = function(filename)
+        return util.path.dirname(filename)
+      end,
       settings = {
         ltex = {
           enabled = { 'latex', 'tex', 'bib', 'md' },
