@@ -301,6 +301,8 @@ return packer.startup(function(use)
     config = "require('vasco.indent')",
   }
 
+  use { 'mickael-menu/zk-nvim', config = "require('vasco.zk')" }
+
   use {
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",

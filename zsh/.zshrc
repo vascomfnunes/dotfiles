@@ -67,5 +67,8 @@ source ~/.env_variables
 # gpg
 export GPG_TTY=$(tty)
 
+# Neovim Zk
+export ZK_NOTEBOOK_DIR=~/notes
+
 # rbenv for Ruby
 eval "$(rbenv init -)"
