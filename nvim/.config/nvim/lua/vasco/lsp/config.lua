@@ -54,7 +54,7 @@ local servers = {
   'jsonls',
   'eslint',
   'tsserver',
-  'omnisharp'
+  'omnisharp',
   -- 'tailwindcss'
 }
 
@@ -84,6 +84,22 @@ lspconfig.eslint.setup {
   handlers = handlers,
   on_attach = require('vasco.lsp.servers.eslint').on_attach,
   settings = require('vasco.lsp.servers.eslint').settings,
+}
+
+-- This one is not working at the moment through Mason, so requires to be installed with homebrew:
+-- e.g. 'brew install ltex-ls'
+lspconfig.ltex.setup {
+  capabilities = capabilities,
+  default_config = {
+    ltex = {
+      cmd = { ':~/homebrew/Cellar/ltex-ls/15.2.0/bin/ltex-ls' },
+      settings = {
+        ltex = {
+          enabled = { 'latex', 'tex', 'bib', 'md' },
+        },
+      },
+    },
+  },
 }
 
 lspconfig.jsonls.setup {
