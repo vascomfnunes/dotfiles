@@ -177,3 +177,9 @@ keymap('n', '<leader>zb', '<Cmd>ZkBacklinks<CR>')
 keymap('n', '<leader>zl', '<Cmd>ZkLinks<CR>')
 keymap('n', '<leader>zv', '<Cmd>ZkNotes<CR>')
 keymap('n', '<leader>zT', '<Cmd>ZkTags<CR>')
+
+-- Nx
+--
+keymap('n', '<leader>xa', '<Cmd>Telescope nx actions<CR>')
+keymap('n', '<leader>xg', '<Cmd>Telescope nx generators<CR>')
+keymap('n', '<leader>xr', '<Cmd>Telescope nx run_many<CR>')

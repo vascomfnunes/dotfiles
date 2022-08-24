@@ -250,6 +250,8 @@ return packer.startup(function(use)
     config = "require('vasco.dap')",
   }
 
+  use 'David-Kunz/jester'
+
   use {
     'TimUntersberger/neogit',
     commit = 'c9f3d44d2edfbb0bc6f8c5bb4366166e969b2e67',
@@ -302,6 +304,15 @@ return packer.startup(function(use)
   }
 
   use { 'mickael-menu/zk-nvim', config = "require('vasco.zk')" }
+
+  use {
+    'Equilibris/nx.nvim',
+    commit = '8842b4ff57d917b7ccaa9d80a454d87342a13d60',
+    requires = {
+      'nvim-telescope/telescope.nvim',
+    },
+    config = "require('vasco.nx')",
+  }
 
   use {
     'sainnhe/gruvbox-material',

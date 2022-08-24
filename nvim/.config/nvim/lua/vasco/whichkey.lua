@@ -204,6 +204,13 @@ local mappings = {
     s = { 'Stylesheet' },
     r = { 'Search and replace' },
   },
+
+  x = {
+    name = 'Nx',
+    a = { 'Actions' },
+    g = { 'Generators' },
+    r = { 'Run many' },
+  },
 }
 
 local wk = require 'which-key'
