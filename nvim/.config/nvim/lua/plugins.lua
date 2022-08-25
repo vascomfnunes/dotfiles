@@ -1,4 +1,5 @@
 -- PLUGINS
+require 'vasco.impatient'
 --
 
 local fn = vim.fn
@@ -147,6 +148,12 @@ return packer.startup(function(use)
   }
 
   use {
+    'microsoft/vscode-js-debug',
+    run = 'npm install --legacy-peer-deps && npm run compile',
+    config = "require('vasco.vscode-js-debug')",
+  }
+
+  use {
     'hrsh7th/nvim-cmp',
     commit = '058100d81316239f3874064064f0f0c5d43c2103',
     requires = {
@@ -244,6 +251,7 @@ return packer.startup(function(use)
     requires = {
       { 'mfussenegger/nvim-dap', commit = 'ad8b0de205a077b66cb301531bdc31c8fc7551b6' },
       { 'theHamsta/nvim-dap-virtual-text', commit = 'a36982259216afd710f55bcdc220477c74b5bc35' },
+      { 'mxsdev/nvim-dap-vscode-js', requires = { 'mfussenegger/nvim-dap' } },
     },
     config = "require('vasco.dap')",
   }
@@ -313,6 +321,16 @@ return packer.startup(function(use)
   use {
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",
+  }
+
+  use {
+    'David-Kunz/jester',
+    config = function()
+      require('jester').setup {
+        cmd = "yarn jest -t '$result' -- $file",
+        terminal_cmd = ':vsplit | terminal',
+      }
+    end,
   }
 
   if packer_bootstrap then
