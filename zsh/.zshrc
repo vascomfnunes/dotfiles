@@ -61,6 +61,10 @@ alias ta="tmux -u a"
 alias tls="tmux ls"
 alias tks="tmux kill-session -t"
 
+# Neovim
+alias nvim_update_plugins="nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
+
+# Mpd
 alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
 
 # other sources

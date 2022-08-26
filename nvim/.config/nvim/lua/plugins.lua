@@ -218,7 +218,7 @@ return packer.startup(function(use)
     commit = 'f98639be99a497ee0ccb78ec81ea6c8e7849f9db',
     ft = 'markdown',
     config = function()
-      require('mkdnflow').setup {}
+     require('mkdnflow').setup {}
     end,
   }
 
