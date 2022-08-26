@@ -48,6 +48,8 @@ alias gs="git status"
 alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
+alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | tail -n -2 | fzf | cut -d " " -f1)'
+alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
 
 # Kitty themes
 alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
@@ -63,6 +65,9 @@ alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
 
 # other sources
 source ~/.env_variables
+
+# az completions
+source ~/.config/zsh/az.completion
 
 # gpg
 export GPG_TTY=$(tty)

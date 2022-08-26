@@ -154,6 +154,18 @@ return packer.startup(function(use)
   }
 
   use {
+    'David-Kunz/jester',
+    config = function()
+      require('jester').setup {
+        cmd = "yarn jest -t '$result' -- $file",
+        terminal_cmd = ':vsplit | terminal',
+      }
+    end,
+  }
+
+  use { 'AndrewRadev/diffurcate.vim', cmd = 'Diffurcate' }
+
+  use {
     'hrsh7th/nvim-cmp',
     commit = '058100d81316239f3874064064f0f0c5d43c2103',
     requires = {
@@ -251,7 +263,11 @@ return packer.startup(function(use)
     requires = {
       { 'mfussenegger/nvim-dap', commit = 'ad8b0de205a077b66cb301531bdc31c8fc7551b6' },
       { 'theHamsta/nvim-dap-virtual-text', commit = 'a36982259216afd710f55bcdc220477c74b5bc35' },
-      { 'mxsdev/nvim-dap-vscode-js', requires = { 'mfussenegger/nvim-dap' } },
+      {
+        'mxsdev/nvim-dap-vscode-js',
+        commit = '32b0b9f735fc7e352194b6c9a8f540277ec83fe3',
+        requires = { 'mfussenegger/nvim-dap' },
+      },
     },
     config = "require('vasco.dap')",
   }
@@ -285,8 +301,16 @@ return packer.startup(function(use)
   use {
     'nvim-lualine/lualine.nvim',
     commit = '3cf45404d4ab5e3b5da283877f57b676cb78d41d',
-    requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+    requires = { { 'kyazdani42/nvim-web-devicons', opt = true } },
     config = "require('vasco.lualine')",
+  }
+
+  use {
+    'j-hui/fidget.nvim',
+    commit = '492492e7d50452a9ace8346d31f6d6da40439f0e',
+    config = function()
+      require('fidget').setup {}
+    end,
   }
 
   use {
@@ -321,16 +345,6 @@ return packer.startup(function(use)
   use {
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",
-  }
-
-  use {
-    'David-Kunz/jester',
-    config = function()
-      require('jester').setup {
-        cmd = "yarn jest -t '$result' -- $file",
-        terminal_cmd = ':vsplit | terminal',
-      }
-    end,
   }
 
   if packer_bootstrap then
