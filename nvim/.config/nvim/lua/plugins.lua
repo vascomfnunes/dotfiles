@@ -156,6 +156,7 @@ return packer.startup(function(use)
 
   use {
     'David-Kunz/jester',
+    commit = 'be6fdd511bce3343117977cab3ca686dd4d4c0d6',
     config = function()
       require('jester').setup {
         cmd = "yarn jest -t '$result' -- $file",

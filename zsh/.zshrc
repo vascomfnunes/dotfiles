@@ -21,6 +21,7 @@ export EDITOR='nvim'
 export FZF_BASE=~/.fzf
 
 # aliases
+alias ls='exa --icons'
 alias la='ls -la'
 alias e='nvim'
 alias c='clear'
