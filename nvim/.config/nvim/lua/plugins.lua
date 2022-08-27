@@ -92,6 +92,7 @@ return packer.startup(function(use)
   use {
     'lewis6991/gitsigns.nvim',
     commit = '1e107c91c0c5e3ae72c37df8ffdd50f87fb3ebfa',
+    after = 'gruvbox-material',
     requires = 'nvim-lua/plenary.nvim',
     config = "require('vasco.gitsigns')",
     event = 'BufRead',
@@ -218,7 +219,7 @@ return packer.startup(function(use)
     commit = 'f98639be99a497ee0ccb78ec81ea6c8e7849f9db',
     ft = 'markdown',
     config = function()
-     require('mkdnflow').setup {}
+      require('mkdnflow').setup {}
     end,
   }
 
@@ -309,7 +310,11 @@ return packer.startup(function(use)
     'j-hui/fidget.nvim',
     commit = '492492e7d50452a9ace8346d31f6d6da40439f0e',
     config = function()
-      require('fidget').setup {}
+      require('fidget').setup {
+        window = {
+          blend = 0,
+        },
+      }
     end,
   }
 
@@ -346,6 +351,12 @@ return packer.startup(function(use)
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",
   }
+
+  use 'morhetz/gruvbox'
+
+  use 'shaunsingh/nord.nvim'
+
+  use 'rmehri01/onenord.nvim'
 
   if packer_bootstrap then
     require('packer').sync()

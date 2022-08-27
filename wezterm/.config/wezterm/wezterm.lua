@@ -194,7 +194,7 @@ return {
   exit_behavior = 'Close',
   adjust_window_size_when_changing_font_size = false,
   show_tab_index_in_tab_bar = true,
-  window_background_opacity = 1.0,
+  window_background_opacity = 0.95,
   enable_tab_bar = true,
   hide_tab_bar_if_only_one_tab = false,
   use_fancy_tab_bar = true,

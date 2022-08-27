@@ -52,8 +52,12 @@ alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | 
 alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
 
 # Kitty themes
-alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
-alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
+# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
+# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
+# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-light.conf"
+# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-dark.conf"
+alias kitty_light="kitty @ set-colors -c ~/.config/kitty/onenord-light.conf"
+alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/onenord-dark.conf"
 
 # Tmux
 alias t="tmux -u"

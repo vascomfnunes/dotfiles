@@ -20,12 +20,16 @@ local colors = {
 -- THEME
 vim.g.gruvbox_material_background = 'soft'
 vim.g.gruvbox_material_better_performance = 1
-vim.cmd 'colorscheme gruvbox-material'
+-- vim.cmd 'colorscheme gruvbox-material'
+-- vim.cmd 'colorscheme gruvbox'
+vim.cmd 'colorscheme onenord'
 
 -- HIGHLIGHTS
 --
 
 local function set_highlights()
+  vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'SignColumn', { bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'Pmenu', { bg = colors.base02, fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'Title', { fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'SpellBad', { fg = colors.base0A })
@@ -40,6 +44,13 @@ local function set_highlights()
   vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
   vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = '#444444' })
+  vim.api.nvim_set_hl(0, 'GitGutterAdd', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitGutterChange', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitGutterDelete', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitGutterChangeDelete', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsAdd', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsChange', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'GitSignsDelete', { bg = 'NONE' })
 end
 
 -- Change neovim + kitty theme
@@ -50,7 +61,9 @@ function SetColorscheme(mode)
       '@',
       'set-colors',
       '-c',
-      string.format(vim.env.HOME .. '/.config/kitty/gruvbox-material-soft-' .. mode .. '.conf'),
+      -- string.format(vim.env.HOME .. '/.config/kitty/gruvbox-material-soft-' .. mode .. '.conf'),
+      -- string.format(vim.env.HOME .. '/.config/kitty/gruvbox-' .. mode .. '.conf'),
+      string.format(vim.env.HOME .. '/.config/kitty/onenord-' .. mode .. '.conf'),
     },
   }, nil)
   set_highlights()
