@@ -347,14 +347,12 @@ return packer.startup(function(use)
     config = "require('vasco.nx')",
   }
 
-  use {
-    'sainnhe/gruvbox-material',
-    config = "require('vasco.theme')",
-  }
+  -- use {
+  --   'sainnhe/gruvbox-material',
+  --   config = "require('vasco.theme')",
+  -- }
 
-  use 'morhetz/gruvbox'
-
-  use 'shaunsingh/nord.nvim'
+  -- use 'morhetz/gruvbox'
 
   use 'rmehri01/onenord.nvim'
 
