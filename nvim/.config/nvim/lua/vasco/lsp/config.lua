@@ -1,7 +1,23 @@
 -- LSP
 
-local lspconfig = require 'lspconfig'
-local mason_lspconfig = require 'mason-lspconfig'
+local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+
+if not cmp_ok then
+  return
+end
+
+local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
+
+if not lspconfig_ok then
+  return
+end
+
+local mason_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
+
+if not mason_ok then
+  return
+end
+
 local util = require 'lspconfig/util'
 
 -- Lsp on attach
@@ -11,12 +27,6 @@ end
 
 -- Lsp capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-
-if not status_ok then
-  return
-end
 
 capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 

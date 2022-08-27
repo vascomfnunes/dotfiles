@@ -91,12 +91,6 @@ local mappings = {
   ['q'] = { 'Quickfix list' },
   ['v'] = { 'Neovim configuration' },
 
-  a = {
-    name = 'Actions',
-    n = { '<cmd>set nonumber!<CR>', 'Line numbers' },
-    r = { '<cmd>set norelativenumber!<CR>', 'Relative number' },
-  },
-
   b = {
     name = 'Buffers',
     d = { 'Remove buffer' },
@@ -169,7 +163,6 @@ local mappings = {
     d = { 'Diagnostics' },
     h = { 'Help' },
     q = { 'Quickfix' },
-    s = { 'Sessions' },
   },
 
   m = {

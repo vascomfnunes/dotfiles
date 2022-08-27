@@ -6,9 +6,12 @@ end
 
 possession.setup {
   commands = {
-    save = 'SSave',
-    load = 'SLoad',
-    delete = 'SDelete',
-    list = 'SList',
+    save = 'SessionSave',
+    load = 'SessionLoad',
+    close = 'SessionClose',
+    delete = 'SessionDelete',
+    show = 'SessionShow',
+    list = 'SessionList',
+    migrate = 'SessionMigrate',
   },
 }

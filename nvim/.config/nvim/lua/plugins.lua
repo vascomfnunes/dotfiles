@@ -92,7 +92,6 @@ return packer.startup(function(use)
   use {
     'lewis6991/gitsigns.nvim',
     commit = '1e107c91c0c5e3ae72c37df8ffdd50f87fb3ebfa',
-    after = 'gruvbox-material',
     requires = 'nvim-lua/plenary.nvim',
     config = "require('vasco.gitsigns')",
     event = 'BufRead',
@@ -234,7 +233,7 @@ return packer.startup(function(use)
 
   use {
     'jedrzejboczar/possession.nvim',
-    commit = 'c138bbcd55d58d21ce12ceea8075dad29bea8c9f',
+    commit = 'daacdc338edd91be83db0ef73d4d8c92677cfb09',
     config = "require('vasco.possession')",
   }
 
@@ -348,14 +347,7 @@ return packer.startup(function(use)
     config = "require('vasco.nx')",
   }
 
-  -- use {
-  --   'sainnhe/gruvbox-material',
-  --   config = "require('vasco.theme')",
-  -- }
-
-  -- use 'morhetz/gruvbox'
-
-  use 'rmehri01/onenord.nvim'
+  use { 'rmehri01/onenord.nvim', config = "require('vasco.theme')" }
 
   if packer_bootstrap then
     require('packer').sync()
