@@ -148,12 +148,6 @@ return packer.startup(function(use)
   }
 
   use {
-    'microsoft/vscode-js-debug',
-    run = 'npm install --legacy-peer-deps && npm run compile',
-    config = "require('vasco.vscode-js-debug')",
-  }
-
-  use {
     'David-Kunz/jester',
     commit = 'be6fdd511bce3343117977cab3ca686dd4d4c0d6',
     config = function()
@@ -264,11 +258,6 @@ return packer.startup(function(use)
     requires = {
       { 'mfussenegger/nvim-dap', commit = 'ad8b0de205a077b66cb301531bdc31c8fc7551b6' },
       { 'theHamsta/nvim-dap-virtual-text', commit = 'a36982259216afd710f55bcdc220477c74b5bc35' },
-      {
-        'mxsdev/nvim-dap-vscode-js',
-        commit = '32b0b9f735fc7e352194b6c9a8f540277ec83fe3',
-        requires = { 'mfussenegger/nvim-dap' },
-      },
     },
     config = "require('vasco.dap')",
   }

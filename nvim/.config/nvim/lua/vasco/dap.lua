@@ -13,7 +13,7 @@ require('nvim-dap-virtual-text').setup()
 vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = '⭐️', texthl = '', linehl = '', numhl = '' })
 
-dap.set_log_level 'TRACE'
+-- dap.set_log_level 'TRACE'
 
 dap.adapters.node2 = {
   type = 'executable',
@@ -23,7 +23,7 @@ dap.adapters.node2 = {
 
 dap.configurations.javascript = {
   {
-    type = 'pwa-node',
+    type = 'node2',
     request = 'launch',
     name = 'Debug Jest Tests',
     runtimeExecutable = 'node',
@@ -40,7 +40,41 @@ dap.configurations.javascript = {
 
 dap.configurations.typescript = {
   {
-    type = 'pwa-node',
+    type = 'node2',
+    request = 'launch',
+    name = 'Debug Jest Tests',
+    runtimeExecutable = 'node',
+    runtimeArgs = {
+      './node_modules/jest/bin/jest.js',
+      '--runInBand',
+    },
+    rootPath = '${workspaceFolder}',
+    cwd = '${workspaceFolder}',
+    console = 'integratedTerminal',
+    internalConsoleOptions = 'neverOpen',
+  },
+}
+
+dap.configurations.javascriptreact = {
+  {
+    type = 'node2',
+    request = 'launch',
+    name = 'Debug Jest Tests',
+    runtimeExecutable = 'node',
+    runtimeArgs = {
+      './node_modules/jest/bin/jest.js',
+      '--runInBand',
+    },
+    rootPath = '${workspaceFolder}',
+    cwd = '${workspaceFolder}',
+    console = 'integratedTerminal',
+    internalConsoleOptions = 'neverOpen',
+  },
+}
+
+dap.configurations.typescriptreact = {
+  {
+    type = 'node2',
     request = 'launch',
     name = 'Debug Jest Tests',
     runtimeExecutable = 'node',
