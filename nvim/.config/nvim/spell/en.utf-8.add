@@ -6,3 +6,5 @@ pandoc
 neovim
 lua
 TODO
+GraphQL
+vim-markdown-toc
