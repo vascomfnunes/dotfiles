@@ -156,12 +156,7 @@ return packer.startup(function(use)
   use {
     'David-Kunz/jester',
     commit = 'be6fdd511bce3343117977cab3ca686dd4d4c0d6',
-    config = function()
-      require('jester').setup {
-        cmd = "yarn jest -t '$result' -- $file",
-        terminal_cmd = ':vsplit | terminal',
-      }
-    end,
+    config = "require('vasco.jester')",
   }
 
   use { 'AndrewRadev/diffurcate.vim', commit = 'b804675072220ff7c7ebcd24a028aa4aa35f09cc', cmd = 'Diffurcate' }
