@@ -25,7 +25,7 @@ tree.setup {
   },
   view = {
     width = 35,
-    side = 'right',
+    side = 'left',
     mappings = {
       -- custom only false will merge the list with the default mappings
       -- if true, it will only use your list to set the mappings
