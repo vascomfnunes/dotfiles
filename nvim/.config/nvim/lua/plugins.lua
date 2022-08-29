@@ -1,6 +1,5 @@
 -- PLUGINS
 require 'vasco.impatient'
---
 
 local fn = vim.fn
 local install_path = fn.stdpath 'data' .. '/site/pack/packer/start/packer.nvim'
@@ -78,6 +77,13 @@ return packer.startup(function(use)
         commit = '0c19f1eda263a1d44b6741e727fef223886c80a8',
       },
     },
+  }
+
+  use {
+    'folke/todo-comments.nvim',
+    commit = '98b1ebf198836bdc226c0562b9f906584e6c400e',
+    requires = 'nvim-lua/plenary.nvim',
+    config = "require('vasco.todo')",
   }
 
   use {
