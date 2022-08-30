@@ -7,6 +7,11 @@ end
 local luasnip = require 'luasnip'
 local lspkind = require 'lspkind'
 
+local has_words_before = function()
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
+end
+
 cmp.setup {
   enabled = function()
     return vim.api.nvim_buf_get_option(0, 'buftype') ~= 'prompt' or require('cmp_dap').is_dap_buffer()
@@ -20,7 +25,7 @@ cmp.setup {
     -- ['<C-j>'] = cmp.mapping.select_next_item(),
     -- ['<C-k>'] = cmp.mapping.select_prev_item(),
     ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
+    ['<C-q>'] = cmp.mapping.abort(),
     ['<C-l>'] = cmp.mapping.confirm { select = true },
 
     ['<C-j>'] = cmp.mapping(function(fallback)
@@ -49,9 +54,9 @@ cmp.setup {
     { name = 'nvim_lsp' },
     { name = 'luasnip' },
     { name = 'path' },
-    { name = 'spell' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
+    { name = 'spell' },
     { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
