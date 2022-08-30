@@ -68,7 +68,7 @@ return packer.startup(function(use)
       {
         'lewis6991/spellsitter.nvim',
         commit = 'eb74c4b1f4240cf1a7860877423195cec6311bd5',
-        config = "require('vasco.spellsitter')"
+        config = "require('vasco.spellsitter')",
       },
       {
         'p00f/nvim-ts-rainbow',
@@ -279,6 +279,13 @@ return packer.startup(function(use)
   }
 
   use { 'kyazdani42/nvim-web-devicons', commit = '2d02a56189e2bde11edd4712fea16f08a6656944' }
+
+  use {
+    -- this requires the following font to be installed:
+    -- https://github.com/yamatsum/nonicons/blob/master/dist/nonicons.ttf
+    'yamatsum/nvim-nonicons',
+    requires = { 'kyazdani42/nvim-web-devicons' },
+  }
 
   use { 'romainl/vim-cool', commit = '0ad6a212a910cef0aac7af244ee008ddd39a75c2', event = 'VimEnter' }
 
