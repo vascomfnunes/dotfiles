@@ -68,9 +68,7 @@ return packer.startup(function(use)
       {
         'lewis6991/spellsitter.nvim',
         commit = 'eb74c4b1f4240cf1a7860877423195cec6311bd5',
-        config = function()
-          require('spellsitter').setup()
-        end,
+        config = "require('vasco.spellsitter')"
       },
       {
         'p00f/nvim-ts-rainbow',
@@ -173,6 +171,7 @@ return packer.startup(function(use)
       { 'hrsh7th/cmp-nvim-lsp-signature-help', commit = '007dd2740d9b70f2688db01a39d6d25b7169cd57' },
       { 'f3fora/cmp-spell', commit = '5602f1a0de7831f8dad5b0c6db45328fbd539971' },
       { 'saadparwaiz1/cmp_luasnip', commit = 'a9de941bcbda508d0a45d28ae366bb3f08db2e36' },
+      { 'rcarriga/cmp-dap', commit = '3310f7daec849ba708c1dd34e3d3bc721ca35511' },
     },
     config = "require('vasco.completion')",
   }
