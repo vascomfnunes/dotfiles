@@ -66,7 +66,6 @@ local servers = {
   'eslint',
   'tsserver',
   'omnisharp',
-  'zk'
   -- 'tailwindcss'
 }
 
