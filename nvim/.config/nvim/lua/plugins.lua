@@ -208,7 +208,11 @@ return packer.startup(function(use)
     cmd = 'MarkdownPreview',
   } -- requires 'npm install -g live-server' and 'brew install pandoc'
 
-  use { 'renerocksai/telekasten.nvim', config = "require('vasco.zettelkasten')" }
+  use {
+    'renerocksai/telekasten.nvim',
+    commit = 'fdb089daf6d66e9d559645e664a172ff5b6a5ddd',
+    config = "require('vasco.zettelkasten')",
+  }
 
   use { 'mzlogin/vim-markdown-toc', commit = '31aa38e58334f1321ae8ec6f38d05303f3226698', ft = 'markdown' }
 
