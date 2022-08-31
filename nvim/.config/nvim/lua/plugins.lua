@@ -208,14 +208,7 @@ return packer.startup(function(use)
     cmd = 'MarkdownPreview',
   } -- requires 'npm install -g live-server' and 'brew install pandoc'
 
-  use {
-    'jakewvincent/mkdnflow.nvim',
-    commit = 'f98639be99a497ee0ccb78ec81ea6c8e7849f9db',
-    ft = 'markdown',
-    config = function()
-      require('mkdnflow').setup {}
-    end,
-  }
+  use { 'renerocksai/telekasten.nvim', config = "require('vasco.zettelkasten')" }
 
   use { 'mzlogin/vim-markdown-toc', commit = '31aa38e58334f1321ae8ec6f38d05303f3226698', ft = 'markdown' }
 
@@ -331,8 +324,6 @@ return packer.startup(function(use)
     commit = 'c15bbe9f23d88b5c0b4ca45a446e01a0a3913707',
     config = "require('vasco.indent')",
   }
-
-  use { 'mickael-menu/zk-nvim', config = "require('vasco.zk')" }
 
   use {
     'Equilibris/nx.nvim',

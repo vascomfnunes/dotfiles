@@ -176,13 +176,18 @@ local mappings = {
 
   z = {
     name = 'Zettelkasten',
-    n = { 'New note' },
-    t = { 'New note with title from selection' },
-    c = { 'New note with content from selection' },
+    f = { 'Find by title' },
+    s = { 'Search' },
+    l = { 'Insert link' },
+    n = { 'New' },
+    N = { 'New from template' },
+    r = { 'Rename' },
+    t = { 'Tags' },
     b = { 'Backlinks' },
-    l = { 'Links' },
-    T = { 'Tags' },
-    v = { 'View notes' },
+    d = { 'Today diary' },
+    P = { 'Paste image and link' },
+    v = { 'Switch vault' },
+    p = { 'Panel' },
   },
 
   p = {

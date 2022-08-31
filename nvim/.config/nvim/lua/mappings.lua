@@ -170,14 +170,18 @@ end)
 
 -- Zettelkasten
 --
-keymap('n', '<CR>', '<Cmd>lua vim.lsp.buf.definition()<CR>')
-keymap('n', '<leader>zn', "<Cmd>ZkNew {title = vim.fn.input('Title: ') }<CR>")
-keymap('v', '<leader>zt', ":'<,'>ZkNewFromTitleSelection<CR>")
-keymap('v', '<leader>zc', ":'<,'>ZkNewFromContentSelection { title = vim.fn.input('Title: ') }<CR>")
-keymap('n', '<leader>zb', '<Cmd>ZkBacklinks<CR>')
-keymap('n', '<leader>zl', '<Cmd>ZkLinks<CR>')
-keymap('n', '<leader>zv', '<Cmd>ZkNotes<CR>')
-keymap('n', '<leader>zT', '<Cmd>ZkTags<CR>')
+keymap('n', '<leader>zf', '<Cmd>Telekasten find_notes<CR>')
+keymap('n', '<leader>zs', '<Cmd>Telekasten search_notes<CR>')
+keymap('n', '<leader>zl', '<Cmd>Telekasten insert_link<CR>')
+keymap('n', '<leader>zn', '<Cmd>Telekasten new_note<CR>')
+keymap('n', '<leader>zN', '<Cmd>Telekasten new_templated_note<CR>')
+keymap('n', '<leader>zr', '<Cmd>Telekasten rename_note<CR>')
+keymap('n', '<leader>zb', '<Cmd>Telekasten show_backlinks<CR>')
+keymap('n', '<leader>zv', '<Cmd>Telekasten switch_vault<CR>')
+keymap('n', '<leader>zd', '<Cmd>Telekasten goto_today<CR>')
+keymap('n', '<leader>zP', '<Cmd>Telekasten paste_img_and_link<CR>')
+keymap('n', '<leader>zt', '<Cmd>Telekasten show_tags<CR>')
+keymap('n', '<leader>zp', '<Cmd>Telekasten panel<CR>')
 
 -- Nx
 --
