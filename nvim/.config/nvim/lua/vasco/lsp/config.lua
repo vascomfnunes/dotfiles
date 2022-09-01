@@ -1,7 +1,24 @@
 -- LSP
 
-local lspconfig = require 'lspconfig'
-local mason_lspconfig = require 'mason-lspconfig'
+local cmp_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
+
+if not cmp_ok then
+  return
+end
+
+local lspconfig_ok, lspconfig = pcall(require, 'lspconfig')
+
+if not lspconfig_ok then
+  return
+end
+
+local mason_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
+
+if not mason_ok then
+  return
+end
+
+local util = require 'lspconfig/util'
 
 -- Lsp on attach
 local on_attach = function(_, bufnr)
@@ -10,12 +27,6 @@ end
 
 -- Lsp capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
-
-local status_ok, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
-
-if not status_ok then
-  return
-end
 
 capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
@@ -54,12 +65,13 @@ local servers = {
   'jsonls',
   'eslint',
   'tsserver',
+  'omnisharp',
   -- 'tailwindcss'
 }
 
 mason_lspconfig.setup {
   ensure_installed = servers,
-  automatic_installation = true,
+  -- automatic_installation = true,
 }
 
 for _, server in ipairs(servers) do
@@ -83,6 +95,26 @@ lspconfig.eslint.setup {
   handlers = handlers,
   on_attach = require('vasco.lsp.servers.eslint').on_attach,
   settings = require('vasco.lsp.servers.eslint').settings,
+}
+
+-- This one is not working at the moment through Mason, so requires to be installed with homebrew:
+-- e.g. 'brew install ltex-ls'
+lspconfig.ltex.setup {
+  capabilities = capabilities,
+  default_config = {
+    ltex = {
+      cmd = { '/homebrew/Cellar/ltex-ls/15.2.0/bin/ltex-ls' },
+      filetypes = { 'tex', 'bib', 'md' },
+      root_dir = function(filename)
+        return util.path.dirname(filename)
+      end,
+      settings = {
+        ltex = {
+          enabled = { 'latex', 'tex', 'bib', 'md' },
+        },
+      },
+    },
+  },
 }
 
 lspconfig.jsonls.setup {
@@ -114,4 +146,17 @@ lspconfig.html.setup {
   end,
   capabilities = capabilities,
   handlers = handlers,
+}
+
+lspconfig.emmet_ls.setup {
+  capabilities = capabilities,
+  filetypes = { 'html', 'typescriptreact', 'javascriptreact', 'css', 'sass', 'scss', 'less' },
+  init_options = {
+    html = {
+      options = {
+        -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
+        ['bem.enabled'] = true,
+      },
+    },
+  },
 }

@@ -1,22 +1,19 @@
 local M = {}
 
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
+
 M.settings = {
   Lua = {
     runtime = {
       version = 'LuaJIT',
+      path = runtime_path,
     },
     diagnostics = {
       globals = { 'vim' },
     },
-    workspace = {
-      library = {
-        [vim.fn.expand '$VIMRUNTIME/lua'] = true,
-        [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp'] = true,
-        [vim.fn.expand '$VIMRUNTIME/lua/vim/lsp/shared.lua'] = true,
-      },
-    },
-    maxPreload = 100000,
-    preloadFileSize = 10000,
+    workspace = { library = vim.api.nvim_get_runtime_file('', true) },
     telemetry = {
       enable = false,
     },

@@ -21,6 +21,7 @@ export EDITOR='nvim'
 export FZF_BASE=~/.fzf
 
 # aliases
+alias ls='exa --icons'
 alias la='ls -la'
 alias e='nvim'
 alias c='clear'
@@ -48,10 +49,16 @@ alias gs="git status"
 alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
+alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | tail -n -2 | fzf | cut -d " " -f1)'
+alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
 
 # Kitty themes
-alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
-alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
+# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
+# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
+# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-light.conf"
+# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-dark.conf"
+alias kitty_light="kitty @ set-colors -c ~/.config/kitty/onenord-light.conf"
+alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/onenord-dark.conf"
 
 # Tmux
 alias t="tmux -u"
@@ -59,13 +66,23 @@ alias ta="tmux -u a"
 alias tls="tmux ls"
 alias tks="tmux kill-session -t"
 
+# Neovim
+alias nvim_update_plugins="nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
+
+# Mpd
 alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
 
 # other sources
 source ~/.env_variables
 
+# az completions
+source ~/.config/zsh/az.completion
+
 # gpg
 export GPG_TTY=$(tty)
+
+# Neovim Zk
+export ZK_NOTEBOOK_DIR=~/notes
 
 # rbenv for Ruby
 eval "$(rbenv init -)"

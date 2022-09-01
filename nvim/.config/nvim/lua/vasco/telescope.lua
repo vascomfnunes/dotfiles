@@ -43,14 +43,8 @@ telescope.setup {
         ['<c-l>'] = actions.select_default + actions.center,
       },
     },
-    extensions = {
-      fzy_native = {
-        override_generic_sorter = false,
-        override_file_sorter = true,
-      },
-    },
+    extensions = {},
   },
 }
 
-telescope.load_extension 'fzy_native'
 telescope.load_extension 'possession'

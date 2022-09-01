@@ -8,8 +8,10 @@ if not status_ok then
 end
 
 tree.setup {
+  disable_netrw = true,
+  hijack_cursor=true,
   filters = {
-    custom = { '.git', '.DS_Store' },
+    dotfiles = false,
   },
   update_cwd = true,
   update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
@@ -19,12 +21,11 @@ tree.setup {
     },
   },
   trash = {
-    cmd = 'trash',
     require_confirm = true,
   },
   view = {
-    width = 40,
-    side = 'right',
+    width = 35,
+    side = 'left',
     mappings = {
       -- custom only false will merge the list with the default mappings
       -- if true, it will only use your list to set the mappings

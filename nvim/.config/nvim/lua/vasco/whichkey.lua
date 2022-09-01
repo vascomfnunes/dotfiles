@@ -41,8 +41,8 @@ whichkey.setup {
   window = {
     border = 'rounded', -- none, single, double, shadow
     position = 'bottom', -- bottom, top
-    margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
-    padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
+    margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
+    padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
   },
   layout = {
     height = { min = 4, max = 25 }, -- min and max height of the columns
@@ -87,16 +87,9 @@ local mappings = {
   ['9'] = 'which_key_ignore',
 
   -- single
-  ['z'] = { 'Maximize split' },
   ['n'] = { 'Toggle file explorer' },
   ['q'] = { 'Quickfix list' },
   ['v'] = { 'Neovim configuration' },
-
-  a = {
-    name = 'Actions',
-    n = { '<cmd>set nonumber!<CR>', 'Line numbers' },
-    r = { '<cmd>set norelativenumber!<CR>', 'Relative number' },
-  },
 
   b = {
     name = 'Buffers',
@@ -170,7 +163,6 @@ local mappings = {
     d = { 'Diagnostics' },
     h = { 'Help' },
     q = { 'Quickfix' },
-    s = { 'Sessions' },
   },
 
   m = {
@@ -180,6 +172,22 @@ local mappings = {
     u = { 'Update TOC' },
     ['['] = { 'Previous header' },
     [']'] = { 'Next header' },
+  },
+
+  z = {
+    name = 'Zettelkasten',
+    f = { 'Find by title' },
+    s = { 'Search' },
+    l = { 'Insert link' },
+    n = { 'New' },
+    N = { 'New from template' },
+    r = { 'Rename' },
+    t = { 'Tags' },
+    b = { 'Backlinks' },
+    d = { 'Today diary' },
+    P = { 'Paste image and link' },
+    v = { 'Switch vault' },
+    p = { 'Panel' },
   },
 
   p = {
@@ -193,6 +201,13 @@ local mappings = {
     j = { 'Javascript' },
     s = { 'Stylesheet' },
     r = { 'Search and replace' },
+  },
+
+  x = {
+    name = 'Nx',
+    a = { 'Actions' },
+    g = { 'Generators' },
+    r = { 'Run many' },
   },
 }
 

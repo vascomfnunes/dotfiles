@@ -32,3 +32,25 @@ vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
   pattern = { '*.txt', '*.md' },
   command = 'setlocal spell',
 })
+
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = {
+    'lua',
+    'html',
+    'ruby',
+    'eruby',
+    'javascript',
+    'typescript',
+    'markdown',
+    'javascriptreact',
+    'typescriptreact',
+    'bash',
+    'scss',
+    'css',
+    'python',
+    'csharp',
+    'yaml',
+  }, -- enable spellchecking for these filetypes
+  command = 'setlocal spell',
+  group = custom_group,
+})

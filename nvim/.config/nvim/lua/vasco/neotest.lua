@@ -7,7 +7,7 @@ end
 neotest.setup {
   adapters = {
     require 'neotest-jest' {
-      jestCommand = 'yarn test --',
+      jestCommand = 'yarn jest',
     },
     require 'neotest-rspec',
   },

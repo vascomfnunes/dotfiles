@@ -116,7 +116,8 @@ keymap('n', '<leader>tn', ':lua require("neotest").run.run()<cr>')
 keymap('n', '<leader>tf', ':lua require("neotest").run.run(vim.fn.expand("%"))<cr>')
 keymap('n', '<leader>tS', ':lua require("neotest").run.stop()<cr>')
 keymap('n', '<leader>ts', ':lua require("neotest").summary.toggle()<cr>')
-keymap('n', '<leader>td', ':lua require("neotest").run.run({strategy = "dap"})<cr>')
+-- keymap('n', '<leader>td', ':lua require("neotest").run.run({strategy = "dap"})<cr>')
+keymap('n', '<leader>td', ':lua require"jester".debug()<cr>')
 keymap('n', '<leader>to', ':lua require("neotest").output.open({ enter = true })<cr>')
 
 -- Projectionist
@@ -166,3 +167,24 @@ end)
 keymap('n', 'gd', function()
   vim.lsp.buf.definition() -- lsp go to definition
 end)
+
+-- Zettelkasten
+--
+keymap('n', '<leader>zf', '<Cmd>Telekasten find_notes<CR>')
+keymap('n', '<leader>zs', '<Cmd>Telekasten search_notes<CR>')
+keymap('n', '<leader>zl', '<Cmd>Telekasten insert_link<CR>')
+keymap('n', '<leader>zn', '<Cmd>Telekasten new_note<CR>')
+keymap('n', '<leader>zN', '<Cmd>Telekasten new_templated_note<CR>')
+keymap('n', '<leader>zr', '<Cmd>Telekasten rename_note<CR>')
+keymap('n', '<leader>zb', '<Cmd>Telekasten show_backlinks<CR>')
+keymap('n', '<leader>zv', '<Cmd>Telekasten switch_vault<CR>')
+keymap('n', '<leader>zd', '<Cmd>Telekasten goto_today<CR>')
+keymap('n', '<leader>zP', '<Cmd>Telekasten paste_img_and_link<CR>')
+keymap('n', '<leader>zt', '<Cmd>Telekasten show_tags<CR>')
+keymap('n', '<leader>zp', '<Cmd>Telekasten panel<CR>')
+
+-- Nx
+--
+keymap('n', '<leader>xa', '<Cmd>Telescope nx actions<CR>')
+keymap('n', '<leader>xg', '<Cmd>Telescope nx generators<CR>')
+keymap('n', '<leader>xr', '<Cmd>Telescope nx run_many<CR>')

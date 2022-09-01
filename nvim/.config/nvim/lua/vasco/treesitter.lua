@@ -10,7 +10,7 @@ end
 treesitter.setup {
   ensure_installed = {
     'bash',
-    'c',
+    'c_sharp',
     'css',
     'dockerfile',
     'go',
@@ -32,10 +32,10 @@ treesitter.setup {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = 'tt',
-      node_incremental = 'tl',
-      scope_incremental = 'tj',
-      node_decremental = 'th',
+      init_selection = '<c-space>',
+      node_incremental = '<c-space>',
+      scope_incremental = '<c-s>',
+      node_decremental = '<c-backspace>',
     },
   },
   highlight = {

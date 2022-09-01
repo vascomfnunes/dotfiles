@@ -20,7 +20,7 @@ startup_screen = "playlist_editor"
 store_lyrics_in_song_dir = "no"
 use_console_editor = yes
 
-# Colors ..
+# Colors
 colors_enabled = "yes"
 empty_tag_color = "red"
 statusbar_color = "blue"
@@ -30,7 +30,6 @@ main_window_color = "blue"
 header_window_color = "black"
 
 # Misc ..
-display_bitrate = "yes"
 autocenter_mode = "yes"
 centered_cursor = "yes"
 titles_visibility = "no"
@@ -41,4 +40,3 @@ header_visibility = "no"
 display_remaining_time = "no"
 ask_before_clearing_playlists = "yes"
 discard_colors_if_item_is_selected = "yes"
-
