@@ -132,6 +132,7 @@ local mappings = {
     q = { 'Quit' },
     s = { 'Search in Dash' },
     g = { 'Generate documentation' },
+    l = { 'Start lua dap' },
   },
 
   t = {

@@ -106,6 +106,7 @@ keymap('n', '<leader>dr', ':DapToggleRepl<cr>')
 keymap('n', '<leader>dq', ':DapTerminate<cr>')
 keymap('n', '<leader>dK', ":lua require('dap.ui.widgets').hover()<cr>")
 keymap('n', '<leader>dg', ':Neogen<cr>') -- generate documentation
+keymap('n', '<leader>dl', ':lua require"osv".run_this()<cr>') -- start lua dap
 
 keymap('n', '<leader>dt', function()
   require('dapui').toggle()

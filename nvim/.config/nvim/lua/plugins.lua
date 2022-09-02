@@ -172,6 +172,7 @@ return packer.startup(function(use)
       { 'f3fora/cmp-spell', commit = '5602f1a0de7831f8dad5b0c6db45328fbd539971' },
       { 'saadparwaiz1/cmp_luasnip', commit = 'a9de941bcbda508d0a45d28ae366bb3f08db2e36' },
       { 'rcarriga/cmp-dap', commit = '3310f7daec849ba708c1dd34e3d3bc721ca35511' },
+      { 'jbyuki/one-small-step-for-vimkind', commit = '59ec6f57545a42e68995994bfa57479da5e68b74' },
     },
     config = "require('vasco.completion')",
   }
