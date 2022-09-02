@@ -17,4 +17,15 @@ saga.init_lsp_saga {
     quit = 'q',
     exec = '<c-l>',
   },
+  code_action_icon = ' ',
+  code_action_lightbulb = {
+    enable = true,
+    enable_in_insert = true,
+    cache_code_action = true,
+    sign = true,
+    update_time = 150,
+    sign_priority = 20,
+    virtual_text = false,
+  },
+  diagnostic_header = { ' ', ' ', ' ', ' ' },
 }
