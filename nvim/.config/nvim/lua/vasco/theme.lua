@@ -9,7 +9,7 @@ local function set_highlights()
   vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE', fg = '#81A1C1' })
   vim.api.nvim_set_hl(0, 'NvimTreeNormal', { bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'WhichKeyFloat', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'SpellBad', { bg = '#E06C75', fg='#FFFFFF' })
+  vim.api.nvim_set_hl(0, 'SpellBad', { fg = '#E06C75', bg='NONE' })
   vim.api.nvim_set_hl(0, 'LspSagaLightBulb', { fg='yellow' })
 end
 
