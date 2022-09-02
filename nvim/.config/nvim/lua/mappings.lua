@@ -9,6 +9,7 @@ keymap('n', 'Q', '<nop>')
 keymap('c', 'W', 'w')
 keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
+keymap('n', 'z=', ':Telescope spell_suggest<cr>') -- explorer
 
 -- Colours
 keymap('n', '<leader>cl', ":lua SetColorscheme('light')<cr>") -- Light theme
