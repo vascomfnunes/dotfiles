@@ -13,7 +13,11 @@ end
 mason.setup {
   ui = {
     border = 'rounded',
-
+    icons = {
+      package_installed = ' ',
+      package_pending = ' ',
+      package_uninstalled = ' ',
+    },
     keymaps = {
       -- Keymap to expand a package
       toggle_package_expand = '<CR>',
@@ -38,28 +42,38 @@ mason.setup {
 }
 
 local servers = {
-  'bashls',
-  'cssls',
-  'cssmodules_ls',
-  'dockerls',
-  'emmet_ls',
+  -- LSP
+  'bash-language-server',
+  'css-lsp',
+  'cssmodules-language-server',
+  'dockerfile-language-server',
+  'emmet-ls',
+  'eslint-lsp',
   'graphql',
-  'yamlls',
-  'stylelint_lsp',
-  'sumneko_lua',
-  'html',
-  'solargraph',
-  'jsonls',
-  'eslint',
-  'tsserver',
+  'html-lsp',
+  'json-lsp',
+  'lua-language-server',
   'omnisharp',
-  'node_debug2_adapter',
-  'chrome_debug_adapter'
-  -- 'tailwindcss'
+  'solargraph',
+  'stylelint-lsp',
+  'ltex-ls',
+  -- 'tailwindcss',
+  'typescript-language-server',
+  'yaml-language-server',
+  -- DAP
+  'chrome-debug-adapter',
+  'node-debug2-adapter',
+  -- LINTER
+  'erb-linter',
+  'yamllint',
+  -- FORMATTER
+  'stylua',
 }
 
 mason_lspconfig.setup {
   ensure_installed = servers,
   automatic_installation = true,
+  run_on_start = true,
+  auto_update = false,
+  start_delay = 3000,
 }
-

@@ -6,14 +6,16 @@ local silent = { silent = true }
 
 keymap('n', '<leader>v', ':cd ~/.config/nvim|e init.lua<cr>') -- neovim configuration
 keymap('n', 'Q', '<nop>')
+keymap('n', '<ESC>', ':nohlsearch<cr>') -- no highlight
 keymap('c', 'W', 'w')
-keymap('n', '<leader>q', ':copen<cr>') -- open quicklist
 keymap('n', '<leader>n', ':NvimTreeToggle<cr>') -- explorer
 keymap('n', 'z=', ':Telescope spell_suggest<cr>') -- explorer
+keymap('n', '<C-b>', '<ESC>^') -- beginning of line
+keymap('n', '<C-e>', '<End>') -- end of line
 
 -- Colours
-keymap('n', '<leader>cl', ":lua SetColorscheme('light')<cr>") -- Light theme
-keymap('n', '<leader>cd', ":lua SetColorscheme('dark')<cr>") -- Dark theme
+keymap('n', '<leader>Tl', ":lua SetColorscheme('light')<cr>") -- Light theme
+keymap('n', '<leader>Td', ":lua SetColorscheme('dark')<cr>") -- Dark theme
 
 -- Yank
 -- send some operations to _ registry
@@ -81,21 +83,26 @@ keymap('n', '<leader>ds', ':Dash<cr>') -- search in dash
 
 -- Lsp
 keymap('n', '<leader>lD', ':Telescope diagnostics bufnr=0<cr>') -- show lsp diagnostics
-keymap('n', '<leader>ll', ':Lspsaga show_line_diagnostics<cr>') -- show lsp diagnostics for the current line
-keymap('n', '<leader>la', ':Lspsaga code_action<cr>') -- code action
-keymap('n', '<leader>lK', ':Lspsaga hover_doc<cr>') -- Hover documentation
-keymap('n', '<leader>ls', ':Lspsaga signature_help<cr>') -- Signature help
-keymap('n', '<leader>lR', ':Lspsaga rename<cr>') -- Rename  with preview
-keymap('n', '<leader>lo', ':LSoutlineToggle<cr>') -- Code outline
-keymap('n', '<leader>lr', ':Lspsaga lsp_finder<cr>') -- References
-keymap('n', '<leader>lv', ':Lspsaga preview_definition<cr>') -- Preview definition
+keymap('n', '<leader>ll', ':lua vim.diagnostic.open_float()<cr>') -- show lsp diagnostics for the current line
+keymap('n', '<leader>la', ':lua vim.lsp.buf.code_action()<cr>') -- code action
+keymap('n', '<leader>lK', ':lua vim.lsp.buf.hover()<cr>') -- Hover documentation
+keymap('n', '<leader>ls', ':lua vim.lsp.buf.signature_help()<cr>') -- Signature help
+keymap('n', '<leader>lR', ':lua vim.lsp.buf.rename()<cr>') -- Rename  with preview
+keymap('n', '<leader>lr', ':lua vim.lsp.buf.references()<cr>') -- References
+keymap('n', '<leader>ln', ':lua vim.diagnostic.goto_next()<cr>')
+keymap('n', '<leader>lp', ':lua vim.diagnostic.goto_previous()<cr>')
 
 -- Markdown
 keymap('n', '<leader>mp', ':MarkdownPreview<cr>') -- renders markdown document in browser
-keymap('n', '<leader>m[', ':MkdnPrevHeading<cr>') -- previous markdown header
-keymap('n', '<leader>m]', ':MkdnNextHeading<cr>') -- next markdown header
 keymap('n', '<leader>mt', ':GenTocGFM<cr>') -- generate TOC
 keymap('n', '<leader>mu', ':UpdateToc<cr>') -- update TOC
+keymap('n', '<leader>mh', ':Telescope heading<cr>') -- update TOC
+
+-- Quickfix
+keymap('n', '<leader>qq', '<cmd>lua require("functions").toggle_qf()<cr>') -- Toggle quickfix
+keymap('n', '<leader>qt', '<cmd>TodoQuickFix<cr>') -- Todos quickfix
+keymap('n', '<leader>qj', '<cmd>cnext<cr>') -- Next
+keymap('n', '<leader>qk', '<cmd>cprevious<cr>') --  Previous
 
 -- Debug
 keymap('n', '<leader>dc', ':DapContinue<cr>')
@@ -156,14 +163,6 @@ keymap('v', '<Leader>pr', "<cmd>lua require('spectre').open_visual()<CR>")
 
 keymap('n', '<leader>lf', function()
   vim.lsp.buf.formatting() -- lsp format
-end)
-
-keymap('n', '<leader>ln', function()
-  require('lspsaga.diagnostic').goto_next() -- lsp next diagnostic
-end)
-
-keymap('n', '<leader>lp', function()
-  require('lspsaga.diagnostic').goto_prev() -- lsp previous diagnostic
 end)
 
 keymap('n', 'gd', function()

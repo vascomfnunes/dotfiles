@@ -84,5 +84,8 @@ export GPG_TTY=$(tty)
 # Neovim Zk
 export ZK_NOTEBOOK_DIR=~/notes
 
+# Homebrew java
+export PATH="$HOME/homebrew/opt/openjdk/bin:$PATH"
+
 # rbenv for Ruby
 eval "$(rbenv init -)"

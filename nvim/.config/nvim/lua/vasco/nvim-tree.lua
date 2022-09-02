@@ -9,7 +9,10 @@ end
 
 tree.setup {
   disable_netrw = true,
-  hijack_cursor=true,
+  hijack_cursor = true,
+  hijack_netrw = true,
+  hijack_unnamed_buffer_when_opening = false,
+  open_on_setup = false,
   filters = {
     dotfiles = false,
   },
@@ -17,13 +20,22 @@ tree.setup {
   update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
   actions = {
     open_file = {
+      resize_window = true,
       quit_on_open = true,
     },
   },
   trash = {
     require_confirm = true,
   },
+  git = {
+    enable = false,
+    ignore = true,
+  },
+  filesystem_watchers = {
+    enable = true,
+  },
   view = {
+    adaptive_size = true,
     width = 35,
     side = 'left',
     mappings = {
@@ -56,8 +68,27 @@ tree.setup {
     },
   },
   renderer = {
+    highlight_git = false,
+    highlight_opened_files = 'none',
+    indent_markers = {
+      enable = false,
+    },
     icons = {
-      show = { folder = true, file = true, folder_arrow = true },
+      show = { folder = true, file = true, folder_arrow = true, git = false },
+      glyphs = {
+        default = ' ',
+        symlink = ' ',
+        folder = {
+          default = ' ',
+          empty = ' ',
+          empty_open = ' ',
+          open = ' ',
+          symlink = ' ',
+          symlink_open = ' ',
+          arrow_open = ' ',
+          arrow_closed = ' ',
+        },
+      },
     },
   },
 }

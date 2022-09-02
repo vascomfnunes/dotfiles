@@ -9,9 +9,9 @@ lualine.setup {
     icons_enabled = true,
     theme = 'auto',
     component_separators = ' ',
-    section_separators =  ' ',
+    section_separators = ' ',
     disabled_filetypes = {
-      statusline = {'NvimTree'},
+      statusline = { 'NvimTree' },
       winbar = {},
     },
     ignore_focus = {},
@@ -25,11 +25,33 @@ lualine.setup {
   },
   sections = {
     lualine_a = { 'mode' },
-    lualine_b = { 'branch', 'diff', 'diagnostics' },
-    lualine_c = { 'filename' },
+    lualine_b = { { 'branch', icon = '' }, 'diff', 'diagnostics' },
+    lualine_c = {
+      {
+        'filename',
+
+        path = 1,
+        file_status = true,
+        symbols = {
+          modified = ' \u{f040}',
+          readonly = ' \u{f023}',
+          unnamed = '[No Name]',
+        },
+      },
+    },
     lualine_x = { 'encoding', 'filetype' },
     lualine_y = {},
-    lualine_z = {},
+    lualine_z = {
+      {
+        'fileformat',
+        icons_enabled = true,
+        symbols = {
+          unix = ' UNIX',
+          dos = ' WIN',
+          mac = ' OSX',
+        },
+      },
+    },
   },
   inactive_sections = {
     lualine_a = {},

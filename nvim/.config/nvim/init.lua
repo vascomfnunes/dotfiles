@@ -1,4 +1,5 @@
 require 'vasco.impatient'
+require 'functions'
 require 'vasco.filetype'
 require 'options'
 require 'plugins'

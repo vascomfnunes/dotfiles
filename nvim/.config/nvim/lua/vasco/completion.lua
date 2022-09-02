@@ -56,15 +56,15 @@ cmp.setup {
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
-    { name = 'spell' },
+    { name = 'spell', keyword_length = 5 },
     { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
     format = lspkind.cmp_format {
       with_text = true,
       menu = {
-        nvim_lsp = '[LSP]',
         luasnip = '[LuaSnip]',
+        nvim_lsp = '[LSP]',
         spell = '[Spell]',
         buffer = '[Buffer]',
         path = '[Path]',
