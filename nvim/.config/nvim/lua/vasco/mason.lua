@@ -4,6 +4,12 @@ if not status_ok then
   return
 end
 
+local mason_config_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
+
+if not mason_config_ok then
+  return
+end
+
 mason.setup {
   ui = {
     border = 'rounded',
@@ -30,3 +36,30 @@ mason.setup {
     },
   },
 }
+
+local servers = {
+  'bashls',
+  'cssls',
+  'cssmodules_ls',
+  'dockerls',
+  'emmet_ls',
+  'graphql',
+  'yamlls',
+  'stylelint_lsp',
+  'sumneko_lua',
+  'html',
+  'solargraph',
+  'jsonls',
+  'eslint',
+  'tsserver',
+  'omnisharp',
+  'node_debug2_adapter',
+  'chrome_debug_adapter'
+  -- 'tailwindcss'
+}
+
+mason_lspconfig.setup {
+  ensure_installed = servers,
+  automatic_installation = true,
+}
+

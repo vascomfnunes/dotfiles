@@ -10,6 +10,8 @@ end
 require('dapui').setup()
 require('nvim-dap-virtual-text').setup {}
 
+local mason_path = string.format('%s/mason/', vim.fn.stdpath 'data')
+
 vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = 'LspDiagnosticsSignError', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = ' ', texthl = 'LspDiagnosticsSignInformation', linehl = '', numhl = '' })
 vim.fn.sign_define(
@@ -40,72 +42,73 @@ dap.adapters.ruby = {
   args = { 'exec', 'readapt', 'stdio' },
 }
 
+-- Chrome needs to be in remote debugging mode before starting debugging:
+-- '~/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args -remote-debugging-port=9222'
+dap.adapters.chrome = {
+  type = 'executable',
+  command = 'node',
+  args = { mason_path .. 'packages/chrome-debug-adapter/out/src/chromeDebug.js' },
+}
+
 dap.configurations.javascript = {
   {
-    type = 'node2',
-    request = 'launch',
-    name = 'Debug Jest Tests',
-    runtimeExecutable = 'node',
-    runtimeArgs = {
-      './node_modules/jest/bin/jest.js',
-      '--runInBand',
-    },
-    rootPath = '${workspaceFolder}',
-    cwd = '${workspaceFolder}',
-    console = 'integratedTerminal',
-    internalConsoleOptions = 'neverOpen',
+    type = 'chrome',
+    name = 'Javascript (Chrome)',
+    request = 'attach',
+    program = '${file}',
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
   },
 }
 
 dap.configurations.typescript = {
   {
-    type = 'node2',
-    request = 'launch',
-    name = 'Debug Jest Tests',
-    runtimeExecutable = 'node',
-    runtimeArgs = { '--inspect-brk', '${workspaceFolder}/node_modules/.bin/jest' },
-    args = { '${file}', '--runInBand', '--coverage', 'false' },
-    rootPath = '${workspaceFolder}',
-    cwd = '${workspaceFolder}',
-    console = 'integratedTerminal',
-    internalConsoleOptions = 'neverOpen',
+    type = 'chrome',
+    name = 'Typescript (Chrome)',
+    request = 'attach',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = vim.fn.getcwd(),
     sourceMaps = true,
-    port = 9229,
-    skipFiles = { '<node_internals>/**', 'node_modules/**' },
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
   },
 }
 
 dap.configurations.javascriptreact = {
   {
-    type = 'node2',
-    request = 'launch',
-    name = 'Debug Jest Tests',
-    runtimeExecutable = 'node',
-    runtimeArgs = {
-      './node_modules/jest/bin/jest.js',
-      '--runInBand',
-    },
-    rootPath = '${workspaceFolder}',
-    cwd = '${workspaceFolder}',
-    console = 'integratedTerminal',
-    internalConsoleOptions = 'neverOpen',
+    type = 'chrome',
+    name = 'Javascript React (Chrome)',
+    request = 'attach',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
   },
 }
 
 dap.configurations.typescriptreact = {
   {
-    type = 'node2',
-    request = 'launch',
-    name = 'Debug Jest Tests',
-    runtimeExecutable = 'node',
-    runtimeArgs = {
-      './node_modules/jest/bin/jest.js',
-      '--runInBand',
-    },
-    rootPath = '${workspaceFolder}',
-    cwd = '${workspaceFolder}',
-    console = 'integratedTerminal',
-    internalConsoleOptions = 'neverOpen',
+    type = 'chrome',
+    name = 'Typescript React (Chrome)',
+    request = 'attach',
+    program = function()
+      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
+    end,
+    cwd = vim.fn.getcwd(),
+    sourceMaps = true,
+    protocol = 'inspector',
+    port = 9222,
+    webRoot = '${workspaceFolder}',
   },
 }
 

@@ -12,12 +12,6 @@ if not lspconfig_ok then
   return
 end
 
-local mason_ok, mason_lspconfig = pcall(require, 'mason-lspconfig')
-
-if not mason_ok then
-  return
-end
-
 local util = require 'lspconfig/util'
 
 -- Lsp on attach
@@ -67,11 +61,6 @@ local servers = {
   'tsserver',
   'omnisharp',
   -- 'tailwindcss'
-}
-
-mason_lspconfig.setup {
-  ensure_installed = servers,
-  -- automatic_installation = true,
 }
 
 for _, server in ipairs(servers) do
