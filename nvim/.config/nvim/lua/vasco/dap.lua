@@ -8,12 +8,22 @@ if not status_ok then
 end
 
 require('dapui').setup()
-require('nvim-dap-virtual-text').setup()
+require('nvim-dap-virtual-text').setup({})
 
-vim.fn.sign_define('DapBreakpoint', { text = '🛑', texthl = '', linehl = '', numhl = '' })
-vim.fn.sign_define('DapStopped', { text = '⭐️', texthl = '', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = 'LspDiagnosticsSignError', linehl = '', numhl = '' })
+vim.fn.sign_define('DapStopped', { text = ' ', texthl = 'LspDiagnosticsSignInformation', linehl = '', numhl = '' })
+vim.fn.sign_define('DapBreakpointRejected', { text = ' ', texthl = 'LspDiagnosticSignWarning', linehl = '', numhl = '' })
 
 -- dap.set_log_level 'TRACE'
+
+-- dap.defaults.fallback.external_terminal = {
+--   command = os.getenv 'HOME' .. '/homebrew/bin/kitty',
+--   args = { '-e' },
+-- }
+--
+-- dap.defaults.fallback.force_external_terminal = true
+
+dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
 
 dap.adapters.node2 = {
   type = 'executable',
