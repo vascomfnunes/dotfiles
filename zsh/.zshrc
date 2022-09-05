@@ -53,10 +53,6 @@ alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | 
 alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
 
 # Kitty themes
-# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-light.conf"
-# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-material-soft-dark.conf"
-# alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-light.conf"
-# alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-dark.conf"
 alias kitty_light="kitty @ set-colors -c ~/.config/kitty/onenord-light.conf"
 alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/onenord-dark.conf"
 
@@ -69,8 +65,11 @@ alias tks="tmux kill-session -t"
 # Neovim
 alias nvim_update_plugins="nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
 
-# Mpd
+# mpd
 alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
+
+# mpv
+alias tv='mpv http://192.168.1.128:9981/playlist/channels.m3u --no-terminal'
 
 # other sources
 source ~/.env_variables
