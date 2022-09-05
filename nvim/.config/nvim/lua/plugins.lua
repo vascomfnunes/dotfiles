@@ -263,6 +263,7 @@ return packer.startup(function(use)
 
   use {
     'sindrets/diffview.nvim',
+    commit = '7e631e5da655dab31d1be10ba01a288f515ce6cc',
     cmd = {
       'DiffviewOpen',
       'DiffviewClose',
