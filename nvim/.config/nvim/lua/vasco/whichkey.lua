@@ -66,7 +66,6 @@ whichkey.setup {
 
 local opts = {
   mode = 'n', -- NORMAL mode
-  prefix = '<leader>',
   buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
   silent = true, -- use `silent` when creating keymaps
   noremap = true, -- use `noremap` when creating keymaps
@@ -86,134 +85,182 @@ local mappings = {
   ['8'] = 'which_key_ignore',
   ['9'] = 'which_key_ignore',
 
-  -- single
-  ['n'] = { 'Toggle file explorer' },
-  ['v'] = { 'Neovim configuration' },
+  -- General
+  ['<leader>v'] = { ':cd ~/.config/nvim|e init.lua<cr>', 'Neovim configuration' },
+  ['<ESC>'] = { ':nohlsearch<cr>', 'Clear highlights' },
 
-  b = {
+  -- Explorer
+  ['<leader>n'] = { ':NvimTreeToggle<cr>', 'Toggle file explorer' },
+
+  -- Spell
+  ['z='] = { ':Telescope spell_suggest', 'Spell suggestions' },
+
+  -- Navigation
+  ['<C-b>'] = { '<ESC>^', 'Beginning of line' },
+  ['<C-e>'] = { '<End>', 'End of line' },
+  ['<A-J>'] = { ':m .+1<cr>', 'Move line down' },
+  ['<A-K>'] = { ':m .-2<cr>', 'Move line up' },
+  ['<C-h>'] = { ":lua require('vasco.kitty').navigate 'h'<cr>", 'Navigate left' },
+  ['<C-j>'] = { ":lua require('vasco.kitty').navigate 'j'<cr>", 'Navigate down' },
+  ['<C-k>'] = { ":lua require('vasco.kitty').navigate 'k'<cr>", 'Navigate up' },
+  ['<C-l>'] = { ":lua require('vasco.kitty').navigate 'l'<cr>", 'Navigate right' },
+  ['<A-h>'] = { '<C-w><', 'Resize left' },
+  ['<A-j>'] = { '<C-w>-', 'Resize down' },
+  ['<A-k>'] = { '<C-w>+', 'Resize up' },
+  ['<A-l>'] = { '<C-w>>', 'Resize right' },
+
+  -- Splits
+  ['vv'] = { '<C-w>v', 'Split vertical' },
+  ['ss'] = { '<C-w>s', 'Split horizontal' },
+  ['zz'] = { '<C-w>|<C-w>_', 'Split zoom' },
+
+  -- Buffers
+  ['.'] = {
+    ':bnext<cr>',
+    'Next buffer',
+  },
+
+  [','] = {
+    ':bprevious<cr>',
+    'Previous buffer',
+  },
+
+  ['<leader>b'] = {
     name = 'Buffers',
-    d = { 'Remove buffer' },
+    d = { ':bwipeout<cr>', 'Remove buffer' },
   },
 
-  T = {
+  -- Tabs
+  ['<c-t>'] = { ':tabnew<cr>', 'New tab' },
+  ['<c-x>'] = { ':tabclose<cr>', 'Close tab' },
+  ['<tab>'] = { ':tabnext<cr>', 'Next tab' },
+
+  -- Indentation
+  ['<'] = { '<gv', 'Indent left' },
+  ['>'] = { '>gv', 'Indent right' },
+
+  -- Theme
+  ['<leader>T'] = {
     name = 'Theme',
-    l = { 'Light' },
-    d = { 'Dark' },
+    l = { ":lua SetColorscheme('light')<cr>", 'Light' },
+    d = { ":lua SetColorscheme('dark')<cr>", 'Dark' },
   },
 
-  q = {
+  -- Quick fix
+  ['<leader>q'] = {
     name = 'Quickfix',
-    q = { 'Toggle' },
-    t = { 'Todos' },
-    j = { 'Next Quickfix Item' },
-    k = { 'Previous Quickfix Item' },
+    q = { ':lua require("functions").toggle_qf()<cr>', 'Toggle' },
+    t = { ':TodoQuickFix<cr>', 'Todos' },
+    j = { ':cnext<cr>', 'Next Quickfix Item' },
+    k = { ':cprevious<cr>', 'Previous Quickfix Item' },
   },
 
-  l = {
+  -- LSP
+  ['<leader>l'] = {
     name = 'LSP',
-    a = { 'Code action' },
-    s = { 'Signature help' },
-    f = { 'Format' },
-    v = { 'Preview definition' },
-    r = { 'References' },
-    R = { 'Rename' },
-    l = { 'Line diagnostics' },
-    D = { 'All diagnostics' },
-    n = { 'Next diagnostic' },
-    p = { 'Previous diagnostic' },
-    d = { 'Go to definition' },
-    K = { 'Documentation' },
+    a = { ':lua vim.lsp.buf.code_action()<cr>', 'Code action' },
+    s = { ':lua vim.lsp.buf.signature_help()<cr>', 'Signature help' },
+    f = { ':lua vim.lsp.buf.formatting()<cr>', 'Format' },
+    r = { ':lua vim.lsp.buf.references()<cr>', 'References' },
+    R = { ':lua vim.lsp.buf.rename()<cr>', 'Rename' },
+    l = { ':lua vim.diagnostic.open_float()<cr>', 'Line diagnostics' },
+    D = { ':Telescope diagnostics bufnr=0<cr>', 'All diagnostics' },
+    n = { ':lua vim.diagnostic.goto_next()<cr>', 'Next diagnostic' },
+    p = { ':lua vim.diagnostic.goto_previous()<cr>', 'Previous diagnostic' },
+    d = { ':lua vim.lsp.buf.definition()<cr>', 'Go to definition' },
+    K = { ':lua vim.lsp.buf.hover()<cr>', 'Documentation' },
   },
 
-  d = {
+  -- Debug/documentation
+  ['<leader>d'] = {
     name = 'Debug/Documentation',
-    b = { 'Breakpoint' },
-    c = { 'Continue' },
-    i = { 'Step into' },
-    o = { 'Step over' },
-    O = { 'Step out' },
-    r = { 'Toggle repl' },
-    t = { 'Toggle debug UI' },
-    K = { 'Evaluate hover' },
-    q = { 'Quit' },
-    s = { 'Search in Dash' },
-    g = { 'Generate documentation' },
-    l = { 'Start lua dap' },
+    b = { ':DapToggleBreakpoint<cr>', 'Breakpoint' },
+    c = { ':DapContinue<cr>', 'Continue' },
+    i = { ':DapStepInto<cr>', 'Step into' },
+    o = { ':DapStepOver<cr>', 'Step over' },
+    O = { ':DapStepOut<cr>', 'Step out' },
+    r = { ':DapToggleRepl<cr>', 'Toggle repl' },
+    t = { ":lua require('dapui').toggle()", 'Toggle debug UI' },
+    K = { ":lua require('dap.ui.widgets').hover()<cr>", 'Evaluate hover' },
+    q = { ':DapTerminate<cr>', 'Quit' },
+    s = { ':Dash<cr>', 'Search in Dash' },
+    l = { ':lua require"osv".run_this()<cr>', 'Start lua dap' },
+    g = { ':Neogen<cr>', 'Generate documentation' },
   },
 
-  t = {
+  -- Tests
+  ['<leader>t'] = {
     name = 'Tests',
-    n = { 'Run nearest test' },
-    f = { 'Run file tests' },
-    S = { 'Stop' },
-    s = { 'Summary' },
-    d = { 'Debug' },
-    o = { 'Show test output' },
+    n = { ':lua require("neotest").run.run()<cr>', 'Run nearest test' },
+    f = { ':lua require("neotest").run.run(vim.fn.expand("%"))<cr>', 'Run file tests' },
+    S = { ':lua require("neotest").run.stop()<cr>', 'Stop' },
+    s = { ':lua require("neotest").summary.toggle()<cr>', 'Summary' },
+    d = { ':lua require"jester".debug()<cr>', 'Debug' },
+    o = { ':lua require("neotest").output.open({ enter = true })<cr>', 'Show test output' },
   },
 
-  g = {
+  -- Git
+  ['<leader>g'] = {
     name = 'Git',
-    g = { 'Neogit' },
-    b = { 'Blame' },
-    s = { 'Stage hunk' },
-    u = { 'Unstage hunk' },
-    r = { 'Reset hunk' },
-    l = { 'View on loclist' },
+    g = { ':Neogit<cr>', 'Neogit' },
+    b = { ":lua require('gitsigns').blame_line()<cr>", 'Blame' },
+    s = { ':Gitsigns stage_hunk<cr>', 'Stage hunk' },
+    u = { ':Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },
+    r = { ':Gitsigns reset_hunk<cr>', 'Reset hunk' },
+    l = { ':Gitsigns setloclist<cr>', 'View on loclist' },
   },
 
-  f = {
+  -- Finder
+  ['<leader>f'] = {
     name = 'Finder',
-    f = { 'Files' },
-    g = { 'Grep' },
-    G = { 'Grep word' },
-    b = { 'Buffers' },
-    d = { 'Diagnostics' },
-    h = { 'Help' },
-    q = { 'Quickfix' },
+    f = { ':Telescope find_files<cr>', 'Files' },
+    g = { ':Telescope live_grep<cr>', 'Grep' },
+    G = { ':Telescope grep_string<cr>', 'Grep word' },
+    b = { ':Telescope buffers<cr>', 'Buffers' },
+    d = { ':Telescope diagnostics<cr>', 'Diagnostics' },
+    h = { ':Telescope help_tags<cr>', 'Help' },
+    q = { ':Telescope quickfix<cr>', 'Quickfix' },
+    s = { ':Telescope possession list<cr>', 'Sessions' },
   },
 
-  m = {
+  -- Markdown
+  ['<leader>m'] = {
     name = 'Markdown',
-    p = { 'Preview in browser' },
-    t = { 'Generate TOC' },
-    u = { 'Update TOC' },
-    h = { 'Headings outline' },
+    p = { ':MarkdownPreview<cr>', 'Preview in browser' },
+    t = { ':GenTocGFM<cr>', 'Generate TOC' },
+    u = { ':UpdateToc<cr>', 'Update TOC' },
+    h = { ':Telescope heading<cr>', 'Headings outline' },
   },
 
-  z = {
+  -- Zettelkasten
+  ['<leader>z'] = {
     name = 'Zettelkasten',
-    f = { 'Find by title' },
-    s = { 'Search' },
-    l = { 'Insert link' },
-    n = { 'New' },
-    N = { 'New from template' },
-    r = { 'Rename' },
-    t = { 'Tags' },
-    b = { 'Backlinks' },
-    d = { 'Today diary' },
-    P = { 'Paste image and link' },
-    v = { 'Switch vault' },
-    p = { 'Panel' },
+    f = { ':Telekasten find_notes<cr>', 'Find by title' },
+    s = { ':Telekasten search_notes<cr>', 'Search' },
+    l = { ':Telekasten insert_link<cr>', 'Insert link' },
+    n = { ':Telekasten new_note<cr>', 'New' },
+    N = { ':Telekasten new_templated_note<cr>', 'New from template' },
+    r = { ':Telekasten rename_note<cr>', 'Rename' },
+    t = { ':Telekasten show_tags<cr>', 'Tags' },
+    b = { ':Telekasten show_backlinks<cr>', 'Backlinks' },
+    d = { ':Telekasten goto_today<cr>', 'Today diary' },
+    P = { ':Telekasten paste_img_and_link<cr>', 'Paste image and link' },
+    v = { ':Telekasten switch_vault<cr>', 'Switch vault' },
+    p = { ':Telekasten panel<cr>', 'Panel' },
   },
 
-  p = {
+  -- Project
+  ['<leader>p'] = {
     name = 'Project',
-    a = { 'Alternate file' },
-    v = { 'View' },
-    c = { 'Controller' },
-    m = { 'Model' },
-    h = { 'Helper' },
-    t = { 'Test' },
-    j = { 'Javascript' },
-    s = { 'Stylesheet' },
-    r = { 'Search and replace' },
+    r = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
   },
 
-  x = {
+  -- Next
+  ['<leader>x'] = {
     name = 'Nx',
-    a = { 'Actions' },
-    g = { 'Generators' },
-    r = { 'Run many' },
+    a = { ':Telescope nx actions<cr>', 'Actions' },
+    g = { ':Telescope nx generators<cr>', 'Generators' },
+    r = { ':Telescope nx run_many<cr>', 'Run many' },
   },
 }
 

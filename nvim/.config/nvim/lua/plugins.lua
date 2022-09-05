@@ -231,7 +231,7 @@ return packer.startup(function(use)
 
   use {
     'folke/which-key.nvim',
-    commit = '7ee35a7614e34e562fd3f815ad35bd6d7e456093',
+    commit = '2dcf8126c52812b252bc893bd37207bd67a1f106',
     config = "require('vasco.whichkey')",
     keys = { '<leader>' },
   }

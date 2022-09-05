@@ -11,6 +11,7 @@ local function set_highlights()
   vim.api.nvim_set_hl(0, 'WhichKeyFloat', { bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'SpellBad', { fg = '#E06C75', bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'LightBulbSign', { fg = 'yellow', bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'WhichKeyBorder', { fg = '#81A1C1' })
 end
 
 -- Change neovim + kitty theme
