@@ -6,6 +6,10 @@ local silent = { silent = true }
 
 keymap('n', 'Q', '<nop>')
 
+-- Indentation
+keymap('v', '<', '<gv') -- indent left
+keymap('v', '>', '>gv') -- indent right
+
 -- Yank
 -- send some operations to _ registry
 keymap('n', 'x', '"_x')

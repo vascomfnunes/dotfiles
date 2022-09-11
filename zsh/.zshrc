@@ -14,11 +14,11 @@ HIST_STAMPS="dd/mm/yyyy"
 # git clone https://github.com/jscutlery/nx-completion $ZSH_CUSTOM/plugins/nx-completion
 #
 # vi-mode: edit with 'vv' when in NORMAL mode
-plugins=(gitfast z zsh-vi-mode pass fzf zsh-autosuggestions zsh-syntax-highlighting nx-completion)
+plugins=(gitfast z zsh-vi-mode pass zsh-autosuggestions zsh-syntax-highlighting nx-completion)
 
 source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
-export FZF_BASE=~/.fzf
+# export FZF_BASE=~/.fzf
 
 # aliases
 alias ls='exa --icons'
@@ -53,8 +53,8 @@ alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | 
 alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
 
 # Kitty themes
-alias kitty_light="kitty @ set-colors -c ~/.config/kitty/onenord-light.conf"
-alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/onenord-dark.conf"
+alias kitty_light="kitty @ set-colors -c ~/.config/kitty/gruvbox-light.conf"
+alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/gruvbox-dark.conf"
 
 # Tmux
 alias t="tmux -u"
@@ -73,6 +73,9 @@ alias tv='mpv http://192.168.1.128:9981/playlist/channels.m3u --no-terminal'
 
 # other sources
 source ~/.env_variables
+
+# FZF
+source ~/.fzf.zsh
 
 # az completions
 source ~/.config/zsh/az.completion

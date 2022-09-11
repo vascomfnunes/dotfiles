@@ -184,11 +184,11 @@ return packer.startup(function(use)
 
   use {
     'williamboman/mason.nvim',
-    commit = '7f38e0ce717338b37b342f341bd6320791dfd53b',
+    commit = '6a2b45bad60a5ffe44c5b2423fd70d5a7a60c5ba',
     config = "require('vasco.mason')",
   }
 
-  use { 'williamboman/mason-lspconfig.nvim', commit = '980f83609cd58e2069dda89a05367f81a48bdf2f' }
+  use { 'williamboman/mason-lspconfig.nvim', commit = '1534b610c5e8afaa2cc4231f0715354dc2d9688b' }
 
   use {
     'windwp/nvim-autopairs',
@@ -337,7 +337,11 @@ return packer.startup(function(use)
     config = "require('vasco.nx')",
   }
 
-  use { 'rmehri01/onenord.nvim', commit = '66f3c29ab54993d37030bd200602fc99278d0654', config = "require('vasco.theme')" }
+  use {
+    'ellisonleao/gruvbox.nvim',
+    commit = 'c7aaa3ec3f431d90b0b9382cb52bebffc0e4283a',
+    config = "require('vasco.theme')",
+  }
 
   if packer_bootstrap then
     require('packer').sync()

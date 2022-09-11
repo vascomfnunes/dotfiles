@@ -137,13 +137,13 @@ lspconfig.jsonls.setup {
   flags = { debounce_text_changes = 150 },
 }
 
--- lspconfig.tailwindcss.setup {
---   capabilities = require('vasco.lsp.servers.tsserver').capabilities,
---   filetypes = require('vasco.lsp.servers.tailwindcss').filetypes,
---   init_options = require('vasco.lsp.servers.tailwindcss').init_options,
---   on_attach = require('vasco.lsp.servers.tailwindcss').on_attach,
---   settings = require('vasco.lsp.servers.tailwindcss').settings,
--- }
+lspconfig.tailwindcss.setup {
+  -- capabilities = require('vasco.lsp.servers.tsserver').capabilities,
+  -- filetypes = require('vasco.lsp.servers.tailwindcss').filetypes,
+  -- init_options = require('vasco.lsp.servers.tailwindcss').init_options,
+  -- on_attach = require('vasco.lsp.servers.tailwindcss').on_attach,
+  settings = require('vasco.lsp.servers.tailwindcss').settings,
+}
 
 lspconfig.tsserver.setup {
   capabilities = require('vasco.lsp.servers.tsserver').capabilities,

@@ -135,10 +135,6 @@ local mappings = {
   ['<c-x>'] = { ':tabclose<cr>', 'Close tab' },
   ['<tab>'] = { ':tabnext<cr>', 'Next tab' },
 
-  -- Indentation
-  ['<'] = { '<gv', 'Indent left' },
-  ['>'] = { '>gv', 'Indent right' },
-
   -- Theme
   ['<leader>T'] = {
     name = 'Theme',
@@ -161,6 +157,7 @@ local mappings = {
     a = { ':lua vim.lsp.buf.code_action()<cr>', 'Code action' },
     s = { ':lua vim.lsp.buf.signature_help()<cr>', 'Signature help' },
     f = { ':lua vim.lsp.buf.formatting()<cr>', 'Format' },
+    o = { ':Telescope treesitter<cr>', 'Outline' },
     r = { ':lua vim.lsp.buf.references()<cr>', 'References' },
     R = { ':lua vim.lsp.buf.rename()<cr>', 'Rename' },
     l = { ':lua vim.diagnostic.open_float()<cr>', 'Line diagnostics' },
@@ -214,6 +211,7 @@ local mappings = {
   ['<leader>f'] = {
     name = 'Finder',
     f = { ':Telescope find_files<cr>', 'Files' },
+    e = { ':Telescope env<cr>', 'Environment variables' },
     g = { ':Telescope live_grep<cr>', 'Grep' },
     G = { ':Telescope grep_string<cr>', 'Grep word' },
     b = { ':Telescope buffers<cr>', 'Buffers' },

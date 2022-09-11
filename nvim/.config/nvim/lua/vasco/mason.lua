@@ -57,7 +57,7 @@ local servers = {
   'solargraph',
   'stylelint-lsp',
   'ltex-ls',
-  -- 'tailwindcss',
+  'tailwindcss',
   'typescript-language-server',
   'yaml-language-server',
   -- DAP
