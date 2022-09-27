@@ -4,6 +4,8 @@ if not ok then
   return
 end
 
+vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
+
 lightbulb.setup {
   -- LSP client names to ignore
   ignore = { 'lua' },
@@ -18,7 +20,7 @@ lightbulb.setup {
     win_opts = {},
   },
   autocmd = {
-    enabled = true,
+    enabled = false,
     pattern = { '*' },
     events = { 'CursorHold', 'CursorHoldI' },
   },
