@@ -1,35 +1,4 @@
 -- THEME
--- require('gruvbox').setup {
---   undercurl = true,
---   underline = true,
---   bold = true,
---   italic = true,
---   strikethrough = true,
---   invert_selection = false,
---   invert_signs = false,
---   invert_tabline = false,
---   invert_intend_guides = false,
---   inverse = true, -- invert background for search, diffs, statuslines and errors
---   contrast = 'soft', -- can be "hard", "soft" or empty string
---   overrides = {
---     Normal = { bg = 'NONE' },
---     SignColumn = { bg = 'NONE' },
---     NormalFloat = { bg = 'NONE' },
---     FloatBorder = { bg = 'NONE', fg = '#928374' },
---     WhichKeyFloat = { bg = 'NONE' },
---     SpellBad = { fg = '#E06C75', bg = 'NONE' },
---     LightBulbSign = { fg = 'yellow', bg = 'NONE' },
---     WhichKeyBorder = { fg = '#928374' },
---     GitSignsAdd = { bg = 'NONE' },
---     GitSignsChange = { bg = 'NONE' },
---     GitSignsDelete = { bg = 'NONE' },
---     TelescopeBorder = { fg = '#928374' },
---     TelescopePrompt = { bg = 'NONE' },
---     TelescopePromptBorder = { fg = '#928374' },
---     TelescopeResultsBorder = { fg = '#928374' },
---     TelescopePreviewBorder = { fg = '#928374' },
---   },
--- }
 
 local colors = {
   base00 = '#32302f', -- Default Background
@@ -51,12 +20,24 @@ local colors = {
 }
 
 local function set_highlights()
-  vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-  vim.api.nvim_set_hl(0, 'WhichKeyFloat', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'Pmenu', { bg = colors.base02, fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'Title', { fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'SpellBad', { fg = colors.base0A })
-  vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'CmpItemAbbrMatch', { fg = colors.base0B })
+  vim.api.nvim_set_hl(0, 'CmpItemKind', { fg = colors.base0A })
+  vim.api.nvim_set_hl(0, 'CmpItemKindSnippet', { fg = colors.base08 })
+  vim.api.nvim_set_hl(0, 'FloatTitle', { fg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'NVimTreeWindowPicker', { bg = colors.base03, fg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = colors.base05 })
+  vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE', fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'MiniIndentscopeSymbol', { fg = colors.base02 })
+  vim.api.nvim_set_hl(0, 'MiniJump2dSpot', { bg = colors.base0A, fg = colors.base00 })
+  vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'TelescopePrompt', { bg = 'NONE' })
+  vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { fg = colors.base03 })
 end
 
 -- Change neovim + kitty theme
@@ -74,7 +55,8 @@ function SetColorscheme(mode)
   set_highlights()
 end
 
-vim.g.gruvbox_dark_sidebar = false
-vim.g.gruvbox_dark_float = false
-vim.cmd 'colorscheme gruvbox-flat'
+vim.g.gruvbox_material_background = 'soft'
+vim.g.gruvbox_material_better_performance = 1
+vim.cmd [[colorscheme gruvbox-material]]
+
 set_highlights()

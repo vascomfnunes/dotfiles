@@ -48,6 +48,11 @@ return packer.startup(function(use)
 
   use { 'lewis6991/impatient.nvim', commit = 'b842e16ecc1a700f62adb9802f8355b99b52a5a6' }
 
+  use {
+    'sainnhe/gruvbox-material',
+    config = "require('vasco.theme')",
+  }
+
   use { 'nathom/filetype.nvim', commit = 'b522628a45a17d58fc0073ffd64f9dc9530a8027' }
 
   use { 'neovim/nvim-lspconfig', commit = 'd4eb971db353ccf78cefb3be1b05483b69ec1e69' }
@@ -336,11 +341,6 @@ return packer.startup(function(use)
       'nvim-telescope/telescope.nvim',
     },
     config = "require('vasco.nx')",
-  }
-
-  use {
-    'eddyekofo94/gruvbox-flat.nvim',
-    config = "require('vasco.theme')",
   }
 
   if packer_bootstrap then
