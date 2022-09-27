@@ -339,8 +339,7 @@ return packer.startup(function(use)
   }
 
   use {
-    'ellisonleao/gruvbox.nvim',
-    commit = 'c632f629026cf41308b4473ab9bb9686318c993c',
+    'eddyekofo94/gruvbox-flat.nvim',
     config = "require('vasco.theme')",
   }
 

@@ -35,7 +35,7 @@ tree.setup {
     enable = true,
   },
   view = {
-    adaptive_size = true,
+    adaptive_size = false,
     width = 35,
     side = 'left',
     mappings = {

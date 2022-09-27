@@ -5,7 +5,7 @@ if not status_ok then
 end
 
 -- add a conditional guard, nx plugin currently errors if not inside a git root directory
-if vim.fn.isdirectory '.git' ~= 0 then
+if vim.fn.isdirectory '.git' ~= 0 and vim.fn.isdirectory 'apps' ~= 0 then
   nx.setup {
     -- Base command to run all other nx commands, some other values may be:
     -- - `npm nx`
