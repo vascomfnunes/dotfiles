@@ -132,7 +132,7 @@ return packer.startup(function(use)
 
   use {
     'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
-    commit = '30e2dc5232d0dd63709ef8b44a5d6184005e8602',
+    commit = 'd4204618dddf1628e7a19ad4a7b910864d1120a5',
     requires = {
       { 'nvim-lua/plenary.nvim', commit = '62dc2a7acd2fb2581871a36c1743b29e26c60390' },
       { 'crispgm/telescope-heading.nvim', commit = '6f54230d738b1e582e3a4c983722ce795aca101c' },

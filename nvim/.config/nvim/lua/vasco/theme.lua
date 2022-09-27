@@ -36,6 +36,7 @@ local function set_highlights()
   vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'TelescopePrompt', { bg = 'NONE' })
   vim.api.nvim_set_hl(0, 'TelescopePromptBorder', { fg = colors.base03 })
+  vim.api.nvim_set_hl(0, 'TelescopePromptPrefix', { fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'TelescopeResultsBorder', { fg = colors.base03 })
   vim.api.nvim_set_hl(0, 'TelescopePreviewBorder', { fg = colors.base03 })
 end
