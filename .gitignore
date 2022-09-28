@@ -48,5 +48,6 @@ gnupg/.gnupg/pub*
 gnupg/.gnupg/sshcontrol
 gnupg/.gnupg/.#*
 gnupg/.gnupg/tofu*
+gnupg/.gnupg/random_seed
 *.log
 *.gpg

@@ -14,6 +14,8 @@ treesitter.setup {
     'css',
     'dockerfile',
     'go',
+    'rust',
+    'sql',
     'graphql',
     'html',
     'javascript',

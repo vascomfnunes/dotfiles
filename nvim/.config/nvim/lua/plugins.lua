@@ -131,7 +131,7 @@ return packer.startup(function(use)
   }
 
   use {
-    'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep
+    'nvim-telescope/telescope.nvim', -- requires 'brew install rg' for live_grep. 'brew install fd' is optional.
     commit = 'd4204618dddf1628e7a19ad4a7b910864d1120a5',
     requires = {
       { 'nvim-lua/plenary.nvim', commit = '62dc2a7acd2fb2581871a36c1743b29e26c60390' },
@@ -142,7 +142,7 @@ return packer.startup(function(use)
 
   use {
     'nvim-neotest/neotest',
-    commit = '15c0bb23431d165300507573b0ae29debd57ea29',
+    commit = '6669f6dda2385ed358ffc90108e574ccccc71f32',
     requires = {
       { 'nvim-lua/plenary.nvim', commit = '62dc2a7acd2fb2581871a36c1743b29e26c60390' },
       { 'nvim-treesitter/nvim-treesitter', commit = '0289160c963fac1d0330966a798acacf85a43a88' },
@@ -182,7 +182,7 @@ return packer.startup(function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    commit = 'd36c063b7f6e701852f7880f1314656592a61b4f',
+    tag = "v1.0.0",
     requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }
@@ -191,7 +191,7 @@ return packer.startup(function(use)
 
   use {
     'williamboman/mason.nvim',
-    commit = '780495e8508c96b7d91700aedd7f7970fc3e4f24',
+    commit = 'b39da844d26f598eca05c6decac0bd48713cd7ea',
     config = "require('vasco.mason')",
   }
 
