@@ -63,6 +63,7 @@ local options = {
   wrap = false,
   virtualedit = 'block',
   clipboard = 'unnamed,unnamedplus',
+  cmdheight=0
 }
 
 local globals = {

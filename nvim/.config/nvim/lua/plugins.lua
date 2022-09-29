@@ -70,12 +70,6 @@ return packer.startup(function(use)
       },
       { 'JoosepAlviste/nvim-ts-context-commentstring', commit = '4d3a68c41a53add8804f471fcc49bb398fe8de08' },
       { 'RRethy/nvim-treesitter-endwise', commit = '0cf4601c330cf724769a2394df555a57d5fd3f34' },
-      -- SPELLSITTER WILL NOT BE NEEDED AFTER NEOVIM 0.8!
-      {
-        'lewis6991/spellsitter.nvim',
-        commit = 'eb74c4b1f4240cf1a7860877423195cec6311bd5',
-        config = "require('vasco.spellsitter')",
-      },
       {
         'p00f/nvim-ts-rainbow',
         commit = 'fad8badcd9baa4deb2cf2a5376ab412a1ba41797',
@@ -93,8 +87,6 @@ return packer.startup(function(use)
   use {
     'kosayoda/nvim-lightbulb',
     commit = '56b9ce31ec9d09d560fe8787c0920f76bc208297',
-    -- FIXCURSORHOLD WILL NOT BE NEEDED WITH NEOVIM 0.8!
-    requires = { 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' },
     config = "require('vasco.lightbulb')",
   }
 
@@ -146,8 +138,6 @@ return packer.startup(function(use)
     requires = {
       { 'nvim-lua/plenary.nvim', commit = '62dc2a7acd2fb2581871a36c1743b29e26c60390' },
       { 'nvim-treesitter/nvim-treesitter', commit = '0289160c963fac1d0330966a798acacf85a43a88' },
-      -- FIXCURSORHOLD WILL NOT BE NEEDED AFTER NEOVIM 0.8!
-      { 'antoinemadec/FixCursorHold.nvim', commit = '5aa5ff18da3cdc306bb724cf1a138533768c9f5e' },
       { 'olimorris/neotest-rspec', commit = '5d4bf59f7eccc7352ce0535b2266edae0e2f5c2f' },
       { 'haydenmeade/neotest-jest', commit = 'cedda8ae1b5c1672e87767b61379b38c5be7a7db' },
     },
@@ -182,7 +172,7 @@ return packer.startup(function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    tag = "v1.0.0",
+    tag = 'v1.0.0',
     requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }

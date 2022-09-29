@@ -98,7 +98,7 @@ lspconfig.yamlls.setup {
 
 lspconfig.sumneko_lua.setup {
   on_attach = function(client, _)
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   end,
   settings = require('vasco.lsp.servers.sumneko').settings,
   flags = { debounce_text_changes = 150 },
@@ -154,7 +154,7 @@ lspconfig.tsserver.setup {
 
 lspconfig.html.setup {
   on_attach = function(client, _)
-    client.resolved_capabilities.document_formatting = false
+    client.server_capabilities.document_formatting = false
   end,
   capabilities = capabilities,
   flags = { debounce_text_changes = 150 },
