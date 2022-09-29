@@ -119,14 +119,14 @@ local WorkDir = {
       filetype = { '^git.*', 'fugitive' },
     }
   end,
-  hl = { fg = colors.base03, italic = true },
+  hl = { fg = colors.base04, italic = true, bold = true },
 }
 local FileType = {
   provider = function()
     return vim.bo.filetype
   end,
   hl = {
-    fg = colors.base05,
+    fg = colors.base08,
     bold = true,
   },
 }
@@ -175,7 +175,9 @@ local FileName = {
     return filename
   end,
   hl = {
-    fg = colors.base02,
+    fg = colors.base0B,
+    italic = true,
+    bold = true
   },
 }
 
@@ -415,7 +417,7 @@ local WinBars = {
   hl = function()
     if conditions.is_active() then
       return {
-        bg = colors.base00,
+        bg = colors.base03,
       }
     else
       return {
