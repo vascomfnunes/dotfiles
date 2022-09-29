@@ -63,7 +63,9 @@ local options = {
   wrap = false,
   virtualedit = 'block',
   clipboard = 'unnamed,unnamedplus',
-  cmdheight=0
+  cmdheight = 0,
+  laststatus = 3,
+  winbar = '%f',
 }
 
 local globals = {
@@ -77,9 +79,6 @@ local globals = {
 
   -- Fill chars needed for folds
   fillchars = 'fold:\\ ',
-
-  -- Python provider
-  -- python3_host_prog = '~/homebrew/bin/python3',
 }
 
 for k, v in pairs(options) do

@@ -295,12 +295,6 @@ return packer.startup(function(use)
   }
 
   use {
-    'nvim-lualine/lualine.nvim',
-    commit = 'a52f078026b27694d2290e34efa61a6e4a690621',
-    config = "require('vasco.lualine')",
-  }
-
-  use {
     'j-hui/fidget.nvim',
     commit = '492492e7d50452a9ace8346d31f6d6da40439f0e',
     config = "require('vasco.fidget')",
@@ -331,6 +325,11 @@ return packer.startup(function(use)
       'nvim-telescope/telescope.nvim',
     },
     config = "require('vasco.nx')",
+  }
+
+  use {
+    'rebelot/heirline.nvim',
+    config = "require('vasco.heirline')",
   }
 
   if packer_bootstrap then
