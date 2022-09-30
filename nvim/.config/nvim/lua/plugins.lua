@@ -168,6 +168,12 @@ return packer.startup(function(use)
     config = "require('vasco.completion')",
   }
 
+  use {
+    'nvim-lua/lsp-status.nvim',
+    commit = '54f48eb5017632d81d0fd40112065f1d062d0629',
+    config = "require('vasco.lsp-status')",
+  }
+
   use { 'tpope/vim-ragtag', commit = '51b313e8a2e3a44f37b9d625bc0d461e9066b7e9', ft = { 'ruby', 'eruby' } }
 
   use {
@@ -292,12 +298,6 @@ return packer.startup(function(use)
     'stevearc/dressing.nvim',
     commit = '76477792b34f8fed167b5aa61a325e4dab26c3d7',
     requires = { 'MunifTanjim/nui.nvim', commit = '70f2dadb73b5aa15727ec8f7a620818997505be5' },
-  }
-
-  use {
-    'j-hui/fidget.nvim',
-    commit = '492492e7d50452a9ace8346d31f6d6da40439f0e',
-    config = "require('vasco.fidget')",
   }
 
   use {

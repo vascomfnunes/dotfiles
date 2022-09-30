@@ -58,6 +58,7 @@ capabilities.textDocument.codeAction = {
   },
 }
 
+capabilities = vim.tbl_extend('keep', capabilities or {}, require('lsp-status').capabilities)
 capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Lsp handlers

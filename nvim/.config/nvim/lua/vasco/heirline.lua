@@ -313,8 +313,18 @@ local GitBlock = {
   },
 }
 
+local Lsp = {
+  provider = function(self)
+    return require('lsp-status').status() .. '| '
+  end,
+  hl = {
+    fg = colors.base0B,
+  },
+}
+
+
 -- StatusLines --- {{{
-local DefaultStatusline = { GitBlock, Align, FileType, Space, ScrollBar }
+local DefaultStatusline = { GitBlock, Align, Lsp, FileType, Space, ScrollBar }
 
 local InactiveStatusLine = {
   condition = function()
