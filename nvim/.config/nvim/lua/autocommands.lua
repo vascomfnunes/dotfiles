@@ -6,7 +6,7 @@ local custom_group = vim.api.nvim_create_augroup('CustomCmdGroup', { clear = tru
 -- Highlight line on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
   callback = function()
-    vim.highlight.on_yank()
+    vim.highlight.on_yank { higroup = 'Visual', timeout = 200 }
   end,
   group = custom_group,
   pattern = '*',
