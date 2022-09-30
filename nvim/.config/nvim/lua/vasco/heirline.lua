@@ -1,25 +1,13 @@
+local status_ok, _ = pcall(require, 'heirline.conditions')
+
+if not status_ok then
+  return
+end
+
 local vim = vim
 local conditions = require 'heirline.conditions'
 local utils = require 'heirline.utils'
-
-local colors = {
-  base00 = '#32302f', -- Default Background
-  base01 = '#32302f', -- Lighter Background (Used for status bars, line number and folding marks)
-  base02 = '#444444', -- Selection Background
-  base03 = '#666666', -- Comments, Invisibles, Line Highlighting
-  base04 = '#999999', -- Dark Foreground (Used for status bars)
-  base05 = '#d4be98', -- Default Foreground, Caret, Delimiters, Operators
-  base06 = '#666666', -- Light Foreground (Not often used)
-  base07 = '#32302f', -- Light Background (Not often used)
-  base08 = '#7daea3', -- Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-  base09 = '#e78a4e', -- Integers, Boolean, Constants, XML Attributes, Markup Link Url
-  base0A = '#ea6962', -- Classes, Markup Bold, Search Text Background
-  base0B = '#a9b665', -- Strings, Inherited Class, Markup Code, Diff Inserted
-  base0C = '#d3869b', -- Support, Regular Expressions, Escape Characters, Markup Quotes
-  base0D = '#89b482', -- Functions, Methods, Attribute IDs, Headings
-  base0E = '#d3869b', -- Keywords, Storage, Selector, Markup Italic, Diff Changed
-  base0F = '#d4be98', -- Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
-}
+local colors = require('colors').theme
 
 local function insertspace(count)
   if count and count > 0 then
@@ -29,9 +17,9 @@ local function insertspace(count)
   end
 end
 
--- Components --- {{{
+-- Components ---
 
--- Helpers / common --- {{{2
+-- Helpers / common
 local Align = {
   provider = '%=',
 }
@@ -39,9 +27,8 @@ local Align = {
 local Space = {
   provider = ' ',
 }
--- 2}}}
 
--- Mode --- {{{2
+-- Mode ---
 local ViMode = {
   static = {
     mode_names = {
@@ -101,7 +88,7 @@ local ViMode = {
   end,
 }
 
--- File info --- {{{2
+-- File info ---
 
 local WorkDir = {
   provider = function()
@@ -177,7 +164,7 @@ local FileName = {
   hl = {
     fg = colors.base0B,
     italic = true,
-    bold = true
+    bold = true,
   },
 }
 
@@ -232,9 +219,7 @@ local ScrollBar = {
   hl = { fg = colors.base0B },
 }
 
--- 2}}}
-
--- Git --- {{{2
+-- Git ---
 local Git = {
   condition = conditions.is_git_repo,
 
@@ -395,9 +380,8 @@ local StatusLines = {
   InactiveStatusLine,
   DefaultStatusline,
 }
--- }}}
 
--- Winbars --- {{{
+-- Winbars ---
 local DefaultWinbar = { ViMode, Space, FileNameBlock, Space }
 
 local InactiveWinbar = {
@@ -417,7 +401,7 @@ local WinBars = {
   hl = function()
     if conditions.is_active() then
       return {
-        bg = colors.base03,
+        bg = colors.base02,
       }
     else
       return {
@@ -459,6 +443,5 @@ local WinBars = {
   InactiveWinbar,
   DefaultWinbar,
 }
--- }}}
 
 require('heirline').setup(StatusLines, WinBars)

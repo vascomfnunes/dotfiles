@@ -40,6 +40,24 @@ capabilities.textDocument.completion.completionItem = {
   },
 }
 
+capabilities.textDocument.codeAction = {
+  dynamicRegistration = false,
+  codeActionLiteralSupport = {
+    codeActionKind = {
+      valueSet = {
+        '',
+        'quickfix',
+        'refactor',
+        'refactor.extract',
+        'refactor.inline',
+        'refactor.rewrite',
+        'source',
+        'source.organizeImports',
+      },
+    },
+  },
+}
+
 capabilities = cmp_nvim_lsp.update_capabilities(capabilities)
 
 -- Lsp handlers
@@ -97,6 +115,7 @@ lspconfig.yamlls.setup {
 }
 
 lspconfig.sumneko_lua.setup {
+  capabilities = capabilities,
   on_attach = function(client, _)
     client.server_capabilities.document_formatting = false
   end,
@@ -146,7 +165,7 @@ lspconfig.tailwindcss.setup {
 }
 
 lspconfig.tsserver.setup {
-  capabilities = require('vasco.lsp.servers.tsserver').capabilities,
+  capabilities = capabilities,
   on_attach = require('vasco.lsp.servers.tsserver').on_attach,
   settings = require('vasco.lsp.servers.tsserver').settings,
   flags = { debounce_text_changes = 150 },
