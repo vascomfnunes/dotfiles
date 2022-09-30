@@ -238,7 +238,7 @@ local Git = {
   },
 
   hl = {
-    bg = colors.base00,
+    bg = colors.base02,
     fg = colors.base08,
   },
 
@@ -247,7 +247,7 @@ local Git = {
       fg = colors.base0A,
     },
     provider = function(self)
-      return self.branch_icon
+      return ' ' .. self.branch_icon
     end,
   },
   { -- git branch name
@@ -322,7 +322,6 @@ local Lsp = {
   },
 }
 
-
 -- StatusLines --- {{{
 local DefaultStatusline = { GitBlock, Align, Lsp, FileType, Space, ScrollBar }
 
@@ -357,7 +356,7 @@ local StatusLines = {
   hl = function()
     if conditions.is_active() then
       return {
-        bg = colors.base00,
+        bg = colors.base02,
       }
     else
       return {
