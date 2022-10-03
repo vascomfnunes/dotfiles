@@ -69,11 +69,6 @@ local options = {
 }
 
 local globals = {
-  -- Disable filetype plugin, use the new Lua version
-  -- it's enabled by default in neovim 0.8 (nightly)
-  do_filetype_lua = 1,
-  did_load_filetypes = 0,
-
   mapleader = ' ',
   maplocalleader = ' ',
 

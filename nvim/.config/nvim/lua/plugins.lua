@@ -53,8 +53,6 @@ return packer.startup(function(use)
     config = "require('vasco.theme')",
   }
 
-  use { 'nathom/filetype.nvim' }
-
   use { 'neovim/nvim-lspconfig' }
 
   use {
