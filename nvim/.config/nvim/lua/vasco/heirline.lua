@@ -33,28 +33,28 @@ local ViMode = {
   static = {
     mode_names = {
       -- normal
-      n = ' N  ',
-      no = ' N  ',
-      nov = ' N  ',
-      noV = ' N  ',
-      ['\22 n'] = ' N  ',
-      niI = ' N  ',
-      niR = ' N  ',
-      niV = ' N  ',
-      nt = ' N  ',
+      n = ' NORMAL',
+      no = ' NORMAL',
+      nov = ' NORMAL',
+      noV = ' NORMAL',
+      ['\22 n'] = ' NORMAL',
+      niI = ' NORMAL',
+      niR = ' NORMAL',
+      niV = ' NORMAL',
+      nt = ' NORMAL',
       -- visual
-      v = ' V  ',
-      vs = ' V  ',
-      V = ' V  ',
-      Vs = ' V  ',
-      ['\22'] = ' V  ',
-      ['\22s'] = ' V  ',
+      v = ' VISUAL',
+      vs = ' VISUAL',
+      V = ' VISUAL',
+      Vs = ' VISUAL',
+      ['\22'] = ' V-BLOCK',
+      ['\22s'] = ' V-BLOCK',
       -- insert
-      i = ' I פֿ ',
-      ic = ' I פֿ ',
-      ix = ' I פֿ ',
+      i = ' INSERT',
+      ic = ' INSERT',
+      ix = ' INSERT',
       -- command
-      c = ' C  ',
+      c = ' COMMAND',
       s = ' S  ',
       S = ' S  ',
       ['\19'] = ' S  ',
@@ -100,6 +100,7 @@ local WorkDir = {
     local trail = cwd:sub(-1) == '/' and '' or '/'
     return cwd .. trail
   end,
+
   condition = function()
     return not conditions.buffer_matches {
       buftype = { 'nofile', 'prompt', 'help', 'quickfix' },
@@ -323,7 +324,7 @@ local Lsp = {
 }
 
 -- StatusLines --- {{{
-local DefaultStatusline = { GitBlock, Align, Lsp, FileType, Space, ScrollBar }
+local DefaultStatusline = { ViMode, GitBlock, Align, Lsp, FileType, Space, ScrollBar }
 
 local InactiveStatusLine = {
   condition = function()
@@ -391,7 +392,7 @@ local StatusLines = {
 }
 
 -- Winbars ---
-local DefaultWinbar = { ViMode, Space, FileNameBlock, Space }
+local DefaultWinbar = { Space, FileNameBlock, Space }
 
 local InactiveWinbar = {
   condition = function()
