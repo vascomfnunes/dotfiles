@@ -65,9 +65,13 @@ local servers = {
   'node-debug2-adapter',
   -- LINTER
   'erb-linter',
+  'shellcheck',
   'yamllint',
+  'markdownlint',
   -- FORMATTER
+  'prettier',
   'stylua',
+  'shfmt'
 }
 
 mason_lspconfig.setup {

@@ -201,6 +201,11 @@ return packer.startup(function(use)
   }
 
   use {
+    'jayp0521/mason-null-ls.nvim',
+    config = require("mason-null-ls").setup()
+  }
+
+  use {
     'jedrzejboczar/possession.nvim',
     config = "require('vasco.possession')",
   }
