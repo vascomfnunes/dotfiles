@@ -11,8 +11,7 @@ whichkey.setup {
     -- the presets plugin, adds help for a bunch of default keybindings in Neovim
     -- No actual key bindings are created
     spelling = {
-      enabled = true, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
-      suggestions = 20, -- how many suggestions should be shown in the list?
+      enabled = false, -- enabling this will show WhichKey when pressing z= to select spelling suggestions
     },
     presets = {
       operators = true, -- adds help for operators like d, y, ... and registers them for motion / text object completion
@@ -93,7 +92,7 @@ local mappings = {
   ['<leader>n'] = { ':NvimTreeToggle<cr>', 'Toggle file explorer' },
 
   -- Spell
-  ['z='] = { ':Telescope spell_suggest', 'Spell suggestions' },
+  ['z='] = { ':Telescope spell_suggest<cr>', 'Spell suggestions' },
 
   -- Navigation
   ['<C-b>'] = { '<ESC>^', 'Beginning of line' },
@@ -247,10 +246,22 @@ local mappings = {
     p = { ':Telekasten panel<cr>', 'Panel' },
   },
 
-  -- Project
+  -- Search
+  ['<leader>'] = {
+    name = 'Search and replace',
+    s = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
+  },
+
+  -- Plugins
   ['<leader>p'] = {
-    name = 'Project',
-    r = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
+    name = 'Plugins',
+    i = { ':PackerInstall<cr>', 'Install' },
+    u = { ':PackerUpdate<cr>', 'Update' },
+    r = { ':PackerClean<cr>', 'Clean' },
+    s = { ':PackerSync<cr>', 'Sync' },
+    c = { ':PackerCompile<cr>', 'Compile' },
+    S = { ':PackerSnapshot ~/nvim-snapshot<cr>', 'Snapshot' },
+    R = { ':PackerSnapshotRollback ~/nvim-snapshot<cr>', 'Rollback' },
   },
 
   -- Next

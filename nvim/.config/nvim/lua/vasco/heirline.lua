@@ -4,6 +4,12 @@ if not status_ok then
   return
 end
 
+local devicons_ok, devicons = pcall(require, 'nvim-web-devicons')
+
+if not devicons_ok then
+  return
+end
+
 local vim = vim
 local conditions = require 'heirline.conditions'
 local utils = require 'heirline.utils'
@@ -137,7 +143,7 @@ local FileIcon = {
   init = function(self)
     local filename = self.filename
     local extension = vim.fn.fnamemodify(filename, ':e')
-    self.icon, self.icon_color = require('nvim-web-devicons').get_icon_color(filename, extension, {
+    self.icon, self.icon_color = devicons.get_icon_color(filename, extension, {
       default = true,
     })
   end,

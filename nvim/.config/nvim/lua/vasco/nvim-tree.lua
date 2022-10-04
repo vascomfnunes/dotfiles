@@ -14,7 +14,12 @@ tree.setup {
   hijack_unnamed_buffer_when_opening = false,
   open_on_setup = false,
   filters = {
-    dotfiles = false,
+    custom = {
+      '.git',
+      'node_modules',
+      '\\.cache',
+      '__pycache__',
+    },
   },
   update_cwd = true,
   update_focused_file = { enable = true, update_cwd = false, ignore_list = {} },
@@ -22,10 +27,30 @@ tree.setup {
     open_file = {
       resize_window = true,
       quit_on_open = true,
+      window_picker = {
+        enable = true,
+        chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890',
+        exclude = {
+          filetype = { 'notify', 'packer', 'qf', 'diff', 'NeogitStatus' },
+          buftype = { 'nofile', 'terminal', 'help' },
+        },
+      },
     },
   },
   trash = {
     require_confirm = true,
+  },
+  log = {
+    enable = false,
+    truncate = false,
+    types = {
+      all = false,
+      config = false,
+      copy_paste = false,
+      diagnostics = false,
+      git = false,
+      profile = false,
+    },
   },
   git = {
     enable = false,
@@ -36,7 +61,7 @@ tree.setup {
   },
   view = {
     adaptive_size = false,
-    width = 35,
+    width = math.floor(vim.fn.winwidth(0) * 0.30), -- 20% of window width
     side = 'left',
     mappings = {
       -- custom only false will merge the list with the default mappings

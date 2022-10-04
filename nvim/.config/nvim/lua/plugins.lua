@@ -44,16 +44,16 @@ packer.init {
 }
 
 return packer.startup(function(use)
-  use { 'wbthomason/packer.nvim' }
+  use 'wbthomason/packer.nvim'
 
-  use { 'lewis6991/impatient.nvim' }
+  use 'lewis6991/impatient.nvim'
 
   use {
     'sainnhe/gruvbox-material',
     config = "require('vasco.theme')",
   }
 
-  use { 'neovim/nvim-lspconfig' }
+  use 'neovim/nvim-lspconfig'
 
   use {
     'nvim-treesitter/nvim-treesitter',
@@ -64,16 +64,15 @@ return packer.startup(function(use)
         'jose-elias-alvarez/typescript.nvim',
         config = [[ require("typescript").setup({})]],
       },
-      { 'JoosepAlviste/nvim-ts-context-commentstring' },
-      { 'RRethy/nvim-treesitter-endwise' },
-      {
-        'p00f/nvim-ts-rainbow',
-      },
+      'JoosepAlviste/nvim-ts-context-commentstring',
+      'RRethy/nvim-treesitter-endwise',
+      'p00f/nvim-ts-rainbow',
     },
   }
 
   use {
     'folke/todo-comments.nvim',
+    event = { 'BufRead', 'BufNewFile' },
     requires = { 'nvim-lua/plenary.nvim' },
     config = "require('vasco.todo')",
   }
@@ -93,9 +92,9 @@ return packer.startup(function(use)
 
   use {
     'lewis6991/gitsigns.nvim',
+    event = { 'BufRead', 'BufNewFile' },
     requires = { 'nvim-lua/plenary.nvim' },
     config = "require('vasco.gitsigns')",
-    event = 'BufRead',
   }
 
   use {
@@ -107,7 +106,6 @@ return packer.startup(function(use)
 
   use {
     'kevinhwang91/nvim-ufo',
-    tag = 'v1.1.0',
     requires = 'kevinhwang91/promise-async',
     config = "require('vasco.ufo')",
   }
@@ -124,10 +122,10 @@ return packer.startup(function(use)
   use {
     'nvim-neotest/neotest',
     requires = {
-      { 'nvim-lua/plenary.nvim' },
-      { 'nvim-treesitter/nvim-treesitter' },
-      { 'olimorris/neotest-rspec' },
-      { 'haydenmeade/neotest-jest' },
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+      'olimorris/neotest-rspec',
+      'haydenmeade/neotest-jest',
     },
     config = "require('vasco.neotest')",
   }
@@ -140,16 +138,16 @@ return packer.startup(function(use)
   use {
     'hrsh7th/nvim-cmp',
     requires = {
-      { 'hrsh7th/cmp-nvim-lsp' },
-      { 'hrsh7th/cmp-nvim-lua' },
-      { 'hrsh7th/cmp-buffer' },
-      { 'hrsh7th/cmp-path' },
-      { 'hrsh7th/cmp-cmdline' },
-      { 'hrsh7th/cmp-nvim-lsp-signature-help' },
-      { 'f3fora/cmp-spell' },
-      { 'saadparwaiz1/cmp_luasnip' },
-      { 'rcarriga/cmp-dap' },
-      { 'jbyuki/one-small-step-for-vimkind' },
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-nvim-lua',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-nvim-lsp-signature-help',
+      'f3fora/cmp-spell',
+      'saadparwaiz1/cmp_luasnip',
+      'rcarriga/cmp-dap',
+      'jbyuki/one-small-step-for-vimkind',
     },
     config = "require('vasco.completion')",
   }
@@ -161,24 +159,33 @@ return packer.startup(function(use)
 
   use { 'tpope/vim-ragtag', ft = { 'ruby', 'eruby' } }
 
+  use { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }
+
   use {
     'L3MON4D3/LuaSnip',
-    tag = 'v1.0.0',
+    after = 'friendly-snippets',
     requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }
 
-  use { 'onsails/lspkind-nvim' }
+  use 'onsails/lspkind-nvim'
 
   use {
     'williamboman/mason.nvim',
+    requires = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason-lspconfig.nvim' },
     config = "require('vasco.mason')",
   }
 
-  use { 'williamboman/mason-lspconfig.nvim' }
-
   use {
     'windwp/nvim-autopairs',
+    keys = {
+      { 'i', '(' },
+      { 'i', '[' },
+      { 'i', '{' },
+      { 'i', "'" },
+      { 'i', '"' },
+      { 'i', '<BS>' },
+    },
     after = { 'nvim-treesitter', 'nvim-cmp' },
     config = "require('vasco.autopairs')",
   }
@@ -201,17 +208,30 @@ return packer.startup(function(use)
   }
 
   use {
-    'jayp0521/mason-null-ls.nvim',
-    config = require("mason-null-ls").setup()
-  }
-
-  use {
     'jedrzejboczar/possession.nvim',
     config = "require('vasco.possession')",
   }
 
   use {
     'windwp/nvim-ts-autotag',
+    ft = {
+      'html',
+      'javascript',
+      'typescript',
+      'javascriptreact',
+      'typescriptreact',
+      'svelte',
+      'vue',
+      'tsx',
+      'jsx',
+      'rescript',
+      'xml',
+      'php',
+      'markdown',
+      'glimmer',
+      'handlebars',
+      'hbs',
+    },
     config = "require('vasco.autotag')",
   }
 
@@ -223,6 +243,7 @@ return packer.startup(function(use)
 
   use {
     'norcalli/nvim-colorizer.lua',
+    event = { 'BufRead', 'BufNewFile' },
     config = "require('vasco.colorizer')",
   }
 
@@ -230,6 +251,7 @@ return packer.startup(function(use)
 
   use {
     'rcarriga/nvim-dap-ui',
+    event = { 'BufRead', 'BufNewFile' },
     requires = {
       { 'mfussenegger/nvim-dap' },
       { 'theHamsta/nvim-dap-virtual-text' },
@@ -262,12 +284,11 @@ return packer.startup(function(use)
     cmd = 'NvimTreeToggle',
   }
 
-  use { 'kyazdani42/nvim-web-devicons' }
-
   use {
     -- this requires the following font to be installed:
     -- https://github.com/yamatsum/nonicons/blob/master/dist/nonicons.ttf
     'yamatsum/nvim-nonicons',
+    event = { 'BufRead', 'BufNewFile' },
     requires = { 'kyazdani42/nvim-web-devicons' },
   }
 
@@ -288,6 +309,7 @@ return packer.startup(function(use)
 
   use {
     'lukas-reineke/indent-blankline.nvim',
+    event = { 'BufRead', 'BufNewFile' },
     config = "require('vasco.indent')",
   }
 
@@ -301,6 +323,7 @@ return packer.startup(function(use)
 
   use {
     'rebelot/heirline.nvim',
+    event = { 'BufRead', 'BufNewFile' },
     config = "require('vasco.heirline')",
   }
 
