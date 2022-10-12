@@ -163,7 +163,6 @@ return packer.startup(function(use)
 
   use {
     'L3MON4D3/LuaSnip',
-    after = 'friendly-snippets',
     requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }

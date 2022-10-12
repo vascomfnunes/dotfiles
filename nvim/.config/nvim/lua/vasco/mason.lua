@@ -64,7 +64,7 @@ local servers = {
   'chrome-debug-adapter',
   'node-debug2-adapter',
   -- LINTER
-  'erb-linter',
+  'erb-lint',
   'shellcheck',
   'yamllint',
   'markdownlint',
