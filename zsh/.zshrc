@@ -12,6 +12,7 @@ HIST_STAMPS="dd/mm/yyyy"
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/jeffreytse/zsh-vi-mode $ZSH_CUSTOM/plugins/zsh-vi-mode
 # git clone https://github.com/jscutlery/nx-completion $ZSH_CUSTOM/plugins/nx-completion
+# git clone https://github.com/z-shell/zi $ZSH_CUSTOM/plugins/zi
 #
 # vi-mode: edit with 'vv' when in NORMAL mode
 plugins=(gitfast z zsh-vi-mode pass zsh-autosuggestions zsh-syntax-highlighting nx-completion)

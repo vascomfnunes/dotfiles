@@ -4,7 +4,7 @@
 "  \ V /| |  _| | | | | |
 "   \_/ |_|_| |_| |_| |_|
 
-set vicmd=vim
+set vicmd=nvim
 
 " Set trash directory
 set trash
@@ -56,7 +56,7 @@ set scrolloff=4
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
 " Selected color scheme
-colorscheme gruvbox
+colorscheme gruvbox-material
 
 " :mark mark /full/directory/path [filename]
 mark w ~/workspace

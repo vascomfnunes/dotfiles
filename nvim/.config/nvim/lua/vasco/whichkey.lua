@@ -85,6 +85,7 @@ local mappings = {
   ['9'] = 'which_key_ignore',
 
   -- General
+  ['<leader><leader>'] = { ':Vifm<cr>', 'Vifm' },
   ['<leader>v'] = { ':cd ~/.config/nvim|e init.lua<cr>', 'Neovim configuration' },
   ['<ESC>'] = { ':nohlsearch<cr>', 'Clear highlights' },
 
