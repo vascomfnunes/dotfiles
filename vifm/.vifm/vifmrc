@@ -56,7 +56,7 @@ set scrolloff=4
 set statusline="  Hint: %z%= %A %10u:%-7g %15s %20d  "
 
 " Selected color scheme
-colorscheme gruvbox-material
+colorscheme gruvbox
 
 " :mark mark /full/directory/path [filename]
 mark w ~/workspace
