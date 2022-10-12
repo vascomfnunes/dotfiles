@@ -166,6 +166,8 @@ local mappings = {
     p = { ':lua vim.diagnostic.goto_previous()<cr>', 'Previous diagnostic' },
     d = { ':lua vim.lsp.buf.definition()<cr>', 'Go to definition' },
     K = { ':lua vim.lsp.buf.hover()<cr>', 'Documentation' },
+    x = { ':lua vim.diagnostic.config({signs = true, virtual_text = true})<cr>', 'Show diagnostics' },
+    X = { ':lua vim.diagnostic.config({signs = false, virtual_text = false})<cr>', 'Hide diagnostics' },
   },
 
   -- Debug/documentation
