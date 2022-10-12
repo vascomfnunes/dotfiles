@@ -327,7 +327,7 @@ return packer.startup(function(use)
     config = "require('vasco.heirline')",
   }
 
-  use 'vifm/vifm.vim'
+  use { 'vifm/vifm.vim', cmd = 'Vifm' }
 
   if packer_bootstrap then
     require('packer').sync()
