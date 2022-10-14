@@ -314,7 +314,10 @@ return packer.startup(function(use)
 
   use { 'nvim-lualine/lualine.nvim', config = "require('vasco.lualine')" }
 
-  use { 'j-hui/fidget.nvim', config = require('fidget').setup {} }
+  use {
+    'j-hui/fidget.nvim',
+    config = "require('vasco.fidget')",
+  }
 
   use {
     'folke/which-key.nvim',
