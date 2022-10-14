@@ -53,17 +53,15 @@ return packer.startup(function(use)
     config = "require('vasco.theme')",
   }
 
-  use 'neovim/nvim-lspconfig'
-
   use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
     config = "require('vasco.treesitter')",
     requires = {
-      {
-        'jose-elias-alvarez/typescript.nvim',
-        config = [[ require("typescript").setup({})]],
-      },
+      -- {
+      --   'jose-elias-alvarez/typescript.nvim',
+      --   config = [[ require("typescript").setup({})]],
+      -- },
       'JoosepAlviste/nvim-ts-context-commentstring',
       'RRethy/nvim-treesitter-endwise',
       'p00f/nvim-ts-rainbow',
@@ -152,27 +150,25 @@ return packer.startup(function(use)
     config = "require('vasco.completion')",
   }
 
-  use {
-    'nvim-lua/lsp-status.nvim',
-    config = "require('vasco.lsp-status')",
-  }
-
   use { 'tpope/vim-ragtag', ft = { 'ruby', 'eruby' } }
-
-  use { 'rafamadriz/friendly-snippets', event = 'InsertEnter' }
 
   use {
     'L3MON4D3/LuaSnip',
-    requires = { 'rafamadriz/friendly-snippets' },
     config = "require('vasco.luasnip')",
   }
+
+  use { 'rafamadriz/friendly-snippets' }
 
   use 'onsails/lspkind-nvim'
 
   use {
-    'williamboman/mason.nvim',
-    requires = { 'williamboman/mason-lspconfig.nvim', 'williamboman/mason-lspconfig.nvim' },
-    config = "require('vasco.mason')",
+    'junnplus/lsp-setup.nvim',
+    requires = {
+      'neovim/nvim-lspconfig',
+      'williamboman/mason.nvim',
+      'williamboman/mason-lspconfig.nvim',
+    },
+    config = "require('vasco.lsp')",
   }
 
   use {
@@ -232,12 +228,6 @@ return packer.startup(function(use)
       'hbs',
     },
     config = "require('vasco.autotag')",
-  }
-
-  use {
-    'folke/which-key.nvim',
-    config = "require('vasco.whichkey')",
-    keys = { '<leader>' },
   }
 
   use {
@@ -320,13 +310,17 @@ return packer.startup(function(use)
     config = "require('vasco.nx')",
   }
 
-  use {
-    'rebelot/heirline.nvim',
-    event = { 'BufRead', 'BufNewFile' },
-    config = "require('vasco.heirline')",
-  }
-
   use { 'vifm/vifm.vim', cmd = 'Vifm' }
+
+  use { 'nvim-lualine/lualine.nvim', config = "require('vasco.lualine')" }
+
+  use { 'j-hui/fidget.nvim', config = require('fidget').setup {} }
+
+  use {
+    'folke/which-key.nvim',
+    config = "require('vasco.whichkey')",
+    keys = { '<leader>' },
+  }
 
   if packer_bootstrap then
     require('packer').sync()

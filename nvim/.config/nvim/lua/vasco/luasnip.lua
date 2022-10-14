@@ -18,5 +18,5 @@ if not status_ok then
   return
 end
 
-snips.lazy_load()
-snips.lazy_load { paths = vim.g.luasnippets_path or '' }
+require("luasnip.loaders.from_vscode").lazy_load()
+
