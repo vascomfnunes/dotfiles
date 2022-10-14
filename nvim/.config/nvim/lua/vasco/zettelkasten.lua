@@ -4,17 +4,18 @@ if not status_ok then
   return
 end
 
-local home = vim.fn.expand '~/notes'
+local personal = vim.fn.expand '~/notes'
+local work = vim.fn.expand '~/workspace/notes'
 
 telekasten.setup {
-  home = vim.fn.expand '~/notes/personal',
-  dailies = home .. '/personal/daily',
-  weeklies = home .. '/personal/weekly',
-  templates = home .. '/personal/templates',
-  template_new_note = home .. '/personal/templates/new_note.md',
-  template_new_daily = home .. '/personal/templates/daily.md',
-  template_new_weekly = home .. '/personal/templates/weekly.md',
-  image_subdir = home .. '/personal/img',
+  home = personal,
+  dailies = personal .. '/daily',
+  weeklies = personal .. '/weekly',
+  templates = personal .. '/templates',
+  template_new_note = personal .. '/templates/new_note.md',
+  template_new_daily = personal .. '/templates/daily.md',
+  template_new_weekly = personal .. '/templates/weekly.md',
+  image_subdir = personal .. '/img',
   take_over_my_home = true,
   auto_set_filetype = false,
   extension = '.md',
@@ -25,17 +26,17 @@ telekasten.setup {
   media_previewer = 'catimg-previewer', -- requires 'brew install catimg'
   vaults = {
     work = {
-      home = vim.fn.expand '~/notes/work',
+      home = work,
       new_note_filename = 'uuid-title',
       uuid_type = '%d%m%Y%H%M',
       uuid_sep = '-',
-      dailies = home .. '/work/daily',
-      weeklies = home .. '/work/weekly',
-      templates = home .. '/work/templates',
-      image_subdir = home .. '/work/img',
-      template_new_note = home .. '/work/templates/new_note.md',
-      template_new_daily = home .. '/work/templates/daily.md',
-      template_new_weekly = home .. '/work/templates/weekly.md',
+      dailies = work .. '/daily',
+      weeklies = work .. '/weekly',
+      templates = work .. '/templates',
+      image_subdir = work .. '/img',
+      template_new_note = work .. '/templates/new_note.md',
+      template_new_daily = work .. '/templates/daily.md',
+      template_new_weekly = work .. '/templates/weekly.md',
     },
   },
 }
