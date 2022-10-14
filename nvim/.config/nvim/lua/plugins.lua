@@ -58,10 +58,10 @@ return packer.startup(function(use)
     run = ':TSUpdate',
     config = "require('vasco.treesitter')",
     requires = {
-      -- {
-      --   'jose-elias-alvarez/typescript.nvim',
-      --   config = [[ require("typescript").setup({})]],
-      -- },
+      {
+        'jose-elias-alvarez/typescript.nvim',
+        config = [[ require("typescript").setup({})]],
+      },
       'JoosepAlviste/nvim-ts-context-commentstring',
       'RRethy/nvim-treesitter-endwise',
       'p00f/nvim-ts-rainbow',
