@@ -320,6 +320,17 @@ return packer.startup(function(use)
   }
 
   use {
+    -- requires 'brew install TheZoraiz/ascii-image-converter/ascii-image-converter'
+    'samodostal/image.nvim',
+    requires = {
+      'nvim-lua/plenary.nvim',
+    },
+    config = function()
+      require('image').setup {}
+    end,
+  }
+
+  use {
     'folke/which-key.nvim',
     config = "require('vasco.whichkey')",
     keys = { '<leader>' },
