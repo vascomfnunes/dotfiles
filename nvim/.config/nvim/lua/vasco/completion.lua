@@ -56,8 +56,15 @@ cmp.setup {
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
-    { name = 'spell', keyword_length = 5 },
     { name = 'buffer', keyword_length = 5 },
+    {
+      name = 'look',
+      keyword_length = 2,
+      option = {
+        convert_case = true,
+        loud = true,
+      },
+    },
   },
   formatting = {
     format = lspkind.cmp_format {
@@ -65,10 +72,10 @@ cmp.setup {
       menu = {
         luasnip = '[LuaSnip]',
         nvim_lsp = '[LSP]',
-        spell = '[Spell]',
         buffer = '[Buffer]',
         path = '[Path]',
         nvim_lua = '[Lua]',
+        look = '[Look]',
       },
     },
   },
@@ -98,7 +105,12 @@ cmp.setup {
   },
 }
 
--- Use buffer source for `/` (if you enabled `native_menu`, this won't work anymore).
+require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches' }, {
+  sources = {
+    { name = 'dap' },
+  },
+})
+
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = {
@@ -114,10 +126,4 @@ cmp.setup.cmdline(':', {
   }, {
     { name = 'cmdline' },
   }),
-})
-
-require('cmp').setup.filetype({ 'dap-repl', 'dapui_watches' }, {
-  sources = {
-    { name = 'dap' },
-  },
 })

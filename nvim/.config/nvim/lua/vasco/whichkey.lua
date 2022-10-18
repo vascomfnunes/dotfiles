@@ -88,6 +88,7 @@ local mappings = {
   ['<leader><leader>'] = { ':Vifm<cr>', 'Vifm' },
   ['<leader>v'] = { ':cd ~/.config/nvim|e init.lua<cr>', 'Neovim configuration' },
   ['<ESC>'] = { ':nohlsearch<cr>', 'Clear highlights' },
+  ['<leader>s'] = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
 
   -- Explorer
   ['<leader>n'] = { ':NvimTreeToggle<cr>', 'Toggle file explorer' },
@@ -247,12 +248,6 @@ local mappings = {
     P = { ':Telekasten paste_img_and_link<cr>', 'Paste image and link' },
     v = { ':Telekasten switch_vault<cr>', 'Switch vault' },
     p = { ':Telekasten panel<cr>', 'Panel' },
-  },
-
-  -- Search
-  ['<leader>'] = {
-    name = 'Search and replace',
-    s = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
   },
 
   -- Plugins

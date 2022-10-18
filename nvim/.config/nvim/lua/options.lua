@@ -29,7 +29,6 @@ local options = {
   pumheight = 6,
   scrolloff = 8,
   showmode = false,
-  lazyredraw = true,
   grepprg = 'rg --vimgrep --follow --no-heading',
   smartcase = true,
   smartindent = true,
@@ -63,7 +62,6 @@ local options = {
   wrap = false,
   virtualedit = 'block',
   clipboard = 'unnamed,unnamedplus',
-  cmdheight = 0,
   laststatus = 3,
   winbar = '%f',
 }

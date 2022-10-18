@@ -139,10 +139,10 @@ return packer.startup(function(use)
       'hrsh7th/cmp-nvim-lsp',
       'hrsh7th/cmp-nvim-lua',
       'hrsh7th/cmp-buffer',
-      'hrsh7th/cmp-path',
       'hrsh7th/cmp-cmdline',
+      'hrsh7th/cmp-path',
+      'octaltree/cmp-look',
       'hrsh7th/cmp-nvim-lsp-signature-help',
-      'f3fora/cmp-spell',
       'saadparwaiz1/cmp_luasnip',
       'rcarriga/cmp-dap',
       'jbyuki/one-small-step-for-vimkind',
@@ -281,10 +281,7 @@ return packer.startup(function(use)
     requires = { 'kyazdani42/nvim-web-devicons' },
   }
 
-  use {
-    'stevearc/dressing.nvim',
-    requires = { 'MunifTanjim/nui.nvim' },
-  }
+  use { 'stevearc/dressing.nvim', requires = { 'MunifTanjim/nui.nvim' } }
 
   use {
     'terrortylor/nvim-comment',
@@ -313,11 +310,6 @@ return packer.startup(function(use)
   use { 'vifm/vifm.vim', cmd = 'Vifm' }
 
   use { 'nvim-lualine/lualine.nvim', config = "require('vasco.lualine')" }
-
-  use {
-    'j-hui/fidget.nvim',
-    config = "require('vasco.fidget')",
-  }
 
   use {
     -- requires 'brew install TheZoraiz/ascii-image-converter/ascii-image-converter'
