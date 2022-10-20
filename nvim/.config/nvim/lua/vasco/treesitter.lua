@@ -7,6 +7,8 @@ if not status_ok then
   return
 end
 
+local colors = require('colors').theme_dark
+
 treesitter.setup {
   ensure_installed = {
     'bash',
@@ -65,6 +67,6 @@ treesitter.setup {
     -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
     extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
     max_file_lines = nil, -- Do not enable for files with more than n lines, int
-    colors = { '#e78a4e', '#ea6962', '#d3869b', '#7daea3', '#a9b665' }, -- table of hex strings
+    colors = { colors.base08, colors.base09, colors.base0D, colors.base0B, colors.base0C }, -- table of hex strings
   },
 }

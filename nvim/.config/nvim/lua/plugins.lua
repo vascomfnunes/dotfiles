@@ -49,7 +49,7 @@ return packer.startup(function(use)
   use 'lewis6991/impatient.nvim'
 
   use {
-    'sainnhe/gruvbox-material',
+    'RRethy/nvim-base16',
     config = "require('vasco.theme')",
   }
 
@@ -327,8 +327,6 @@ return packer.startup(function(use)
     config = "require('vasco.whichkey')",
     keys = { '<leader>' },
   }
-
-  use 'RRethy/nvim-base16'
 
   if packer_bootstrap then
     require('packer').sync()
