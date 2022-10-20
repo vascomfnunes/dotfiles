@@ -88,7 +88,6 @@ local mappings = {
   ['<leader><leader>'] = { ':Vifm<cr>', 'Vifm' },
   ['<leader>v'] = { ':cd ~/.config/nvim|e init.lua<cr>', 'Neovim configuration' },
   ['<ESC>'] = { ':nohlsearch<cr>', 'Clear highlights' },
-  ['<leader>s'] = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Search and replace' },
 
   -- Explorer
   ['<leader>n'] = { ':NvimTreeToggle<cr>', 'Toggle file explorer' },
@@ -269,7 +268,31 @@ local mappings = {
     g = { ':Telescope nx generators<cr>', 'Generators' },
     r = { ':Telescope nx run_many<cr>', 'Run many' },
   },
+
+  -- Search
+  ['<leader>s'] = {
+    name = 'Search & replace',
+    s = { ":lua require('spectre').open()<cr>", 'Toggle' },
+    g = { ":lua require('spectre').open_visual({select_word=true})<cr>", 'Grep current word' },
+  },
 }
 
-local wk = require 'which-key'
-wk.register(mappings, opts)
+-- Visual mode
+local visual_opts = {
+  mode = 'v', -- NORMAL mode
+  buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
+  silent = true, -- use `silent` when creating keymaps
+  noremap = true, -- use `noremap` when creating keymaps
+  nowait = false, -- use `nowait` when creating keymaps
+}
+
+local visual_mappings = {
+  -- Search
+  ['<leader>s'] = {
+    name = 'Search & replace',
+    v = { ":lua require('spectre').open_visual()<cr>", 'Grep selected' },
+  },
+}
+
+whichkey.register(mappings, opts)
+whichkey.register(visual_mappings, visual_opts)
