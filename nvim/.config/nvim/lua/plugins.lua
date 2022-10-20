@@ -328,6 +328,8 @@ return packer.startup(function(use)
     keys = { '<leader>' },
   }
 
+  use 'RRethy/nvim-base16'
+
   if packer_bootstrap then
     require('packer').sync()
   end

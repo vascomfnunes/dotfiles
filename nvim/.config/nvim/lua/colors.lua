@@ -1,22 +1,41 @@
 local M = {}
 
-M.theme = {
-  base00 = '#32302f', -- Default Background
-  base01 = '#32302f', -- Lighter Background (Used for status bars, line number and folding marks)
-  base02 = '#444444', -- Selection Background
-  base03 = '#666666', -- Comments, Invisibles, Line Highlighting
-  base04 = '#999999', -- Dark Foreground (Used for status bars)
-  base05 = '#d4be98', -- Default Foreground, Caret, Delimiters, Operators
-  base06 = '#666666', -- Light Foreground (Not often used)
-  base07 = '#32302f', -- Light Background (Not often used)
-  base08 = '#7daea3', -- Variables, XML Tags, Markup Link Text, Markup Lists, Diff Deleted
-  base09 = '#e78a4e', -- Integers, Boolean, Constants, XML Attributes, Markup Link Url
-  base0A = '#ea6962', -- Classes, Markup Bold, Search Text Background
-  base0B = '#a9b665', -- Strings, Inherited Class, Markup Code, Diff Inserted
-  base0C = '#d3869b', -- Support, Regular Expressions, Escape Characters, Markup Quotes
-  base0D = '#89b482', -- Functions, Methods, Attribute IDs, Headings
-  base0E = '#d3869b', -- Keywords, Storage, Selector, Markup Italic, Diff Changed
-  base0F = '#d4be98', -- Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
+M.theme_dark = {
+  base00 = '#2d2d2d',
+  base01 = '#393939',
+  base02 = '#515151',
+  base03 = '#999999',
+  base04 = '#b4b7b4',
+  base05 = '#cccccc',
+  base06 = '#e0e0e0',
+  base07 = '#ffffff',
+  base08 = '#f2777a',
+  base09 = '#f99157',
+  base0A = '#ffcc66',
+  base0B = '#99cc99',
+  base0C = '#66cccc',
+  base0D = '#6699cc',
+  base0E = '#cc99cc',
+  base0F = '#a3685a',
+}
+
+M.theme_light = {
+  base00 = '#ffffff',
+  base01 = '#e0e0e0',
+  base02 = '#d6d6d6',
+  base03 = '#8e908c',
+  base04 = '#969896',
+  base05 = '#4d4d4c',
+  base06 = '#282a2e',
+  base07 = '#1d1f21',
+  base08 = '#c82829',
+  base09 = '#f5871f',
+  base0A = '#eab700',
+  base0B = '#718c00',
+  base0C = '#3e999f',
+  base0D = '#4271ae',
+  base0E = '#8959a8',
+  base0F = '#a3685a',
 }
 
 return M

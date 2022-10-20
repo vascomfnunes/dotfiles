@@ -63,6 +63,7 @@ local options = {
   virtualedit = 'block',
   clipboard = 'unnamed,unnamedplus',
   laststatus = 3,
+  cmdheight = 0,
   winbar = '%f',
 }
 
