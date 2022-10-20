@@ -32,7 +32,14 @@ local settings = {
     yamlls = {},
     eslint = {},
     zk = {},
-    jsonls = {},
+    jsonls = {
+      settings = {
+        json = {
+          schemas = require('schemastore').json.schemas(),
+          validate = { enable = true },
+        },
+      },
+    },
     tsserver = {},
     -- gopls = {
     --   settings = {

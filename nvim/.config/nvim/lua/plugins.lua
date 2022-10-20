@@ -322,6 +322,8 @@ return packer.startup(function(use)
     end,
   }
 
+  use 'b0o/schemastore.nvim'
+
   use {
     'folke/which-key.nvim',
     config = "require('vasco.whichkey')",
