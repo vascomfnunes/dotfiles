@@ -207,6 +207,9 @@ local mappings = {
     u = { ':Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },
     r = { ':Gitsigns reset_hunk<cr>', 'Reset hunk' },
     l = { ':Gitsigns setloclist<cr>', 'View on loclist' },
+    c = { ':GitConflictListQf<cr>', 'Conflicts' },
+    o = { ':GitConflictChooseOurs<cr>', 'Choose ours (conflicts)' },
+    t = { ':GitConflictChooseTheirs<cr>', 'Choose theirs (conflicts)' },
   },
 
   -- Finder
