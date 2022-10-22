@@ -75,6 +75,9 @@ alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
 # mpv
 alias tv='mpv http://192.168.1.128:9981/playlist/channels.m3u --no-terminal'
 
+# ctags
+alias ctags_ruby='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript --exclude=.git --exclude=log --exclude=tmp . $(bundle list --paths)'
+
 # other sources
 source ~/.env_variables
 
