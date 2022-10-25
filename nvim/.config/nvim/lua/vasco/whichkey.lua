@@ -201,7 +201,7 @@ local mappings = {
   -- Git
   ['<leader>g'] = {
     name = 'Git',
-    g = { ':Neogit<cr>', 'Neogit' },
+    g = { ":lua require('neogit').open()<cr>", 'Neogit' },
     b = { ":lua require('gitsigns').blame_line()<cr>", 'Blame' },
     s = { ':Gitsigns stage_hunk<cr>', 'Stage hunk' },
     u = { ':Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },

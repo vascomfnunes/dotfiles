@@ -261,7 +261,7 @@ return packer.startup(function(use)
 
   use {
     'TimUntersberger/neogit',
-    cmd = { 'Neogit' },
+    -- cmd = { 'Neogit' },
     config = "require('vasco.neogit')",
   }
 
