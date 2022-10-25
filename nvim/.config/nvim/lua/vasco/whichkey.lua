@@ -260,8 +260,8 @@ local mappings = {
     r = { ':PackerClean<cr>', 'Clean' },
     s = { ':PackerSync<cr>', 'Sync' },
     c = { ':PackerCompile<cr>', 'Compile' },
-    S = { ':PackerSnapshot ~/nvim-snapshot<cr>', 'Snapshot' },
-    R = { ':PackerSnapshotRollback ~/nvim-snapshot<cr>', 'Rollback' },
+    S = { ':PackerSnapshot nvim-snapshot.json<cr>', 'Snapshot' },
+    R = { ':PackerSnapshotRollback nvim-snapshot.json<cr>', 'Rollback' },
   },
 
   -- Next
