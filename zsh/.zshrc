@@ -1,7 +1,8 @@
 # ohmyzsh configuration
 ZVM_INIT_MODE=sourcing # this is important to avoid plugin keybinding conflicts
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="simple"
+ZSH_THEME="agnoster"
+DEFAULT_USER="$(whoami)"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 15
 HIST_STAMPS="dd/mm/yyyy"
@@ -89,9 +90,6 @@ source ~/.config/zsh/az.completion
 
 # gpg
 export GPG_TTY=$(tty)
-
-# Neovim Zk
-export ZK_NOTEBOOK_DIR=~/notes
 
 # Homebrew java
 export PATH="$HOME/homebrew/opt/openjdk/bin:$PATH"

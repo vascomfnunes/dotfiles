@@ -157,7 +157,6 @@ return packer.startup(function(use)
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'saadparwaiz1/cmp_luasnip',
       'rcarriga/cmp-dap',
-      'jbyuki/one-small-step-for-vimkind',
     },
     config = "require('vasco.completion')",
   }
@@ -323,17 +322,6 @@ return packer.startup(function(use)
 
   use { 'nvim-lualine/lualine.nvim', config = "require('vasco.lualine')" }
 
-  use {
-    -- requires 'brew install TheZoraiz/ascii-image-converter/ascii-image-converter'
-    'samodostal/image.nvim',
-    requires = {
-      'nvim-lua/plenary.nvim',
-    },
-    config = function()
-      require('image').setup {}
-    end,
-  }
-
   use 'b0o/schemastore.nvim'
 
   use {
@@ -341,6 +329,15 @@ return packer.startup(function(use)
     config = "require('vasco.whichkey')",
     keys = { '<leader>' },
   }
+
+  use {
+    'christoomey/vim-tmux-navigator',
+    config = function()
+      vim.g.tmux_navigator_no_mappings = 1
+    end,
+  }
+
+  use { 'RyanMillerC/better-vim-tmux-resizer' }
 
   if packer_bootstrap then
     require('packer').sync()

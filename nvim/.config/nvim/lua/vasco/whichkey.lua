@@ -100,14 +100,10 @@ local mappings = {
   ['<C-e>'] = { '<End>', 'End of line' },
   ['<A-J>'] = { ':m .+1<cr>', 'Move line down' },
   ['<A-K>'] = { ':m .-2<cr>', 'Move line up' },
-  ['<C-h>'] = { ":lua require('vasco.kitty').navigate 'h'<cr>", 'Navigate left' },
-  ['<C-j>'] = { ":lua require('vasco.kitty').navigate 'j'<cr>", 'Navigate down' },
-  ['<C-k>'] = { ":lua require('vasco.kitty').navigate 'k'<cr>", 'Navigate up' },
-  ['<C-l>'] = { ":lua require('vasco.kitty').navigate 'l'<cr>", 'Navigate right' },
-  ['<A-h>'] = { '<C-w><', 'Resize left' },
-  ['<A-j>'] = { '<C-w>-', 'Resize down' },
-  ['<A-k>'] = { '<C-w>+', 'Resize up' },
-  ['<A-l>'] = { '<C-w>>', 'Resize right' },
+  ['<C-h>'] = { ':TmuxNavigateLeft<cr>', 'Navigate left' },
+  ['<C-j>'] = { ':TmuxNavigateDown<cr>', 'Navigate down' },
+  ['<C-k>'] = { ':TmuxNavigateUp<cr>', 'Navigate up' },
+  ['<C-l>'] = { ':TmuxNavigateRight<cr>', 'Navigate right' },
 
   -- Splits
   ['vv'] = { '<C-w>v', 'Split vertical' },
