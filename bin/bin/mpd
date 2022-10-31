@@ -18,5 +18,5 @@ if [[ -n "$PLAYING" ]]; then
 	echo ' ' "$PLAYING"
 	exit
 else
-	echo ""
+	echo "❚❚ Paused"
 fi
