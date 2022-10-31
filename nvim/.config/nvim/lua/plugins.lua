@@ -276,8 +276,6 @@ return packer.startup(function(use)
     config = "require('vasco.diffview')",
   }
 
-  use { 'rizzatti/dash.vim', cmd = 'Dash' }
-
   use {
     'kyazdani42/nvim-tree.lua',
     config = "require('vasco.nvim-tree')",
@@ -338,6 +336,13 @@ return packer.startup(function(use)
   }
 
   use { 'RyanMillerC/better-vim-tmux-resizer' }
+
+  use {
+    'woosaaahh/sj.nvim',
+    config = function()
+      require('sj').setup()
+    end,
+  }
 
   if packer_bootstrap then
     require('packer').sync()

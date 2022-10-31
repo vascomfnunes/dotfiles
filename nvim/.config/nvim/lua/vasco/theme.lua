@@ -29,6 +29,8 @@ local function set_colors(colors)
   vim.api.nvim_set_hl(0, 'WinBar', { bg = colors.base02 })
   vim.api.nvim_set_hl(0, 'WinBarNC', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'WinSeparator', { fg = colors.base02 })
+  vim.api.nvim_set_hl(0, 'SjLabel', { bg = colors.base08, fg = colors.base00 })
+  vim.api.nvim_set_hl(0, 'SjMatches', { bg = colors.base02, fg = colors.base00 })
 end
 
 local function set_highlights_dark()

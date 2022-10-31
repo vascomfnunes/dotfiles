@@ -86,6 +86,7 @@ local mappings = {
 
   -- General
   ['<leader><leader>'] = { ':Vifm<cr>', 'Vifm' },
+  ['<leader>j'] = { ":lua require('sj').run()<cr>", 'Jump' },
   ['<leader>v'] = { ':cd ~/.config/nvim|e init.lua<cr>', 'Neovim configuration' },
   ['<ESC>'] = { ':nohlsearch<cr>', 'Clear highlights' },
 
@@ -178,7 +179,6 @@ local mappings = {
     t = { ":lua require('dapui').toggle()", 'Toggle debug UI' },
     K = { ":lua require('dap.ui.widgets').hover()<cr>", 'Evaluate hover' },
     q = { ':DapTerminate<cr>', 'Quit' },
-    s = { ':Dash<cr>', 'Search in Dash' },
     l = { ':lua require"osv".run_this()<cr>', 'Start lua dap' },
     g = { ':Neogen<cr>', 'Generate documentation' },
   },
