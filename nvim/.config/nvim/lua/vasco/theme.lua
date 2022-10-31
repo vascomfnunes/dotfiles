@@ -26,6 +26,7 @@ local function set_colors(colors)
   vim.api.nvim_set_hl(0, 'TelescopeResultsTitle', { fg = colors.base0D })
   vim.api.nvim_set_hl(0, 'TelescopePromptTitle', { fg = colors.base0D })
   vim.api.nvim_set_hl(0, 'TelescopePreviewTitle', { fg = colors.base0D })
+  vim.api.nvim_set_hl(0, 'WinBar', { bg = colors.base02 })
   vim.api.nvim_set_hl(0, 'WinBarNC', { fg = colors.base02 })
   vim.api.nvim_set_hl(0, 'WinSeparator', { fg = colors.base02 })
 end
