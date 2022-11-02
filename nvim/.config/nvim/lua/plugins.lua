@@ -69,6 +69,8 @@ return packer.startup(function(use)
     },
   }
 
+  use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
+
   use {
     'folke/todo-comments.nvim',
     event = { 'BufRead', 'BufNewFile' },
