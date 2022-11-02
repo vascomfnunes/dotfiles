@@ -242,9 +242,10 @@ return packer.startup(function(use)
   }
 
   use {
-    'norcalli/nvim-colorizer.lua',
-    event = { 'BufRead', 'BufNewFile' },
-    config = "require('vasco.colorizer')",
+    'brenoprata10/nvim-highlight-colors',
+    config = function()
+      require('nvim-highlight-colors').setup {}
+    end,
   }
 
   use { 'nvim-pack/nvim-spectre', event = 'VimEnter' }
