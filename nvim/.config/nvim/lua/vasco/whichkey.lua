@@ -128,13 +128,17 @@ local mappings = {
   },
 
   -- Tabs
-  ['<c-t>'] = { ':tabnew<cr>', 'New tab' },
-  ['<c-x>'] = { ':tabclose<cr>', 'Close tab' },
-  ['<tab>'] = { ':tabnext<cr>', 'Next tab' },
+  ['<leader>T'] = {
+    name = 'Tabs',
+    t = { ':tabnew<cr>', 'New' },
+    c = { ':tabclose<cr>', 'Close' },
+    n = { ':tabnext<cr>', 'Next' },
+    p = { ':tabprevious<cr>', 'Previous' },
+  },
 
   -- Theme
-  ['<leader>T'] = {
-    name = 'Theme',
+  ['<leader>c'] = {
+    name = 'Colours',
     l = { ":lua SetColorscheme('light')<cr>", 'Light' },
     d = { ":lua SetColorscheme('dark')<cr>", 'Dark' },
   },
