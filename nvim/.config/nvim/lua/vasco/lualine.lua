@@ -5,6 +5,7 @@ if not status_ok then
 end
 
 local colors = require 'colors'
+local utils = require 'functions'
 
 local config = {
   options = {
@@ -42,20 +43,46 @@ ins_left {
 
 ins_left {
   -- Lsp server name
+  -- function()
+  --   local msg = 'No Active Lsp'
+  --   local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
+  --   local clients = vim.lsp.get_active_clients()
+  --   if next(clients) == nil then
+  --     return msg
+  --   end
+  --   for _, client in ipairs(clients) do
+  --     local filetypes = client.config.filetypes
+  --     if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
+  --       return client.name
+  --     end
+  --   end
+  --   return msg
+  -- end,
   function()
-    local msg = 'No Active Lsp'
-    local buf_ft = vim.api.nvim_buf_get_option(0, 'filetype')
-    local clients = vim.lsp.get_active_clients()
-    if next(clients) == nil then
+    msg = 'Inactive'
+    local buf_clients = vim.lsp.buf_get_clients()
+    if next(buf_clients) == nil then
+      if type(msg) == 'boolean' or #msg == 0 then
+        return 'Inactive'
+      end
       return msg
     end
-    for _, client in ipairs(clients) do
-      local filetypes = client.config.filetypes
-      if filetypes and vim.fn.index(filetypes, buf_ft) ~= -1 then
-        return client.name
+    local buf_ft = vim.bo.filetype
+    local buf_client_names = {}
+
+    for _, client in pairs(buf_clients) do
+      if client.name ~= 'null-ls' then
+        table.insert(buf_client_names, client.name)
       end
     end
-    return msg
+
+    local supported_formatters = utils.list_registered_formatters(buf_ft)
+    vim.list_extend(buf_client_names, supported_formatters)
+
+    local supported_linters = utils.list_registered_linters(buf_ft)
+    vim.list_extend(buf_client_names, supported_linters)
+
+    return table.concat(buf_client_names, ', ')
   end,
   icon = ' LSP:',
   color = { fg = colors.base0D },

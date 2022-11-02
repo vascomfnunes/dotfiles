@@ -96,3 +96,4 @@ export PATH="$HOME/homebrew/opt/openjdk/bin:$PATH"
 
 # rbenv for Ruby
 eval "$(rbenv init -)"
+eval "$(rbenv init -)"
