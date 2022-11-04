@@ -22,9 +22,9 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-markdown'
-Plug 'tpope/vim-ragtag'
-Plug 'tpope/vim-rails'
+Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
+Plug 'tpope/vim-ragtag', { 'for': ['eruby'] }
+Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby'] }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'travisjeffery/vim-auto-mkdir'
@@ -36,8 +36,8 @@ Plug 'itchyny/lightline.vim'
 Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'RyanMillerC/better-vim-tmux-resizer'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install' }
-Plug 'https://github.com/ap/vim-css-color'
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown'] }
+Plug 'https://github.com/ap/vim-css-color', { 'for': ['css', 'scss'] }
 call plug#end()
 " }}}
 
@@ -95,6 +95,7 @@ set nobackup
 set showmatch
 set nowritebackup
 set updatetime=300
+set timeoutlen=500
 set expandtab
 set linebreak
 set shiftwidth=2
