@@ -20,7 +20,6 @@ plugins=(gitfast z zsh-vi-mode pass zsh-autosuggestions zsh-syntax-highlighting 
 
 source $ZSH/oh-my-zsh.sh
 export EDITOR='nvim'
-# export FZF_BASE=~/.fzf
 
 # aliases
 alias ls='exa --icons'
@@ -95,5 +94,5 @@ export GPG_TTY=$(tty)
 export PATH="$HOME/homebrew/opt/openjdk/bin:$PATH"
 
 # rbenv for Ruby
-eval "$(rbenv init -)"
+export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"

@@ -1,0 +1,32 @@
+{
+  "coc.preferences.formatOnSaveFiletypes": [
+    "css",
+    "scss",
+    "json",
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "ruby"
+  ],
+  "explorer.file.showHiddenFiles": true,
+  "explorer.file.reveal.whenOpen": true,
+  "explorer.file.reveal.auto": true,
+  "explorer.previewAction.onHover": false,
+  "explorer.icon.enableNerdfont": true,
+  "explorer.keyMappings": {
+    "s": "open:vsplit",
+    "mm": "rename",
+    "mc": "copyFile",
+    "C": "copyFile",
+    "md": "delete",
+    "D": "delete",
+    "ma": "addFile",
+    "mA": "addDirectory"
+  },
+  "solargraph.useBundler": false,
+  "solargraph.commandPath": "/Users/vasco.nunes/.rbenv/shims/solargraph",
+  "solargraph.diagnostics": true,
+  "solargraph.formatting": true,
+  "solargraph.hover": true
+}
