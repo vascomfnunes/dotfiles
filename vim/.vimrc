@@ -17,6 +17,7 @@ autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 " {{{
 call plug#begin()
 Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-commentary'
