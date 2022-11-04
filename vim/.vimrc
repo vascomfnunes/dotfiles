@@ -121,6 +121,8 @@ let &t_EI = "\e[2 q"
 " {{{
 " Strip whitespaces on save
 autocmd BufWritePre * :%s/\s\+$//e
+" Add LSP `:Fold` command to fold current buffer.
+command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " }}}
 
 " STATUSLINE
@@ -255,6 +257,7 @@ nmap <silent> gd <Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
+nmap <silent> F :Fold<CR>
 nnoremap <silent><nowait> <leader>d  :<C-u>CocDiagnostics<cr>
 nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <leader>o  :<C-u>CocOutline<cr>
