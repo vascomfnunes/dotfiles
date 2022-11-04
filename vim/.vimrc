@@ -22,7 +22,6 @@ Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-markdown', { 'for': ['markdown'] }
 Plug 'tpope/vim-ragtag', { 'for': ['eruby'] }
 Plug 'tpope/vim-rails', { 'for': ['ruby', 'eruby'] }
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -38,6 +37,9 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'RyanMillerC/better-vim-tmux-resizer'
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown'] }
 Plug 'https://github.com/ap/vim-css-color', { 'for': ['css', 'scss'] }
+Plug 'godlygeek/tabular', { 'for': ['vimwiki', 'markdown'] }
+Plug 'preservim/vim-markdown', { 'for': ['vimwiki', 'markdown'] }
+Plug 'vimwiki/vimwiki'
 call plug#end()
 " }}}
 
@@ -58,6 +60,11 @@ endif
 
 set background=dark
 colorscheme Tomorrow-Night-Eighties
+
+hi VimwikiHeader1 guifg=#6699cc
+hi VimwikiHeader2 guifg=#99cc99
+hi VimwikiHeader3 guifg=#f99157
+hi VimwikiHeader4 guifg=#4271ae
 "}}}
 
 " SETTINGS
@@ -242,6 +249,12 @@ let g:fzf_colors =
 " TMUX
 " {{{
 let g:tmux_resizer_no_mappings = 1
+" }}}
+
+" VIMWIKI
+" {{{
+let g:vimwiki_list = [{'path': '~/vimwiki/',
+                      \ 'syntax': 'markdown', 'ext': '.md'}]
 " }}}
 
 " MAPPINGS
