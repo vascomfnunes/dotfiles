@@ -123,6 +123,8 @@ let &t_EI = "\e[2 q"
 autocmd BufWritePre * :%s/\s\+$//e
 " Add LSP `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
+" Add `:OR` command for organize imports of the current buffer.
+command! -nargs=0 OrganizeImports :call CocActionAsync('runCommand', 'editor.action.organizeImport')
 " }}}
 
 " STATUSLINE
@@ -258,6 +260,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> F :Fold<CR>
+nmap <silent> i :OrganizeImports<CR>
 nnoremap <silent><nowait> <leader>d  :<C-u>CocDiagnostics<cr>
 nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <leader>o  :<C-u>CocOutline<cr>
