@@ -65,6 +65,7 @@ colorscheme Tomorrow-Night-Eighties
 let mapleader = " "
 let maplocalleader = " "
 
+filetype plugin indent on
 set number
 set relativenumber
 set backspace=indent,eol,start
@@ -73,9 +74,11 @@ set hidden
 set fileencoding=utf-8
 set mouse=a
 set showcmd
+set hlsearch
 set incsearch
 set ignorecase
 set smartcase
+set pumheight=20
 set laststatus=2
 set autoread
 set noerrorbells visualbell t_vb=
@@ -97,6 +100,7 @@ set nowritebackup
 set updatetime=300
 set timeoutlen=500
 set expandtab
+set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundaries
 set linebreak
 set shiftwidth=2
 set signcolumn=yes
@@ -260,7 +264,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 nmap <silent> F :Fold<CR>
-nmap <silent> i :OrganizeImports<CR>
+nmap <silent> <leader>i :OrganizeImports<CR>
 nnoremap <silent><nowait> <leader>d  :<C-u>CocDiagnostics<cr>
 nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <leader>o  :<C-u>CocOutline<cr>
@@ -275,10 +279,10 @@ nmap <leader>gb :Git blame<CR>
 nmap <leader>gd :Git diff<CR>
 nmap <leader>gm :Git mergetool<CR>
 nmap <leader>mp :MarkdownPreview<CR>
-nnoremap <silent> <S-h> :TmuxResizeLeft<CR>
-nnoremap <silent> <S-j> :TmuxResizeDown<CR>
-nnoremap <silent> <S-k> :TmuxResizeUp<CR>
-nnoremap <silent> <S-l> :TmuxResizeRight<CR>
+nnoremap <silent> ˙ :TmuxResizeLeft<CR>
+nnoremap <silent> ∆ :TmuxResizeDown<CR>
+nnoremap <silent> ˚ :TmuxResizeUp<CR>
+nnoremap <silent> ¬ :TmuxResizeRight<CR>
 
 " Map function and class text objects
 " NOTE: Requires 'textDocument.documentSymbol' support from the language server.
@@ -303,12 +307,12 @@ nnoremap <silent> <Leader><space> :set hls!<cr>
 " nnoremap <S-Down> :<C-u>silent! move+<CR>==
 " Alt-j <A-j> mapped to ∆
 " Alt-k <A-k> mapped to ˚
-nnoremap ∆ :m .+1<CR>==
-nnoremap ˚ :m .-2<CR>==
-inoremap ∆ <Esc>:m .+1<CR>==gi
-inoremap ˚ <Esc>:m .-2<CR>==gi
-vnoremap ∆ :m '>+1<CR>gv=gv
-vnoremap ˚ :m '<-2<CR>gv=gv
+nnoremap <S-j> :m .+1<CR>==
+nnoremap <S-k> :m .-2<CR>==
+inoremap <S-j> <Esc>:m .+1<CR>==gi
+inoremap <S-k> <Esc>:m .-2<CR>==gi
+vnoremap <S-j> :m '>+1<CR>gv=gv
+vnoremap <S-k> :m '<-2<CR>gv=gv
 
 " Prevent x from overriding what's in the clipboard.
 noremap x "_x
