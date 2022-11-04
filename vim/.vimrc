@@ -66,55 +66,55 @@ let mapleader = " "
 let maplocalleader = " "
 
 filetype plugin indent on
-set number
-set relativenumber
-set backspace=indent,eol,start
-set scrolloff=5
-set hidden
-set fileencoding=utf-8
-set mouse=a
-set showcmd
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
-set pumheight=20
-set laststatus=2
 set autoread
+set backspace=indent,eol,start
+set clipboard=unnamed,unnamedplus
+set completeopt=menuone,longest
+set expandtab
+set fileencoding=utf-8
+set foldmethod=marker
+set formatoptions-=t
+set hidden
+set hlsearch
+set ignorecase
+set incsearch
+set laststatus=2
+set linebreak
+set mouse=a
+set nobackup
 set noerrorbells visualbell t_vb=
-set wildmenu
-set wildoptions=pum
-set wildignore+=*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk,*/.git,*/tmp
+set noshowmode
+set noswapfile
+set nowrap
+set nowritebackup
+set number
 set path+=**
+set pumheight=20
+set relativenumber
+set scrolloff=5
+set shiftwidth=2
+set shortmess+=c
+set showcmd
+set showmatch
+set signcolumn=yes
+set smartcase
 set smartindent
+set softtabstop=-2
+set spelllang=en_gb
 set splitbelow
 set splitright
-set foldmethod=marker
-set noswapfile
+set tabstop=2
+set textwidth=120
+set timeoutlen=500
+set ttyfast
 set undodir=~/.vim/undo
 set undofile
 set undolevels=10000
-set nobackup
-set showmatch
-set nowritebackup
 set updatetime=300
-set timeoutlen=500
-set expandtab
 set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundaries
-set linebreak
-set shiftwidth=2
-set signcolumn=yes
-set softtabstop=-2
-set tabstop=2
-set textwidth=120
-set formatoptions-=t
-set nowrap
-set clipboard=unnamed,unnamedplus
-set noshowmode
-set completeopt=menuone,longest
-set shortmess+=c
-set spelllang=en_gb
-set ttyfast
+set wildignore+=*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk,*/.git,*/tmp
+set wildmenu
+set wildoptions=pum
 
 " Change cursor on normal/insert mode
 let &t_SI = "\e[6 q"
@@ -307,12 +307,10 @@ nnoremap <silent> <Leader><space> :set hls!<cr>
 " nnoremap <S-Down> :<C-u>silent! move+<CR>==
 " Alt-j <A-j> mapped to ∆
 " Alt-k <A-k> mapped to ˚
-nnoremap <S-j> :m .+1<CR>==
-nnoremap <S-k> :m .-2<CR>==
-inoremap <S-j> <Esc>:m .+1<CR>==gi
-inoremap <S-k> <Esc>:m .-2<CR>==gi
-vnoremap <S-j> :m '>+1<CR>gv=gv
-vnoremap <S-k> :m '<-2<CR>gv=gv
+nnoremap <M-down> :m .+1<CR>==
+nnoremap <M-up> :m .-2<CR>==
+vnoremap <M-down> :m '>+1<CR>gv=gv
+vnoremap <M-up> :m '<-2<CR>gv=gv
 
 " Prevent x from overriding what's in the clipboard.
 noremap x "_x
