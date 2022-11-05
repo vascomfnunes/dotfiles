@@ -164,7 +164,8 @@ let g:lightline = {
 " COC
 " {{{
 
-let g:coc_global_extensions = ['coc-explorer', 'coc-solargraph', 'coc-json', 'coc-sh', 'coc-css', 'coc-html', 'coc-markdownlint']
+let g:coc_global_extensions = ['coc-explorer', 'coc-solargraph', 'coc-json', 'coc-sh', 'coc-css', 'coc-html', 'coc-markdownlint', 'coc-ltex']
+let g:coc_filetype_map = {'vimwiki': 'markdown'}
 
 inoremap <silent><expr> <c-j>
       \ coc#pum#visible() ? coc#pum#next(1) :
