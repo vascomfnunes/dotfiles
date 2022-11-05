@@ -60,6 +60,9 @@ alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/tomorrow-dark.conf"
 # Autosuggest colour
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#666666'
 
+# Bat
+export BAT_THEME="base16"
+
 # Tmux
 alias t="tmux -u"
 alias ta="tmux -u a"

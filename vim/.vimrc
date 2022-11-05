@@ -16,7 +16,7 @@ autocmd! bufwritepost $MYVIMRC source $MYVIMRC
 " PLUGINS
 " {{{
 call plug#begin()
-Plug 'chriskempson/vim-tomorrow-theme'
+Plug 'chriskempson/base16-vim'
 Plug 'ryanoasis/vim-devicons'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-endwise'
@@ -60,12 +60,19 @@ if exists('+termguicolors')
 endif
 
 set background=dark
-colorscheme Tomorrow-Night-Eighties
+
+let base16colorspace=256
+colorscheme base16-tomorrow-night-eighties
 
 hi VimwikiHeader1 guifg=#6699cc
 hi VimwikiHeader2 guifg=#99cc99
 hi VimwikiHeader3 guifg=#f99157
 hi VimwikiHeader4 guifg=#4271ae
+hi GitGutterAdd guibg=NONE
+hi GitGutterChange guibg=NONE
+hi GitGutterDelete guibg=NONE
+hi clear SignColumn
+hi clear LineNr
 "}}}
 
 " SETTINGS
@@ -224,6 +231,9 @@ let g:UltiSnipsEditSplit="vertical"
 
 " FZF
 " {{{
+let $FZF_DEFAULT_COMMAND = 'rg --files --ignore-case --hidden -g "!{.git,node_modules,vendor,coverage}/*"'
+let $FZF_DEFAULT_OPTS="--ansi --preview-window 'right:50%' --layout reverse --margin=1,4 --preview 'bat --color=always --style=header,grid --line-range :300 {}'"
+
 let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-s': 'split',
@@ -232,7 +242,7 @@ let g:fzf_action = {
 
 " Customize fzf colors to match your color scheme
 let g:fzf_colors =
-      \ { 'fg':      ['fg', 'Normal'],
+      \ { 'fg':    ['fg', 'Normal'],
       \ 'bg':      ['bg', 'Normal'],
       \ 'hl':      ['fg', 'Comment'],
       \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
