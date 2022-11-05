@@ -22,6 +22,7 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR='vim'
 
 # aliases
+alias vi='vim'
 alias ls='exa --icons'
 alias la='ls -la'
 alias c='clear'
