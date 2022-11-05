@@ -4,7 +4,7 @@
 "  \ V /| |  _| | | | | |
 "   \_/ |_|_| |_| |_| |_|
 
-set vicmd=nvim
+set vicmd=vim
 
 " Set trash directory
 set trash

@@ -19,12 +19,11 @@ HIST_STAMPS="dd/mm/yyyy"
 plugins=(gitfast z zsh-vi-mode pass zsh-autosuggestions zsh-syntax-highlighting nx-completion)
 
 source $ZSH/oh-my-zsh.sh
-export EDITOR='nvim'
+export EDITOR='vim'
 
 # aliases
 alias ls='exa --icons'
 alias la='ls -la'
-alias e='nvim'
 alias c='clear'
 alias :q='exit'
 alias df='df -h'
