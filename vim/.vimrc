@@ -33,11 +33,10 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 Plug 'itchyny/lightline.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'RyanMillerC/better-vim-tmux-resizer'
+Plug 'ap/vim-css-color', { 'for': ['css', 'scss'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown'] }
-Plug 'https://github.com/ap/vim-css-color', { 'for': ['css', 'scss'] }
 Plug 'godlygeek/tabular', { 'for': ['vimwiki', 'markdown'] }
 Plug 'preservim/vim-markdown', { 'for': ['vimwiki', 'markdown'] }
 Plug 'vimwiki/vimwiki'
@@ -130,6 +129,8 @@ set whichwrap+=<,>,h,l  " Allow backspace and cursor keys to cross line boundari
 set wildignore+=*/node_modules/*,_site,*/__pycache__/,*/venv/*,*/target/*,*/.vim$,\~$,*/.log,*/.aux,*/.cls,*/.aux,*/.bbl,*/.blg,*/.fls,*/.fdb*/,*/.toc,*/.out,*/.glo,*/.log,*/.ist,*/.fdb_latexmk,*/.git,*/tmp
 set wildmenu
 set wildoptions=pum
+set iskeyword+=-
+set iskeyword+=_
 
 " Change cursor on normal/insert mode
 let &t_SI = "\e[6 q"
@@ -164,7 +165,31 @@ let g:lightline = {
 " COC
 " {{{
 
-let g:coc_global_extensions = ['coc-explorer', 'coc-solargraph', 'coc-json', 'coc-sh', 'coc-css', 'coc-html', 'coc-markdownlint', 'coc-ltex']
+let g:coc_global_extensions = [
+      \ 'coc-explorer',
+      \ 'coc-tsserver',
+      \ 'coc-eslint',
+      \ 'coc-solargraph',
+      \ 'coc-json',
+      \ 'coc-snippets',
+      \ 'coc-yaml',
+      \ 'coc-sh',
+      \ 'coc-css',
+      \ 'coc-html',
+      \ 'coc-markdownlint',
+      \ 'coc-sh',
+      \ 'coc-yank',
+      \ 'coc-xml',
+      \ 'coc-ltex',
+      \ 'coc-emmet',
+      \ 'coc-htmlhint',
+      \ 'coc-html-css-support',
+      \ 'coc-prettier',
+      \ 'coc-marketplace',
+      \ 'coc-vimlsp',
+      \ 'coc-pairs',
+      \ 'coc-react-refactor',
+      \ 'coc-cssmodules']
 let g:coc_filetype_map = {'vimwiki': 'markdown'}
 
 inoremap <silent><expr> <c-j>
@@ -173,8 +198,8 @@ inoremap <silent><expr> <c-j>
       \ coc#refresh()
 inoremap <expr><c-k> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
 
-inoremap <silent><expr> <c-l> coc#pum#visible() ? coc#pum#confirm()
-                              \: "\<C-g>u\<c-l>\<c-r>=coc#on_enter()\<CR>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
 function! CheckBackspace() abort
   let col = col('.') - 1
@@ -307,6 +332,7 @@ nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 nnoremap <silent> K :call ShowDocumentation()<CR>
 nmap <leader>r <Plug>(coc-rename)
 nmap <leader>a <Plug>(coc-codeaction)
+xmap <leader>a <Plug>(coc-codeaction-selected)
 nmap <leader>gg :G<CR>
 nmap <leader>gb :Git blame<CR>
 nmap <leader>gd :Git diff<CR>
