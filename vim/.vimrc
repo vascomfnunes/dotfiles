@@ -260,6 +260,7 @@ let g:vimwiki_list = [{'path': '~/vimwiki/',
 
 " MAPPINGS
 " {{{
+nnoremap <silent><leader>v :e ~/.vimrc<CR>
 nnoremap <silent>vv <c-w>v
 nnoremap <silent>ss <c-w>s
 nnoremap <silent><leader>ff :Files<CR>
