@@ -42,6 +42,7 @@ Plug 'preservim/vim-markdown', { 'for': ['vimwiki', 'markdown'] }
 Plug 'vim-test/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite']}
 Plug 'preservim/vimux'
 Plug 'vimwiki/vimwiki'
+Plug 'liuchengxu/vim-which-key'
 call plug#end()
 " }}}
 
@@ -68,15 +69,20 @@ colorscheme base16-tomorrow-night-eighties
 " Fixes background colour on Alacritty/Tmux
 hi! Normal guifg=NONE guibg=NONE guisp=NONE
 
-hi VimwikiHeader1 guifg=#6699cc
-hi VimwikiHeader2 guifg=#99cc99
-hi VimwikiHeader3 guifg=#f99157
-hi VimwikiHeader4 guifg=#4271ae
-hi GitGutterAdd guibg=NONE
-hi GitGutterChange guibg=NONE
-hi GitGutterDelete guibg=NONE
-hi clear SignColumn
-hi clear LineNr
+hi! VimwikiHeader1 guifg=#6699cc
+hi! VimwikiHeader2 guifg=#99cc99
+hi! VimwikiHeader3 guifg=#f99157
+hi! VimwikiHeader4 guifg=#4271ae
+hi! GitGutterAdd guibg=NONE
+hi! GitGutterChange guibg=NONE
+hi! GitGutterDelete guibg=NONE
+hi! CocErrorSign guifg=#f99157
+hi! CocWarningSign guifg=#ffcc66
+hi! CocInfoSign guifg=#99cc99
+hi! CocHintSign guifg=#4271ae
+hi! LineNr guifg=#666666 guibg=NONE
+hi! CursorLineNr cterm=bold guifg=#99cc99 guibg=NONE
+hi! clear SignColumn
 "}}}
 
 " SETTINGS
@@ -95,6 +101,7 @@ set foldmethod=marker
 set formatoptions-=t
 set hidden
 set hlsearch
+set cursorline
 set ignorecase
 set incsearch
 set laststatus=2
@@ -146,6 +153,9 @@ let &t_EI = "\e[2 q"
 " {{{
 " Strip whitespaces on save
 autocmd BufWritePre * :%s/\s\+$//e
+" Cursorline only on active window
+autocmd BufEnter,WinEnter * :setlocal cursorline
+autocmd WinLeave * :setlocal nocursorline
 " Add LSP `:Fold` command to fold current buffer.
 command! -nargs=? Fold :call CocAction('fold', <f-args>)
 " Add `:OR` command for organize imports of the current buffer.
@@ -314,11 +324,82 @@ let g:vimwiki_list = [{'path': '~/vimwiki/',
                       \ 'syntax': 'markdown', 'ext': '.md'}]
 " }}}
 
+" WHICHKEY
+" {{{
+call which_key#register('<Space>', "g:which_key_map", 'n')
+call which_key#register('<Space>', "g:which_key_map_visual", 'v')
+
+let g:which_key_map =  {}
+" let g:which_key_map.h = 'which_key_ignore'
+let g:which_key_map['h'] = { 'name': 'which_key_ignore' }
+let g:which_key_map['k'] = { 'name': 'which_key_ignore' }
+let g:which_key_map['j'] = { 'name': 'which_key_ignore' }
+let g:which_key_map.v = 'vim configuration'
+let g:which_key_map.e = 'explorer'
+let g:which_key_map.q = 'quickfix (toggle)'
+let g:which_key_map.r = 'rename'
+let g:which_key_map.s = 'symbols'
+let g:which_key_map.o = 'outline'
+let g:which_key_map.i = 'organize imports'
+let g:which_key_map.d = 'diagnostics'
+let g:which_key_map.c = 'commands'
+let g:which_key_map.a = 'actions'
+let g:which_key_map['='] = 'format'
+let g:which_key_map.f = {
+      \ 'name' : '+fuzzy finder' ,
+      \ 'f': 'files',
+      \ 'b': 'buffers',
+      \ 'c': 'color themes',
+      \ 'h': 'help tags',
+      \ 'g': 'grep',
+      \ 'G': 'grep word under cursor',
+      \ }
+
+let g:which_key_map.g = {
+      \ 'name' : '+git' ,
+      \ 'g': 'git status',
+      \ 'b': 'blame',
+      \ 'd': 'diff',
+      \ 'm': 'merge tool',
+      \ }
+
+let g:which_key_map.m = {
+      \ 'name' : '+markdown' ,
+      \ 'p': 'preview',
+      \ }
+
+let g:which_key_map.t = {
+      \ 'name' : '+tests' ,
+      \ 'n': 'nearest',
+      \ 'f': 'file',
+      \ 's': 'suite',
+      \ }
+
+let g:which_key_map.w = {
+      \ 'name' : '+wiki' ,
+      \ 'i': 'diary index',
+      \ 'w': 'wiki index',
+      \ 's': 'select wiki',
+      \ 't': 'wiki index (new tab)',
+      \ }
+" }}}
+
 " MAPPINGS
 " {{{
-nnoremap <silent><leader>v :e ~/.vimrc<CR>
 nnoremap <silent>vv <c-w>v
 nnoremap <silent>ss <c-w>s
+inoremap <silent><expr> <c-@> coc#refresh()
+nmap <silent>[g <Plug>(coc-diagnostic-prev)
+nmap <silent>]g <Plug>(coc-diagnostic-next)
+nmap <silent>gd <Plug>(coc-definition)
+nmap <silent>gy <Plug>(coc-type-definition)
+nmap <silent>gi <Plug>(coc-implementation)
+nmap <silent>gr <Plug>(coc-references)
+nnoremap <silent> K :call ShowDocumentation()<CR>
+nmap <silent> F :Fold<CR>
+nnoremap <silent><leader> :<c-u>WhichKey '<Space>'<CR>
+vnoremap <silent><leader> :<c-u>WhichKeyVisual '<Space>'<CR>
+nnoremap <silent><leader>v :e ~/.vimrc<CR>
 nnoremap <silent><leader>ff :Files<CR>
 nnoremap <silent><leader>fb :Buffers<CR>
 nnoremap <silent><leader>fc :Colors<CR>
@@ -327,14 +408,6 @@ nnoremap <silent><leader>fg :Rg<CR>
 nnoremap <silent><leader>fG :Rg <C-R><C-W><CR>
 nnoremap <silent><leader>e :CocCommand explorer<CR>
 nnoremap <silent><leader>= :CocCommand editor.action.formatDocument<CR>
-inoremap <silent><expr> <c-@> coc#refresh()
-nmap <silent> [g <Plug>(coc-diagnostic-prev)
-nmap <silent> ]g <Plug>(coc-diagnostic-next)
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-nmap <silent> F :Fold<CR>
 nmap <silent> <leader>i :OrganizeImports<CR>
 nnoremap <silent><nowait> <leader>d  :<C-u>CocDiagnostics<cr>
 nnoremap <silent><nowait> <leader>c  :<C-u>CocList commands<cr>
@@ -342,7 +415,6 @@ nnoremap <silent><nowait> <leader>o  :<C-u>CocOutline<cr>
 nnoremap <silent><nowait> <leader>s  :<C-u>CocList -I symbols<cr>
 nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
-nnoremap <silent> K :call ShowDocumentation()<CR>
 nmap <leader>r <Plug>(coc-rename)
 nmap <leader>a <Plug>(coc-codeaction)
 xmap <leader>a <Plug>(coc-codeaction-selected)
@@ -397,9 +469,9 @@ noremap cit "_cit
 noremap cip "_cip
 
 " Tests
-nmap <silent> <leader>t :TestNearest<CR>
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
+nmap <silent> <leader>tn :TestNearest<CR>
+nmap <silent> <leader>tf :TestFile<CR>
+nmap <silent> <leader>ts :TestSuite<CR>
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
