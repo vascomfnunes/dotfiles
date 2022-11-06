@@ -1,7 +1,7 @@
 # ohmyzsh configuration
 ZVM_INIT_MODE=sourcing # this is important to avoid plugin keybinding conflicts
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="gnzh"
+ZSH_THEME="jnrowe"
 DEFAULT_USER="$(whoami)"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 15

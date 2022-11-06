@@ -63,6 +63,9 @@ set background=dark
 let base16colorspace=256
 colorscheme base16-tomorrow-night-eighties
 
+" Fixes background colour on Alacritty/Tmux
+hi! Normal guifg=NONE guibg=NONE guisp=NONE
+
 hi VimwikiHeader1 guifg=#6699cc
 hi VimwikiHeader2 guifg=#99cc99
 hi VimwikiHeader3 guifg=#f99157
