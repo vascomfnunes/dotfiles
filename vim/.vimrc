@@ -374,9 +374,17 @@ nnoremap <M-up> :m .-2<CR>==
 vnoremap <M-down> :m '>+1<CR>gv=gv
 vnoremap <M-up> :m '<-2<CR>gv=gv
 
-" Prevent x from overriding what's in the clipboard.
+" Prevent some stuff from overriding what's in the clipboard.
 noremap x "_x
 noremap X "_x
+noremap ci' "_ci'
+noremap ci" "_ci"
+noremap ci( "_ci(
+noremap ci{ "_ci{
+noremap ci[ "_ci[
+noremap cif "_cif
+noremap cit "_cit
+noremap cip "_cip
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')

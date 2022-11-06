@@ -1,7 +1,7 @@
 # ohmyzsh configuration
 ZVM_INIT_MODE=sourcing # this is important to avoid plugin keybinding conflicts
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="jnrowe"
+ZSH_THEME="refined"
 DEFAULT_USER="$(whoami)"
 zstyle ':omz:update' mode reminder  # just remind me to update when it's time
 zstyle ':omz:update' frequency 15
@@ -34,7 +34,6 @@ alias mv='mv -i'
 alias rm='rm -i'
 alias diff='diff --color=auto'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
-alias icat='kitty +kitten icat --align=left'
 alias rspec='rspec -f d'
 alias music='ncmpcpp'
 
@@ -50,12 +49,6 @@ alias gs="git status"
 alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
-alias azcheckout='az repos pr checkout --id $(az repos pr list --output table | tail -n -2 | fzf | cut -d " " -f1)'
-alias diffmain="git diff main.. | nvim - +Diffurcate '+Telescope find_files'"
-
-# Kitty themes
-alias kitty_light="kitty @ set-colors -c ~/.config/kitty/tomorrow-light.conf"
-alias kitty_dark="kitty @ set-colors -c ~/.config/kitty/tomorrow-dark.conf"
 
 # Autosuggest colour
 ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#666666'
@@ -68,9 +61,6 @@ alias t="tmux -u"
 alias ta="tmux -u a"
 alias tls="tmux ls"
 alias tks="tmux kill-session -t"
-
-# Neovim
-alias nvim_update_plugins="nvim --headless -c 'autocmd User PackerComplete quitall' -c 'PackerSync'"
 
 # mpd
 alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
@@ -88,9 +78,6 @@ source ~/.env_variables
 
 # FZF
 source ~/.fzf.zsh
-
-# az completions
-source ~/.config/zsh/az.completion
 
 # gpg
 export GPG_TTY=$(tty)
