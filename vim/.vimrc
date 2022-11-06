@@ -39,6 +39,8 @@ Plug 'ap/vim-css-color', { 'for': ['css', 'scss'] }
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app && yarn install', 'for': ['markdown'] }
 Plug 'godlygeek/tabular', { 'for': ['vimwiki', 'markdown'] }
 Plug 'preservim/vim-markdown', { 'for': ['vimwiki', 'markdown'] }
+Plug 'vim-test/vim-test', { 'on': ['TestNearest', 'TestFile', 'TestSuite']}
+Plug 'preservim/vimux'
 Plug 'vimwiki/vimwiki'
 call plug#end()
 " }}}
@@ -298,6 +300,13 @@ let g:fzf_colors =
 let g:tmux_resizer_no_mappings = 1
 " }}}
 
+" VIMTEST
+" {{{
+let test#strategy = "vimux"
+let g:test#preserve_screen = 1
+let g:test#echo_command = 0
+" }}}
+
 " VIMWIKI
 " {{{
 let g:vimwiki_list = [{'path': '~/vimwiki/',
@@ -385,6 +394,11 @@ noremap ci[ "_ci[
 noremap cif "_cif
 noremap cit "_cit
 noremap cip "_cip
+
+" Tests
+nmap <silent> <leader>t :TestNearest<CR>
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
 
 function! ShowDocumentation()
   if CocAction('hasProvider', 'hover')
