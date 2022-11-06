@@ -276,6 +276,7 @@ let g:fzf_action = {
       \ 'ctrl-t': 'tab split',
       \ 'ctrl-s': 'split',
       \ 'ctrl-v': 'vsplit',
+      \ 'ctrl-l': 'edit',
       \ 'ctrl-y': {lines -> setreg('*', join(lines, "\n"))}}
 
 " Customize fzf colors to match your color scheme
