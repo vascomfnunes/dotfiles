@@ -4,13 +4,13 @@
   signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
 [core]
   excludesfile = /Users/vasco.nunes/.gitignore_global
-  editor = vim
+  editor = nvim
 [web]
   browser = w3m
 [diff]
-  tool = vim - +Diffurcate
+  tool = vimdiff
 [difftool]
-  prompt = false
+  prompt = true
 [merge]
   tool = vimdiff
 [github]

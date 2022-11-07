@@ -19,10 +19,10 @@ HIST_STAMPS="dd/mm/yyyy"
 plugins=(gitfast z zsh-vi-mode pass zsh-autosuggestions zsh-syntax-highlighting nx-completion)
 
 source $ZSH/oh-my-zsh.sh
-export EDITOR='vim'
+export EDITOR='nvim'
 
 # aliases
-alias vi='vim'
+alias vi='nvim'
 alias ls='exa --icons'
 alias la='ls -la'
 alias c='clear'
@@ -71,7 +71,7 @@ alias tv='mpv http://192.168.1.128:9981/playlist/channels.m3u --no-terminal'
 # ctags
 # For now, I just care about Rails projects
 # where LSP is not so great for Gems&Co and tags deliver a much better job...
-alias ctags='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript --exclude=.git --exclude=log --exclude=tmp . $(bundle list --paths)'
+alias ctags='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript --exclude=.git --exclude=doc --exclude=coverage --exclude=log --exclude=public --exclude=tmp --exclude=node_modules . $(bundle list --paths)'
 
 # other sources
 source ~/.env_variables
