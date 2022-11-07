@@ -6,12 +6,14 @@ if not status_ok then
   return
 end
 
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
 local settings = {
   on_attach = function(client, bufnr)
     -- Enable for formatting on save:
     -- require('lsp-setup.utils').format_on_save(client)
   end,
-  capabilities = vim.lsp.protocol.make_client_capabilities(),
+  capabilities = capabilities,
   default_mappings = false,
   mappings = {},
   servers = {
@@ -31,7 +33,7 @@ local settings = {
     -- tailwindcss = {},
     yamlls = {},
     eslint = {},
-    zk = {},
+    -- zk = {},
     jsonls = {
       settings = {
         json = {

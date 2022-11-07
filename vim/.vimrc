@@ -80,7 +80,7 @@ hi! CocErrorSign guifg=#f99157
 hi! CocWarningSign guifg=#ffcc66
 hi! CocInfoSign guifg=#99cc99
 hi! CocHintSign guifg=#4271ae
-hi! LineNr guifg=#666666 guibg=NONE
+hi! LineNr guifg=#444444 guibg=NONE
 hi! CursorLineNr cterm=bold guifg=#99cc99 guibg=NONE
 hi! clear SignColumn
 "}}}

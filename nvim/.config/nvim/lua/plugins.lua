@@ -41,6 +41,7 @@ packer.init {
   auto_clean = true,
   compile_on_sync = true,
   git = { clone_timeout = 6000 },
+  max_jobs = 12,
   snapshot_path = vim.fn.stdpath 'config',
 }
 
@@ -159,6 +160,7 @@ return packer.startup(function(use)
       'hrsh7th/cmp-nvim-lsp-signature-help',
       'saadparwaiz1/cmp_luasnip',
       'rcarriga/cmp-dap',
+      'quangnguyen30192/cmp-nvim-tags',
     },
     config = "require('vasco.completion')",
   }
@@ -281,16 +283,11 @@ return packer.startup(function(use)
 
   use {
     'kyazdani42/nvim-tree.lua',
+    requires = {
+      'nvim-tree/nvim-web-devicons',
+    },
     config = "require('vasco.nvim-tree')",
     cmd = 'NvimTreeToggle',
-  }
-
-  use {
-    -- this requires the following font to be installed:
-    -- https://github.com/yamatsum/nonicons/blob/master/dist/nonicons.ttf
-    'yamatsum/nvim-nonicons',
-    event = { 'BufRead', 'BufNewFile' },
-    requires = { 'kyazdani42/nvim-web-devicons' },
   }
 
   use { 'stevearc/dressing.nvim', requires = { 'MunifTanjim/nui.nvim' } }
@@ -328,7 +325,6 @@ return packer.startup(function(use)
   use {
     'folke/which-key.nvim',
     config = "require('vasco.whichkey')",
-    keys = { '<leader>' },
   }
 
   use {

@@ -56,6 +56,7 @@ cmp.setup {
     { name = 'path' },
     { name = 'nvim_lsp_signature_help' },
     { name = 'nvim_lua' },
+    { name = 'tags' },
     { name = 'buffer', keyword_length = 5 },
     {
       name = 'look',
@@ -76,6 +77,7 @@ cmp.setup {
         path = '[Path]',
         nvim_lua = '[Lua]',
         look = '[Look]',
+        look = '[Tags]',
       },
     },
   },
