@@ -1,3 +1,13 @@
 {
   "Lua.telemetry.enable": false,
+  "sumneko-lua.enableNvimLuaDev": true,
+  "coc.preferences.formatOnSave": true,
+  "diagnostic.virtualText": false,
+  "diagnostic.errorSign": " ",
+  "diagnostic.warningSign": " ",
+  "diagnostic.infoSign": " ",
+  "diagnostic.hintSign": " ",
+  "diagnostic.enableSign": true,
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.showDeprecated": true
 }
