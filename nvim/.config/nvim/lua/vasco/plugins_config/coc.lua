@@ -113,38 +113,20 @@ vim.api.nvim_create_autocmd("User", {
 
 
 -- Applying codeAction to the selected region.
--- Example: `<leader>aap` for current paragraph
-local opts = { silent = true, nowait = true }
-keyset("x", "<leader>a", "<Plug>(coc-codeaction-selected)", opts)
-keyset("n", "<leader>a", "<Plug>(coc-codeaction-selected)", opts)
-
--- Remap keys for applying codeAction to the current buffer.
-keyset("n", "<leader>ac", "<Plug>(coc-codeaction)", opts)
-
+opts = { silent = true, nowait = true }
+keyset("n", "<leader>x", "<Plug>(coc-codeaction)", opts)
 
 -- Apply AutoFix to problem on the current line.
 keyset("n", "<leader>qf", "<Plug>(coc-fix-current)", opts)
 
 
 -- Run the Code Lens action on the current line.
-keyset("n", "<leader>cl", "<Plug>(coc-codelens-action)", opts)
-
-
--- Map function and class text objects
--- NOTE: Requires 'textDocument.documentSymbol' support from the language server.
-keyset("x", "if", "<Plug>(coc-funcobj-i)", opts)
-keyset("o", "if", "<Plug>(coc-funcobj-i)", opts)
-keyset("x", "af", "<Plug>(coc-funcobj-a)", opts)
-keyset("o", "af", "<Plug>(coc-funcobj-a)", opts)
-keyset("x", "ic", "<Plug>(coc-classobj-i)", opts)
-keyset("o", "ic", "<Plug>(coc-classobj-i)", opts)
-keyset("x", "ac", "<Plug>(coc-classobj-a)", opts)
-keyset("o", "ac", "<Plug>(coc-classobj-a)", opts)
+keyset("n", "<leader>l", "<Plug>(coc-codelens-action)", opts)
 
 
 -- Remap <C-f> and <C-b> for scroll float windows/popups.
 ---@diagnostic disable-next-line: redefined-local
-local opts = { silent = true, nowait = true, expr = true }
+opts = { silent = true, nowait = true, expr = true }
 keyset("n", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
 keyset("n", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 keyset("i", "<C-f>",
@@ -154,12 +136,10 @@ keyset("i", "<C-b>",
 keyset("v", "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
 keyset("v", "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
-
 -- Use CTRL-S for selections ranges.
 -- Requires 'textDocument/selectionRange' support of language server.
 keyset("n", "<C-s>", "<Plug>(coc-range-select)", { silent = true })
 keyset("x", "<C-s>", "<Plug>(coc-range-select)", { silent = true })
-
 
 -- Add `:Format` command to format current buffer.
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
@@ -180,9 +160,7 @@ vim.opt.statusline:prepend("%{coc#status()}%{get(b:,'coc_current_function','')}"
 ---@diagnostic disable-next-line: redefined-local
 local opts = { silent = true, nowait = true }
 -- Show all diagnostics.
-keyset("n", "<space>a", ":<C-u>CocList diagnostics<cr>", opts)
--- Manage extensions.
-keyset("n", "<space>x", ":<C-u>CocList extensions<cr>", opts)
+keyset("n", "<space>d", ":<C-u>CocList diagnostics<cr>", opts)
 -- Show commands.
 keyset("n", "<space>c", ":<C-u>CocList commands<cr>", opts)
 -- Find symbol of current document.
