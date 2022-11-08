@@ -1,6 +1,10 @@
 {
   "Lua.telemetry.enable": false,
   "sumneko-lua.enableNvimLuaDev": true,
+  "yank.highlight.duration": 200,
+  "solargraph.checkGemVersion": true,
+  "solargraph.diagnostics": true,
+  "solargraph.formatting": true,
   "coc.preferences.formatOnSave": true,
   "diagnostic.virtualText": false,
   "diagnostic.errorSign": " ",
@@ -9,5 +13,15 @@
   "diagnostic.hintSign": " ",
   "diagnostic.enableSign": true,
   "diagnostic.checkCurrentLine": true,
-  "diagnostic.showDeprecated": true
+  "diagnostic.showDeprecated": true,
+  "diagnostic.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "highlight": "Normal"
+  },
+  "suggest.pumFloatConfig": {
+    "border": true,
+    "rounded": true,
+    "highlight": "Normal"
+  }
 }
