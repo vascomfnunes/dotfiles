@@ -22,11 +22,23 @@ require('packer').startup(function(use)
     'nvim-lualine/lualine.nvim',
     requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
+  use {
+    'davidgranstrom/nvim-markdown-preview',
+    cmd = 'MarkdownPreview',
+  } -- requires 'npm install -g live-server' and 'brew install pandoc'
+  use { 'nvim-pack/nvim-spectre', event = 'VimEnter' }
   use 'lukas-reineke/indent-blankline.nvim'
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'neoclide/coc.nvim', branch = 'release' }
   use 'nvim-tree/nvim-tree.lua'
+  use {
+    'christoomey/vim-tmux-navigator',
+    config = function()
+      -- vim.g.tmux_navigator_no_mappings = 1
+    end,
+  }
+  use 'RyanMillerC/better-vim-tmux-resizer'
 
   if is_bootstrap then
     require('packer').sync()

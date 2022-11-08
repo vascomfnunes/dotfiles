@@ -22,8 +22,27 @@
   "suggest.pumFloatConfig": {
     "border": true,
     "rounded": true,
+    "borderhighlight": "CocFloating",
+    "highlight": "Normal"
+  },
+  "suggest.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "borderhighlight": "CocFloating",
     "highlight": "Normal"
   },
   "suggest.removeDuplicateItems": true,
+  "signature.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "borderhighlight": "CocFloating",
+    "highlight": "Normal"
+  },
+  "hover.floatConfig": {
+    "border": true,
+    "rounded": true,
+    "borderhighlight": "CocFloating",
+    "highlight": "Normal"
+  },
   "snippets.ultisnips.pythonPrompt": false
 }
