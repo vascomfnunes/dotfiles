@@ -14,6 +14,7 @@ require('packer').startup(function(use)
   use 'mjlbach/onedark.nvim'
   use 'tpope/vim-fugitive'
   use 'kylechui/nvim-surround'
+  use 'honza/vim-snippets'
   use 'numToStr/Comment.nvim'
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use 'nvim-treesitter/nvim-treesitter'
@@ -437,7 +438,7 @@ require('nvim-treesitter.configs').setup {
 
 -- SURROUND
 -- {{
-require('nvim-surround').setup()
+require("nvim-surround").setup()
 --}}
 
 -- MAPPINGS
