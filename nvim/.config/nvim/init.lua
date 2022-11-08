@@ -57,7 +57,10 @@ vim.api.nvim_create_autocmd('BufWritePost', {
 vim.o.number = true
 vim.o.relativenumber = true
 vim.o.mouse = 'a'
+vim.o.autoread = true
 vim.o.breakindent = true
+vim.opt.iskeyword:append '-'
+vim.opt.iskeyword:append '_'
 vim.o.undofile = true
 vim.o.ignorecase = true
 vim.o.smartcase = true
