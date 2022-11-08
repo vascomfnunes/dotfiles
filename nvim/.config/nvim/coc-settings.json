@@ -1,11 +1,11 @@
 {
+  "coc.preferences.formatOnSave": true,
   "Lua.telemetry.enable": false,
   "sumneko-lua.enableNvimLuaDev": true,
   "yank.highlight.duration": 200,
   "solargraph.checkGemVersion": true,
   "solargraph.diagnostics": true,
   "solargraph.formatting": true,
-  "coc.preferences.formatOnSave": true,
   "diagnostic.virtualText": false,
   "diagnostic.errorSign": " ",
   "diagnostic.warningSign": " ",
@@ -23,5 +23,7 @@
     "border": true,
     "rounded": true,
     "highlight": "Normal"
-  }
+  },
+  "suggest.removeDuplicateItems": true,
+  "snippets.ultisnips.pythonPrompt": false
 }
