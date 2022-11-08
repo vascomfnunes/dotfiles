@@ -10,5 +10,6 @@ require 'vasco.plugins_config.comment'
 require 'vasco.plugins_config.treesitter'
 require 'vasco.plugins_config.surround'
 require 'vasco.plugins_config.telescope'
+require 'vasco.plugins_config.highlight'
 
 require 'vasco.mappings'

@@ -11,6 +11,7 @@ require('packer').startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'RRethy/nvim-base16'
   use 'tpope/vim-fugitive'
+  use 'brenoprata10/nvim-highlight-colors'
   use 'kylechui/nvim-surround'
   use 'honza/vim-snippets'
   use { 'stevearc/dressing.nvim', requires = { 'MunifTanjim/nui.nvim' } }
@@ -26,18 +27,13 @@ require('packer').startup(function(use)
     'davidgranstrom/nvim-markdown-preview',
     cmd = 'MarkdownPreview',
   } -- requires 'npm install -g live-server' and 'brew install pandoc'
-  use { 'nvim-pack/nvim-spectre', event = 'VimEnter' }
+  use 'nvim-pack/nvim-spectre'
   use 'lukas-reineke/indent-blankline.nvim'
   use { 'kevinhwang91/nvim-bqf', ft = 'qf' }
   use { 'nvim-telescope/telescope.nvim', requires = { 'nvim-lua/plenary.nvim' } }
   use { 'neoclide/coc.nvim', branch = 'release' }
   use 'nvim-tree/nvim-tree.lua'
-  use {
-    'christoomey/vim-tmux-navigator',
-    config = function()
-      -- vim.g.tmux_navigator_no_mappings = 1
-    end,
-  }
+  use 'christoomey/vim-tmux-navigator'
   use 'RyanMillerC/better-vim-tmux-resizer'
 
   if is_bootstrap then
