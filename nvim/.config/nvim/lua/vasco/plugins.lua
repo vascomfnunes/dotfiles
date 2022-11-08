@@ -12,6 +12,7 @@ require('packer').startup(function(use)
   use 'RRethy/nvim-base16'
   use 'tpope/vim-fugitive'
   use 'brenoprata10/nvim-highlight-colors'
+  use { 'tpope/vim-rails', ft = 'ruby' }
   use 'kylechui/nvim-surround'
   use 'honza/vim-snippets'
   use { 'stevearc/dressing.nvim', requires = { 'MunifTanjim/nui.nvim' } }
