@@ -1,8 +1,7 @@
-require('dapui').setup()
 require('nvim-dap-virtual-text').setup {}
 
 local dap = require('dap')
-local daps_path = string.format('%s/mason/', vim.fn.stdpath 'data')
+local daps_path = string.format('%s/dap/', vim.fn.stdpath 'data')
 
 vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = 'LspDiagnosticsSignError', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = ' ', texthl = 'LspDiagnosticsSignInformation', linehl = '', numhl = '' })
@@ -11,39 +10,42 @@ vim.fn.sign_define(
   { text = ' ', texthl = 'LspDiagnosticSignWarning', linehl = '', numhl = '' }
 )
 
--- dap.set_log_level 'TRACE'
+-- dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
 
--- dap.defaults.fallback.external_terminal = {
---   command = os.getenv 'HOME' .. '/homebrew/bin/kitty',
---   args = { '-e' },
--- }
---
--- dap.defaults.fallback.force_external_terminal = true
-
-dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
-
-dap.adapters.nlua = function(cb, config)
-  cb { type = 'server', host = config.host, port = config.port }
-end
-
+-- INSTALATION:
+-- cd ~/.local/share/nvim
+-- git clone https://github.com/microsoft/vscode-node-debug2.git
+-- cd ~/dev/microsoft/vscode-node-debug2
+-- npm install
+-- NODE_OPTIONS=--no-experimental-fetch npm run build
 dap.adapters.node2 = {
   type = 'executable',
   command = 'node',
-  args = { os.getenv 'HOME' .. '/.local/share/nvim/mason/packages/vscode-node-debug2/out/src/nodeDebug.js' },
+  args = { daps_path .. '/vscode-node-debug2/out/src/nodeDebug.js' },
 }
 
+-- INSTALATION:
+-- Install gem with `gem install readapt`
 dap.adapters.ruby = {
   type = 'executable',
   command = 'bundle',
   args = { 'exec', 'readapt', 'stdio' },
 }
 
+-- INSTALATION:
+-- cd ~/.local/share/nvim
+-- git clone https://github.com/Microsoft/vscode-chrome-debug
+-- cd ~/dev/microsoft/vscode-chrome-debug
+-- npm install
+-- npm run build
+--
+-- NOTE:
 -- Chrome needs to be in remote debugging mode before starting debugging:
 -- '~/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --args -remote-debugging-port=9222'
 dap.adapters.chrome = {
   type = 'executable',
   command = 'node',
-  args = { daps_path .. 'packages/chrome-debug-adapter/out/src/chromeDebug.js' },
+  args = { daps_path .. '/vscode-chrome-debug/out/src/chromeDebug.js' },
 }
 
 dap.configurations.javascript = {
@@ -171,19 +173,56 @@ dap.configurations.ruby = {
   },
 }
 
-dap.configurations.lua = {
-  {
-    type = 'nlua',
-    request = 'attach',
-    name = 'Attach to running Neovim instance',
-    host = function()
-      local value = vim.fn.input 'Host [default: 127.0.0.1]: '
-      return value ~= '' and value or '127.0.0.1'
-    end,
-    port = function()
-      local val = tonumber(vim.fn.input 'Port: ')
-      assert(val, 'Please provide a port number')
-      return val
-    end,
+local dapui = require "dapui"
+
+dapui.setup {
+  expand_lines = true,
+  icons = { expanded = "", collapsed = "", circular = "" },
+  mappings = {
+    -- Use a table to apply multiple mappings
+    expand = { "<CR>", "<2-LeftMouse>" },
+    open = "o",
+    remove = "d",
+    edit = "e",
+    repl = "r",
+    toggle = "t",
+  },
+  layouts = {
+    {
+      elements = {
+        { id = "scopes", size = 0.33 },
+        { id = "breakpoints", size = 0.17 },
+        { id = "stacks", size = 0.25 },
+        { id = "watches", size = 0.25 },
+      },
+      size = 0.33,
+      position = "right",
+    },
+    {
+      elements = {
+        { id = "repl", size = 0.45 },
+        { id = "console", size = 0.55 },
+      },
+      size = 0.40,
+      position = "bottom",
+    },
+  },
+  floating = {
+    max_height = 0.9,
+    max_width = 0.5, -- Floats will be treated as percentage of your screen.
+    border = vim.g.border_chars, -- Border style. Can be 'single', 'double' or 'rounded'
+    mappings = {
+      close = { "q", "<Esc>" },
+    },
   },
 }
+
+dap.listeners.after.event_initialized["dapui_config"] = function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"] = function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"] = function()
+  dapui.close()
+end

@@ -117,10 +117,9 @@ local mappings = {
     o = { ':DapStepOver<cr>', 'Step over' },
     O = { ':DapStepOut<cr>', 'Step out' },
     r = { ':DapToggleRepl<cr>', 'Toggle repl' },
-    t = { ":lua require('dapui').toggle()", 'Toggle debug UI' },
+    t = { ":lua require('dapui').toggle()<cr>", 'Toggle debug UI' },
     K = { ":lua require('dap.ui.widgets').hover()<cr>", 'Evaluate hover' },
     q = { ':DapTerminate<cr>', 'Quit' },
-    l = { ':lua require"osv".run_this()<cr>', 'Start lua dap' },
   },
 
   -- Tests

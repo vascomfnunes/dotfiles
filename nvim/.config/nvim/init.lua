@@ -1,6 +1,7 @@
 require 'vasco.plugins'
 require 'vasco.options'
 require 'vasco.theme'
+require 'vasco.mappings'
 
 require 'vasco.plugins_config.coc'
 require 'vasco.plugins_config.statusline'
@@ -17,5 +18,3 @@ require 'vasco.plugins_config.nx'
 require 'vasco.plugins_config.telekasten'
 require 'vasco.plugins_config.dap'
 require 'vasco.plugins_config.whichkey'
-
-require 'vasco.mappings'
