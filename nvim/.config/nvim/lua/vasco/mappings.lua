@@ -18,11 +18,3 @@ keymap('n', 'c', '"_c', silent)
 
 -- Don't yank on visual paste
 keymap('v', 'p', '"_dP', silent)
-
-keymap('n', '<leader>e', ':NvimTreeToggle<CR>')
-
-keymap('n', '<leader>ff', require('telescope.builtin').find_files)
-keymap('n', '<leader>fh', require('telescope.builtin').help_tags)
-keymap('n', '<leader>fG', require('telescope.builtin').grep_string)
-keymap('n', '<leader>fg', require('telescope.builtin').live_grep)
-keymap('n', '<leader>s', require('spectre').open)

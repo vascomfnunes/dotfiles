@@ -7,14 +7,53 @@ if vim.fn.empty(vim.fn.glob(install_path)) > 0 then
   vim.cmd [[packadd packer.nvim]]
 end
 
-require('packer').startup(function(use)
+local packer = require('packer')
+
+packer.init {
+  display = {
+    working_sym = ' ',
+    error_sym = ' ',
+    done_sym = ' ',
+    removed_sym = ' ',
+    moved_sym = ' ',
+    open_fn = function()
+      return require('packer.util').float { border = 'rounded' }
+    end,
+  },
+  autoremove = true,
+  auto_clean = true,
+  compile_on_sync = true,
+  git = { clone_timeout = 6000 },
+  max_jobs = 12,
+  snapshot_path = vim.fn.stdpath 'config',
+}
+
+packer.startup(function(use)
   use 'wbthomason/packer.nvim'
   use 'RRethy/nvim-base16'
   use 'tpope/vim-fugitive'
+  use 'folke/which-key.nvim'
+  use 'renerocksai/telekasten.nvim'
+  use 'David-Kunz/jester'
   use 'brenoprata10/nvim-highlight-colors'
   use { 'tpope/vim-rails', ft = 'ruby' }
   use 'kylechui/nvim-surround'
+  use 'Equilibris/nx.nvim'
   use 'honza/vim-snippets'
+  use {
+    'rcarriga/nvim-dap-ui',
+    requires = {
+      { 'mfussenegger/nvim-dap' },
+      { 'theHamsta/nvim-dap-virtual-text' },
+    }
+  }
+  use {
+    'nvim-neotest/neotest',
+    requires = {
+      'olimorris/neotest-rspec',
+      'haydenmeade/neotest-jest',
+    },
+  }
   use { 'stevearc/dressing.nvim', requires = { 'MunifTanjim/nui.nvim' } }
   use 'numToStr/Comment.nvim'
   use { 'lewis6991/gitsigns.nvim', requires = { 'nvim-lua/plenary.nvim' } }
