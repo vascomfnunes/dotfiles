@@ -34,7 +34,6 @@ packer.startup(function(use)
   use 'tpope/vim-fugitive'
   use 'folke/which-key.nvim'
   use 'renerocksai/telekasten.nvim'
-  use 'David-Kunz/jester'
   use 'brenoprata10/nvim-highlight-colors'
   use { 'tpope/vim-rails', ft = 'ruby' }
   use 'kylechui/nvim-surround'

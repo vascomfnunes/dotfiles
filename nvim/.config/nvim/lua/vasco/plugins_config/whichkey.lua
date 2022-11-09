@@ -129,7 +129,6 @@ local mappings = {
     f = { ':lua require("neotest").run.run(vim.fn.expand("%"))<cr>', 'Run file tests' },
     S = { ':lua require("neotest").run.stop()<cr>', 'Stop' },
     s = { ':lua require("neotest").summary.toggle()<cr>', 'Summary' },
-    d = { ':lua require"jester".debug()<cr>', 'Debug' },
     o = { ':lua require("neotest").output.open({ enter = true })<cr>', 'Show test output' },
   },
 

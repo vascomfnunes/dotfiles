@@ -10,8 +10,6 @@ vim.fn.sign_define(
   { text = ' ', texthl = 'LspDiagnosticSignWarning', linehl = '', numhl = '' }
 )
 
--- dap.defaults.fallback.terminal_win_cmd = '50vsplit new'
-
 -- INSTALATION:
 -- cd ~/.local/share/nvim
 -- git clone https://github.com/microsoft/vscode-node-debug2.git
@@ -25,12 +23,24 @@ dap.adapters.node2 = {
 }
 
 -- INSTALATION:
--- Install gem with `gem install readapt`
-dap.adapters.ruby = {
-  type = 'executable',
-  command = 'bundle',
-  args = { 'exec', 'readapt', 'stdio' },
-}
+-- Add gems to the Gemfile:
+-- gem 'debug'
+--
+-- Make sure to have rdbg in path for current Ruby version:
+-- gem install rdbg
+dap.adapters.ruby = function(callback, config)
+  callback {
+    type = "server",
+    host = "127.0.0.1",
+    port = "${port}",
+    executable = {
+      command = "bundle",
+      args = { "exec", "rdbg", "-n", "--open", "--port", "${port}",
+        "-c", "--", "bundle", "exec", config.command, config.script,
+      },
+    },
+  }
+end
 
 -- INSTALATION:
 -- cd ~/.local/share/nvim
@@ -48,41 +58,30 @@ dap.adapters.chrome = {
   args = { daps_path .. '/vscode-chrome-debug/out/src/chromeDebug.js' },
 }
 
-dap.configurations.javascript = {
-  {
-    type = 'node2',
-    name = 'node attach',
-    request = 'attach',
-    program = '${file}',
-    cwd = vim.fn.expand '%:p:h',
-    sourceMaps = true,
-    protocol = 'inspector',
-  },
-  {
-    type = 'chrome',
-    name = 'chrome',
-    request = 'attach',
-    program = '${file}',
-    cwd = vim.fn.getcwd(),
-    sourceMapPathOverrides = {
-      -- Sourcemap override for nextjs
-      ['webpack://_N_E/./*'] = '${webRoot}/*',
-      ['webpack:///./*'] = '${webRoot}/*',
-    },
-    protocol = 'inspector',
-    port = 9222,
-    webRoot = '${workspaceFolder}',
-  },
-}
-
 dap.configurations.typescript = {
   {
     type = 'node2',
-    name = 'node attach',
+    name = 'Attach',
     request = 'attach',
     program = '${file}',
     cwd = vim.fn.expand '%:p:h',
     sourceMaps = true,
+    protocol = 'inspector',
+  },
+  {
+    type = 'node2',
+    request = 'launch',
+    name = 'Jest test',
+    runtimeExecutable = 'node',
+    runtimeArgs = { '--inspect-brk', '${workspaceFolder}/node_modules/.bin/jest' },
+    args = { '${file}', '--runInBand', '--no-cache', '--coverage', 'false' },
+    rootPath = '${workspaceFolder}',
+    cwd = '${workspaceFolder}',
+    console = 'integratedTerminal',
+    internalConsoleOptions = 'neverOpen',
+    sourceMaps = 'inline',
+    port = 9229,
+    skipFiles = { '<node_internals>/**', 'node_modules/**' },
     protocol = 'inspector',
   },
   {
@@ -104,72 +103,26 @@ dap.configurations.typescript = {
   },
 }
 
-dap.configurations.javascriptreact = {
-  {
-    type = 'node2',
-    name = 'node attach',
-    request = 'attach',
-    program = '${file}',
-    cwd = vim.fn.expand '%:p:h',
-    sourceMaps = true,
-    protocol = 'inspector',
-  },
-  {
-    type = 'chrome',
-    name = 'chrome',
-    request = 'attach',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = vim.fn.getcwd(),
-    sourceMapPathOverrides = {
-      -- Sourcemap override for nextjs
-      ['webpack://_N_E/./*'] = '${webRoot}/*',
-      ['webpack:///./*'] = '${webRoot}/*',
-    },
-    protocol = 'inspector',
-    port = 9222,
-    webRoot = '${workspaceFolder}',
-  },
-}
-
-dap.configurations.typescriptreact = {
-  {
-    type = 'node2',
-    name = 'node attach',
-    request = 'attach',
-    program = '${file}',
-    cwd = vim.fn.expand '%:p:h',
-    sourceMaps = true,
-    protocol = 'inspector',
-  },
-  {
-    type = 'chrome',
-    name = 'chrome',
-    request = 'attach',
-    program = function()
-      return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
-    end,
-    cwd = vim.fn.getcwd(),
-    sourceMapPathOverrides = {
-      -- Sourcemap override for nextjs
-      ['webpack://_N_E/./*'] = '${webRoot}/*',
-      ['webpack:///./*'] = '${webRoot}/*',
-    },
-    protocol = 'inspector',
-    port = 9222,
-    webRoot = '${workspaceFolder}',
-  },
-}
+dap.configurations.javascript = dap.configurations.typescript
+dap.configurations.typescriptreact = dap.configurations.typescript
+dap.configurations.javascriptreact = dap.configurations.typescript
 
 dap.configurations.ruby = {
   {
-    type = 'ruby',
-    request = 'launch',
-    name = 'Rails',
-    program = 'bundle',
-    programArgs = { 'exec', 'rails', 's' },
-    useBundler = true,
+    type = "ruby",
+    name = "Rails",
+    request = "attach",
+    localfs = true,
+    command = "rails",
+    script = "server"
+  },
+  {
+    type = "ruby",
+    name = "Spec on current file",
+    request = "attach",
+    localfs = true,
+    command = "rspec",
+    script = "${file}",
   },
 }
 
