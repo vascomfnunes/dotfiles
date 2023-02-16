@@ -54,6 +54,7 @@
   "onedarkpro.nvim": { "branch": "main", "commit": "5241d17dbe1784555a4f95487e9db06a4cb0e8b8" },
   "plenary.nvim": { "branch": "master", "commit": "9a0d3bf7b832818c042aaf30f692b081ddd58bd9" },
   "possession.nvim": { "branch": "master", "commit": "e3b2107020e9c804a4015fb1920f0834e349ab31" },
+  "ruby-code-actions.nvim": { "branch": "main", "commit": "a6f4c95063e2034f85913821475f8761bb4aff0c" },
   "rust-tools.nvim": { "branch": "master", "commit": "bd1aa99ffb911a1cf99b3fcf3b44c0391c57e3ef" },
   "schemastore.nvim": { "branch": "main", "commit": "a4798a9fb5fd3ac8e132065597b397cab347d3ca" },
   "telekasten.nvim": { "branch": "main", "commit": "d72933ddbec3db1cb8ff204cd9aa9c839eb03a0b" },

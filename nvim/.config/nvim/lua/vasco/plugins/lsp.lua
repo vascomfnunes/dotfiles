@@ -24,6 +24,7 @@ M.dependencies = {
       }
     end,
   },
+  { 'semanticart/ruby-code-actions.nvim' },
 
   -- Autocompletion
   'hrsh7th/nvim-cmp',
@@ -119,7 +120,7 @@ function M.config()
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'nvim_lua' },
-      { name = 'buffer', keyword_length = 3 },
+      { name = 'buffer',  keyword_length = 3 },
     },
     snippet = {
       expand = function(args)
@@ -146,8 +147,8 @@ function M.config()
       ['<C-k>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
-        elseif luasnip.jumpable(-1) then
-          luasnip.jump(-1)
+        elseif luasnip.jumpable( -1) then
+          luasnip.jump( -1)
         else
           fallback()
         end
@@ -258,6 +259,7 @@ function M.config()
 
   -- null-ls
   local null_ls = require 'null-ls'
+  local ruby_code_actions = require 'ruby-code-actions'
 
   local sources = {}
 
@@ -275,6 +277,7 @@ function M.config()
   table.insert(sources, null_ls.builtins.formatting.stylua)
   table.insert(sources, null_ls.builtins.formatting.prettier)
   table.insert(sources, null_ls.builtins.formatting.erb_format)
+  table.insert(sources, ruby_code_actions.insert_frozen_string_literal)
 
   null_ls.setup { sources = sources }
 end
