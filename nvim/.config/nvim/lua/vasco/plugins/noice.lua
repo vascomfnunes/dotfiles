@@ -68,7 +68,7 @@ function M.config()
         filter = {
           event = 'msg_show',
           kind = '',
-          find = { 'written', 'code_action null-ls' },
+          find = 'written',
         },
         opts = { skip = true },
       },

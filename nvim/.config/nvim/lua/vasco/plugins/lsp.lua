@@ -24,7 +24,6 @@ M.dependencies = {
       }
     end,
   },
-  { 'semanticart/ruby-code-actions.nvim' },
 
   -- Autocompletion
   'hrsh7th/nvim-cmp',
@@ -259,7 +258,6 @@ function M.config()
 
   -- null-ls
   local null_ls = require 'null-ls'
-  local ruby_code_actions = require 'ruby-code-actions'
 
   local sources = {}
 
@@ -277,7 +275,6 @@ function M.config()
   table.insert(sources, null_ls.builtins.formatting.stylua)
   table.insert(sources, null_ls.builtins.formatting.prettier)
   table.insert(sources, null_ls.builtins.formatting.erb_format)
-  table.insert(sources, ruby_code_actions.insert_frozen_string_literal)
 
   null_ls.setup { sources = sources }
 end

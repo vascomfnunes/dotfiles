@@ -14,7 +14,6 @@ return {
       require('barbecue').setup()
     end,
   },
-  { 'stevearc/dressing.nvim', event = 'VeryLazy' },
   {
     'danymat/neogen',
     cmd = 'Neogen',
