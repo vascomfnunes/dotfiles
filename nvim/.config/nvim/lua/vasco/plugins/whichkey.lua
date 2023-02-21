@@ -318,6 +318,24 @@ function M.config()
       name = 'Markdown',
       p = { vim.cmd.MarkdownPreview, 'Preview in browser' },
     },
+    -- Colors
+    ['<leader>C'] = {
+      name = 'Colours',
+      d = {
+        function()
+          vim.fn.system 'theme dark'
+          Dark()
+        end,
+        'Dark',
+      },
+      l = {
+        function()
+          vim.fn.system 'theme light'
+          Light()
+        end,
+        'Light',
+      },
+    },
     -- Yarn
     ['<leader>y'] = {
       name = 'Yarn',

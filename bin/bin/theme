@@ -1,0 +1,4 @@
+#!/bin/bash
+
+alacritty-theme-switch -s "gruvbox_material_medium_$1.yml"
+tmux source-file "$HOME/.tmux/themes/gruvbox_$1.conf"

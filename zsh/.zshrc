@@ -60,7 +60,7 @@ setopt HIST_SAVE_NO_DUPS         # Do not write a duplicate event to the history
 setopt HIST_VERIFY               # Do not execute immediately upon history expansion.
 
 # Autosuggestions colours
-export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#606366'
+export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#5b534d'
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -68,25 +68,33 @@ export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#606366'
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
 export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
 
-FZF_COLORS="bg+:-1,\
-fg:gray,\
-fg+:white,\
-border:black,\
-spinner:0,\
-hl:yellow,\
-header:blue,\
-info:green,\
-pointer:red,\
-marker:red,\
-prompt:gray,\
-hl+:red"
+local color00='#282828'
+local color01='#3c3836'
+local color02='#5b534d'
+local color03='#665c54'
+local color04='#bdae93'
+local color05='#d5c4a1'
+local color06='#ebdbb2'
+local color07='#fbf1c7'
+local color08='#ea6962'
+local color09='#fe8019'
+local color0A='#d8a657'
+local color0B='#a9b665'
+local color0C='#8ec07c'
+local color0D='#83a598'
+local color0E='#d3869b'
+local color0F='#d8a657'
 
 export FZF_DEFAULT_OPTS="--height 60% \
 --border sharp \
---color='$FZF_COLORS' \
 --prompt '∷ ' \
 --pointer ▶ \
 --marker ⇒"
+
+export FZF_DEFAULT_OPTS="$FZF_DEFAULT_OPTS"\
+" --color=bg+:$color00,bg:$color00,spinner:$color0C,hl:$color0D"\
+" --color=fg:$color04,header:$color0D,info:$color0A,pointer:$color0C"\
+" --color=marker:$color0C,fg+:$color06,prompt:$color0A,hl+:$color0D"
 
 export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 10'"
 

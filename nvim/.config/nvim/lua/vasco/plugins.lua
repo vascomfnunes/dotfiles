@@ -3,7 +3,7 @@ return {
   'nvim-lua/plenary.nvim',
   'b0o/schemastore.nvim',
   'windwp/nvim-spectre',
-  { 'olimorris/onedarkpro.nvim', lazy = false },
+  { 'sainnhe/gruvbox-material', lazy = false },
   { 'kyazdani42/nvim-web-devicons', event = 'VeryLazy' },
   {
     'utilyre/barbecue.nvim',

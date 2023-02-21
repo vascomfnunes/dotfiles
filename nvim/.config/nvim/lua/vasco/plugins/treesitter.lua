@@ -35,6 +35,7 @@ function M.config()
       'typescript',
       'vim',
       'yaml',
+      'markdown'
     },
 
     highlight = { enable = true },

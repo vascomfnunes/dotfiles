@@ -1,12 +1,12 @@
 local M = {
-  fg = '#abb2bf',
-  red = '#e06c75',
-  yellow = '#e5c07b',
-  green = '#98c379',
+  fg = '#d4be98',
+  red = '#ea6962',
+  yellow = '#d8a657',
+  green = '#a9b665',
   dark_grey = '#3c3836',
-  light_grey = '#abb2bf',
-  grey = '#5d636f',
-  blue = '#61afef',
+  light_grey = '#665c54',
+  grey = '#5b534d',
+  blue = '#7daea3',
 }
 
 return M

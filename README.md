@@ -2,7 +2,8 @@
 
 I currently use [Alacritty](https://github.com/alacritty/alacritty) under macOS with
 the **Zsh** shell and a configuration based on [zcomet](https://zcomet.io/). My
-colour theme is One Dark Pro and my font is a patched Meslo Nerd font.
+colour theme is Gruvbox Material Medium and my font is a patched Meslo Nerd
+font.
 
 - **Tmux** is my terminal multiplexer
 - **Neovim** is my editor of choice
@@ -54,6 +55,25 @@ stow <package>
 ```
 
 Where `<package>` is the directory name.
+
+## Alacritty
+
+For changing between dark and light themes please install
+alacritty-theme-switch:
+
+```bash
+npm install -g alacritty-theme-switch
+```
+
+There's a script in `bin` directory that is able to toggle tmux and alacritty
+themes, like so:
+
+```bash
+theme <light|dark>
+```
+
+From Neovim, you can change all of them at the same time using `<leader>C`
+followed by `d` for `dark` and `l` for light.
 
 ## Neovim
 

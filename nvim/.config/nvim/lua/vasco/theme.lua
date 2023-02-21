@@ -1,30 +1,77 @@
 local colors = require 'vasco.helpers.colors'
 
 vim.o.termguicolors = true
-vim.o.background = 'dark'
 
-vim.cmd [[colorscheme onedark]]
+vim.g.gruvbox_material_background = 'medium'
+vim.g.gruvbox_material_enable_bold = 1
+vim.g.gruvbox_material_enable_italic = 1
+vim.g.gruvbox_material_diagnostic_virtual_text = 'colored'
+vim.g.gruvbox_material_spell_foreground = 'colored'
+vim.g.gruvbox_material_transparent_background = 2
 
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'FloatBorder', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'TelescopeNormal', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'WhichKeyFloat', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'WinBar', { fg = colors.yellow })
-vim.api.nvim_set_hl(0, 'WinBarNC', { fg = colors.dark_grey })
-vim.api.nvim_set_hl(0, 'Normal', { bg = 'NONE', fg = colors.light_grey })
-vim.api.nvim_set_hl(0, 'FloatBorder', { fg = colors.grey })
-vim.api.nvim_set_hl(0, 'TelescopeBorder', { fg = colors.grey })
-vim.api.nvim_set_hl(0, 'NeotestPassed', { fg = colors.green })
-vim.api.nvim_set_hl(0, 'NeotestFailed', { fg = colors.red })
-vim.api.nvim_set_hl(0, 'NeotestTarget', { fg = colors.red })
-vim.api.nvim_set_hl(0, 'NeotestSkipped', { fg = colors.blue })
-vim.api.nvim_set_hl(0, 'NeotestRunning', { fg = colors.yellow })
-vim.api.nvim_set_hl(0, 'IndentBlanklineChar', { fg = colors.dark_grey })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingError', { bg = 'NONE', fg = colors.red })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingWarning', { bg = 'NONE', fg = colors.yellow })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingHint', { bg = 'NONE', fg = colors.green })
-vim.api.nvim_set_hl(0, 'DiagnosticFloatingInfo', { bg = 'NONE', fg = colors.blue })
-vim.api.nvim_set_hl(0, 'markdownH1', { bg = 'NONE', fg = colors.yellow, bold = true })
-vim.api.nvim_set_hl(0, 'markdownH2', { bg = 'NONE', fg = colors.green, bold = true })
-vim.api.nvim_set_hl(0, 'markdownH3', { bg = 'NONE', fg = colors.blue, bold = true })
-vim.api.nvim_set_hl(0, 'markdownH4', { bg = 'NONE', fg = colors.red, bold = true })
+local function set_highlights(highlights)
+  for i, highlight in pairs(highlights) do
+    vim.api.nvim_set_hl(0, i, highlight)
+  end
+end
+
+function Dark()
+  vim.o.background = 'dark'
+
+  local highlights = {
+    NormalFloat = { bg = 'NONE' },
+    TelescopeNormal = { bg = 'NONE' },
+    WhichKeyFloat = { bg = 'NONE' },
+    NvimTreeNormal = { bg = 'NONE' },
+    NvimTreeEndOfBuffer = { bg = 'NONE' },
+    WinBar = { fg = colors.yellow },
+    WinBarNC = { fg = colors.dark_grey },
+    Normal = { bg = 'NONE', fg = colors.light_grey },
+    FloatBorder = { fg = colors.grey },
+    TelescopeBorder = { fg = colors.grey },
+    NeotestPassed = { fg = colors.green },
+    NeotestFailed = { fg = colors.red },
+    NeotestTarget = { fg = colors.red },
+    NeotestSkipped = { fg = colors.blue },
+    NeotestRunning = { fg = colors.yellow },
+    IndentBlanklineChar = { fg = colors.dark_grey },
+    DiagnosticFloatingError = { bg = 'NONE', fg = colors.red },
+    DiagnosticFloatingWarning = { bg = 'NONE', fg = colors.yellow },
+    DiagnosticFloatingHint = { bg = 'NONE', fg = colors.green },
+    DiagnosticFloatingInfo = { bg = 'NONE', fg = colors.blue },
+  }
+
+  set_highlights(highlights)
+end
+
+function Light()
+  vim.o.background = 'light'
+
+  local highlights = {
+    NormalFloat = { bg = 'NONE' },
+    TelescopeNormal = { bg = 'NONE' },
+    WhichKeyFloat = { bg = 'NONE' },
+    NvimTreeNormal = { bg = 'NONE' },
+    NvimTreeEndOfBuffer = { bg = 'NONE' },
+    WinBar = { fg = colors.yellow },
+    WinBarNC = { fg = colors.dark_grey },
+    Normal = { bg = 'NONE', fg = colors.light_grey },
+    FloatBorder = { fg = colors.grey },
+    TelescopeBorder = { fg = colors.grey },
+    NeotestPassed = { fg = colors.green },
+    NeotestFailed = { fg = colors.red },
+    NeotestTarget = { fg = colors.red },
+    NeotestSkipped = { fg = colors.blue },
+    NeotestRunning = { fg = colors.yellow },
+    IndentBlanklineChar = { fg = colors.dark_grey },
+    DiagnosticFloatingError = { bg = 'NONE', fg = colors.red },
+    DiagnosticFloatingWarning = { bg = 'NONE', fg = colors.yellow },
+    DiagnosticFloatingHint = { bg = 'NONE', fg = colors.green },
+    DiagnosticFloatingInfo = { bg = 'NONE', fg = colors.blue },
+  }
+
+  set_highlights(highlights)
+end
+
+vim.cmd [[colorscheme gruvbox-material]]
+Dark()
