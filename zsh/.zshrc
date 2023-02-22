@@ -101,6 +101,7 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 10'"
 # aliases
 alias vi='nvim'
 alias ls='exa --icons'
+alias kill_rails='kill -9 $(lsof -t -i:3000)'
 alias la='ls -la'
 alias c='clear'
 alias :q='exit'

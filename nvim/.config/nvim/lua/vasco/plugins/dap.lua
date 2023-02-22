@@ -27,7 +27,7 @@ function M.config()
   )
   vim.fn.sign_define(
     'DapStopped',
-    { text = icons.right_arrow, texthl = 'LspDiagnosticsSignInformation', linehl = '', numhl = '' }
+    { text = icons.right_arrow, texthl = 'LspDiagnosticsSignHint', linehl = '', numhl = '' }
   )
   vim.fn.sign_define(
     'DapBreakpointRejected',

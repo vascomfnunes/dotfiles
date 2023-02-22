@@ -572,6 +572,27 @@ function M.config()
         'Grep selected',
       },
     },
+    -- Debug
+    ['<leader>d'] = {
+      name = 'Debug',
+      c = { vim.cmd.DapContinue, 'Continue' },
+      i = { vim.cmd.DapStepInto, 'Step into' },
+      o = { vim.cmd.DapStepOver, 'Step over' },
+      O = { vim.cmd.DapStepOut, 'Step out' },
+      t = {
+        function()
+          require('dapui').toggle()
+        end,
+        'Toggle debug UI',
+      },
+      K = {
+        function()
+          require('dap.ui.widgets').hover()
+        end,
+        'Evaluate hover',
+      },
+      q = { vim.cmd.DapTerminate, 'Quit' },
+    },
   }
 
   -- Terminal mode
