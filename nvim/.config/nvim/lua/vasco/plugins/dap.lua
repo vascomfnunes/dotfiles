@@ -1,6 +1,6 @@
 local M = {
   'mfussenegger/nvim-dap',
-  event = 'VeryLazy'
+  event = 'VeryLazy',
 }
 
 M.dependencies = {
@@ -155,11 +155,12 @@ function M.config()
     },
     {
       type = 'ruby',
-      name = 'Spec on current file',
+      name = 'RSpec',
       request = 'attach',
       localfs = true,
       command = 'rspec',
       script = '${file}',
+      current_line = true,
     },
   }
 
