@@ -20,7 +20,15 @@ function M.config()
       require 'neotest-jest' {
         jestCommand = 'yarn jest',
       },
-      require 'neotest-rspec',
+      require 'neotest-rspec' {
+        rspec_cmd = function()
+          return vim.tbl_flatten {
+            'bundle',
+            'exec',
+            'rspec',
+          }
+        end,
+      },
     },
     icons = {
       child_indent = '│',
