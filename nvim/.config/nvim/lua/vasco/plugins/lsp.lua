@@ -36,7 +36,7 @@ M.dependencies = {
   'onsails/lspkind.nvim',
 
   -- Snippets
-  'L3MON4D3/LuaSnip',
+  { 'L3MON4D3/LuaSnip', build = 'make install_jsregexp' },
   'honza/vim-snippets',
   'rafamadriz/friendly-snippets',
 }
@@ -119,7 +119,7 @@ function M.config()
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'nvim_lua' },
-      { name = 'buffer',  keyword_length = 3 },
+      { name = 'buffer', keyword_length = 3 },
     },
     snippet = {
       expand = function(args)
@@ -146,8 +146,8 @@ function M.config()
       ['<C-k>'] = cmp.mapping(function(fallback)
         if cmp.visible() then
           cmp.select_prev_item()
-        elseif luasnip.jumpable( -1) then
-          luasnip.jump( -1)
+        elseif luasnip.jumpable(-1) then
+          luasnip.jump(-1)
         else
           fallback()
         end

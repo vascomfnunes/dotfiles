@@ -75,7 +75,12 @@ function M.config()
     },
     ['<c-S>'] = { '<cmd>set nospell<cr>', 'Spell off' },
     -- Explorer
-    ['<leader>e'] = { vim.cmd.NvimTreeToggle, 'Toggle file explorer' },
+    ['<leader>e'] = {
+      function()
+        require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
+      end,
+      'Toggle file explorer',
+    },
     -- Spell
     ['z='] = { '<cmd>Telescope spell_suggest<cr>', 'Spell suggestions' },
     -- Navigation
@@ -283,14 +288,14 @@ function M.config()
     -- Git
     ['<leader>g'] = {
       name = 'Git',
-      g = { vim.cmd.Neogit, 'Status' },
+      g = { vim.cmd.Neogit, 'Neogit' },
       b = {
         function()
           require('gitsigns').blame_line()
         end,
         'Blame',
       },
-      s = { '<cmd>Gitsigns stage_hunk<cr>', 'Stage hunk' },
+      s = { '<cmd>Neotree float git_status reveal=true<cr>', 'Status' },
       u = { '<cmd>Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },
       r = { '<cmd>Gitsigns reset_hunk<cr>', 'Reset hunk' },
       l = { '<cmd>Gitsigns setloclist<cr>', 'View on loclist' },
@@ -307,7 +312,7 @@ function M.config()
       g = { '<cmd>Telescope live_grep<cr>', 'Grep' },
       G = { '<cmd>Telescope grep_string<cr>', 'Grep word' },
       d = { '<cmd>Telescope diagnostics<cr>', 'Diagnostics' },
-      b = { '<cmd>Telescope buffers<cr>', 'Buffers' },
+      b = { '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true<cr>', 'Buffers' },
       h = { '<cmd>Telescope help_tags<cr>', 'Help' },
       q = { '<cmd>Telescope quickfix<cr>', 'Quickfix' },
       s = { '<cmd>Telescope possession list<cr>', 'Sessions' },
