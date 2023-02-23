@@ -1,5 +1,5 @@
 local options = {
-  completeopt = 'menu,menuone',
+  completeopt = 'menu,menuone,noselect',
   dictionary = '/usr/share/dict/words',
   fileencoding = 'utf-8',
   ruler = false,
@@ -9,7 +9,7 @@ local options = {
   foldlevelstart = 99,
   mouse = 'a',
   path = '**',
-  wildmode = 'list',
+  wildmode = 'longest:full,full',
   wildignore = [[
 	    .git,.hg,.svn
 	    *.aux,*.out,*.toc
@@ -62,12 +62,12 @@ local options = {
   laststatus = 3,
   cmdheight = 0,
   winbar = '%=%m\\ %f',
+  formatoptions = 'jcroqlnt',
 }
 
 local globals = {
   mapleader = ' ',
   maplocalleader = ' ',
-
   -- Fill chars needed for folds
   fillchars = 'fold:\\ ',
 }
@@ -81,14 +81,6 @@ for k, v in pairs(globals) do
 end
 
 vim.opt.iskeyword:append '-'
-vim.opt.formatoptions:append 'j' -- Auto-remove comments when combining lines ( <C-J> )
-vim.opt.formatoptions:append 'q' -- Allow formatting comments w/ gq
-vim.opt.formatoptions:remove 'c' --In general, I like it when comments respect textwidth
-vim.opt.formatoptions:remove 'o' -- O and o, don't continue comments
-vim.opt.formatoptions:remove 't' -- Don't auto format my code. I got linters for that.
-
--- disable nvim intro
-vim.opt.shortmess:append 'sI'
 
 -- go to previous/next line with h,l,left arrow and right arrow
 -- when cursor reaches end/beginning of line

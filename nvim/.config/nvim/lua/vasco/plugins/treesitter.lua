@@ -6,12 +6,15 @@ M.dependencies = {
   'nvim-treesitter/nvim-treesitter-textobjects',
   'JoosepAlviste/nvim-ts-context-commentstring',
   'RRethy/nvim-treesitter-endwise',
+  'mrjones2014/nvim-ts-rainbow',
 }
 
 M.build = ':TSUpdate'
 M.event = 'BufReadPost'
 
 function M.config()
+  local colors = require 'vasco.helpers.colors'
+
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {
@@ -35,7 +38,7 @@ function M.config()
       'typescript',
       'vim',
       'yaml',
-      'markdown'
+      'markdown',
     },
 
     highlight = { enable = true },
@@ -60,6 +63,12 @@ function M.config()
         node_incremental = '<cr>',
         node_decremental = '<backspace>',
       },
+    },
+    rainbow = {
+      enable = true,
+      -- disable = { "jsx", "cpp" }, list of languages you want to disable the plugin for
+      extended_mode = true, -- Also highlight non-bracket delimiters like html tags, boolean or table: lang -> boolean
+      max_file_lines = nil, -- Do not enable for files with more than n lines, int
     },
     textobjects = {
       select = {
