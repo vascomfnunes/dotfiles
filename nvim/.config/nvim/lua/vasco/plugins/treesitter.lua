@@ -10,7 +10,7 @@ M.dependencies = {
 }
 
 M.build = ':TSUpdate'
-M.event = 'BufReadPost'
+M.event = 'BufEnter'
 
 function M.config()
   local colors = require 'vasco.helpers.colors'

@@ -51,6 +51,7 @@ function M.config()
   local icons = require 'vasco.helpers.icons'
 
   require('luasnip.loaders.from_vscode').load { paths = '~/.config/nvim/snippets/' }
+  require('luasnip.loaders.from_vscode').lazy_load()
 
   local has_words_before = function()
     local cursor = vim.api.nvim_win_get_cursor(0)

@@ -1,5 +1,4 @@
 local options = {
-  completeopt = 'menu,menuone,noselect',
   dictionary = '/usr/share/dict/words',
   fileencoding = 'utf-8',
   ruler = false,
@@ -63,6 +62,8 @@ local options = {
   cmdheight = 0,
   winbar = '%=%m\\ %f',
   formatoptions = 'jcroqlnt',
+  completeopt = { 'menu', 'menuone', 'noselect' },
+  shortmess = vim.opt.shortmess + { c = true },
 }
 
 local globals = {
