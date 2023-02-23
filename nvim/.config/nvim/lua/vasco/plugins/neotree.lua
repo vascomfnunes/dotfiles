@@ -118,7 +118,7 @@ function M.config()
         ['v'] = 'open_vsplit',
         ['t'] = 'open_tabnew',
         ['l'] = 'open_with_window_picker',
-        ['o'] = 'system_open',
+        -- ['o'] = 'system_open',
         ['C'] = 'close_node',
         ['z'] = 'close_all_nodes',
         ['a'] = {
@@ -168,14 +168,6 @@ function M.config()
         never_show_by_pattern = { -- uses glob style patterns
           --".null-ls_*",
         },
-      },
-      commands = {
-        system_open = function(state)
-          local node = state.tree:get_node()
-          local path = node:get_id()
-          -- macOs: open file in default application in the background.
-          vim.api.nvim_command('silent !open -g ' .. path)
-        end,
       },
       follow_current_file = true, -- This will find and focus the file in the active buffer every
       -- time the current file is changed while the tree is open.
