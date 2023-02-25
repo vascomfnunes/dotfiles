@@ -5,7 +5,7 @@ tabspaces: 2
 window:
   padding:
     x: 8
-    y: 8
+    'y': 8
   dynamic_padding: false
 font:
   normal:
@@ -23,15 +23,15 @@ font:
   size: 14
   offset:
     x: 0
-    "y": 0
+    'y': 0
   glyph_offset:
     x: 0
-    "y": 0
+    'y': 0
 mouse:
   hide_when_typing: true
 hints:
   enabled:
-    - regex: "(magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\0-\x1f-<>\"\\s{-}\\^⟨⟩`]+"
+    - regex: "(magnet:|mailto:|gemini:|gopher:|https:|http:|news:|file:|git:|ssh:|ftp:)[^\0-\x1F\x7F-\x9F<>\"\\s{-}\\^⟨⟩`]+"
       command: open
       post_processing: true
       mouse:
@@ -40,39 +40,65 @@ hints:
 selection:
   save_to_clipboard: true
 key_bindings:
-  - { key: Key1, mods: Command, chars: "\x021" } # select tmux window 1
-  - { key: Key2, mods: Command, chars: "\x022" } #                ... 2
-  - { key: Key3, mods: Command, chars: "\x023" } #                ... 3
-  - { key: Key4, mods: Command, chars: "\x024" } #                ... 4
-  - { key: Key5, mods: Command, chars: "\x025" } #                ... 5
-  - { key: Key6, mods: Command, chars: "\x026" } #                ... 6
-  - { key: Key7, mods: Command, chars: "\x027" } #                ... 7
-  - { key: Key8, mods: Command, chars: "\x028" } #                ... 8
-  - { key: Key9, mods: Command, chars: "\x029" } #                ... 9
-  - { key: Comma, mods: Command, chars: "\x02," } # rename the current tmux window
-  - { key: T, mods: Command, chars: "\x02c" } # create a new tmux window
-  - { key: W, mods: Command, chars: "\x02x" } # kill the current pane
-  - { key: Z, mods: Command, chars: "\x02z" } # toggle zoom state of the current tmux pane
+  - key: Key1
+    mods: Command
+    chars: "\x021"
+  - key: Key2
+    mods: Command
+    chars: "\x022"
+  - key: Key3
+    mods: Command
+    chars: "\x023"
+  - key: Key4
+    mods: Command
+    chars: "\x024"
+  - key: Key5
+    mods: Command
+    chars: "\x025"
+  - key: Key6
+    mods: Command
+    chars: "\x026"
+  - key: Key7
+    mods: Command
+    chars: "\x027"
+  - key: Key8
+    mods: Command
+    chars: "\x028"
+  - key: Key9
+    mods: Command
+    chars: "\x029"
+  - key: Comma
+    mods: Command
+    chars: "\x02,"
+  - key: T
+    mods: Command
+    chars: "\x02c"
+  - key: W
+    mods: Command
+    chars: "\x02x"
+  - key: Z
+    mods: Command
+    chars: "\x02z"
 colors:
   primary:
-    background: "0x282828"
-    foreground: "0xd4be98"
+    background: '0x282828'
+    foreground: '0xd4be98'
   normal:
-    black: "0x3c3836"
-    red: "0xea6962"
-    green: "0xa9b665"
-    yellow: "0xd8a657"
-    blue: "0x7daea3"
-    magenta: "0xd3869b"
-    cyan: "0x89b482"
-    white: "0xd4be98"
+    black: '0x3c3836'
+    red: '0xea6962'
+    green: '0xa9b665'
+    yellow: '0xd8a657'
+    blue: '0x7daea3'
+    magenta: '0xd3869b'
+    cyan: '0x89b482'
+    white: '0xd4be98'
   bright:
-    black: "0x3c3836"
-    red: "0xea6962"
-    green: "0xa9b665"
-    yellow: "0xd8a657"
-    blue: "0x7daea3"
-    magenta: "0xd3869b"
-    cyan: "0x89b482"
-    white: "0xd4be98"
+    black: '0x3c3836'
+    red: '0xea6962'
+    green: '0xa9b665'
+    yellow: '0xd8a657'
+    blue: '0x7daea3'
+    magenta: '0xd3869b'
+    cyan: '0x89b482'
+    white: '0xd4be98'
 theme: gruvbox_material_medium_dark

@@ -1,9 +1,12 @@
+live_config_reload: true
+env:
+  TERM: xterm-256color
 tabspaces: 2
 window:
   padding:
-    x: 0
-    'y': 0
-  dynamic_padding: true
+    x: 8
+    'y': 8
+  dynamic_padding: false
 font:
   normal:
     family: MesloLGL Nerd Font
@@ -36,6 +39,46 @@ hints:
         mods: Control
 selection:
   save_to_clipboard: true
+key_bindings:
+  - key: Key1
+    mods: Command
+    chars: "\x021"
+  - key: Key2
+    mods: Command
+    chars: "\x022"
+  - key: Key3
+    mods: Command
+    chars: "\x023"
+  - key: Key4
+    mods: Command
+    chars: "\x024"
+  - key: Key5
+    mods: Command
+    chars: "\x025"
+  - key: Key6
+    mods: Command
+    chars: "\x026"
+  - key: Key7
+    mods: Command
+    chars: "\x027"
+  - key: Key8
+    mods: Command
+    chars: "\x028"
+  - key: Key9
+    mods: Command
+    chars: "\x029"
+  - key: Comma
+    mods: Command
+    chars: "\x02,"
+  - key: T
+    mods: Command
+    chars: "\x02c"
+  - key: W
+    mods: Command
+    chars: "\x02x"
+  - key: Z
+    mods: Command
+    chars: "\x02z"
 colors:
   primary:
     background: '0xfbf1c7'
