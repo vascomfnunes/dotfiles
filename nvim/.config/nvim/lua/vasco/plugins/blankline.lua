@@ -22,7 +22,7 @@ function M.config()
     use_treesitter_scope = false,
     show_trailing_blankline_indent = false,
     show_current_context = true,
-    show_current_context_start = true,
+    show_current_context_start = false,
     context_patterns = {
       'class',
       'return',

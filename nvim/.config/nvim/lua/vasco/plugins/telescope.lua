@@ -20,12 +20,29 @@ function M.config()
 
   telescope.setup {
     defaults = {
+      vimgrep_arguments = {
+        'rg',
+        '--color=never',
+        '--no-heading',
+        '--with-filename',
+        '--line-number',
+        '--column',
+        '--smart-case',
+        '--hidden',
+      },
       prompt_prefix = icons.search,
       preview = { hide_on_startup = false },
       file_ignore_patterns = { 'node_modules', '.git', 'undo', 'tmp', 'fonts', 'images', 'public' },
       selection_caret = '❯ ',
+      selection_strategy = 'reset',
       sorting_strategy = 'ascending',
       scroll_strategy = 'cycle',
+      file_sorter = require('telescope.sorters').get_fuzzy_file,
+      generic_sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
+      file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+      grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+      qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
+      color_devicons = true,
       path_display = { 'truncate' },
       winblend = 0,
       set_env = { ['COLORTERM'] = 'truecolor' },
@@ -52,6 +69,9 @@ function M.config()
       extensions = {
         fzf = {
           fuzzy = true,
+          override_generic_sorter = true, -- override the generic sorter
+          override_file_sorter = true, -- override the file sorter
+          case_mode = 'smart_case', -- or "ignore_case" or "respect_case". the default case_mode is "smart_case"
         },
         lazy = {
           -- Optional theme (the extension doesn't set a default theme)
