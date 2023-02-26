@@ -13,9 +13,7 @@ zcomet load zap-zsh/supercharge
 zcomet load zap-zsh/vim
 zcomet load agkozak/zsh-z
 zcomet load zsh-users/zsh-completions
-zcomet load Aloxaf/fzf-tab
 zcomet load hlissner/zsh-autopair
-zcomet load jscutlery/nx-completion
 zcomet trigger yarn buonomo/yarn-extra-completion
 
 # This ones last, and in this order
@@ -25,8 +23,6 @@ zcomet load zsh-users/zsh-autosuggestions
 # Run compinit and compile its cache
 zcomet compinit
 
-# ---
-
 export EDITOR='nvim'
 export VISUAL='nvim'
 export PLAYER='mpv'
@@ -35,7 +31,6 @@ export BROWSER_CLI='w3m'
 export PATH="/usr/local/sbin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/bin:$PATH"
-# export PATH="$HOME/.cargo/bin:$PATH"
 
 # | NAVIGATION |
 setopt AUTO_CD              # Go to folder path without using cd.
@@ -100,6 +95,7 @@ export FZF_ALT_C_OPTS="--preview 'tree -C {} | head -n 10'"
 
 # aliases
 alias vi='nvim'
+alias v='fd --type f --hidden --exclude .git --exclude .cache --exclude Library --exclude .local | fzf-tmux -p --reverse | xargs nvim'
 alias ls='exa --icons'
 alias kill_rails='kill -9 $(lsof -t -i:3000)'
 alias la='ls -la'
