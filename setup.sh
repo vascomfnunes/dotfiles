@@ -14,18 +14,18 @@ function main() {
 
 	msg "Installing packages"
 	brew install stow neovim bat git gnupg lazygit mpd mpc \
-		mpv ncmpcpp newsboat tmux vifm w3m weechat imageoptim-cli \
-    node yarn wget universal-ctags ripgrep reattach-to-user-namespace \
+		mpv ncmpcpp htop newsboat tmux vifm w3m weechat imageoptim-cli \
+    node go yarn wget git-delta gum universal-ctags ripgrep reattach-to-user-namespace \
     pinentry openssl gnupg jq go exa fd the_silver_searcher \
-    pandoc
+    pandoc wget
 
 	msg "Installing casks"
 	brew install --cask alacritty brave-browser appcleaner \
 		dash iina bitwarden
 
 	msg "Creating dotfiles symlinks"
-	stow -R alacritty bat bin git gnupg lazygit mpd mpv \
-		ncmpcpp newsboat nvim ssh tmux vifm w3m weechat zsh misc
+	stow -R alacritty bat bin git gnupg htop lazygit mpd mpv \
+		ncmpcpp newsboat nvim pgcli ssh tmux vifm w3m weechat zsh misc
 
   msg "Installing node dependencies"
   npm install -g live-server
@@ -37,20 +37,8 @@ function main() {
 	msg "Installing misc files"
 	cp misc/Pictures/vasco.jpeg ~/Pictures
 
-	setup_neovim
-
 	msg "Setup complete"
 	echo "Restart the terminal to complete installation."
-}
-
-function setup_neovim() {
-	msg "Installing Neovim plugins"
-
-	nvim --headless \
-		-c 'autocmd User PackerComplete quitall' \
-		-c 'PackerSync'
-
-	echo "Packer setup complete"
 }
 
 function print_logo() {
