@@ -14,7 +14,7 @@ function M.config()
       typescript = { 'typescript', 'javascript', 'nodejs' },
       typescriptreact = { 'typescript', 'javascript', 'react' },
       javascriptreact = { 'javascript', 'react' },
-      ruby = { 'ruby', 'rails' },
+      ruby = { 'ruby', 'rails', 'rspec' },
     },
   }
 end
