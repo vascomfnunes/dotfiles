@@ -1,10 +1,10 @@
 return {
-  'MunifTanjim/nui.nvim',
+  { 'sainnhe/gruvbox-material', lazy = false },
+  { 'kyazdani42/nvim-web-devicons', lazy = true },
+  { 'MunifTanjim/nui.nvim', lazy = true },
   'nvim-lua/plenary.nvim',
   'b0o/schemastore.nvim',
   'windwp/nvim-spectre',
-  { 'sainnhe/gruvbox-material', lazy = false },
-  { 'kyazdani42/nvim-web-devicons', event = 'VeryLazy' },
   {
     'utilyre/barbecue.nvim',
     version = '*',
@@ -81,7 +81,8 @@ return {
       end, { expr = true })
     end,
   },
-  { -- requires 'npm install -g live-server' and 'brew install pandoc'
+  {
+    -- requires 'npm install -g live-server' and 'brew install pandoc'
     'davidgranstrom/nvim-markdown-preview',
     ft = 'markdown',
   },

@@ -2,7 +2,7 @@ local M = {
   'lukas-reineke/indent-blankline.nvim',
 }
 
-M.event = 'BufReadPost'
+M.event = { 'BufReadPost', 'BufNewFile' }
 
 function M.config()
   local indent = require 'indent_blankline'
@@ -12,7 +12,7 @@ function M.config()
     filetype_exclude = {
       'help',
       'neogitstatus',
-      'NvimTree',
+      'neo-tree',
       'noice',
       'lazy',
       'mason.nvim',

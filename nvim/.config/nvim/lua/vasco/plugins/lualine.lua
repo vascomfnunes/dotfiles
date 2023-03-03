@@ -1,10 +1,11 @@
 local colors = require 'vasco.helpers.colors'
+local icons = require 'vasco.helpers.icons'
 
 local M = {
   'nvim-lualine/lualine.nvim',
 }
 
-M.event = 'VimEnter'
+M.event = 'VeryLazy'
 
 function M.config()
   local lsp = {
@@ -47,15 +48,37 @@ function M.config()
         winbar = 1000,
       },
       disabled_filetypes = {
-        statusline = { 'aerial', 'NeogitStatus', 'spectre_panel' },
+        statusline = { 'aerial', 'NeogitStatus', 'spectre_panel', 'lazy' },
         winbar = {},
       },
     },
     sections = {
       lualine_a = { 'mode' },
-      lualine_b = { 'branch', 'diff', 'diagnostics' },
+      lualine_b = {
+        'branch',
+        {
+          'diff',
+          symbols = {
+            added = icons.plus,
+            modified = icons.document,
+            removed = icons.minus,
+          },
+        },
+        {
+          'diagnostics',
+          symbols = {
+            error = icons.error,
+            warn = icons.warning,
+            info = icons.info,
+            hint = icons.hint,
+          },
+        },
+      },
       lualine_c = { { 'filename', color = { fg = colors.yellow } }, lsp },
-      lualine_x = { { 'encoding', color = { fg = colors.grey } }, { 'filetype', color = { colors.fg } } },
+      lualine_x = {
+        { 'encoding', color = { fg = colors.grey } },
+        { 'filetype', color = { colors.fg } },
+      },
       lualine_y = { 'progress' },
       lualine_z = { 'location' },
     },
