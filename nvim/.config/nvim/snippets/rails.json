@@ -1,17 +1,23 @@
 {
   "has_many": {
     "prefix": "has_many",
-    "body": ["has_many :${1:model}, dependent: :destroy"],
+    "body": [
+      "has_many :${1:model}, dependent: :destroy"
+    ],
     "description": "Add has_many association"
   },
   "has_many_through": {
     "prefix": "has_many",
-    "body": ["has_many :${1:model}, through: :${2:model}"],
+    "body": [
+      "has_many :${1:model}, through: :${2:model}"
+    ],
     "description": "Add has_many association thought another model"
   },
   "has_secure_password": {
     "prefix": "has_secure_password",
-    "body": ["has_secure_password"],
+    "body": [
+      "has_secure_password"
+    ],
     "description": "Add has_secure_password to use on a model with password_digest attribute"
   },
   "validates_presence_of": {
@@ -30,22 +36,30 @@
   },
   "validates_uniqueness_of": {
     "prefix": "validates_uniqueness",
-    "body": ["validates_uniqueness_of :${1:attribute}, on: :create"],
+    "body": [
+      "validates_uniqueness_of :${1:attribute}, on: :create"
+    ],
     "description": "Validates uniqueness of attribute"
   },
   "redirect_to": {
     "prefix": "redirect_to",
-    "body": ["redirect_to ${1:route_path}"],
+    "body": [
+      "redirect_to ${1:route_path}"
+    ],
     "description": "Add redirect_to a specific route path"
   },
   "before_action": {
     "prefix": "before_action",
-    "body": ["before_action :${1:method}"],
+    "body": [
+      "before_action :${1:method}"
+    ],
     "description": "Append a callback before actions. If the callback renders or redirects, the action will not run. If there are additional callbacks scheduled to run after that callback, they are also cancelled."
   },
   "after_action": {
     "prefix": "after_action",
-    "body": ["after_action :${1:method}"],
+    "body": [
+      "after_action :${1:method}"
+    ],
     "description": "Append a callback after actions"
   },
   "params.require": {
@@ -57,17 +71,23 @@
   },
   "turbostream.broadcast.prepend": {
     "prefix": "turbostream.broadcast.prepend",
-    "body": ["broadcast_prepend_to(:${1:name}, partial: '${2:partial}')"],
+    "body": [
+      "broadcast_prepend_to(:${1:name}, partial: '${2:partial}')"
+    ],
     "description": "Add turbostream broadcast prepend call"
   },
   "turbostream.broadcast.remove": {
     "prefix": "turbostream.broadcast.remove",
-    "body": ["broadcast_remove_to(:${1:name})"],
+    "body": [
+      "broadcast_remove_to(:${1:name})"
+    ],
     "description": "Add turbostream broadcast remove call"
   },
   "format.turbostream": {
     "prefix": "format.turbostream",
-    "body": ["format.turbo_stream { flash[:notice] = '${2:notice_text}' }"],
+    "body": [
+      "format.turbo_stream { flash[:notice] = '${2:notice_text}' }"
+    ],
     "description": "Respond using turbostream"
   },
   "format.html": {
@@ -79,12 +99,16 @@
   },
   "flash": {
     "prefix": "flash",
-    "body": ["flash[:error] = @post.errors.full_messages"],
+    "body": [
+      "flash[:error] = @post.errors.full_messages"
+    ],
     "description": "Create a flash"
   },
   "find": {
     "prefix": "find",
-    "body": ["${1:Model}.find(${2:id}, order: :${3:asc|desc})"],
+    "body": [
+      "${1:Model}.find(${2:id}, order: :${3:asc|desc})"
+    ],
     "description": "Find by id"
   },
   "find_by": {
@@ -96,12 +120,16 @@
   },
   "session": {
     "prefix": "session",
-    "body": ["session[:${1:name}] = ${2:value}"],
+    "body": [
+      "session[:${1:name}] = ${2:value}"
+    ],
     "description": "Set a session value"
   },
   "map": {
     "prefix": "map",
-    "body": ["${1:array}.map do |name|\n  ${2:something}\nend"],
+    "body": [
+      "${1:array}.map do |name|\n  ${2:something}\nend"
+    ],
     "description": "Map an array"
   },
   "bootstrap_alert_classes": {
@@ -113,7 +141,9 @@
   },
   "map_with_join": {
     "prefix": "map_with_join",
-    "body": ["${1:array}.map(&:${2:property}).join(', ')"],
+    "body": [
+      "${1:array}.map(&:${2:property}).join(', ')"
+    ],
     "description": "Map an array with a join"
   },
   "where": {
@@ -125,12 +155,30 @@
   },
   "where.first.create": {
     "prefix": "where.first.create",
-    "body": ["${1:Model}.where(${2:property}: ${3:value}).first_or_create!"],
+    "body": [
+      "${1:Model}.where(${2:property}: ${3:value}).first_or_create!"
+    ],
     "description": "Where query that returns the first founded record or create a new one"
   },
   "helper.method": {
     "prefix": "helper.method",
-    "body": ["helper_method :${1:method_symbol}"],
+    "body": [
+      "helper_method :${1:method_symbol}"
+    ],
     "description": "Declare a controller method as a helper making them available to the view"
+  },
+  "i18n.string_translation": {
+    "prefix": "i18n.string_translation",
+    "body": [
+      "I18n.t '${1:key}'"
+    ],
+    "description": "Adds a string translation (reference: https://guides.rubyonrails.org/i18n.html)"
+  },
+  "i18n.locale_translation": {
+    "prefix": "i18n.locale_translation",
+    "body": [
+      "I18n.l ${1:Time.now}, format: :${2:short}"
+    ],
+    "description": "Adds a locale translation (reference: https://guides.rubyonrails.org/i18n.html#adding-date-time-formats)"
   }
 }
