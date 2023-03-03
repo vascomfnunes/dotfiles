@@ -108,7 +108,8 @@ function M.config()
       vim.cmd.bprevious,
       'Previous buffer',
     },
-    ['<leader>D'] = { '<cmd>call Dasht(dasht#cursor_search_terms())<cr>', 'Dasht documentation' },
+    ['<leader>K'] = { vim.cmd.DashWord, 'Dash documentation (current word)' },
+    ['<leader>k'] = { vim.cmd.Dash, 'Dash documentation (search)' },
     ['<leader>b'] = {
       name = 'Buffers',
       d = { vim.cmd.bwipeout, 'Remove buffer' },

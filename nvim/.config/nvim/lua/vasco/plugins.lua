@@ -1,7 +1,7 @@
 return {
   { 'sainnhe/gruvbox-material', lazy = false },
-  { 'kyazdani42/nvim-web-devicons', lazy = true },
-  { 'MunifTanjim/nui.nvim', lazy = true },
+  { 'kyazdani42/nvim-web-devicons' },
+  { 'MunifTanjim/nui.nvim' },
   'nvim-lua/plenary.nvim',
   'b0o/schemastore.nvim',
   'windwp/nvim-spectre', -- requires 'brew install gnu-sed'
