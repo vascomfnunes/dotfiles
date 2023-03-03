@@ -299,9 +299,14 @@ function M.config()
       u = { '<cmd>Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },
       r = { '<cmd>Gitsigns reset_hunk<cr>', 'Reset hunk' },
       l = { '<cmd>Gitsigns setloclist<cr>', 'View on loclist' },
-      c = { vim.cmd.GitConflictListQf, 'Conflicts' },
-      o = { vim.cmd.GitConflictChooseOurs, 'Choose ours (conflicts)' },
-      t = { vim.cmd.GitConflictChooseTheirs, 'Choose theirs (conflicts)' },
+      c = { require('diffview.actions').cycle_layout, 'Cycle through available diff layouts' },
+      ['['] = { require('diffview.actions').next_conflict, 'Jump to the next conflict' },
+      [']'] = { require('diffview.actions').prev_conflict, 'Jump to the previous conflict' },
+      o = { require('diffview.actions').conflict_choose 'ours', 'Choose the OURS version of a conflict' },
+      t = { require('diffview.actions').conflict_choose 'theirs', 'Choose the THEIRS version of a conflict' },
+      a = { require('diffview.actions').conflict_choose 'all', 'Choose ALL the versions of a conflict' },
+      B = { require('diffview.actions').conflict_choose 'base', 'Choose the BASE version of a conflict' },
+      d = { require('diffview.actions').conflict_choose 'none', 'Delete the conflict region' },
     },
     -- Finder
     ['<leader>f'] = {
