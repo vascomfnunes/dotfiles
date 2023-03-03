@@ -1,9 +1,3 @@
-urls-source "freshrss"
-freshrss-url "http://45.77.91.210:8080/api/greader.php"
-freshrss-min-items 500
-freshrss-flag-star "s"
-freshrss-login "vasco"
-freshrss-passwordeval "gpg --decrypt ~/.newsboat/freshrss-password.gpg"
 cookie-cache "~/.newsboat/cookies.txt"
 prepopulate-query-feeds yes
 browser open

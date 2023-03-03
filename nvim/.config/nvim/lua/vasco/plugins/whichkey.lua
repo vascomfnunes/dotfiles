@@ -114,12 +114,12 @@ function M.config()
       d = { vim.cmd.bwipeout, 'Remove buffer' },
     },
     -- Tabs
-    ['<leader>T'] = {
+    ['<leader><Tab>'] = {
       name = 'Tabs',
-      t = { vim.cmd.tabnew, 'New' },
+      n = { vim.cmd.tabnew, 'New' },
       c = { vim.cmd.tabclose, 'Close' },
-      n = { vim.cmd.tabnext, 'Next' },
-      p = { vim.cmd.tabprevious, 'Previous' },
+      [']'] = { vim.cmd.tabnext, 'Next' },
+      ['['] = { vim.cmd.tabprevious, 'Previous' },
     },
     -- Quick fix
     ['<leader>q'] = {

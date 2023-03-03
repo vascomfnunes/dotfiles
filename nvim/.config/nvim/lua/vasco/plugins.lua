@@ -4,7 +4,7 @@ return {
   { 'MunifTanjim/nui.nvim', lazy = true },
   'nvim-lua/plenary.nvim',
   'b0o/schemastore.nvim',
-  'windwp/nvim-spectre',
+  'windwp/nvim-spectre', -- requires 'brew install gnu-sed'
   {
     'utilyre/barbecue.nvim',
     version = '*',

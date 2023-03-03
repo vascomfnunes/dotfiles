@@ -8,7 +8,7 @@ if not vim.loop.fs_stat(lazypath) then
     'clone',
     '--filter=blob:none',
     'git@github.com:folke/lazy.nvim.git',
-    "--branch=stable", -- latest stable release
+    '--branch=stable', -- latest stable release
     lazypath,
   }
 end
@@ -20,7 +20,7 @@ local icons = require 'vasco.helpers.icons'
 -- load lazy
 require('lazy').setup('vasco.plugins', {
   defaults = { lazy = true },
-  checker = { enabled = true },
+  checker = { enabled = false },
   ui = {
     -- a number <1 is a percentage., >1 is a fixed size
     size = { width = 0.8, height = 0.8 },
@@ -45,6 +45,7 @@ require('lazy').setup('vasco.plugins', {
       disabled_plugins = {
         'gzip',
         'netrwPlugin',
+        'rplugin',
         'tarPlugin',
         'tohtml',
         'tutor',

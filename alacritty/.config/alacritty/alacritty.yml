@@ -20,13 +20,13 @@ font:
   bold_italic:
     family: MesloLGL Nerd Font
     style: Bold Italic
-  size: 14
+  size: 14.5
   offset:
     x: 0
-    'y': 0
+    y: 0
   glyph_offset:
     x: 0
-    'y': 0
+    y: 0
 mouse:
   hide_when_typing: true
 hints:

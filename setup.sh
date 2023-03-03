@@ -17,7 +17,7 @@ function main() {
 		mpv ncmpcpp htop newsboat tmux vifm w3m weechat imageoptim-cli \
     node go yarn wget git-delta gum universal-ctags ripgrep reattach-to-user-namespace \
     pinentry openssl gnupg jq go exa fd the_silver_searcher \
-    pandoc wget
+    pandoc wget gnu-sed
 
 	msg "Installing casks"
 	brew install --cask alacritty brave-browser appcleaner \

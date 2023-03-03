@@ -1,4 +1,5 @@
 local M = {
+  bg = '#282828',
   fg = '#d4be98',
   red = '#ea6962',
   yellow = '#d8a657',
