@@ -1,90 +1,20 @@
 {
-  "has_many": {
-    "prefix": "has_many",
-    "body": [
-      "has_many :${1:model}, dependent: :destroy"
-    ],
-    "description": "Add has_many association"
-  },
-  "has_many_through": {
-    "prefix": "has_many",
-    "body": [
-      "has_many :${1:model}, through: :${2:model}"
-    ],
-    "description": "Add has_many association thought another model"
-  },
-  "has_secure_password": {
-    "prefix": "has_secure_password",
-    "body": [
-      "has_secure_password"
-    ],
-    "description": "Add has_secure_password to use on a model with password_digest attribute"
-  },
-  "validates_presence_of": {
-    "prefix": "validates_presence",
-    "body": [
-      "validates_presence_of :${1:attribute}, on: :create, message: '${2:message}'"
-    ],
-    "description": "Validates presence of attribute"
-  },
-  "validates_length_of": {
-    "prefix": "validates_length",
-    "body": [
-      "validates_length_of :${1:attribute}, within: 5..10, on: :create, message: '${2:message}'"
-    ],
-    "description": "Validates length of attribute"
-  },
-  "validates_uniqueness_of": {
-    "prefix": "validates_uniqueness",
-    "body": [
-      "validates_uniqueness_of :${1:attribute}, on: :create"
-    ],
-    "description": "Validates uniqueness of attribute"
-  },
-  "redirect_to": {
-    "prefix": "redirect_to",
-    "body": [
-      "redirect_to ${1:route_path}"
-    ],
-    "description": "Add redirect_to a specific route path"
-  },
-  "before_action": {
-    "prefix": "before_action",
-    "body": [
-      "before_action :${1:method}"
-    ],
-    "description": "Append a callback before actions. If the callback renders or redirects, the action will not run. If there are additional callbacks scheduled to run after that callback, they are also cancelled."
-  },
-  "after_action": {
-    "prefix": "after_action",
-    "body": [
-      "after_action :${1:method}"
-    ],
-    "description": "Append a callback after actions"
-  },
-  "params.require": {
-    "prefix": "params.require",
-    "body": [
-      "params.require(:${1:model}).permit(:${2:model_property}, :${3:another_model_property})"
-    ],
-    "description": "Add permitted parameters"
-  },
-  "turbostream.broadcast.prepend": {
-    "prefix": "turbostream.broadcast.prepend",
+  "turbostream.broadcast_prepend": {
+    "prefix": "turbostream.broadcast_prepend",
     "body": [
       "broadcast_prepend_to(:${1:name}, partial: '${2:partial}')"
     ],
     "description": "Add turbostream broadcast prepend call"
   },
-  "turbostream.broadcast.remove": {
-    "prefix": "turbostream.broadcast.remove",
+  "turbostream.broadcast_remove": {
+    "prefix": "turbostream.broadcast_remove",
     "body": [
       "broadcast_remove_to(:${1:name})"
     ],
     "description": "Add turbostream broadcast remove call"
   },
-  "format.turbostream": {
-    "prefix": "format.turbostream",
+  "format.turbo_stream": {
+    "prefix": "format.turbo_stream",
     "body": [
       "format.turbo_stream { flash[:notice] = '${2:notice_text}' }"
     ],
@@ -103,20 +33,6 @@
       "flash[:error] = @post.errors.full_messages"
     ],
     "description": "Create a flash"
-  },
-  "find": {
-    "prefix": "find",
-    "body": [
-      "${1:Model}.find(${2:id}, order: :${3:asc|desc})"
-    ],
-    "description": "Find by id"
-  },
-  "find_by": {
-    "prefix": "find_by",
-    "body": [
-      "${1:Model}.find_by(${2:property}: '${3:value}', order: :${4:asc|desc})"
-    ],
-    "description": "Find by property"
   },
   "session": {
     "prefix": "session",
@@ -146,22 +62,8 @@
     ],
     "description": "Map an array with a join"
   },
-  "where": {
-    "prefix": "where",
-    "body": [
-      "${1:Model}.where(created_at: (Time.now.beginning_of_day..Time.now.end_of_day))"
-    ],
-    "description": "Where query"
-  },
-  "where.first.create": {
-    "prefix": "where.first.create",
-    "body": [
-      "${1:Model}.where(${2:property}: ${3:value}).first_or_create!"
-    ],
-    "description": "Where query that returns the first founded record or create a new one"
-  },
-  "helper.method": {
-    "prefix": "helper.method",
+  "helper_method": {
+    "prefix": "helper_method",
     "body": [
       "helper_method :${1:method_symbol}"
     ],

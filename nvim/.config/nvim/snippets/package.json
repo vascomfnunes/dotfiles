@@ -7,8 +7,20 @@
         "path": "./rails.json"
       },
       {
-        "language": "eruby",
-        "path": "./eruby.json"
+        "language": "ruby",
+        "path": "./rails_callbacks.json"
+      },
+      {
+        "language": "ruby",
+        "path": "./rails_controller.json"
+      },
+      {
+        "language": "ruby",
+        "path": "./rails_logger.json"
+      },
+      {
+        "language": "ruby",
+        "path": "./rails_models.json"
       },
       {
         "language": "ruby",
@@ -17,6 +29,10 @@
       {
         "language": "ruby",
         "path": "./faker.json"
+      },
+      {
+        "language": "eruby",
+        "path": "./eruby.json"
       },
       {
         "language": "eruby",
