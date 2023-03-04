@@ -313,6 +313,7 @@ function M.config()
     ['<leader>f'] = {
       name = 'Finder',
       f = { '<cmd>Telescope find_files hidden=true<cr>', 'Files' },
+      r = { '<cmd>Telescope resume<cr>', 'Resume' },
       n = { '<cmd>Telescope noice<cr>', 'Noice' },
       c = { '<cmd>Telescope colorscheme<cr>', 'Colorschemes' },
       g = { '<cmd>Telescope live_grep<cr>', 'Grep' },
