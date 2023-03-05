@@ -43,7 +43,7 @@ function main() {
   msg "Initializing Ruby"
   rbenv install 3.1.3
   rbenv global 3.1.3
-  gem install bundler solargraph solargraph-rails typecheck
+  gem install bundler solargraph solargraph-rails typecheck erb-formatter bundler-audit
   solargraph download-core
   yard gems -safe
 
