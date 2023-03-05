@@ -17,7 +17,7 @@ function main() {
 		mpv ncmpcpp htop newsboat tmux vifm w3m weechat imageoptim-cli \
     node go yarn wget git-delta gum universal-ctags ripgrep reattach-to-user-namespace \
     pinentry openssl gnupg jq go exa fd the_silver_searcher \
-    pandoc wget gnu-sed
+    pandoc wget gnu-sed rbenv ruby-build
 
 	msg "Installing casks"
 	brew install --cask alacritty brave-browser appcleaner \
@@ -36,6 +36,16 @@ function main() {
 
 	msg "Installing misc files"
 	cp misc/Pictures/vasco.jpeg ~/Pictures
+
+  msg "Initializing rbenv"
+  cd ~
+  eval "$(rbenv init -)"
+  msg "Initializing Ruby"
+  rbenv install 3.1.3
+  rbenv global 3.1.3
+  gem install bundler solargraph solargraph-rails typecheck
+  solargraph download-core
+  yard gems -safe
 
 	msg "Setup complete"
 	echo "Restart the terminal to complete installation."

@@ -155,9 +155,4 @@ export PASSWORD_STORE_DIR=$HOME/.password-store
 export GPG_TTY=$(tty)
 
 # rbenv for Ruby
-# export PATH="/usr/local/opt/ruby/bin:$PATH"
-# export PATH="$HOME/.rbenv/bin:$PATH"
-# eval "$(rbenv init -)"
-
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
+eval "$(rbenv init -)"
