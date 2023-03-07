@@ -64,6 +64,7 @@
   "telescope-lazy.nvim": { "branch": "main", "commit": "62b325696f33e338a820abe623bebc92ebf1786b" },
   "telescope.nvim": { "branch": "master", "commit": "a3f17d3baf70df58b9d3544ea30abe52a7a832c2" },
   "tmux-awesome-manager.nvim": { "branch": "master", "commit": "a2de54ad15d1cba548d6d493c0dd4e6c64ced77f" },
+  "todo-comments.nvim": { "branch": "main", "commit": "74c7d28cb50b0713c881ef69bcb6cdd77d8907d1" },
   "twilight.nvim": { "branch": "main", "commit": "9410252bed96887ca5a86bf16435a3a51a0e6ce5" },
   "vim-ragtag": { "branch": "master", "commit": "51b313e8a2e3a44f37b9d625bc0d461e9066b7e9" },
   "vim-rails": { "branch": "master", "commit": "959e94b76e6ebdf984acef61649ba7d0f62bd425" },

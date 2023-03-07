@@ -329,6 +329,7 @@ function M.config()
       q = { '<cmd>Telescope quickfix<cr>', 'Quickfix' },
       s = { '<cmd>Telescope possession list<cr>', 'Sessions' },
       p = { '<cmd>Telescope lazy<cr>', 'Plugins' },
+      t = { vim.cmd.TodoTelescope, 'View TODOs' },
     },
     -- Markdown
     ['<leader>m'] = {
