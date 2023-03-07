@@ -15,6 +15,14 @@ return {
     end,
   },
   {
+    'ggandor/leap.nvim',
+    event = 'VeryLazy',
+    config = function()
+      local leap = require 'leap'
+      leap.set_default_keymaps()
+    end,
+  },
+  {
     'folke/todo-comments.nvim',
     requires = 'nvim-lua/plenary.nvim',
     cmd = { 'TodoTelescope', 'TodoQuickFix' },
