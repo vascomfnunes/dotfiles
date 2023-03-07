@@ -25,7 +25,7 @@ return {
   {
     'folke/todo-comments.nvim',
     requires = 'nvim-lua/plenary.nvim',
-    cmd = { 'TodoTelescope', 'TodoQuickFix' },
+    event = 'VeryLazy',
     config = function()
       require('todo-comments').setup {}
     end,
