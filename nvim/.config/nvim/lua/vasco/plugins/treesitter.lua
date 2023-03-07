@@ -128,6 +128,14 @@ function M.config()
           ['<leader>A'] = '@parameter.inner',
         },
       },
+      lsp_interop = {
+        enable = true,
+        border = 'rounded',
+        peek_definition_code = {
+          ['<leader>cpf'] = '@function.outer',
+          ['<leader>cpc'] = '@class.outer',
+        },
+      },
     },
   }
 end

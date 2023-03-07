@@ -138,6 +138,11 @@ function M.config()
     -- Code
     ['<leader>c'] = {
       name = 'Code',
+      p = {
+        name = 'Peek',
+        c = { 'Class' },
+        f = { 'Function' },
+      },
       t = { '<c-]>', 'Goto to tag' },
       a = {
         function()
@@ -175,13 +180,13 @@ function M.config()
         end,
         'Line diagnostics',
       },
-      n = {
+      [']'] = {
         function()
           vim.diagnostic.goto_next()
         end,
         'Next diagnostic',
       },
-      p = {
+      ['['] = {
         function()
           vim.diagnostic.goto_prev()
         end,
