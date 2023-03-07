@@ -4,6 +4,23 @@ local M = {
 
 M.dependencies = {
   'nvim-treesitter/nvim-treesitter-textobjects',
+  {
+    'chrisgrieser/nvim-various-textobjs',
+    config = function()
+      require('various-textobjs').setup { useDefaultKeymaps = true }
+      -- indentation: ii,ai,aI,ci
+      -- value: iv,av
+      -- key: ik,ak
+      -- number: in,an
+      -- nearEoL: n
+      -- markdown link: il,al
+      -- css selector: ic,ac
+      -- rest of paragraph: r
+      -- entire buffer: gG
+      -- url: L
+      -- complete objects table: https://github.com/chrisgrieser/nvim-various-textobjs#list-of-text-objects
+    end,
+  },
   'JoosepAlviste/nvim-ts-context-commentstring',
   'RRethy/nvim-treesitter-endwise',
   'mrjones2014/nvim-ts-rainbow',
