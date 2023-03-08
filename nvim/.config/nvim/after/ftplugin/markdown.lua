@@ -8,5 +8,5 @@ vim.opt_local.wrap = true
 vim.opt_local.tw = 80
 vim.opt_local.formatoptions = 'tqlnwa'
 vim.opt_local.complete:append 'k'
-vim.opt_local.conceallevel = 1
+vim.opt_local.conceallevel = 0
 vim.opt_local.spell = true
