@@ -10,3 +10,5 @@ vim.opt_local.formatoptions = 'tqlnwa'
 vim.opt_local.complete:append 'k'
 vim.opt_local.conceallevel = 0
 vim.opt_local.spell = true
+
+vim.g.markdown_fenced_languages = { 'html', 'python', 'lua', 'ruby', 'typescript', 'javascript', 'bash', 'css' }
