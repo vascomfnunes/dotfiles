@@ -51,6 +51,9 @@ function Dark()
     DiagnosticFloatingWarning = { bg = 'NONE', fg = colors.yellow },
     DiagnosticFloatingHint = { bg = 'NONE', fg = colors.green },
     DiagnosticFloatingInfo = { bg = 'NONE', fg = colors.blue },
+    DiffChange = { bg = colors.green, fg = colors.bg },
+    DiffDelete = { bg = colors.red, fg = colors.bg },
+    DiffAdd = { bg = colors.yellow, fg = colors.bg },
   }
 
   set_highlights(highlights)
@@ -89,6 +92,9 @@ function Light()
     DiagnosticFloatingWarning = { bg = 'NONE', fg = colors.yellow },
     DiagnosticFloatingHint = { bg = 'NONE', fg = colors.green },
     DiagnosticFloatingInfo = { bg = 'NONE', fg = colors.blue },
+    DiffChange = { bg = colors.green, fg = colors.bg },
+    DiffDelete = { bg = colors.red, fg = colors.bg },
+    DiffAdd = { bg = colors.yellow, fg = colors.bg },
   }
 
   set_highlights(highlights)
