@@ -403,13 +403,13 @@ function M.config()
       c = { vim.cmd.Econtroller, 'Controller' },
       s = tmux_term.run_wk {
         cmd = 'bin/dev',
-        name = 'Rails Server 7',
+        name = 'Rails Server (with foreman)',
         visit_first_call = false,
         open_as = 'panel',
       },
       w = tmux_term.run_wk {
         cmd = 'bundle exec rails s',
-        name = 'Rails Server < 7',
+        name = 'Rails Server',
         visit_first_call = false,
         open_as = 'panel',
       },

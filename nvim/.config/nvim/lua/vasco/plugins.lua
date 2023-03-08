@@ -14,6 +14,7 @@ return {
       require('barbecue').setup()
     end,
   },
+  { 'princejoogie/tailwind-highlight.nvim', ft = { 'html', 'eruby' } },
   {
     'ggandor/leap.nvim',
     event = 'VeryLazy',

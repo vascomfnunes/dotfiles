@@ -110,6 +110,22 @@ function M.config()
     -- end,
   })
 
+  lsp.configure('tailwindcss', {
+    performance = {
+      trigger_debounce_time = 500,
+      throttle = 550,
+      fetching_timeout = 80,
+    },
+    on_attach = function(client, bufnr)
+      -- something here
+      require('tailwind-highlight').setup(client, bufnr, {
+        single_column = false,
+        mode = 'background',
+        debounce = 200,
+      })
+    end,
+  })
+
   lsp.nvim_workspace()
   lsp.setup()
 
@@ -117,7 +133,7 @@ function M.config()
   cmp.setup {
     sources = cmp.config.sources {
       { name = 'path' },
-      { name = 'nvim_lsp' },
+      { name = 'nvim_lsp', keyword_length = 3, group_index = 1, max_item_count = 30 },
       { name = 'luasnip' },
       { name = 'nvim_lua' },
       { name = 'buffer', keyword_length = 3 },
