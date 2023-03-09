@@ -1,16 +1,10 @@
-local M = {
+local icons = require 'vasco.helpers.icons'
+
+return {
   'TimUntersberger/neogit',
-}
-
-M.dependencies = 'sindrets/diffview.nvim'
-M.cmd = 'Neogit'
-
-function M.config()
-  local neogit = require 'neogit'
-
-  local icons = require 'vasco.helpers.icons'
-
-  neogit.setup {
+  dependencies = 'sindrets/diffview.nvim',
+  cmd = 'Neogit',
+  opts = {
     disable_signs = false,
     disable_context_highlighting = false,
     disable_commit_confirmation = false,
@@ -22,7 +16,5 @@ function M.config()
       hunk = { '', '' },
     },
     integrations = { diffview = true },
-  }
-end
-
-return M
+  },
+}

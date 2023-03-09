@@ -1,21 +1,15 @@
-local M = {
+return {
   'jedrzejboczar/possession.nvim',
-}
-
-M.cmd = {
-  'SessionSave',
-  'SessionLoad',
-  'SessionClose',
-  'SessionDelete',
-  'SessionShow',
-  'SessionList',
-  'SessionMigrate',
-}
-
-function M.config()
-  local possession = require 'possession'
-
-  possession.setup {
+  cmd = {
+    'SessionSave',
+    'SessionLoad',
+    'SessionClose',
+    'SessionDelete',
+    'SessionShow',
+    'SessionList',
+    'SessionMigrate',
+  },
+  opts = {
     commands = {
       save = 'SessionSave',
       load = 'SessionLoad',
@@ -25,7 +19,5 @@ function M.config()
       list = 'SessionList',
       migrate = 'SessionMigrate',
     },
-  }
-end
-
-return M
+  },
+}

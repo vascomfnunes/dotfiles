@@ -1,12 +1,7 @@
-local M = {
+return {
   'stevearc/aerial.nvim',
   cmd = 'AerialToggle',
-}
-
-function M.config()
-  local aerial = require 'aerial'
-
-  aerial.setup {
+  opts = {
     attach_mode = 'global',
     backends = { 'lsp', 'treesitter', 'markdown' },
     layout = {
@@ -34,7 +29,5 @@ function M.config()
       ['<C-l>'] = 'actions.tree_open',
       ['<C-h>'] = 'actions.tree_close',
     },
-  }
-end
-
-return M
+  },
+}

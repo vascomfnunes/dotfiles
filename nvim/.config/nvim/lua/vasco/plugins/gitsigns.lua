@@ -1,10 +1,7 @@
-local M = {
+return {
   'lewis6991/gitsigns.nvim',
   event = 'BufReadPost',
-}
-
-function M.config()
-  require('gitsigns').setup {
+  opts = {
     signs = {
       add = { text = '+' },
       change = { text = '~' },
@@ -12,7 +9,5 @@ function M.config()
       topdelete = { text = '‾' },
       changedelete = { text = '~' },
     },
-  }
-end
-
-return M
+  },
+}

@@ -1,16 +1,9 @@
-local M = {
+local icons = require 'vasco.helpers.icons'
+
+return {
   'kosayoda/nvim-lightbulb',
-}
-
-M.event = 'BufReadPost'
-
-function M.config()
-  local bulb = require 'nvim-lightbulb'
-  local icons = require 'vasco.helpers.icons'
-
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
-
-  bulb.setup {
+  event = 'BufReadPost',
+  opts = {
     -- LSP client names to ignore
     ignore = { 'lua' },
     sign = {
@@ -28,9 +21,9 @@ function M.config()
       pattern = { '*' },
       events = { 'CursorHold', 'CursorHoldI' },
     },
-  }
-
-  vim.fn.sign_define('LightBulbSign', { text = icons.bulb, texthl = 'LightBulbSign', linehl = '', numhl = '' })
-end
-
-return M
+  },
+  config = function()
+    vim.fn.sign_define('LightBulbSign', { text = icons.bulb, texthl = 'LightBulbSign', linehl = '', numhl = '' })
+    vim.cmd [[autocmd CursorHold,CursorHoldI * lua require('nvim-lightbulb').update_lightbulb()]]
+  end,
+}

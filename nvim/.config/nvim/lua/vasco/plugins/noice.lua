@@ -1,13 +1,7 @@
-local M = {
+return {
   'folke/noice.nvim',
-}
-
-M.event = 'VeryLazy'
-
-function M.config()
-  local noice = require 'noice'
-
-  noice.setup {
+  event = 'VeryLazy',
+  opts = {
     messages = {
       enabled = true,
       view = nil,
@@ -73,7 +67,5 @@ function M.config()
         opts = { skip = true },
       },
     },
-  }
-end
-
-return M
+  },
+}

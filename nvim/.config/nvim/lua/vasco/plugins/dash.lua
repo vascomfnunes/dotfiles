@@ -1,11 +1,8 @@
-local M = {
+return {
   'mrjones2014/dash.nvim',
   build = 'make install',
   cmd = { 'Dash', 'DashWord' },
-}
-
-function M.config()
-  require('dash').setup {
+  opts = {
     dash_app_path = '/Applications/Dash.app',
     -- search engine to fall back to when Dash has no results, must be one of: 'ddg', 'duckduckgo', 'startpage', 'google'
     search_engine = 'ddg',
@@ -16,7 +13,5 @@ function M.config()
       javascriptreact = { 'javascript', 'react' },
       ruby = { 'ruby', 'rails', 'rspec' },
     },
-  }
-end
-
-return M
+  },
+}

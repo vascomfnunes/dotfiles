@@ -30,8 +30,6 @@ M.build = ':TSUpdate'
 M.event = 'BufEnter'
 
 function M.config()
-  local colors = require 'vasco.helpers.colors'
-
   require('nvim-treesitter.configs').setup {
     -- Add languages to be installed here that you want installed for treesitter
     ensure_installed = {

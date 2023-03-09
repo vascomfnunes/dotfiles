@@ -1,16 +1,10 @@
-local M = {
+local personal = vim.fn.expand '~/notes'
+local work = vim.fn.expand '~/workspace/notes'
+
+return {
   'renerocksai/telekasten.nvim',
-}
-
-M.cmd = 'Telekasten'
-
-function M.config()
-  local telekasten = require 'telekasten'
-
-  local personal = vim.fn.expand '~/notes'
-  local work = vim.fn.expand '~/workspace/notes'
-
-  telekasten.setup {
+  cmd = 'Telekasten',
+  opts = {
     home = personal,
     dailies = personal .. '/daily',
     weeklies = personal .. '/weekly',
@@ -39,7 +33,5 @@ function M.config()
         template_new_weekly = work .. '/templates/weekly.md',
       },
     },
-  }
-end
-
-return M
+  },
+}

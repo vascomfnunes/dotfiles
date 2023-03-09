@@ -1,13 +1,7 @@
-local M = {
+return {
   'lukas-reineke/indent-blankline.nvim',
-}
-
-M.event = { 'BufReadPost', 'BufNewFile' }
-
-function M.config()
-  local indent = require 'indent_blankline'
-
-  indent.setup {
+  event = { 'BufReadPost', 'BufNewFile' },
+  opts = {
     buftype_exclude = { 'terminal', 'nofile' },
     filetype_exclude = {
       'help',
@@ -49,7 +43,5 @@ function M.config()
       'import_statement',
       'operation_type',
     },
-  }
-end
-
-return M
+  },
+}

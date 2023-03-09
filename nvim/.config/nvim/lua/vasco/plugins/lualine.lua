@@ -1,40 +1,36 @@
 local colors = require 'vasco.helpers.colors'
 local icons = require 'vasco.helpers.icons'
 
-local M = {
-  'nvim-lualine/lualine.nvim',
+local lsp = {
+  function()
+    local msg = 'LS Inactive'
+    local buf_clients = vim.lsp.buf_get_clients()
+
+    if next(buf_clients) == nil then
+      if type(msg) == 'boolean' or #msg == 0 then
+        return 'LS Inactive'
+      end
+      return msg
+    end
+
+    local buf_client_names = {}
+
+    for _, client in pairs(buf_clients) do
+      table.insert(buf_client_names, client.name)
+    end
+
+    local unique_client_names = vim.fn.uniq(buf_client_names)
+    local language_servers = '[' .. table.concat(unique_client_names, ', ') .. ']'
+
+    return language_servers
+  end,
+  color = { fg = colors.grey },
 }
 
-M.event = 'VeryLazy'
-
-function M.config()
-  local lsp = {
-    function()
-      local msg = 'LS Inactive'
-      local buf_clients = vim.lsp.buf_get_clients()
-
-      if next(buf_clients) == nil then
-        if type(msg) == 'boolean' or #msg == 0 then
-          return 'LS Inactive'
-        end
-        return msg
-      end
-
-      local buf_client_names = {}
-
-      for _, client in pairs(buf_clients) do
-        table.insert(buf_client_names, client.name)
-      end
-
-      local unique_client_names = vim.fn.uniq(buf_client_names)
-      local language_servers = '[' .. table.concat(unique_client_names, ', ') .. ']'
-
-      return language_servers
-    end,
-    color = { fg = colors.grey },
-  }
-
-  require('lualine').setup {
+return {
+  'nvim-lualine/lualine.nvim',
+  event = 'VeryLazy',
+  config = {
     options = {
       theme = 'auto',
       component_separators = { left = '', right = '' },
@@ -91,7 +87,5 @@ function M.config()
       lualine_z = {},
     },
     extensions = { 'nvim-tree' },
-  }
-end
-
-return M
+  },
+}
