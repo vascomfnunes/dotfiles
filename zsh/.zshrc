@@ -110,6 +110,7 @@ alias diff='diff --color=auto'
 alias grep="grep --color=auto --exclude-dir={.git,artwork,node_modules,vendor}"
 alias rspec='rspec -f d'
 alias music='ncmpcpp'
+alias yarn_interactive_upgrade='yarn upgrade-interactive --latest'
 
 # Git
 alias gP="git push"

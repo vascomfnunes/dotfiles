@@ -22,6 +22,7 @@ M = {
   symlink = ' ',
   search = '   ',
   breadcrumb = '壟',
+  git = ' ',
 }
 
 return M

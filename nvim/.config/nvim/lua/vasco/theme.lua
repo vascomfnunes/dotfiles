@@ -54,6 +54,10 @@ function Dark()
     DiffChange = { bg = colors.green, fg = colors.bg },
     DiffDelete = { bg = colors.red, fg = colors.bg },
     DiffAdd = { bg = colors.yellow, fg = colors.bg },
+    NeoTreeTabActive = { bg = colors.green, fg = colors.bg },
+    NeoTreeTabInactive = { bg = colors.dark_grey, fg = colors.fg },
+    NeoTreeTabSeparatorInactive = { bg = 'NONE', fg = 'NONE' },
+    NeoTreeTabSeparatorActive = { bg = 'NONE', fg = 'NONE' },
   }
 
   set_highlights(highlights)

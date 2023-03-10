@@ -32,11 +32,21 @@ return {
     },
   },
   cmd = 'Neotree',
-  config = function()
+  init = function()
     vim.g.neo_tree_remove_legacy_commands = 1
-
+  end,
+  config = function()
     require('neo-tree').setup {
-      close_if_last_window = false, -- Close Neo-tree if it is the last window left in the tab
+      close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+      source_selector = {
+        winbar = true,
+        content_layout = 'center',
+        tab_labels = {
+          filesystem = icons.folder_closed .. ' Files',
+          buffers = icons.document .. ' Buffers',
+          git_status = icons.git .. ' Git',
+        },
+      },
       popup_border_style = 'rounded',
       enable_git_status = true,
       enable_diagnostics = true,
