@@ -5,6 +5,7 @@ return {
     buftype_exclude = { 'terminal', 'nofile' },
     filetype_exclude = {
       'help',
+      'aerial',
       'terminal',
       'lspinfo',
       'TelescopePrompt',
