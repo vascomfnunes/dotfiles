@@ -172,6 +172,9 @@ return {
           end
         end, { 'i', 's' }),
       },
+      completion = {
+        completeopt = 'menu,menuone',
+      },
       window = {
         completion = {
           border = 'rounded',
