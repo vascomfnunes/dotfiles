@@ -20,7 +20,7 @@ font:
   bold_italic:
     family: MesloLGL Nerd Font
     style: Bold Italic
-  size: 14.5
+  size: 15
   offset:
     x: 0
     y: 0
