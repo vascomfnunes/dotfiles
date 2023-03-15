@@ -6,7 +6,7 @@
 [includeIf "gitdir:~/repos/"]
     path = ~/repos/.gitconfig
 [core]
-  excludesfile = /Users/vasco.nunes/.gitignore_global
+  excludesfile = ~/.gitignore_global
   editor = nvim
   pager = delta
 [interactive]
