@@ -148,12 +148,68 @@
     ],
     "description": "Validates length of attribute"
   },
+  "validates_length": {
+    "prefix": "validates_length",
+    "body": [
+      "validates :${1:attribute}, length: { minimum: ${2:minimum}, maximum: ${3:maximum} }"
+    ],
+    "description": "This helper validates the length of the attributes' values. It provides a variety of options, so you can specify length constraints in different ways. See https://guides.rubyonrails.org/active_record_validations.html#length"
+  },
+  "validates_numericality": {
+    "prefix": "validates_numericality",
+    "body": [
+      "validates :${1:attribute}, numericality: { only_integer: ${2:true} }"
+    ],
+    "description": "This helper validates that your attributes have only numeric values. By default, it will match an optional sign followed by an integer or floating point number. To specify that only integer numbers are allowed, set :only_integer to true. See https://guides.rubyonrails.org/active_record_validations.html#numericality"
+  },
   "validates_uniqueness_of": {
     "prefix": "validates_uniqueness_of",
     "body": [
       "validates_uniqueness_of :${1:attribute}, on: :create"
     ],
     "description": "Validates uniqueness of attribute"
+  },
+  "validates_presence": {
+    "prefix": "validates_presence",
+    "body": [
+      "validates :${1:attribute}, presence: true"
+    ],
+    "description": "Validates attribute. See https://guides.rubyonrails.org/active_record_validations.html"
+  },
+  "validates_confirmation": {
+    "prefix": "validates_confirmation",
+    "body": [
+      "validates :${1:attribute}, confirmation: true"
+    ],
+    "description": "You should use this helper when you have two text fields that should receive exactly the same content. For example, you may want to confirm an email address or a password. This validation creates a virtual attribute whose name is the name of the field that has to be confirmed with '_confirmation' appended. See https://guides.rubyonrails.org/active_record_validations.html#confirmation"
+  },
+  "validates_comparison": {
+    "prefix": "validates_comparison",
+    "body": [
+      "validates :${1:attribute}, comparison: { greater_than: ${2:value} }"
+    ],
+    "description": "This check will validate a comparison between any two comparable values. The validator requires a compare option be supplied. Each option accepts a value, proc, or symbol. Any class that includes Comparable can be compared. See https://guides.rubyonrails.org/active_record_validations.html#comparison"
+  },
+  "validates_exclusion": {
+    "prefix": "validates_exclusion",
+    "body": [
+      "validates :${1:attribute}, exclusion: { in: %w(www us ca jp), message: '%{value} is reserved.' }"
+    ],
+    "description": "This helper validates that the attributes' values are not included in a given set. In fact, this set can be any enumerable object. See https://guides.rubyonrails.org/active_record_validations.html#exclusion"
+  },
+  "validates_inclusion": {
+    "prefix": "validates_inclusion",
+    "body": [
+      "validates :${1:attribute}, inclusion: { in: %w(www us ca jp), message: '%{value} is not valid.' }"
+    ],
+    "description": "This helper validates that the attributes' values are included in a given set. In fact, this set can be any enumerable object. The inclusion helper has an option :in that receives the set of values that will be accepted. The :in option has an alias called :within that you can use for the same purpose, if you'd like to. The previous example uses the :message option to show how you can include the attribute's value. See https://guides.rubyonrails.org/active_record_validations.html#inclusion"
+  },
+  "validates_format": {
+    "prefix": "validates_format",
+    "body": [
+      "validates :${1:attribute}, format: { with: '${2:condition_value}', message: 'only allows something' }"
+    ],
+    "description": "This helper validates the attributes' values by testing whether they match a given regular expression, which is specified using the :with option. See https://guides.rubyonrails.org/active_record_validations.html#format"
   },
   "scope where": {
     "prefix": "scope",

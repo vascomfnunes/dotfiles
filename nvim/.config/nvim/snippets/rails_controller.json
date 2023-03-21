@@ -6,12 +6,22 @@
     ],
     "description": "Add redirect_to a specific route path"
   },
-  "respond_to": {
-    "prefix": "respond_to",
+  "respond_to_json": {
+    "prefix": "respond_to_json",
     "body": [
       "respond_to do |format|",
       "  format.html",
       "  format.json { render json: @${1:resource} }",
+      "end"
+    ],
+    "description": "An action implicitly responds to all formats, but formats can also be explicitly enumerated."
+  },
+  "respond_to_turbo_stream": {
+    "prefix": "respond_to_turbo_stream",
+    "body": [
+      "respond_to do |format|",
+      "  format.html",
+      "  format.turbo_stream { flash.now[:notice] = '${1:message}' }",
       "end"
     ],
     "description": "An action implicitly responds to all formats, but formats can also be explicitly enumerated."
@@ -36,5 +46,12 @@
       "params.require(:${1:model}).permit(:${2:model_property}, :${3:another_model_property})"
     ],
     "description": "Add permitted parameters"
+  },
+  "status_unprocessable_entity": {
+    "prefix": "status:",
+    "body": [
+      "status: :unprocessable_entity"
+    ],
+    "description": "Add unprocessable_entity status"
   }
 }
