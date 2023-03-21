@@ -28,11 +28,6 @@
   plus-style = "#3c3836" bold ul "#a9b665"
   line-numbers-minus-style = "#ea6962"
   line-numbers-plus-style = "#a9b665"
-[merge]
-	conflictstyle = diff3
-	tool = vimdiff
-[mergetool]
-  path = nvim
 [commit]
   template = ~/.gitmessage
   gpgsign = true
@@ -40,3 +35,17 @@
   gpgsign = true
 [init]
   defaultBranch = main
+[diff]
+  tool = nvimdiff
+  colorMoved = default
+[difftool]
+  prompt = false
+[difftool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+[merge]
+  tool = nvimdiff
+  conflictstyle = diff3
+[mergetool]
+  prompt = true
+[mergetool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
