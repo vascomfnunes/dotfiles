@@ -3,7 +3,6 @@ env:
   TERM: alacritty
 tabspaces: 2
 window:
-  # Spread additional padding evenly around the terminal content.
   dynamic_padding: true
 font:
   normal:
@@ -21,10 +20,10 @@ font:
   size: 15
   offset:
     x: 0
-    y: 0
+    'y': 0
   glyph_offset:
     x: 0
-    y: 0
+    'y': 0
 mouse:
   hide_when_typing: true
 hints:
@@ -39,11 +38,11 @@ selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
   save_to_clipboard: true
 shell:
- program: /bin/zsh
- args:
-   - -l
-   - -c
-   - "tmux attach || tmux"
+  program: /bin/zsh
+  args:
+    - '-l'
+    - '-c'
+    - tmux attach || tmux
 colors:
   primary:
     background: '0x282828'
