@@ -21,3 +21,8 @@ Thumbs.db
 
 # Rails
 .bundle/
+
+# Misc
+
+node_modules
+.env
