@@ -1,3 +1,8 @@
+# nvm - should be exported BEFORE the nvm plugin
+export NVM_DIR="$HOME/.nvm"
+export NVM_COMPLETION=true
+export NVM_LAZY_LOAD=true
+
 # Clone zcomet if necessary
 if [[ ! -f ${ZDOTDIR:-${HOME}}/.zcomet/bin/zcomet.zsh ]]; then
   command git clone https://github.com/agkozak/zcomet.git ${ZDOTDIR:-${HOME}}/.zcomet/bin
@@ -15,6 +20,9 @@ zcomet load agkozak/zsh-z
 zcomet load zsh-users/zsh-completions
 zcomet load hlissner/zsh-autopair
 zcomet trigger yarn buonomo/yarn-extra-completion
+zcomet load lukechilds/zsh-nvm # lazyload nvm
+zcomet load davidparsson/zsh-pyenv-lazy # lazyload pyenv
+zcomet load kadaan/zsh-rbenv-lazy # lazyload rbenv
 
 # This ones last, and in this order
 zcomet load zsh-users/zsh-syntax-highlighting
@@ -147,6 +155,3 @@ source ~/.env_variables
 
 # GPG
 export GPG_TTY=$(tty)
-
-# rbenv for Ruby
-eval "$(rbenv init -)"
