@@ -58,6 +58,7 @@ setopt HIST_VERIFY               # Do not execute immediately upon history expan
 export ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=#5b534d'
 
 # fzf
+# After installing fzf with Homebrew, run '/opt/homebrew/opt/fzf/install'
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 export FZF_DEFAULT_COMMAND='rg --files --hidden --glob "!.git"'
@@ -125,6 +126,7 @@ alias gl='git log'
 alias ga="git add"
 alias gd="git diff"
 alias lg="lazygit"
+alias gclean="git clean -f -d"
 
 # Tmux
 alias t="tmux -u"
@@ -135,12 +137,6 @@ alias tks="tmux kill-session -t"
 # Weechat (workaround for downloading script list under macOS)
 alias weechat="OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES weechat"
 
-# mpd
-alias mpd_cover="~/bin/mpd_cover/mpd_cover.rb"
-
-# mpv
-alias tv='mpv http://192.168.1.52:9981/playlist/channels.m3u --no-terminal'
-
 # ctags
 # For now, I just care about Rails projects
 # where LSP is not so great for Gems&Co and tags deliver a much better job...
@@ -148,9 +144,6 @@ alias ctags='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript
 
 # source environment variables that we do not want in source control
 source ~/.env_variables
-
-# password store - install 'pip3 install cpass' for pass's TUI frontend
-export PASSWORD_STORE_DIR=$HOME/.password-store
 
 # GPG
 export GPG_TTY=$(tty)

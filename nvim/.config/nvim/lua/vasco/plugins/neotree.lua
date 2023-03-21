@@ -71,7 +71,7 @@ return {
         icon = {
           folder_closed = icons.folder_closed,
           folder_open = icons.folder_open,
-          folder_empty = 'ﰊ',
+          folder_empty = icons.folder_empty,
           -- The next two settings are only a fallback, if you use nvim-web-devicons and configure default icons there
           -- then these will never be used.
           default = '*',
@@ -89,16 +89,16 @@ return {
         git_status = {
           symbols = {
             -- Change type
-            added = '', -- or "✚", but this is redundant info if you use git_status_colors on the name
-            modified = '', -- or "", but this is redundant info if you use git_status_colors on the name
-            deleted = icons.error, -- this can only be used in the git_status source
+            added = icons.git_add, -- or "✚", but this is redundant info if you use git_status_colors on the name
+            modified = icons.git_change, -- or "", but this is redundant info if you use git_status_colors on the name
+            deleted = icons.git_delete, -- this can only be used in the git_status source
             renamed = icons.right_arrow, -- this can only be used in the git_status source
             -- Status type
-            untracked = icons.question,
+            untracked = icons.git_untracked,
             ignored = '',
-            unstaged = '',
-            staged = '',
-            conflict = '',
+            unstaged = icons.error,
+            staged = icons.check,
+            conflict = icons.git_conflict,
           },
         },
       },

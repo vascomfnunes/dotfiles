@@ -94,7 +94,7 @@ return {
       'dockerls',
       'docker_compose_language_service',
       'rust_analyzer',
-      'tailwindcss',
+      -- 'tailwindcss',
     }
 
     lsp.configure('jsonls', {
@@ -112,20 +112,28 @@ return {
       -- end,
     })
 
-    lsp.configure('tailwindcss', {
-      performance = {
-        trigger_debounce_time = 500,
-        throttle = 550,
-        fetching_timeout = 80,
+    -- lsp.configure('tailwindcss', {
+    --   performance = {
+    --     trigger_debounce_time = 500,
+    --     throttle = 550,
+    --     fetching_timeout = 80,
+    --   },
+    --   on_attach = function(client, bufnr)
+    --     -- something here
+    --     require('tailwind-highlight').setup(client, bufnr, {
+    --       single_column = false,
+    --       mode = 'background',
+    --       debounce = 200,
+    --     })
+    --   end,
+    -- })
+
+    lsp.configure('yamlls', {
+      settings = {
+        yaml = {
+          schemas = require('schemastore').yaml.schemas(),
+        },
       },
-      on_attach = function(client, bufnr)
-        -- something here
-        require('tailwind-highlight').setup(client, bufnr, {
-          single_column = false,
-          mode = 'background',
-          debounce = 200,
-        })
-      end,
     })
 
     lsp.nvim_workspace()
@@ -252,7 +260,6 @@ return {
       'stylua',
       'shellcheck',
       'shfmt',
-      'yamlfmt',
       'rustfmt',
       'gitlint',
       'jsonlint',
@@ -289,8 +296,6 @@ return {
     table.insert(sources, null_ls.builtins.diagnostics.markdownlint)
     table.insert(sources, null_ls.builtins.diagnostics.gitlint)
     table.insert(sources, null_ls.builtins.formatting.markdownlint)
-    table.insert(sources, null_ls.builtins.diagnostics.yamllint)
-    table.insert(sources, null_ls.builtins.formatting.yamlfmt)
     table.insert(sources, null_ls.builtins.diagnostics.stylelint) -- npm install -g stylelint stylelint-config-standard stylelint-config-sass-guidelines stylelint-selector-bem-pattern postcss-scss
     table.insert(sources, null_ls.builtins.formatting.stylelint)
     table.insert(sources, null_ls.builtins.formatting.shfmt)

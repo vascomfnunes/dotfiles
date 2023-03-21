@@ -78,6 +78,8 @@ return {
         end,
         'Toggle file explorer',
       },
+      ['<leader>w'] = { '<cmd>set wrap<cr>', 'Set wrap' },
+      ['<leader>W'] = { '<cmd>set nowrap<cr>', 'Unset wrap' },
       -- Spell
       ['z='] = { '<cmd>Telescope spell_suggest<cr>', 'Spell suggestions' },
       -- Navigation
