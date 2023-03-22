@@ -1,3 +1,5 @@
+local config = require 'vasco.config'
+
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
@@ -22,7 +24,7 @@ return {
         },
         size = 'auto',
         border = {
-          style = 'rounded',
+          style = config.border_style,
         },
         zindex = 20,
         win_options = {

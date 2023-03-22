@@ -1,5 +1,6 @@
 local colors = require 'vasco.helpers.colors'
 local icons = require 'vasco.helpers.icons'
+local config = require 'vasco.config'
 
 return {
   'nvim-neo-tree/neo-tree.nvim',
@@ -47,7 +48,7 @@ return {
           git_status = icons.git .. ' Git',
         },
       },
-      popup_border_style = 'rounded',
+      popup_border_style = config.border_style,
       enable_git_status = true,
       enable_diagnostics = true,
       default_component_configs = {

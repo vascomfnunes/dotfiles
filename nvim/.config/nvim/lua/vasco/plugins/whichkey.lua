@@ -1,3 +1,5 @@
+local config = require 'vasco.config'
+
 return {
   'folke/which-key.nvim',
   keys = { '<leader>' },
@@ -13,7 +15,7 @@ return {
         group = icons.plus, -- symbol prepended to a group
       },
       window = {
-        border = 'rounded', -- none, single, double, shadow
+        border = config.border_style, -- none, single, double, shadow
         position = 'bottom', -- bottom, top
         margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
         padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]

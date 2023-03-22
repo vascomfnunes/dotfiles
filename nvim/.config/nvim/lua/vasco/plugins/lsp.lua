@@ -1,3 +1,5 @@
+local config = require 'vasco.config'
+
 return {
   'VonHeikemen/lsp-zero.nvim',
   dependencies = {
@@ -185,11 +187,11 @@ return {
       },
       window = {
         completion = {
-          border = 'rounded',
+          border = config.border_style,
           winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
         },
         documentation = {
-          border = 'rounded',
+          border = config.border_style,
           winhighlight = 'FloatBorder:FloatBorder',
         },
       },
@@ -226,11 +228,11 @@ return {
     })
 
     -- Lsp handlers
-    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = 'rounded' })
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = config.border_style })
 
     vim.diagnostic.config {
       float = {
-        border = 'rounded',
+        border = config.border_style,
       },
     }
 
@@ -246,7 +248,7 @@ return {
 
     mason_settings.set {
       ui = {
-        border = 'rounded',
+        border = config.border_style,
         icons = {
           package_installed = icons.check,
           package_pending = icons.cog,

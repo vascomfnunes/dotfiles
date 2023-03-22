@@ -1,3 +1,5 @@
+local config = require 'vasco.config'
+
 return {
   'nvim-treesitter/nvim-treesitter',
   dependencies = {
@@ -125,7 +127,7 @@ return {
         },
         lsp_interop = {
           enable = true,
-          border = 'rounded',
+          border = config.border_style,
           peek_definition_code = {
             ['<leader>cpf'] = '@function.outer',
             ['<leader>cpc'] = '@class.outer',
