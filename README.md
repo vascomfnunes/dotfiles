@@ -1,9 +1,8 @@
 # Vasco's dotfiles
 
 I currently use [Alacritty](https://github.com/alacritty/alacritty) under macOS with
-the **Zsh** shell and a configuration based on [zcomet](https://zcomet.io/). My
-colour theme is Gruvbox Material Medium and my font is a patched Meslo Nerd
-font.
+the **Fish** shell. My colour theme is Gruvbox Material Medium and my font is a
+patched Meslo Nerd font.
 
 - **Tmux** is my terminal multiplexer
 - **Neovim** is my editor of choice

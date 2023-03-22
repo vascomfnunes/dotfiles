@@ -37,12 +37,6 @@ hints:
 selection:
   semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
   save_to_clipboard: true
-# shell:
-#   program: /usr/local/bin/fish
-#   args:
-#     - '-l'
-#     - '-c'
-#     - tmux attach || tmux
 colors:
   primary:
     background: '0x282828'
