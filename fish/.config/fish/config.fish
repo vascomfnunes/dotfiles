@@ -5,6 +5,9 @@ end
 # Vim mode
 fish_vi_key_bindings
 
+# Add homebrew to the path
+set -U fish_user_paths /opt/homebrew/bin/ $fish_user_paths
+
 alias vi='nvim'
 alias v='fd --type f --hidden --exclude .git --exclude .cache --exclude Library --exclude .local | fzf-tmux -p --reverse | xargs nvim'
 alias ls='exa --icons'
