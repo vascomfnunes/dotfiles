@@ -29,3 +29,9 @@ weechat/.config/weechat
 !/weechat/.config/weechat/irc.conf
 *.log
 *.gpg
+fish/.config/fish/completions
+fish/.config/fish/conf.d
+fish/.config/fish/fish_variables
+fish/.config/fish/functions
+tmux/.tmux/plugins
+alacritty/.config/alacritty/*.bak

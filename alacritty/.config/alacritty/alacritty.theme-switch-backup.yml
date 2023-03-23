@@ -59,4 +59,4 @@ colors:
     magenta: '0x945e80'
     cyan: '0x4c7a5d'
     white: '0xeee0b7'
-theme: gruvbox_material_medium_dark
+theme: Monokai-Pro
