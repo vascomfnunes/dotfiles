@@ -223,13 +223,6 @@ return {
         o = { vim.cmd.AerialToggle, 'Outline' },
         g = { vim.cmd.Neogen, 'Generate documentation' },
       },
-      ['<leader>p'] = {
-        name = 'Co-pilot',
-        e = { '<cmd>Copilot enable<cr>', 'Enable' },
-        d = { '<cmd>Copilot disable<cr>', 'Disable' },
-        s = { '<cmd>Copilot split<cr>', 'Split' },
-        p = { '<cmd>Copilot panel<cr>', 'Panel' },
-      },
       -- Debug
       ['<leader>d'] = {
         name = 'Debug',
