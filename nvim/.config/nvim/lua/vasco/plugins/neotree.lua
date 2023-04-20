@@ -42,11 +42,6 @@ return {
       source_selector = {
         winbar = true,
         content_layout = 'center',
-        tab_labels = {
-          filesystem = icons.folder_closed .. ' Files',
-          buffers = icons.document .. ' Buffers',
-          git_status = icons.git .. ' Git',
-        },
       },
       popup_border_style = config.border_style,
       enable_git_status = true,
