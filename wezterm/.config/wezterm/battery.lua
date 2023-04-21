@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
+local colorscheme = require 'colorscheme'
 local fonts = wezterm.nerdfonts
-local theme = 'Tomorrow Night Eighties'
-local colors = wezterm.color.get_builtin_schemes()[theme]
+local colors = colorscheme.theme.config.colors
 local module = {}
 
 module.get = function()

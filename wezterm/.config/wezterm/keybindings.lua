@@ -47,6 +47,16 @@ local function split_nav(resize_or_move, key)
 end
 
 return {
+  -- move between split panes
+  split_nav('move', 'h'),
+  split_nav('move', 'j'),
+  split_nav('move', 'k'),
+  split_nav('move', 'l'),
+  -- resize panes
+  split_nav('resize', 'h'),
+  split_nav('resize', 'j'),
+  split_nav('resize', 'k'),
+  split_nav('resize', 'l'),
   {
     key = 's',
     mods = 'LEADER',
@@ -70,7 +80,7 @@ return {
   { key = 'c', mods = 'LEADER', action = action { SpawnTab = 'CurrentPaneDomain' } },
   { key = 'q', mods = 'CTRL', action = action { CloseCurrentPane = { confirm = true } } },
   { key = ' ', mods = 'LEADER', action = 'QuickSelect' },
-  { key = 'f', mods = 'LEADER', action = 'ToggleFullScreen' },
+  { key = 'f', mods = 'SUPER', action = 'ToggleFullScreen' },
   { key = '1', mods = 'SUPER', action = action { ActivateTab = 0 } },
   { key = '2', mods = 'SUPER', action = action { ActivateTab = 1 } },
   { key = '3', mods = 'SUPER', action = action { ActivateTab = 2 } },
@@ -83,14 +93,22 @@ return {
   { key = 'c', mods = 'SUPER', action = action { CopyTo = 'Clipboard' } },
   { key = 'v', mods = 'SUPER', action = action { PasteFrom = 'Clipboard' } },
   { key = 'w', mods = 'LEADER', action = wezterm.action.ShowTabNavigator },
-  -- move between split panes
-  split_nav('move', 'h'),
-  split_nav('move', 'j'),
-  split_nav('move', 'k'),
-  split_nav('move', 'l'),
-  -- resize panes
-  split_nav('resize', 'h'),
-  split_nav('resize', 'j'),
-  split_nav('resize', 'k'),
-  split_nav('resize', 'l'),
+  -- search
+  { key = '/', mods = 'LEADER', action = action.Search 'CurrentSelectionOrEmptyString' },
+  {
+    key = 'n',
+    mods = 'LEADER',
+    action = action.Multiple {
+      action.CopyMode 'NextMatch',
+      action.CopyMode 'ClearSelectionMode',
+    },
+  },
+  {
+    key = 'p',
+    mods = 'LEADER',
+    action = action.Multiple {
+      action.CopyMode 'PriorMatch',
+      action.CopyMode 'ClearSelectionMode',
+    },
+  },
 }

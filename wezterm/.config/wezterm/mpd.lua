@@ -19,7 +19,7 @@ module.now_playing = function()
     data = remove_empty_lines(string.lower(data))
 
     if string.len(data) ~= 0 then
-      return fonts.mdi_music .. '  ' .. string.gsub(' ' .. data, '%W%l', string.upper):sub(4)
+      return fonts.mdi_music .. ' ' .. string.gsub(' ' .. data, '%W%l', string.upper):sub(4)
     end
 
     return fonts.mdi_pause .. '  MPD Paused'
