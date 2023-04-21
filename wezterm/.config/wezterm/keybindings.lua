@@ -1,0 +1,96 @@
+local wezterm = require 'wezterm'
+local action = wezterm.action
+
+-- Equivalent to POSIX basename(3)
+-- Given "/foo/bar" returns "bar"
+-- Given "c:\\foo\\bar" returns "bar"
+local function basename(s)
+  return string.gsub(s, '(.*[/\\])(.*)', '%2')
+end
+
+local function is_vim(pane)
+  local process_name = basename(pane:get_foreground_process_name())
+  return process_name == 'nvim' or process_name == 'vim'
+end
+
+local direction_keys = {
+  Left = 'h',
+  Down = 'j',
+  Up = 'k',
+  Right = 'l',
+  -- reverse lookup
+  h = 'Left',
+  j = 'Down',
+  k = 'Up',
+  l = 'Right',
+}
+
+local function split_nav(resize_or_move, key)
+  return {
+    key = key,
+    mods = resize_or_move == 'resize' and 'META' or 'CTRL',
+    action = wezterm.action_callback(function(win, pane)
+      if is_vim(pane) then
+        -- pass the keys through to vim/nvim
+        win:perform_action({
+          SendKey = { key = key, mods = resize_or_move == 'resize' and 'META' or 'CTRL' },
+        }, pane)
+      else
+        if resize_or_move == 'resize' then
+          win:perform_action({ AdjustPaneSize = { direction_keys[key], 3 } }, pane)
+        else
+          win:perform_action({ ActivatePaneDirection = direction_keys[key] }, pane)
+        end
+      end
+    end),
+  }
+end
+
+return {
+  {
+    key = 's',
+    mods = 'LEADER',
+    action = wezterm.action { SplitVertical = { domain = 'CurrentPaneDomain' } },
+  },
+  {
+    key = 'v',
+    mods = 'LEADER',
+    action = wezterm.action { SplitHorizontal = { domain = 'CurrentPaneDomain' } },
+  },
+  { key = 'h', mods = 'LEADER', action = action { ActivateTabRelative = -1 } },
+  { key = 'l', mods = 'LEADER', action = action { ActivateTabRelative = 1 } },
+  { key = 'H', mods = 'LEADER', action = action { MoveTabRelative = -1 } },
+  { key = 'L', mods = 'LEADER', action = action { MoveTabRelative = 1 } },
+  { key = 'u', mods = 'SUPER', action = action { ScrollByPage = -1 } },
+  { key = 'd', mods = 'SUPER', action = action { ScrollByPage = 1 } },
+  { key = '0', mods = 'SUPER', action = 'ResetFontSize' },
+  { key = '-', mods = 'SUPER', action = 'DecreaseFontSize' },
+  { key = '=', mods = 'SUPER', action = 'IncreaseFontSize' },
+  { key = 'z', mods = 'LEADER', action = 'TogglePaneZoomState' },
+  { key = 'c', mods = 'LEADER', action = action { SpawnTab = 'CurrentPaneDomain' } },
+  { key = 'q', mods = 'CTRL', action = action { CloseCurrentPane = { confirm = true } } },
+  { key = ' ', mods = 'LEADER', action = 'QuickSelect' },
+  { key = 'f', mods = 'LEADER', action = 'ToggleFullScreen' },
+  { key = '1', mods = 'SUPER', action = action { ActivateTab = 0 } },
+  { key = '2', mods = 'SUPER', action = action { ActivateTab = 1 } },
+  { key = '3', mods = 'SUPER', action = action { ActivateTab = 2 } },
+  { key = '4', mods = 'SUPER', action = action { ActivateTab = 3 } },
+  { key = '5', mods = 'SUPER', action = action { ActivateTab = 4 } },
+  { key = '6', mods = 'SUPER', action = action { ActivateTab = 5 } },
+  { key = '7', mods = 'SUPER', action = action { ActivateTab = 6 } },
+  { key = '8', mods = 'SUPER', action = action { ActivateTab = 7 } },
+  { key = '9', mods = 'SUPER', action = action { ActivateTab = 8 } },
+  { key = 'c', mods = 'SUPER', action = action { CopyTo = 'Clipboard' } },
+  { key = 'v', mods = 'SUPER', action = action { PasteFrom = 'Clipboard' } },
+  { key = 'w', mods = 'LEADER', action = wezterm.action.ShowTabNavigator },
+  -- move between split panes
+  split_nav('move', 'h'),
+  split_nav('move', 'j'),
+  split_nav('move', 'k'),
+  split_nav('move', 'l'),
+  -- resize panes
+  split_nav('resize', 'h'),
+  split_nav('resize', 'j'),
+  split_nav('resize', 'k'),
+  split_nav('resize', 'l'),
+}
