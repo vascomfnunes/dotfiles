@@ -28,7 +28,6 @@ return {
   status_update_interval = 1000,
   exit_behavior = 'CloseOnCleanExit',
   disable_default_key_bindings = true,
-  use_ime = true,
   adjust_window_size_when_changing_font_size = false,
   show_tab_index_in_tab_bar = true,
   window_background_opacity = 1.0,
