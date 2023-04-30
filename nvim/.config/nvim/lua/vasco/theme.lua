@@ -60,6 +60,7 @@ M.set_dark_colors = function()
     NeoTreeTabInactive = { bg = colors.dark.dark_grey, fg = colors.dark.fg },
     NeoTreeTabSeparatorInactive = { bg = colors.dark.bg, fg = colors.dark.bg },
     NeoTreeTabSeparatorActive = { bg = colors.dark.bg, fg = colors.dark.bg },
+    MDCodeBlock = { bg = '#222222' },
   }
 
   set_highlights(highlights)
