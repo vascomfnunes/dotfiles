@@ -19,10 +19,11 @@ return {
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
   font = wezterm.font {
     family = 'JetBrains Mono',
+    weight = 'Medium',
     harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   },
   font_size = 15.0,
-  line_height = 1.2,
+  line_height = 1.3,
   window_decorations = 'RESIZE',
   bold_brightens_ansi_colors = false,
   status_update_interval = 1000,
