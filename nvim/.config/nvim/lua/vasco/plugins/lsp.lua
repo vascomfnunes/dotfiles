@@ -299,7 +299,6 @@ return {
     table.insert(sources, null_ls.builtins.diagnostics.gitlint)
     table.insert(sources, null_ls.builtins.formatting.markdownlint)
     table.insert(sources, null_ls.builtins.diagnostics.stylelint) -- npm install -g stylelint stylelint-config-standard stylelint-config-sass-guidelines stylelint-selector-bem-pattern postcss-scss
-    table.insert(sources, null_ls.builtins.formatting.stylelint)
     table.insert(sources, null_ls.builtins.formatting.shfmt)
     table.insert(sources, null_ls.builtins.formatting.stylua)
     table.insert(sources, null_ls.builtins.formatting.prettier)
