@@ -2,6 +2,8 @@ local config = require 'vasco.config'
 
 return {
   'VonHeikemen/lsp-zero.nvim',
+  branch = 'v2.x',
+  event = 'VeryLazy',
   dependencies = {
     -- Tags
     {
@@ -44,12 +46,11 @@ return {
     'honza/vim-snippets',
     'rafamadriz/friendly-snippets',
   },
-  event = 'BufReadPost',
   config = function()
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
     local mason_settings = require 'mason.settings'
-    local lsp = require 'lsp-zero'
+    local lsp = require('lsp-zero').preset {}
     local icons = require 'vasco.helpers.icons'
 
     require('luasnip.loaders.from_vscode').load { paths = '~/.config/nvim/snippets/' }
@@ -63,19 +64,18 @@ return {
     end
 
     lsp.set_preferences {
-      suggest_lsp_servers = true,
       setup_servers_on_start = true,
       set_lsp_keymaps = false,
       configure_diagnostics = true,
-      cmp_capabilities = true,
       manage_nvim_cmp = true,
       call_servers = 'local',
-      sign_icons = {
-        error = icons.error,
-        warn = icons.warning,
-        hint = icons.hint,
-        info = icons.info,
-      },
+    }
+
+    lsp.set_sign_icons {
+      error = icons.error,
+      warn = icons.warning,
+      hint = icons.hint,
+      info = icons.info,
     }
 
     lsp.ensure_installed {
@@ -96,7 +96,6 @@ return {
       'dockerls',
       'docker_compose_language_service',
       'rust_analyzer',
-      -- 'tailwindcss',
     }
 
     lsp.configure('jsonls', {
@@ -109,26 +108,7 @@ return {
           validate = { enable = true },
         },
       },
-      -- on_attach = function(client, bufnr)
-      --   -- something here
-      -- end,
     })
-
-    -- lsp.configure('tailwindcss', {
-    --   performance = {
-    --     trigger_debounce_time = 500,
-    --     throttle = 550,
-    --     fetching_timeout = 80,
-    --   },
-    --   on_attach = function(client, bufnr)
-    --     -- something here
-    --     require('tailwind-highlight').setup(client, bufnr, {
-    --       single_column = false,
-    --       mode = 'background',
-    --       debounce = 200,
-    --     })
-    --   end,
-    -- })
 
     lsp.configure('yamlls', {
       settings = {
@@ -138,7 +118,8 @@ return {
       },
     })
 
-    lsp.nvim_workspace()
+    lsp.nvim_workspace {}
+
     lsp.setup()
 
     -- cmp config
