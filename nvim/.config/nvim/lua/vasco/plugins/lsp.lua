@@ -95,7 +95,6 @@ return {
       'cucumber_language_server',
       'dockerls',
       'docker_compose_language_service',
-      'rust_analyzer',
     }
 
     lsp.configure('jsonls', {
@@ -243,7 +242,6 @@ return {
       'stylua',
       'shellcheck',
       'shfmt',
-      'rustfmt',
       'gitlint',
       'jsonlint',
       'chrome-debug-adapter',

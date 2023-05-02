@@ -316,7 +316,6 @@ return {
         b = { '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true<cr>', 'Buffers' },
         h = { '<cmd>Telescope help_tags<cr>', 'Help' },
         q = { '<cmd>Telescope quickfix<cr>', 'Quickfix' },
-        s = { '<cmd>Telescope possession list<cr>', 'Sessions' },
         p = { '<cmd>Telescope lazy<cr>', 'Plugins' },
         t = { vim.cmd.TodoTelescope, 'View TODOs' },
       },
@@ -516,23 +515,6 @@ return {
             focus_when_call = false,
           },
         },
-      },
-      -- Zettelkasten
-      ['<leader>z'] = {
-        name = 'Zettelkasten',
-        f = { '<cmd>Telekasten find_notes<cr>', 'Find by title' },
-        s = { '<cmd>Telekasten search_notes<cr>', 'Search' },
-        l = { '<cmd>Telekasten insert_link<cr>', 'Insert link' },
-        n = { '<cmd>Telekasten new_note<cr>', 'New' },
-        N = { '<cmd>Telekasten new_templated_note<cr>', 'New from template' },
-        r = { '<cmd>Telekasten rename_note<cr>', 'Rename' },
-        t = { '<cmd>Telekasten show_tags<cr>', 'Tags' },
-        b = { '<cmd>Telekasten show_backlinks<cr>', 'Backlinks' },
-        d = { '<cmd>Telekasten goto_today<cr>', 'Today diary' },
-        P = { '<cmd>Telekasten paste_img_and_link<cr>', 'Paste image and link' },
-        v = { '<cmd>Telekasten switch_vault<cr>', 'Switch vault' },
-        p = { '<cmd>Telekasten panel<cr>', 'Panel' },
-        g = { '<cmd>Telekasten follow_link<cr>', 'Follow link' },
       },
       -- Plugins
       ['<leader>u'] = {

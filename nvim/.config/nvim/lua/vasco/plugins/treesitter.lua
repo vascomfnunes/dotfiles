@@ -32,13 +32,9 @@ return {
       -- Add languages to be installed here that you want installed for treesitter
       ensure_installed = {
         'bash',
-        'c_sharp',
         'css',
         'dockerfile',
-        'go',
-        'rust',
         'sql',
-        'graphql',
         'html',
         'javascript',
         'jsdoc',

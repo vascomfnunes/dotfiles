@@ -6,7 +6,7 @@ return {
     'nvim-treesitter/nvim-treesitter',
     'haydenmeade/neotest-jest',
   },
-  ft = { 'ruby', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'rust', 'go', 'cs', 'lua' },
+  ft = { 'ruby', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
   config = function()
     local neotest = require 'neotest'
     local icons = require 'vasco.helpers.icons'
