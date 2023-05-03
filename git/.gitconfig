@@ -3,7 +3,7 @@
   name = Vasco Nunes
   email = contact@vasco.dev
   signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
-[includeIf "gitdir:~/repos/"]
+[includeIf "gitdir:~/repos/**"]
     path = ~/repos/.gitconfig
 [core]
   excludesfile = ~/.gitignore_global
