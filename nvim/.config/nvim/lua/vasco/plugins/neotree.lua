@@ -1,4 +1,3 @@
-local colors = require 'vasco.helpers.colors'
 local icons = require 'vasco.helpers.icons'
 local config = require 'vasco.config'
 
@@ -21,13 +20,13 @@ return {
           -- whether to show 'Pick window:' prompt
           show_prompt = false,
           -- the foreground (text) color of the picker
-          fg_color = colors.dark_grey,
+          -- fg_color = colors.dark_grey,
           -- if you have include_current_win == true, then current_win_hl_color will
           -- be highlighted using this background color
-          current_win_hl_color = colors.red,
+          -- current_win_hl_color = colors.red,
           -- all the windows except the curren window will be highlighted using this
           -- color
-          other_win_hl_color = colors.yellow,
+          -- other_win_hl_color = colors.yellow,
         }
       end,
     },

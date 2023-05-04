@@ -324,24 +324,6 @@ return {
         name = 'Markdown',
         p = { vim.cmd.MarkdownPreview, 'Preview in browser' },
       },
-      -- Colors
-      ['<leader>C'] = {
-        name = 'Colours',
-        d = {
-          function()
-            vim.fn.system 'theme dark'
-            require('vasco.theme').set_dark_colors()
-          end,
-          'Dark',
-        },
-        l = {
-          function()
-            vim.fn.system 'theme light'
-            require('vasco.theme').set_light_colors()
-          end,
-          'Light',
-        },
-      },
       -- Yarn
       ['<leader>y'] = {
         name = 'Yarn',
