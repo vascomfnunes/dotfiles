@@ -3,6 +3,8 @@ return {
   version = false,
   lazy = false,
   config = function()
-    require('mini.statusline').setup()
+    require('mini.statusline').setup {
+      set_vim_settings = false,
+    }
   end,
 }

@@ -7,6 +7,7 @@ vim.api.nvim_set_hl(0, 'WhichKeyFloat', { bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'FloatBorder', { fg = '#444444', bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
 vim.api.nvim_set_hl(0, 'PmenuSel', { bg = 'NONE' })
+vim.api.nvim_set_hl(0, 'NeoTreeCursorLine', { bg = '#444444' })
 
  -- NormalFloat = { bg = 'NONE' },
  -- PmenuSel = { bg = colors.dark.grey, fg = colors.dark.fg },

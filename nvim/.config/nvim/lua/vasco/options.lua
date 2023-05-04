@@ -1,68 +1,68 @@
 local options = {
   -- dictionary = '/usr/share/dict/words',
   -- fileencoding = 'utf-8',
-  -- ruler = false,
+  ruler = false,
   ignorecase = true,
   foldmethod = 'expr',
   foldexpr = 'nvim_treesitter#foldexpr()',
   foldlevelstart = 99,
-  -- mouse = 'a',
+  mouse = 'a',
   -- path = '**',
-  -- wildmode = 'longest:full,full',
-  -- wildignore = [[
-  --    .git,.hg,.svn
-  --    *.aux,*.out,*.toc
-  --    *.o,*.obj,*.exe,*.dll,*.manifest,*.rbc,*.class
-  --    *.ai,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,*.psd,*.webp
-  --    *.avi,*.divx,*.mp4,*.webm,*.mov,*.m2ts,*.mkv,*.vob,*.mpg,*.mpeg
-  --    *.mp3,*.oga,*.ogg,*.wav,*.flac
-  --    *.eot,*.otf,*.ttf,*.woff
-  --    *.doc,*.pdf,*.cbr,*.cbz
-  --    *.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb
-  --    *.swp,.lock,.DS_Store,._*
-  --    */tmp/*,*.so,*.swp,*.zip,**/node_modules/**,**/target/**,**.terraform/**"
-  --  ]],
+  wildmode = 'longest:full,full',
+  wildignore = [[
+     .git,.hg,.svn
+     *.aux,*.out,*.toc
+     *.o,*.obj,*.exe,*.dll,*.manifest,*.rbc,*.class
+     *.ai,*.bmp,*.gif,*.ico,*.jpg,*.jpeg,*.png,*.psd,*.webp
+     *.avi,*.divx,*.mp4,*.webm,*.mov,*.m2ts,*.mkv,*.vob,*.mpg,*.mpeg
+     *.mp3,*.oga,*.ogg,*.wav,*.flac
+     *.eot,*.otf,*.ttf,*.woff
+     *.doc,*.pdf,*.cbr,*.cbz
+     *.zip,*.tar.gz,*.tar.bz2,*.rar,*.tar.xz,*.kgb
+     *.swp,.lock,.DS_Store,._*
+     */tmp/*,*.so,*.swp,*.zip,**/node_modules/**,**/target/**,**.terraform/**"
+   ]],
   -- pumheight = 6,
-  -- scrolloff = 8,
-  -- showmode = false,
-  -- showcmd = false,
+  scrolloff = 8,
+  showmode = false,
+  showcmd = false,
   -- grepprg = 'rg --vimgrep --follow --no-heading',
-  -- smartcase = true,
-  -- smartindent = true,
+  smartcase = true,
+  smartindent = true,
   spelllang = 'en_gb',
   -- spell = false,
-  -- splitbelow = true,
-  -- splitright = true,
-  -- swapfile = false,
+  splitbelow = true,
+  splitright = true,
+  swapfile = false,
   -- synmaxcol = 500,
   thesaurus = os.getenv 'HOME' .. '/.config/nvim/thesaurii.txt',
   undodir = os.getenv 'HOME' .. '/.config/nvim/undo',
   undofile = true,
   undolevels = 1000,
   -- undoreload = 10000,
-  -- updatetime = 250,
-  -- writebackup = false,
-  -- timeoutlen = 300,
-  -- ttimeoutlen = 50,
+  updatetime = 250,
+  writebackup = false,
+  timeoutlen = 300,
+  ttimeoutlen = 50,
   -- breakindentopt = 'shift:2,min:20',
   -- breakindent = true,
-  -- expandtab = true,
+  expandtab = true,
   -- linebreak = true,
   number = true,
   relativenumber = true,
   shiftwidth = 2,
-  -- signcolumn = 'yes',
+  signcolumn = 'yes',
   -- softtabstop = -2,
   tabstop = 2,
   -- textwidth = 80,
-  -- wrap = false,
+  wrap = false,
   -- virtualedit = 'block',
   clipboard = 'unnamed,unnamedplus',
-  -- laststatus = 3,
-  -- cmdheight = 0,
-  -- winbar = '%=%m\\ %f',
+  laststatus = 3,
+  cmdheight = 0,
+  winbar = '%=%m\\ %f',
   -- formatoptions = 'jcroqlnt',
-  -- completeopt = { 'menu', 'menuone', 'noselect' },
+  completeopt = { 'menu', 'menuone', 'noselect' },
   -- shortmess = vim.opt.shortmess + { c = true },
 }
 

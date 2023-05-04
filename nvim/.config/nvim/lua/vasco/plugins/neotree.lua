@@ -23,10 +23,10 @@ return {
           -- fg_color = colors.dark_grey,
           -- if you have include_current_win == true, then current_win_hl_color will
           -- be highlighted using this background color
-          -- current_win_hl_color = colors.red,
+          current_win_hl_color = '#000000',
           -- all the windows except the curren window will be highlighted using this
           -- color
-          -- other_win_hl_color = colors.yellow,
+          other_win_hl_color = '#444444',
         }
       end,
     },
