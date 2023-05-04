@@ -23,7 +23,7 @@ return {
           -- fg_color = colors.dark_grey,
           -- if you have include_current_win == true, then current_win_hl_color will
           -- be highlighted using this background color
-          current_win_hl_color = '#000000',
+          -- current_win_hl_color = '#000000',
           -- all the windows except the curren window will be highlighted using this
           -- color
           other_win_hl_color = '#444444',
@@ -44,7 +44,7 @@ return {
       },
       popup_border_style = config.border_style,
       enable_git_status = true,
-      enable_diagnostics = true,
+      enable_diagnostics = false,
       default_component_configs = {
         container = {
           enable_character_fade = true,
@@ -53,7 +53,7 @@ return {
           indent_size = 2,
           padding = 1, -- extra padding on left hand side
           -- indent guides
-          with_markers = true,
+          with_markers = false,
           indent_marker = '│',
           last_indent_marker = '└',
           highlight = 'NeoTreeIndentMarker',
@@ -98,7 +98,7 @@ return {
         },
       },
       window = {
-        position = 'left',
+        position = 'right',
         width = 40,
         mapping_options = {
           noremap = true,
