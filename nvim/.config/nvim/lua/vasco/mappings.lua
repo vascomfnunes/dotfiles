@@ -22,3 +22,7 @@ keymap('v', 'p', '"_dP', silent)
 -- Faster vertical navigation
 keymap('n', '<c-d>', '<c-d>zz')
 keymap('n', '<c-u>', '<c-u>zz')
+
+-- Clear highlight on escape in normal mode
+keymap('n', '<esc>', 'noh')
+keymap('n', '<esc>^[', '<esc>^[')
