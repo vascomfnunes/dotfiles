@@ -22,45 +22,43 @@ if vim.o.background == 'dark' then
   palette = {
     base00 = '#282828',
     base01 = '#282828',
-    base02 = '#303030',
-    base03 = '#5a524c',
-    base04 = '#d8a657',
-    base05 = '#d4be98',
-    base06 = '#89b482',
-    base07 = '#d4be98',
-    base08 = '#7daea3',
-    base09 = '#d3869b',
-    base0A = '#ea6962',
+    base02 = '#504945',
+    base03 = '#666666',
+    base04 = '#bdae93',
+    base05 = '#d5c4a1',
+    base06 = '#ebdbb2',
+    base07 = '#fbf1c7',
+    base08 = '#ea6962',
+    base09 = '#d8a657',
+    base0A = '#d8a657',
     base0B = '#a9b665',
-    base0C = '#a9b665',
+    base0C = '#89b482',
     base0D = '#7daea3',
     base0E = '#d3869b',
-    base0F = '#a9b665',
+    base0F = '#d8a657',
   }
 end
 
--- Light palette is an 'inverted dark', output of 'MiniBase16.mini_palette':
--- - Background '#e2e5ca' (LCh(uv) = 90-20-90)
--- - Foreground '#002a83' (Lch(uv) = 15-60-250)
--- - Accent chroma 75
+-- Light palette
+
 if vim.o.background == 'light' then
   palette = {
-    base00 = '#e2e5ca',
-    base01 = '#bcbfa4',
-    base02 = '#979a7e',
-    base03 = '#73765a',
-    base04 = '#324490',
-    base05 = '#002a83',
-    base06 = '#0000e4',
-    base07 = '#080500',
-    base08 = '#5e2200',
-    base09 = '#a86400',
-    base0A = '#008818',
-    base0B = '#004500',
-    base0C = '#b34aad',
-    base0D = '#004b76',
-    base0E = '#7d0077',
-    base0F = '#0086ae',
+    base00 = '#eee0b7',
+    base01 = '#eee0b7',
+    base02 = '#d5c4a1',
+    base03 = '#bdae93',
+    base04 = '#665c54',
+    base05 = '#504945',
+    base06 = '#3c3836',
+    base07 = '#282828',
+    base08 = '#c14a4a',
+    base09 = '#af3a03',
+    base0A = '#b57614',
+    base0B = '#6c782e',
+    base0C = '#6c782e',
+    base0D = '#45707a',
+    base0E = '#945e80',
+    base0F = '#c14a4a',
   }
 end
 
