@@ -282,7 +282,23 @@ return {
     table.insert(sources, null_ls.builtins.diagnostics.stylelint) -- npm install -g stylelint stylelint-config-standard stylelint-config-sass-guidelines stylelint-selector-bem-pattern postcss-scss
     table.insert(sources, null_ls.builtins.formatting.shfmt)
     table.insert(sources, null_ls.builtins.formatting.stylua)
-    table.insert(sources, null_ls.builtins.formatting.prettier)
+    table.insert(
+      sources,
+      null_ls.builtins.formatting.prettier.with {
+        filetypes = {
+          'javascript',
+          'typescript',
+          'css',
+          'scss',
+          'html',
+          'json',
+          'yaml',
+          'markdown',
+          'md',
+          'txt',
+        },
+      }
+    )
     table.insert(sources, null_ls.builtins.formatting.erb_format)
 
     null_ls.setup { sources = sources }
