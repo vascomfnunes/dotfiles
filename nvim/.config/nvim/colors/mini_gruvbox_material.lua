@@ -18,24 +18,25 @@ local use_cterm, palette
 --base0F - Deprecated, Opening/Closing Embedded Language Tags, e.g. <?php ?>
 
 -- Dark palette
+
 if vim.o.background == 'dark' then
   palette = {
     base00 = '#282828',
     base01 = '#282828',
     base02 = '#504945',
-    base03 = '#666666',
+    base03 = '#665c54',
     base04 = '#bdae93',
-    base05 = '#d5c4a1',
+    base05 = '#ddc7a1',
     base06 = '#ebdbb2',
     base07 = '#fbf1c7',
     base08 = '#ea6962',
-    base09 = '#d8a657',
+    base09 = '#e78a4e',
     base0A = '#d8a657',
     base0B = '#a9b665',
     base0C = '#89b482',
     base0D = '#7daea3',
     base0E = '#d3869b',
-    base0F = '#d8a657',
+    base0F = '#bd6f3e',
   }
 end
 
@@ -43,22 +44,22 @@ end
 
 if vim.o.background == 'light' then
   palette = {
-    base00 = '#eee0b7',
-    base01 = '#eee0b7',
+    base00 = '#fbf1c7',
+    base01 = '#fbf1c7',
     base02 = '#d5c4a1',
     base03 = '#bdae93',
     base04 = '#665c54',
     base05 = '#504945',
     base06 = '#3c3836',
     base07 = '#282828',
-    base08 = '#c14a4a',
+    base08 = '#9d0006',
     base09 = '#af3a03',
     base0A = '#b57614',
-    base0B = '#6c782e',
-    base0C = '#6c782e',
-    base0D = '#45707a',
-    base0E = '#945e80',
-    base0F = '#c14a4a',
+    base0B = '#79740e',
+    base0C = '#427b58',
+    base0D = '#076678',
+    base0E = '#8f3f71',
+    base0F = '#d65d0e',
   }
 end
 
@@ -68,6 +69,14 @@ if palette then
     use_cterm = use_cterm,
     plugins = {
       default = false,
+      ['folke/lazy.nvim'] = true,
+      ['folke/noice.nvim'] = true,
+      ['folke/which-key.nvim'] = true,
+      ['ggandor/leap.nvim'] = true,
+      ['lewis6991/gitsigns.nvim'] = true,
+      ['nvim-neo-tree/neo-tree.nvim'] = true,
+      ['rcarriga/nvim-dap-ui'] = true,
+      ['williamboman/mason.nvim'] = true,
     },
   }
   vim.g.colors_name = 'mini_gruvbox_material'

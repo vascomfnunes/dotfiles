@@ -2,7 +2,7 @@ local config = require 'vasco.config'
 
 return {
   'folke/which-key.nvim',
-  keys = { '<leader>' },
+  event = 'VeryLazy',
   config = function()
     local whichkey = require 'which-key'
     local icons = require 'vasco.helpers.icons'
@@ -504,6 +504,12 @@ return {
         p = { vim.cmd.Lazy, 'Plugins' },
         l = { vim.cmd.Mason, 'LSP/Linters/Debuggers' },
         t = { vim.cmd.TSUpdate, 'Treesitter definitions' },
+      },
+      -- Theme
+      ['<leader>T'] = {
+        name = 'Theme',
+        d = { ':set background=dark<cr>', 'Dark' },
+        l = { ':set background=light<cr>', 'Light' },
       },
       -- Search
       ['<leader>s'] = {
