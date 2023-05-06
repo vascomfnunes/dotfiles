@@ -127,9 +127,7 @@ return {
       ['<leader>o'] = {
         name = 'OpenAI',
         g = { 'Generate git commit message' },
-        r = { 'Rewrite text' },
         p = { vim.cmd.NeoAIToggle, 'Toggle prompt' },
-        i = { vim.cmd.NeoAIInjectCode, 'Inject code' },
       },
       -- Quick fix
       ['<leader>q'] = {
@@ -379,15 +377,15 @@ return {
         L = { vim.cmd.Elayout, 'Layout' },
         S = { vim.cmd.Estylesheet, 'Stylesheet' },
         c = { vim.cmd.Econtroller, 'Controller' },
-        s = tmux_term.run_wk {
+        f = tmux_term.run_wk {
           cmd = 'bin/dev',
-          name = 'Rails Server (with foreman)',
+          name = 'Rails Server using foreman (bin/dev)',
           visit_first_call = false,
           open_as = 'panel',
         },
-        w = tmux_term.run_wk {
+        s = tmux_term.run_wk {
           cmd = 'bundle exec rails s',
-          name = 'Rails Server',
+          name = 'Rails Server (rails server)',
           visit_first_call = false,
           open_as = 'panel',
         },
@@ -550,8 +548,6 @@ return {
       -- OpenAI
       ['<leader>o'] = {
         name = 'OpenAI',
-        r = { 'Rewrite text' },
-        i = { vim.cmd.NeoAIInjectContextCode, 'Inject code context' },
         p = { vim.cmd.NeoAIContext, 'Open prompt context' },
       },
       -- Search
