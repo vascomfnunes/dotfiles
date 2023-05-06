@@ -17,7 +17,6 @@ return {
     'NeoAIInjectContextCode',
   },
   keys = {
-    { '<leader>or', desc = 'Rewrite code' },
     { '<leader>og', desc = 'Generate git message' },
   },
   config = function()
@@ -59,19 +58,6 @@ return {
       },
       shortcuts = {
         {
-          name = 'textify',
-          key = '<leader>or',
-          desc = 'fix text with AI',
-          use_context = true,
-          prompt = [[
-                Please rewrite the text to make it more readable, clear,
-                concise, and fix any grammatical, punctuation, or spelling
-                errors
-            ]],
-          modes = { 'v' },
-          strip_function = nil,
-        },
-        {
           name = 'gitcommit',
           key = '<leader>og',
           desc = 'generate git commit message',
@@ -80,7 +66,7 @@ return {
             return [[
                     Using the following git diff generate a consise and
                     clear git commit message, with a short title summary
-                    that is 75 characters or less:
+                    using conventional commits messages:
                 ]] .. vim.fn.system 'git diff --cached'
           end,
           modes = { 'n' },
