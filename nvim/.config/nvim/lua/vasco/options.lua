@@ -40,29 +40,13 @@ local options = {
   completeopt = { 'menuone', 'noselect' },
 }
 
-local globals = {
-  mapleader = ' ',
-  maplocalleader = ' ',
-  -- Fill chars needed for folds
-  fillchars = 'fold:\\ ',
-}
-
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-for k, v in pairs(globals) do
-  vim.g[k] = v
-end
-
 vim.opt.iskeyword:append '-'
-vim.opt.shortmess:append 'c' -- don't show redundant messages from ins-completion-menu
-vim.opt.shortmess:append 'I' -- don't show the default intro message
-vim.opt.whichwrap:append '<,>,[,],h,l'
-
--- go to previous/next line with h,l,left arrow and right arrow
--- when cursor reaches end/beginning of line
-vim.opt.whichwrap:append '<>[]hl'
+vim.opt.shortmess:append 'cI' -- don't show redundant messages from ins-completion-menu and the default intro message
+vim.opt.whichwrap:append '<>,[],hl'
 
 local default_providers = {
   'node',
@@ -74,3 +58,7 @@ local default_providers = {
 for _, provider in ipairs(default_providers) do
   vim.g['loaded_' .. provider .. '_provider'] = 0
 end
+
+vim.g.mapleader = ' '
+vim.g.maplocalleader = ' '
+vim.g.fillchars = 'fold:\\ ' -- Fill chars needed for folds

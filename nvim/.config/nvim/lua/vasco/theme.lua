@@ -1,12 +1,21 @@
-vim.cmd [[colorscheme mini_gruvbox_material]]
+-- Load the mini_gruvbox_material colorscheme
+vim.cmd 'colorscheme mini_gruvbox_material'
 
+-- Define colors for later use
 local gray = '#665c54'
+local orange = '#bd6f3e'
 
-vim.api.nvim_set_hl(0, 'TelescopeBorder', { fg = gray })
-vim.api.nvim_set_hl(0, 'FloatBorder', { fg = gray, bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'NormalFloat', { bg = 'NONE' })
-vim.api.nvim_set_hl(0, 'NeoTreeCursorLine', { bg = gray })
-vim.api.nvim_set_hl(0, 'WinSeparator', { bg = 'NONE', fg = gray })
-vim.api.nvim_set_hl(0, 'PmenuSel', { bg = gray })
-vim.api.nvim_set_hl(0, 'PmenuThumb', { bg = gray })
-vim.api.nvim_set_hl(0, 'WinBar', { bg = 'NONE', fg = '#bd6f3e' })
+-- Define a function to simplify setting a highlight group
+local function set_hl(group, options)
+  vim.api.nvim_set_hl(0, group, options)
+end
+
+-- Set various highlight groups
+set_hl('TelescopeBorder', { fg = gray })
+set_hl('FloatBorder', { fg = gray, bg = 'NONE' })
+set_hl('NormalFloat', { bg = 'NONE' })
+set_hl('NeoTreeCursorLine', { bg = gray })
+set_hl('WinSeparator', { bg = 'NONE', fg = gray })
+set_hl('PmenuSel', { bg = gray })
+set_hl('PmenuThumb', { bg = gray })
+set_hl('WinBar', { bg = 'NONE', fg = orange })
