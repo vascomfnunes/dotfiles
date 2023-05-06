@@ -66,7 +66,9 @@ return {
             return [[
                     Using the following git diff generate a consise and
                     clear git commit message, with a short title summary
-                    using conventional commits messages:
+                    using conventional commits messages. The title should
+                    be no longer than 50 characters and each body line
+                    should be no longer than 72 characters:
                 ]] .. vim.fn.system 'git diff --cached'
           end,
           modes = { 'n' },
