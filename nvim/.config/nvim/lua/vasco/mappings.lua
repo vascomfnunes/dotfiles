@@ -1,28 +1,27 @@
-local keymap = vim.keymap.set
+local set_keymap = vim.keymap.set
 local silent = { silent = true }
 
-keymap('n', 'Q', '<nop>')
+-- Disable the Q command
+set_keymap('n', 'Q', '')
 
 -- Indentation
-keymap('v', '<', '<gv') -- indent left
-keymap('v', '>', '>gv') -- indent right
+set_keymap('v', '<', '<gv', silent) -- indent left
+set_keymap('v', '>', '>gv', silent) -- indent right
 
 -- Yank
--- send some operations to _ registry
-keymap('n', 'x', '"_x', silent)
-keymap('n', 'X', '"_X', silent)
-keymap('v', 'x', '"_x', silent)
-keymap('v', 'X', '"_X', silent)
-keymap('n', 'r', '"_r', silent)
-keymap('n', 'c', '"_c', silent)
+set_keymap('n', 'x', '"_x', silent)
+set_keymap('n', 'X', '"_X', silent)
+set_keymap('v', 'x', '"_x', silent)
+set_keymap('v', 'X', '"_X', silent)
+set_keymap('n', 'r', '"_r', silent)
+set_keymap('n', 'c', '"_c', silent)
 
 -- Don't yank on visual paste
-keymap('v', 'p', '"_dP', silent)
+set_keymap('v', 'p', '"_dP', silent)
 
 -- Faster vertical navigation
-keymap('n', '<c-d>', '<c-d>zz')
-keymap('n', '<c-u>', '<c-u>zz')
+set_keymap('n', '<c-d>', '<c-d>zz')
+set_keymap('n', '<c-u>', '<c-u>zz')
 
--- Clear highlight on escape in normal mode
-keymap('n', '<esc>', 'noh')
-keymap('n', '<esc>^[', '<esc>^[')
+-- Clear highlight on escape in normal mode (use <esc> instead of ^[)
+set_keymap('n', '<esc>', ':noh<cr>')
