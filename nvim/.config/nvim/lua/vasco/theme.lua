@@ -3,7 +3,6 @@ vim.cmd 'colorscheme mini_gruvbox_material'
 
 -- Define colors for later use
 local gray = '#665c54'
-local orange = '#bd6f3e'
 
 -- Define a function to simplify setting a highlight group
 local function set_hl(group, options)
@@ -18,4 +17,4 @@ set_hl('NeoTreeCursorLine', { bg = gray })
 set_hl('WinSeparator', { bg = 'NONE', fg = gray })
 set_hl('PmenuSel', { bg = gray })
 set_hl('PmenuThumb', { bg = gray })
-set_hl('WinBar', { bg = 'NONE', fg = orange })
+set_hl('WinBar', { bg = 'NONE' })

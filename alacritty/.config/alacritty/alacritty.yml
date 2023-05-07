@@ -6,24 +6,24 @@ window:
   dynamic_padding: true
 font:
   normal:
-    family: MesloLGL Nerd Font
+    family: MesloLGLDZ Nerd Font
     style: Regular
   bold:
-    family: MesloLGL Nerd Font
+    family: MesloLGLDZ Nerd Font
     style: Bold
   italic:
-    family: MesloLGL Nerd Font
+    family: MesloLGLDZ Nerd Font
     style: Italic
   bold_italic:
-    family: MesloLGL Nerd Font
+    family: MesloLGLDZ Nerd Font
     style: Bold Italic
   size: 15
   offset:
     x: 0
-    'y': 0
+    y: 0
   glyph_offset:
     x: 0
-    'y': 0
+    y: 0
 mouse:
   hide_when_typing: true
 hints:

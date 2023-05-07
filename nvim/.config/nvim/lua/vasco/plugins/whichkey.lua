@@ -12,30 +12,30 @@ return {
       icons = {
         breadcrumb = icons.breadcrumb, -- symbol used in the command line area that shows your active key combo
         separator = icons.right_arrow, -- symbol used between a key and it's label
-        group = icons.plus, -- symbol prepended to a group
+        group = icons.plus,            -- symbol prepended to a group
       },
       window = {
         border = config.border_style, -- none, single, double, shadow
-        position = 'bottom', -- bottom, top
-        margin = { 0, 0, 0, 0 }, -- extra window margin [top, right, bottom, left]
-        padding = { 0, 0, 0, 0 }, -- extra window padding [top, right, bottom, left]
+        position = 'bottom',          -- bottom, top
+        margin = { 0, 0, 0, 0 },      -- extra window margin [top, right, bottom, left]
+        padding = { 0, 0, 0, 0 },     -- extra window padding [top, right, bottom, left]
       },
       layout = {
         height = { min = 4, max = 25 }, -- min and max height of the columns
         width = { min = 20, max = 50 }, -- min and max width of the columns
-        spacing = 4, -- spacing between columns
-        align = 'left', -- align columns left, center or right
+        spacing = 4,                    -- spacing between columns
+        align = 'left',                 -- align columns left, center or right
       },
-      show_help = false, -- show help message on the command line when the popup is visible
-      show_keys = false, -- show the currently pressed key and its label as a message in the command line
-      triggers = { '<space>' }, -- or specify a list manually
+      show_help = false,                -- show help message on the command line when the popup is visible
+      show_keys = false,                -- show the currently pressed key and its label as a message in the command line
+      triggers = { '<space>' },         -- or specify a list manually
       zindex = 100,
     }
 
     local opts = {
-      mode = 'n', -- NORMAL mode
-      buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true, -- use `silent` when creating keymaps
+      mode = 'n',     -- NORMAL mode
+      buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+      silent = true,  -- use `silent` when creating keymaps
       noremap = true, -- use `noremap` when creating keymaps
       nowait = false, -- use `nowait` when creating keymaps
     }
@@ -152,9 +152,7 @@ return {
         },
         t = { '<c-]>', 'Goto to tag' },
         a = {
-          function()
-            vim.lsp.buf.code_action()
-          end,
+          '<cmd>Lspsaga code_action<CR>',
           'Code action',
         },
         s = {
@@ -176,9 +174,7 @@ return {
           'References',
         },
         R = {
-          function()
-            vim.lsp.buf.rename()
-          end,
+          '<cmd>Lspsaga rename<CR>',
           'Rename',
         },
         l = {
@@ -200,15 +196,11 @@ return {
           'Previous diagnostic',
         },
         d = {
-          function()
-            vim.lsp.buf.definition()
-          end,
+          '<cmd>Lspsaga goto_definition<CR>',
           'Go to definition',
         },
         K = {
-          function()
-            vim.lsp.buf.hover()
-          end,
+          '<cmd>Lspsaga hover_doc<CR>',
           'Documentation',
         },
         x = {
@@ -226,7 +218,7 @@ return {
         D = { '<cmd>Telescope diagnostics bufnr=0<cr>', 'All diagnostics' },
         i = { vim.cmd.TypescriptOrganizeImports, 'Organize imports (typescript only)' },
         u = { vim.cmd.TypescriptRemoveUnused, 'Remove unused imports (typescript only)' },
-        o = { vim.cmd.AerialToggle, 'Outline' },
+        o = { '<cmd>Lspsaga outline<CR>', 'Outline' },
         g = { vim.cmd.Neogen, 'Generate documentation' },
       },
       -- Debug
@@ -537,9 +529,9 @@ return {
 
     -- Visual mode
     local visual_opts = {
-      mode = 'v', -- NORMAL mode
-      buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true, -- use `silent` when creating keymaps
+      mode = 'v',     -- NORMAL mode
+      buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+      silent = true,  -- use `silent` when creating keymaps
       noremap = true, -- use `noremap` when creating keymaps
       nowait = false, -- use `nowait` when creating keymaps
     }
@@ -586,8 +578,8 @@ return {
     -- Terminal mode
     local terminal_opts = {
       mode = 't',
-      buffer = nil, -- Global mappings. Specify a buffer number for buffer local mappings
-      silent = true, -- use `silent` when creating keymaps
+      buffer = nil,   -- Global mappings. Specify a buffer number for buffer local mappings
+      silent = true,  -- use `silent` when creating keymaps
       noremap = true, -- use `noremap` when creating keymaps
       nowait = false, -- use `nowait` when creating keymaps
     }
