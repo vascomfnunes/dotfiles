@@ -5,6 +5,7 @@ return {
   'nvim-neo-tree/neo-tree.nvim',
   branch = 'v2.x',
   dependencies = {
+    'nvim-tree/nvim-web-devicons',
     {
       's1n7ax/nvim-window-picker',
       config = function()
