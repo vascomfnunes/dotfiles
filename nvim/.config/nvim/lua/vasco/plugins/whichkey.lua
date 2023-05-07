@@ -176,21 +176,15 @@ return {
           'Rename',
         },
         l = {
-          function()
-            vim.diagnostic.open_float()
-          end,
+          ':Lspsaga show_line_diagnostics<cr>',
           'Line diagnostics',
         },
         [']'] = {
-          function()
-            vim.diagnostic.goto_next()
-          end,
+          ':Lspsaga diagnostic_jump_next<cr>',
           'Next diagnostic',
         },
         ['['] = {
-          function()
-            vim.diagnostic.goto_prev()
-          end,
+          ':Lspsaga diagnostic_jump_previous<cr>',
           'Previous diagnostic',
         },
         d = {
@@ -202,9 +196,7 @@ return {
           'Documentation',
         },
         x = {
-          function()
-            vim.diagnostic.config { signs = true, virtual_text = true }
-          end,
+          ':Lspsaga show_diagnostics<cr>',
           'Show diagnostics',
         },
         X = {
