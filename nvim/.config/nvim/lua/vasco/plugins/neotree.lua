@@ -91,7 +91,7 @@ return {
             renamed = icons.right_arrow, -- this can only be used in the git_status source
             -- Status type
             untracked = icons.git_untracked,
-            ignored = '',
+            ignored = icons.skip,
             unstaged = icons.error,
             staged = icons.check,
             conflict = icons.git_conflict,
