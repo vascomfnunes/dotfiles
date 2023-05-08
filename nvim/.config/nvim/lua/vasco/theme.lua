@@ -7,7 +7,8 @@ local green = '#a9b665'
 local red = '#ea6962'
 local yellow = '#d8a657'
 local blue = '#7daea3'
-local grey = '#dbae93'
+local bg = '#282828'
+local fg = '#ddc7a1'
 
 -- Define a function to simplify setting a highlight group
 local function set_hl(group, options)
@@ -16,12 +17,11 @@ end
 
 -- Set various highlight groups
 set_hl('TelescopeBorder', { fg = gray })
+set_hl('TelescopeSelection', { bg = fg, fg = bg })
 set_hl('FloatBorder', { fg = gray, bg = 'NONE' })
 set_hl('NormalFloat', { bg = 'NONE' })
-set_hl('NeoTreeCursorLine', { bg = gray })
+set_hl('NeoTreeCursorLine', { bg = fg, fg = bg })
 set_hl('WinSeparator', { bg = 'NONE', fg = gray })
-set_hl('PmenuSel', { bg = gray })
-set_hl('PmenuThumb', { bg = gray })
 set_hl('WinBar', { bg = 'NONE' })
 set_hl('NeotestPassed', { fg = green })
 set_hl('NeotestFailed', { fg = red })
@@ -29,4 +29,4 @@ set_hl('NeotestTarget', { fg = red })
 set_hl('NeotestSkipped', { fg = blue })
 set_hl('NeotestRunning', { fg = yellow })
 set_hl('NeotestDir', { fg = blue })
-set_hl('NeotestFile', { fg = grey })
+set_hl('NeotestFile', { fg = gray })

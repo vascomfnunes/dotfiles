@@ -77,6 +77,11 @@ if palette then
       ['nvim-neo-tree/neo-tree.nvim'] = true,
       ['rcarriga/nvim-dap-ui'] = true,
       ['williamboman/mason.nvim'] = true,
+      ['glepnir/lspsaga.nvim'] = true,
+      ['echasnovski/mini.nvim'] = true,
+      ['TimUntersberger/neogit'] = true,
+      ['hrsh7th/nvim-cmp'] = true,
+      ['nvim-telescope/telescope.nvim'] = true
     },
   }
   vim.g.colors_name = 'mini_gruvbox_material'
