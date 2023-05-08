@@ -22,6 +22,9 @@ export GPG_TTY=$(tty)
 
 alias vi='nvim'
 alias v='fd --type f --hidden --exclude .git --exclude .cache --exclude Library --exclude .local | fzf-tmux -p --reverse | xargs nvim'
+# https://github.com/darkhz/invidtui/wiki/Command-Line-Options
+# install: go install github.com/darkhz/invidtui@latest
+alias youtube='~/go/bin/invidtui --close-instances'
 alias ls='exa --icons'
 alias kill_rails='kill -9 $(lsof -t -i:3000)'
 alias la='ls -la'
