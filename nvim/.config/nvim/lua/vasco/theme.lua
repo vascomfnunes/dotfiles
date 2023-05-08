@@ -18,6 +18,7 @@ end
 -- Set various highlight groups
 set_hl('TelescopeBorder', { fg = gray })
 set_hl('TelescopeSelection', { bg = fg, fg = bg })
+set_hl('TelescopeMatching', { fg = red })
 set_hl('FloatBorder', { fg = gray, bg = 'NONE' })
 set_hl('NormalFloat', { bg = 'NONE' })
 set_hl('NeoTreeCursorLine', { bg = fg, fg = bg })
