@@ -17,7 +17,7 @@ return {
     'NeoAIInjectContextCode',
   },
   keys = {
-    { '<leader>og', desc = 'Generate git message' },
+    { '<leader>ag', desc = 'Generate git message' },
   },
   config = function()
     require('neoai').setup {
@@ -59,7 +59,7 @@ return {
       shortcuts = {
         {
           name = 'gitcommit',
-          key = '<leader>og',
+          key = '<leader>ag',
           desc = 'generate git commit message',
           use_context = false,
           prompt = function()

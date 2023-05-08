@@ -123,11 +123,16 @@ return {
         [']'] = { vim.cmd.tabnext, 'Next' },
         ['['] = { vim.cmd.tabprevious, 'Previous' },
       },
-      -- OpenAI
-      ['<leader>o'] = {
-        name = 'OpenAI',
+      -- AI
+      ['<leader>a'] = {
+        name = 'AI',
         g = { 'Generate git commit message' },
         p = { vim.cmd.NeoAIToggle, 'Toggle prompt' },
+        c = {
+          name = 'Codeium',
+          e = { vim.cmd.CodeiumEnable, 'Enable' },
+          d = { vim.cmd.CodeiumDisable, 'Disable' },
+        },
       },
       -- Quick fix
       ['<leader>q'] = {
@@ -527,9 +532,9 @@ return {
     }
 
     local visual_mappings = {
-      -- OpenAI
-      ['<leader>o'] = {
-        name = 'OpenAI',
+      -- AI
+      ['<leader>a'] = {
+        name = 'AI',
         p = { vim.cmd.NeoAIContext, 'Open prompt context' },
       },
       -- Search
