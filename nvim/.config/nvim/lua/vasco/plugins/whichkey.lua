@@ -123,17 +123,6 @@ return {
         [']'] = { vim.cmd.tabnext, 'Next' },
         ['['] = { vim.cmd.tabprevious, 'Previous' },
       },
-      -- AI
-      ['<leader>a'] = {
-        name = 'AI',
-        g = { 'Generate git commit message' },
-        p = { vim.cmd.NeoAIToggle, 'Toggle prompt' },
-        c = {
-          name = 'Codeium',
-          e = { vim.cmd.CodeiumEnable, 'Enable' },
-          d = { vim.cmd.CodeiumDisable, 'Disable' },
-        },
-      },
       -- Quick fix
       ['<leader>q'] = {
         name = 'Quickfix',
