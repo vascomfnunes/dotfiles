@@ -276,7 +276,11 @@ return {
         u = { '<cmd>Gitsigns undo_stage_hunk<cr>', 'Unstage hunk' },
         r = { '<cmd>Gitsigns reset_hunk<cr>', 'Reset hunk' },
         l = { '<cmd>Gitsigns setloclist<cr>', 'View on loclist' },
-        c = { require('diffview.actions').cycle_layout, 'Cycle through available diff layouts' },
+        y = {
+          'require("gitlinker.actions").clipboard',
+          'Yank repository URL line',
+        },
+        C = { require('diffview.actions').cycle_layout, 'Cycle through available diff layouts' },
         ['['] = { require('diffview.actions').next_conflict, 'Jump to the next conflict' },
         [']'] = { require('diffview.actions').prev_conflict, 'Jump to the previous conflict' },
         o = { require('diffview.actions').conflict_choose 'ours', 'Choose the OURS version of a conflict' },
@@ -521,11 +525,15 @@ return {
     }
 
     local visual_mappings = {
-      -- AI
-      ['<leader>a'] = {
-        name = 'AI',
-        p = { vim.cmd.NeoAIContext, 'Open prompt context' },
+      -- Git
+      ['<leader>g'] = {
+        name = 'Git',
+        y = {
+          '',
+          'Yank repository URL line',
+        },
       },
+
       -- Search
       ['<leader>s'] = {
         name = 'Search & replace',
