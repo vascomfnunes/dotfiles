@@ -1,8 +1,8 @@
 local icons = require 'vasco.helpers.icons'
 
 return {
-  'TimUntersberger/neogit',
-  dependencies = 'sindrets/diffview.nvim',
+  'NeogitOrg/neogit',
+  dependencies = { 'sindrets/diffview.nvim', 'nvim-lua/plenary.nvim' },
   cmd = 'Neogit',
   opts = {
     disable_signs = false,
