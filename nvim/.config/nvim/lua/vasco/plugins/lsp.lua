@@ -20,10 +20,10 @@ return {
     'jose-elias-alvarez/null-ls.nvim',
     {
       'ray-x/lsp_signature.nvim',
-      config = function()
-        require('lsp_signature').setup {
-          noice = true,
-        }
+      event = 'VeryLazy',
+      opts = { noice = true },
+      config = function(_, opts)
+        require('lsp_signature').setup(opts)
       end,
     },
 
