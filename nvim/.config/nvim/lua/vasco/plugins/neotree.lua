@@ -6,31 +6,6 @@ return {
   branch = 'v3.x',
   dependencies = {
     'nvim-tree/nvim-web-devicons',
-    {
-      's1n7ax/nvim-window-picker',
-      config = function()
-        require('window-picker').setup {
-          autoselect_one = true,
-          include_current_win = false,
-          selection_chars = 'ABCDEFGHIJKLMN',
-          -- whether you want to use winbar instead of the statusline
-          -- "always" means to always use winbar,
-          -- "never" means to never use winbar
-          -- "smart" means to use winbar if cmdheight=0 and statusline if cmdheight > 0
-          use_winbar = 'smart', -- "always" | "never" | "smart"
-          -- whether to show 'Pick window:' prompt
-          show_prompt = false,
-          -- the foreground (text) color of the picker
-          -- fg_color = colors.dark_grey,
-          -- if you have include_current_win == true, then current_win_hl_color will
-          -- be highlighted using this background color
-          -- current_win_hl_color = '#000000',
-          -- all the windows except the curren window will be highlighted using this
-          -- color
-          other_win_hl_color = '#444444',
-        }
-      end,
-    },
   },
   cmd = 'Neotree',
   init = function()
@@ -118,7 +93,7 @@ return {
           ['s'] = 'open_split',
           ['v'] = 'open_vsplit',
           ['t'] = 'open_tabnew',
-          ['l'] = 'open_with_window_picker',
+          ['l'] = 'open',
           -- ['o'] = 'system_open',
           ['C'] = 'close_node',
           ['z'] = 'close_all_nodes',
@@ -222,16 +197,14 @@ return {
           },
         },
       },
-      -- event_handlers = {
-      --
-      --   {
-      --     event = 'file_opened',
-      --     handler = function(_)
-      --       --auto close
-      --       require('neo-tree').close_all()
-      --     end,
-      --   },
-      -- },
+      event_handlers = {
+        {
+          event = 'file_opened',
+          handler = function(_)
+            require('neo-tree.command').execute { action = 'close' }
+          end,
+        },
+      },
     }
   end,
 }
