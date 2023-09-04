@@ -157,7 +157,7 @@ return {
         },
         f = {
           function()
-            vim.lsp.buf.format()
+            require('conform').format()
           end,
           'Format',
         },
