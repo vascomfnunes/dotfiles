@@ -17,6 +17,15 @@ return {
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+    'jose-elias-alvarez/null-ls.nvim',
+    {
+      'ray-x/lsp_signature.nvim',
+      event = 'VeryLazy',
+      opts = { noice = true },
+      config = function(_, opts)
+        require('lsp_signature').setup(opts)
+      end,
+    },
 
     -- Autocompletion
     {
@@ -238,11 +247,6 @@ return {
       'jsonlint',
       'chrome-debug-adapter',
       'node-debug2-adapter',
-      'markdownlint',
-      'yamllint',
-      'stylelint',
-      'jq',
-      'rubocop'
     }
 
     local function mason_check()
@@ -262,5 +266,40 @@ return {
     require('mason-lspconfig').setup {
       automatic_installation = true,
     }
+
+    -- null-ls
+    local null_ls = require 'null-ls'
+
+    local sources = {}
+
+    -- bellow clients require manual installation
+    -- Use Mason or directly :NullLsInstall to install packages
+    table.insert(sources, null_ls.builtins.code_actions.shellcheck)
+    table.insert(sources, null_ls.builtins.diagnostics.markdownlint)
+    table.insert(sources, null_ls.builtins.diagnostics.gitlint)
+    table.insert(sources, null_ls.builtins.formatting.markdownlint)
+    table.insert(sources, null_ls.builtins.diagnostics.stylelint) -- npm install -g stylelint stylelint-config-standard stylelint-config-sass-guidelines stylelint-selector-bem-pattern postcss-scss
+    table.insert(sources, null_ls.builtins.formatting.shfmt)
+    table.insert(sources, null_ls.builtins.formatting.stylua)
+    table.insert(
+      sources,
+      null_ls.builtins.formatting.prettier.with {
+        filetypes = {
+          'javascript',
+          'typescript',
+          'css',
+          'scss',
+          'html',
+          'json',
+          'yaml',
+          'markdown',
+          'md',
+          'txt',
+        },
+      }
+    )
+    table.insert(sources, null_ls.builtins.formatting.erb_format)
+
+    null_ls.setup { sources = sources }
   end,
 }
