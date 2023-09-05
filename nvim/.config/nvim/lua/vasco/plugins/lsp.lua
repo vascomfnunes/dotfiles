@@ -48,6 +48,7 @@ return {
   },
   config = function()
     local cmp = require 'cmp'
+    local cmp_nvim_lsp = require 'cmp_nvim_lsp'
     local luasnip = require 'luasnip'
     local mason_settings = require 'mason.settings'
     local lsp = require('lsp-zero').preset {}
@@ -78,44 +79,27 @@ return {
       info = icons.info,
     }
 
-    lsp.ensure_installed {
-      'tsserver',
-      'eslint',
-      'solargraph',
-      'lua_ls',
-      'bashls',
-      'cssls',
-      'emmet_ls',
-      'html',
-      'stylelint_lsp',
-      'grammarly',
-      'yamlls',
-      'jsonls',
-      'marksman',
-      'cucumber_language_server',
-      'dockerls',
-      'docker_compose_language_service',
+    local servers = {
+      solargraph = {},
+      tsserver = {},
+      eslint = {},
+      bashls = {},
+      emmet_ls = {},
+      yamlls = {},
+      jsonls = {},
+      marksman = {},
+      dockerls = {},
+      docker_compose_language_service = {},
+      html = {},
+      cssls = {},
+      lua_ls = {
+        Lua = {
+          diagnostics = { globals = { 'vim' } },
+          telemetry = { enable = false },
+          workspace = { checkThirdParty = false },
+        },
+      },
     }
-
-    lsp.configure('jsonls', {
-      flags = {
-        debounce_text_changes = 150,
-      },
-      settings = {
-        json = {
-          schemas = require('schemastore').json.schemas(),
-          validate = { enable = true },
-        },
-      },
-    })
-
-    lsp.configure('yamlls', {
-      settings = {
-        yaml = {
-          schemas = require('schemastore').yaml.schemas(),
-        },
-      },
-    })
 
     lsp.nvim_workspace {}
 
@@ -241,6 +225,7 @@ return {
     local mason_tools = {
       'prettier',
       'stylua',
+      'stylelint',
       'shellcheck',
       'shfmt',
       'gitlint',
@@ -265,6 +250,19 @@ return {
 
     require('mason-lspconfig').setup {
       automatic_installation = true,
+      ensure_installed = vim.tbl_keys(servers),
+    }
+
+    require('mason-lspconfig').setup_handlers {
+      function(server_name)
+        local normal_capabilities = vim.lsp.protocol.make_client_capabilities()
+        local capabilities = cmp_nvim_lsp.default_capabilities(normal_capabilities)
+
+        require('lspconfig')[server_name].setup {
+          capabilities = capabilities,
+          settings = servers[server_name],
+        }
+      end,
     }
 
     -- null-ls
