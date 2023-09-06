@@ -17,7 +17,17 @@ return {
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+
+    -- Autocompletion
+    'hrsh7th/nvim-cmp',
+    'hrsh7th/cmp-nvim-lsp',
+    'hrsh7th/cmp-cmdline',
+    'L3MON4D3/LuaSnip',
     'jose-elias-alvarez/null-ls.nvim',
+    'hrsh7th/cmp-buffer',
+    'hrsh7th/cmp-path',
+    'onsails/lspkind.nvim',
+
     {
       'ray-x/lsp_signature.nvim',
       event = 'VeryLazy',
@@ -25,20 +35,6 @@ return {
       config = function(_, opts)
         require('lsp_signature').setup(opts)
       end,
-    },
-
-    -- Autocompletion
-    {
-      'hrsh7th/nvim-cmp',
-      dependencies = {
-        'hrsh7th/cmp-buffer',
-        'hrsh7th/cmp-path',
-        'saadparwaiz1/cmp_luasnip',
-        'hrsh7th/cmp-nvim-lsp',
-        'hrsh7th/cmp-nvim-lua',
-        'hrsh7th/cmp-cmdline',
-        'onsails/lspkind.nvim',
-      },
     },
 
     -- Snippets
@@ -100,6 +96,8 @@ return {
         },
       },
     }
+
+    require('lspconfig').lua_ls.setup(lsp.nvim_lua_ls())
 
     lsp.nvim_workspace {}
 
