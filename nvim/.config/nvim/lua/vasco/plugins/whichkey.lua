@@ -565,6 +565,16 @@ return {
         },
         q = { vim.cmd.DapTerminate, 'Quit' },
       },
+      -- Code
+      ['<leader>c'] = {
+        name = 'Code',
+        f = {
+          function()
+            vim.lsp.buf.format()
+          end,
+          'Format',
+        },
+      },
     }
 
     -- Terminal mode
