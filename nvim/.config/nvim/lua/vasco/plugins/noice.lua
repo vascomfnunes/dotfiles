@@ -3,13 +3,12 @@ local config = require 'vasco.config'
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
-  dependencies = { 'rcarriga/nvim-notify' },
   opts = {
     messages = {
       enabled = true,
-      view = 'notify',
+      view = nil,
       view_error = 'notify',
-      view_warn = 'notify',
+      view_warn = nil,
     },
     views = {
       mini = {
@@ -39,26 +38,11 @@ return {
       },
     },
     lsp = {
-      progress = {
-        enabled = true,
-        format = 'lsp_progress',
-        format_done = 'lsp_progress_done',
-        throttle = 1000 / 30, -- frequency to update lsp progress message
-        view = 'mini',
-      },
       signature = {
-        enabled = true,
-        auto_open = {
-          enabled = true,
-          trigger = true, -- Automatically show signature help when typing a trigger character from the LSP
-          luasnip = true, -- Will open signature help when jumping to Luasnip insert nodes
-          throttle = 50, -- Debounce lsp signature help request by 50ms
-        },
-        view = nil, -- when nil, use defaults from documentation
-        opts = {}, -- merged with defaults from documentation
+        enabled = false,
       },
       hover = {
-        enabled = true,
+        enabled = false,
       },
       -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
       override = {

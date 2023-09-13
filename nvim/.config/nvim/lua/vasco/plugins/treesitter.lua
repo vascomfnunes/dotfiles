@@ -37,8 +37,6 @@ return {
         'yaml',
         'markdown',
         'markdown_inline',
-        'latex',
-        'commonlisp',
       },
 
       highlight = { enable = true },
