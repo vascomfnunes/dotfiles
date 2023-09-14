@@ -17,16 +17,21 @@ return {
     'neovim/nvim-lspconfig',
     'williamboman/mason.nvim',
     'williamboman/mason-lspconfig.nvim',
+    'jose-elias-alvarez/null-ls.nvim',
 
     -- Autocompletion
-    'hrsh7th/nvim-cmp',
-    'hrsh7th/cmp-nvim-lsp',
-    'hrsh7th/cmp-cmdline',
-    'L3MON4D3/LuaSnip',
-    'jose-elias-alvarez/null-ls.nvim',
-    'hrsh7th/cmp-buffer',
-    'hrsh7th/cmp-path',
-    'onsails/lspkind.nvim',
+    {
+      'hrsh7th/nvim-cmp',
+      dependencies = {
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
+        'saadparwaiz1/cmp_luasnip',
+        'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-nvim-lua',
+        'hrsh7th/cmp-cmdline',
+        'onsails/lspkind.nvim',
+      },
+    },
 
     -- Snippets
     { 'L3MON4D3/LuaSnip', build = 'make install_jsregexp' },
@@ -47,8 +52,8 @@ return {
     local has_words_before = function()
       local cursor = vim.api.nvim_win_get_cursor(0)
       return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
-        :sub(cursor[2], cursor[2])
-        :match '%s'
+          :sub(cursor[2], cursor[2])
+          :match '%s'
     end
 
     lsp.set_preferences {
@@ -101,7 +106,7 @@ return {
         { name = 'nvim_lsp', keyword_length = 3, group_index = 1, max_item_count = 30 },
         { name = 'luasnip' },
         { name = 'nvim_lua' },
-        { name = 'buffer', keyword_length = 3 },
+        { name = 'buffer',   keyword_length = 3 },
       },
       snippet = {
         expand = function(args)
@@ -154,7 +159,7 @@ return {
         fields = { 'kind', 'abbr', 'menu' },
         format = function(entry, vim_item)
           local kind =
-            require('lspkind').cmp_format { mode = 'symbol_text', preset = 'default', maxwidth = 50 }(entry, vim_item)
+              require('lspkind').cmp_format { mode = 'symbol_text', preset = 'default', maxwidth = 50 } (entry, vim_item)
           local strings = vim.split(kind.kind, '%s', { trimempty = true })
           kind.kind = ' ' .. (strings[1] or '') .. ' '
           kind.menu = '    (' .. (strings[2] or '') .. ')'
