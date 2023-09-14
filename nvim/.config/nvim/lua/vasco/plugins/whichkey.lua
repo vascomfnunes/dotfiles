@@ -262,6 +262,22 @@ return {
           'Show test output',
         },
       },
+      -- Harpoon
+      ['<leader>h'] = {
+        name = 'Harpoon',
+        a = {
+          function()
+            require('harpoon.mark').add_file()
+          end,
+          'Add file',
+        },
+        h = {
+          function()
+            require('harpoon.ui').toggle_quick_menu()
+          end,
+          'Toggle files files',
+        },
+      },
       -- Git
       ['<leader>g'] = {
         name = 'Git',
