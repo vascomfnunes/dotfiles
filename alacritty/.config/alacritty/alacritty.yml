@@ -1,6 +1,6 @@
 live_config_reload: true
 env:
-  TERM: alacritty
+  TERM: screen-256color
 tabspaces: 2
 window:
   dynamic_padding: true
