@@ -3,6 +3,7 @@ local config = require 'vasco.config'
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
+  dependencies = { 'rcarriga/nvim-notify' },
   opts = {
     messages = {
       enabled = true,
@@ -39,7 +40,7 @@ return {
     },
     lsp = {
       signature = {
-        enabled = false,
+        enabled = true,
       },
       hover = {
         enabled = false,

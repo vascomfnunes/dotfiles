@@ -28,15 +28,6 @@ return {
     'hrsh7th/cmp-path',
     'onsails/lspkind.nvim',
 
-    {
-      'ray-x/lsp_signature.nvim',
-      event = 'VeryLazy',
-      opts = { noice = true },
-      config = function(_, opts)
-        require('lsp_signature').setup(opts)
-      end,
-    },
-
     -- Snippets
     { 'L3MON4D3/LuaSnip', build = 'make install_jsregexp' },
     'honza/vim-snippets',
