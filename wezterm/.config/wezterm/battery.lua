@@ -15,17 +15,17 @@ module.get = function()
       local charge = b.state_of_charge * 100
 
       if charge <= 10 then
-        icon = fonts.mdi_battery_alert
+        icon = fonts.md_battery_alert
       elseif charge > 10 and charge <= 30 then
-        icon = fonts.mdi_battery_20
+        icon = fonts.md_battery_20
       elseif charge > 30 and charge <= 50 then
-        icon = fonts.mdi_battery_40
+        icon = fonts.md_battery_40
       elseif charge > 50 and charge <= 70 then
-        icon = fonts.mdi_battery_60
+        icon = fonts.md_battery_60
       elseif charge > 70 and charge <= 90 then
-        icon = fonts.mdi_battery_80
+        icon = fonts.md_battery_80
       else
-        icon = fonts.mdi_battery
+        icon = fonts.md_battery
       end
 
       battery = icon .. ' ' .. string.format('%.0f%%', charge)

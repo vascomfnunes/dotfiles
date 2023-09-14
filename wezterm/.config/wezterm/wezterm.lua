@@ -15,6 +15,11 @@ local function get_date()
   return fonts.fa_clock_o .. '  ' .. wezterm.strftime '%A, %-d %B  %I:%M %p  '
 end
 
+local function is_vim(pane)
+  -- this is set by the plugin, and unset on ExitPre in Neovim
+  return pane:get_user_vars().IS_NVIM == 'true'
+end
+
 return {
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
   font = wezterm.font {

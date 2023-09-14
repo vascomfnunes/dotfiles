@@ -6,7 +6,6 @@ return {
   config = function()
     local whichkey = require 'which-key'
     local icons = require 'vasco.helpers.icons'
-    local tmux_term = require 'tmux-awesome-manager.src.term'
 
     whichkey.setup {
       icons = {
@@ -85,14 +84,14 @@ return {
       -- Spell
       ['z='] = { '<cmd>Telescope spell_suggest<cr>', 'Spell suggestions' },
       -- Navigation
-      ['<C-h>'] = { 'Navigate left' },
-      ['<C-j>'] = { 'Navigate down' },
-      ['<C-k>'] = { 'Navigate up' },
-      ['<C-l>'] = { 'Navigate right' },
-      ['˙'] = { ':TmuxResizeLeft<cr>', 'Resize left' },
-      ['∆'] = { ':TmuxResizeDown<cr>', 'Resize down' },
-      ['˚'] = { ':TmuxResizeUp<cr>', 'Resize up' },
-      ['¬'] = { ':TmuxResizeRight<cr>', 'Resize right' },
+      ['<C-h>'] = { ':SmartCursorMoveLeft<cr>', 'Move right' },
+      ['<C-j>'] = { ':SmartCursorMoveDown<cr>', 'Move right' },
+      ['<C-k>'] = { ':SmartCursorMoveUp<cr>', 'Move right' },
+      ['<C-l>'] = { ':SmartCursorMoveRight<cr>', 'Move right' },
+      ['<A-h>'] = { ':SmartResizeLeft<cr>', 'Resize left' },
+      ['<A-j>'] = { ':SmartResizeDown<cr>', 'Resize down' },
+      ['<A-k>'] = { ':SmartResizeUp<cr>', 'Resize up' },
+      ['<A-l>'] = { ':SmartResizeRight<cr>', 'Resize right' },
       -- Splits
       ['vv'] = { '<C-w>v', 'Split vertical' },
       ['ss'] = { '<C-w>s', 'Split horizontal' },
@@ -325,180 +324,6 @@ return {
       ['<leader>m'] = {
         name = 'Markdown',
         p = { vim.cmd.MarkdownPreview, 'Preview in browser' },
-      },
-      -- Yarn
-      ['<leader>y'] = {
-        name = 'Yarn',
-        i = tmux_term.run_wk { cmd = 'yarn', name = 'Install', visit_first_call = false, open_as = 'panel' },
-        a = tmux_term.run_wk {
-          cmd = 'yarn add %1',
-          name = 'Add',
-          questions = {
-            {
-              question = 'Yarn package: ',
-              required = true,
-              open_as = 'pane',
-              close_on_timer = 4,
-              visit_first_call = false,
-              focus_when_call = false,
-            },
-          },
-        },
-        d = tmux_term.run_wk {
-          cmd = 'yarn add -D %1',
-          name = 'Add (development)',
-          questions = {
-            {
-              question = 'Yarn development package: ',
-              required = true,
-              open_as = 'pane',
-              close_on_timer = 4,
-              visit_first_call = false,
-              focus_when_call = false,
-            },
-          },
-        },
-      },
-      -- Rails
-      ['<leader>r'] = {
-        name = 'Rails',
-        a = { vim.cmd.A, 'Alternate' },
-        v = { vim.cmd.Eview, 'View' },
-        h = { vim.cmd.Ehelper, 'Helper' },
-        t = { vim.cmd.Espec, 'Test' },
-        m = { vim.cmd.Emodel, 'Model' },
-        j = { vim.cmd.Ejavascript, 'Javascript' },
-        M = { vim.cmd.Emigration, 'Migration' },
-        l = { vim.cmd.Elocale, 'Locale' },
-        L = { vim.cmd.Elayout, 'Layout' },
-        S = { vim.cmd.Estylesheet, 'Stylesheet' },
-        c = { vim.cmd.Econtroller, 'Controller' },
-        f = tmux_term.run_wk {
-          cmd = 'bin/dev',
-          name = 'Rails Server using foreman (bin/dev)',
-          visit_first_call = false,
-          open_as = 'panel',
-        },
-        s = tmux_term.run_wk {
-          cmd = 'bundle exec rails s',
-          name = 'Rails Server (rails server)',
-          visit_first_call = false,
-          open_as = 'panel',
-        },
-        r = tmux_term.run_wk {
-          cmd = 'bundle exec rails routes',
-          name = 'Routes',
-          visit_first_call = false,
-          open_as = 'panel',
-        },
-        T = tmux_term.run_wk {
-          cmd = 'bundle exec rspec',
-          name = 'Run all RSpec tests',
-          visit_first_call = false,
-          open_as = 'panel',
-        },
-        C = tmux_term.run_wk { cmd = 'bundle exec rails c', name = 'Rails Console', open_as = 'window' },
-        b = tmux_term.run_wk {
-          cmd = 'bundle install',
-          name = 'Bundle Install',
-          open_as = 'pane',
-          close_on_timer = 2,
-          visit_first_call = false,
-          focus_when_call = false,
-        },
-        u = tmux_term.run_wk {
-          cmd = 'bundle update',
-          name = 'Bundle Update',
-          open_as = 'pane',
-          close_on_timer = 2,
-          visit_first_call = false,
-          focus_when_call = false,
-        },
-        g = tmux_term.run_wk {
-          cmd = 'bundle exec rails generate %1',
-          name = 'Rails Generate',
-          questions = {
-            {
-              question = 'Rails generate: ',
-              required = true,
-              open_as = 'pane',
-              close_on_timer = 4,
-              visit_first_call = false,
-              focus_when_call = false,
-            },
-          },
-        },
-        D = tmux_term.run_wk {
-          cmd = 'bundle exec rails destroy %1',
-          name = 'Rails Destroy',
-          questions = {
-            {
-              question = 'Rails destroy: ',
-              required = true,
-              open_as = 'pane',
-              close_on_timer = 4,
-              visit_first_call = false,
-              focus_when_call = false,
-            },
-          },
-        },
-        d = {
-          name = 'Database',
-          c = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:create',
-            name = 'Create',
-            open_as = 'pane',
-            close_on_timer = 2,
-            visit_first_call = false,
-            focus_when_call = false,
-          },
-          m = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:migrate',
-            name = 'Migrate',
-            open_as = 'pane',
-            close_on_timer = 2,
-            visit_first_call = false,
-            focus_when_call = false,
-          },
-          s = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:seed',
-            name = 'Seed',
-            open_as = 'pane',
-            close_on_timer = 2,
-            visit_first_call = false,
-            focus_when_call = false,
-          },
-          r = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:rollback',
-            name = 'Rollback',
-            open_as = 'pane',
-            close_on_timer = 2,
-            visit_first_call = false,
-            focus_when_call = false,
-          },
-          R = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:rollback STEP=%1',
-            name = 'Rollback (x steps)',
-            questions = {
-              {
-                question = 'Rollback steps: ',
-                required = true,
-                open_as = 'pane',
-                close_on_timer = 4,
-                visit_first_call = false,
-                focus_when_call = false,
-              },
-            },
-          },
-          d = tmux_term.run_wk {
-            cmd = 'bundle exec rails db:drop',
-            name = 'Drop',
-            open_as = 'pane',
-            close_on_timer = 2,
-            visit_first_call = false,
-            focus_when_call = false,
-          },
-        },
       },
       -- Plugins
       ['<leader>u'] = {

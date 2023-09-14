@@ -9,8 +9,8 @@ local function basename(s)
 end
 
 local function is_vim(pane)
-  local process_name = basename(pane:get_foreground_process_name())
-  return process_name == 'nvim' or process_name == 'vim'
+  -- this is set by the plugin, and unset on ExitPre in Neovim
+  return pane:get_user_vars().IS_NVIM == 'true'
 end
 
 local direction_keys = {
@@ -67,10 +67,10 @@ return {
     mods = 'LEADER',
     action = wezterm.action { SplitHorizontal = { domain = 'CurrentPaneDomain' } },
   },
-  { key = 'h', mods = 'LEADER', action = action { ActivateTabRelative = -1 } },
-  { key = 'l', mods = 'LEADER', action = action { ActivateTabRelative = 1 } },
   { key = 'H', mods = 'LEADER', action = action { MoveTabRelative = -1 } },
   { key = 'L', mods = 'LEADER', action = action { MoveTabRelative = 1 } },
+  { key = 'h', mods = 'LEADER', action = action { ActivateTabRelative = -1 } },
+  { key = 'l', mods = 'LEADER', action = action { ActivateTabRelative = 1 } },
   { key = 'u', mods = 'SUPER', action = action { ScrollByPage = -1 } },
   { key = 'd', mods = 'SUPER', action = action { ScrollByPage = 1 } },
   { key = '0', mods = 'SUPER', action = 'ResetFontSize' },
