@@ -71,6 +71,7 @@ return {
   { key = 'L', mods = 'LEADER', action = action { MoveTabRelative = 1 } },
   { key = 'h', mods = 'LEADER', action = action { ActivateTabRelative = -1 } },
   { key = 'l', mods = 'LEADER', action = action { ActivateTabRelative = 1 } },
+  { key = 'a', mods = 'LEADER', action = 'ActivateLastTab' },
   { key = 'u', mods = 'SUPER', action = action { ScrollByPage = -1 } },
   { key = 'd', mods = 'SUPER', action = action { ScrollByPage = 1 } },
   { key = '0', mods = 'SUPER', action = 'ResetFontSize' },
