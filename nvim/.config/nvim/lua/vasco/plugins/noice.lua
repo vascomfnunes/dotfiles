@@ -3,7 +3,14 @@ local config = require 'vasco.config'
 return {
   'folke/noice.nvim',
   event = 'VeryLazy',
-  dependencies = { 'rcarriga/nvim-notify' },
+  dependencies = {
+    'rcarriga/nvim-notify',
+    config = function()
+      require('notify').setup {
+        background_colour = '#222'
+      }
+    end,
+  },
   opts = {
     messages = {
       enabled = true,
