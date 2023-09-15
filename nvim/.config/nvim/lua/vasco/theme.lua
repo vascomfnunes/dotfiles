@@ -16,6 +16,7 @@ local function set_hl(group, options)
 end
 
 -- Set various highlight groups
+set_hl('Normal', { bg = 'NONE' })
 set_hl('TelescopeBorder', { fg = gray })
 set_hl('TelescopeSelection', { bg = fg, fg = bg })
 set_hl('TelescopeMatching', { fg = red })

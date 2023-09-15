@@ -1,13 +1,6 @@
 local wezterm = require 'wezterm'
 local action = wezterm.action
 
--- Equivalent to POSIX basename(3)
--- Given "/foo/bar" returns "bar"
--- Given "c:\\foo\\bar" returns "bar"
-local function basename(s)
-  return string.gsub(s, '(.*[/\\])(.*)', '%2')
-end
-
 local function is_vim(pane)
   -- this is set by the plugin, and unset on ExitPre in Neovim
   return pane:get_user_vars().IS_NVIM == 'true'

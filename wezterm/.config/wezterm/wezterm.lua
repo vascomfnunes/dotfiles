@@ -15,11 +15,6 @@ local function get_date()
   return fonts.fa_clock_o .. '  ' .. wezterm.strftime '%A, %-d %B  %I:%M %p  '
 end
 
-local function is_vim(pane)
-  -- this is set by the plugin, and unset on ExitPre in Neovim
-  return pane:get_user_vars().IS_NVIM == 'true'
-end
-
 return {
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
   font = wezterm.font {
@@ -36,6 +31,14 @@ return {
   disable_default_key_bindings = true,
   adjust_window_size_when_changing_font_size = false,
   show_tab_index_in_tab_bar = true,
+  -- background = {
+  --   {
+  --     source = {
+  --       File = '/image.jpg',
+  --     },
+  --     hsb = { brightness = 0.1},
+  --   },
+  -- },
   window_background_opacity = 1.0,
   window_padding = {
     left = 8,
@@ -52,26 +55,28 @@ return {
     tab_bar = {
       -- background = colors.background,
       active_tab = {
-        bg_color = colors.background,
+        bg_color = '#222',
         fg_color = colors.ansi[4],
       },
-      -- inactive_tab = {
-      --   bg_color = colors.background,
-      --   fg_color = '#777',
-      -- },
+      inactive_tab = {
+        bg_color = colors.background,
+        fg_color = '#444',
+      },
     },
   },
   inactive_pane_hsb = {
-    saturation = 1.0,
-    brightness = 0.7,
+    saturation = 0.8,
+    brightness = 0.5,
   },
   window_frame = {
     font_size = 13.0,
+    active_titlebar_bg = colors.background,
   },
   leader = { key = 'a', mods = 'CTRL' },
   keys = keys,
   wezterm.on('update-right-status', function(window, _)
     window:set_right_status(wezterm.format {
+      { Background = { Color = colors.background } },
       { Foreground = { Color = colors.ansi[6] } },
       { Text = mpd.now_playing() },
       separator(),
