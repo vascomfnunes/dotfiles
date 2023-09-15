@@ -1,11 +1,11 @@
 local wezterm = require 'wezterm'
-local colorscheme = require 'colorscheme'
-local keys = require 'keybindings'
-
-local colors = colorscheme.theme.config.colors
 local fonts = wezterm.nerdfonts
+local colorscheme = require 'colorscheme'
+local colors = colorscheme.theme.config.colors
+local keys = require 'keybindings'
 local battery = require 'battery'
 local mpd = require 'mpd'
+local startup = require 'startup'
 
 local function separator()
   return { Text = '    ' }
@@ -14,6 +14,9 @@ end
 local function get_date()
   return fonts.fa_clock_o .. '  ' .. wezterm.strftime '%A, %-d %B  %I:%M %p  '
 end
+
+-- Create default panes and tabs
+startup.run()
 
 return {
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
@@ -55,12 +58,12 @@ return {
     tab_bar = {
       -- background = colors.background,
       active_tab = {
-        bg_color = '#222',
-        fg_color = colors.ansi[4],
+        bg_color = colors.ansi[1],
+        fg_color = colors.ansi[8],
       },
       inactive_tab = {
         bg_color = colors.background,
-        fg_color = '#444',
+        fg_color = colors.ansi[1],
       },
     },
   },
@@ -80,9 +83,11 @@ return {
       { Foreground = { Color = colors.ansi[6] } },
       { Text = mpd.now_playing() },
       separator(),
+      { Background = { Color = colors.background } },
       { Foreground = { Color = battery.color() } },
       { Text = battery.get() },
       separator(),
+      { Background = { Color = colors.background } },
       { Foreground = { Color = colors.ansi[5] } },
       { Text = get_date() },
     })
