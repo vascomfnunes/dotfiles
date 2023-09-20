@@ -5,7 +5,7 @@ local colors = colorscheme.theme.config.colors
 local keys = require 'keybindings'
 local battery = require 'battery'
 local mpd = require 'mpd'
-local startup = require 'startup'
+local events = require 'events'
 
 local function separator()
   return { Text = '    ' }
@@ -16,7 +16,7 @@ local function get_date()
 end
 
 -- Create default panes and tabs
-startup.run()
+events.run()
 
 return {
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
@@ -29,6 +29,8 @@ return {
   line_height = 1.3,
   window_decorations = 'RESIZE',
   native_macos_fullscreen_mode = true,
+  animation_fps = 1,
+  audible_bell = "Disabled",
   bold_brightens_ansi_colors = false,
   status_update_interval = 1000,
   exit_behavior = 'CloseOnCleanExit',

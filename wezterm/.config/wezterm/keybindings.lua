@@ -72,7 +72,7 @@ return {
   { key = '=', mods = 'SUPER', action = 'IncreaseFontSize' },
   { key = 'z', mods = 'LEADER', action = 'TogglePaneZoomState' },
   { key = 'c', mods = 'LEADER', action = action { SpawnTab = 'CurrentPaneDomain' } },
-  { key = 'q', mods = 'CTRL', action = action { CloseCurrentPane = { confirm = true } } },
+  { key = 'q', mods = 'LEADER', action = action { CloseCurrentPane = { confirm = true } } },
   { key = ' ', mods = 'LEADER', action = 'QuickSelect' },
   { key = 'f', mods = 'SUPER', action = 'ToggleFullScreen' },
   { key = '1', mods = 'SUPER', action = action { ActivateTab = 0 } },

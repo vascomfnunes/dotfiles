@@ -16,7 +16,7 @@ M.run = function()
 
     -- Repos#1 pane
     local repos_tab = window:spawn_tab {
-      cwd = home .. '/repos'
+      cwd = home .. '/repos',
     }
     repos_tab:set_title 'repos #1'
 
@@ -44,6 +44,10 @@ M.run = function()
     news_tab:set_title 'news'
 
     window:gui_window():perform_action(actions.ActivateTab(0), home_pane)
+  end)
+
+  wezterm.on('bell', function(window, pane)
+    wezterm.log_info('The bell was rung in pane ' .. pane:pane_id() .. '!')
   end)
 end
 
