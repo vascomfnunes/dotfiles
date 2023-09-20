@@ -1,4 +1,9 @@
 local wezterm = require 'wezterm'
+
+-- Weather related global variables
+wezterm.GLOBAL.weather_timer = 0
+wezterm.GLOBAL.weather_conditions = 0
+
 local fonts = wezterm.nerdfonts
 local colorscheme = require 'colorscheme'
 local colors = colorscheme.theme.config.colors
@@ -6,6 +11,7 @@ local keys = require 'keybindings'
 local battery = require 'battery'
 local mpd = require 'mpd'
 local events = require 'events'
+local weather = require 'weather'
 
 local function separator()
   return { Text = '    ' }
@@ -19,6 +25,7 @@ end
 events.run()
 
 return {
+  default_cursor_style = 'BlinkingBar',
   color_scheme = colorscheme.theme.for_appearance(wezterm.gui.get_appearance()),
   font = wezterm.font {
     family = 'JetBrains Mono',
@@ -30,36 +37,49 @@ return {
   window_decorations = 'RESIZE',
   native_macos_fullscreen_mode = true,
   animation_fps = 1,
-  audible_bell = "Disabled",
+  audible_bell = 'Disabled',
   bold_brightens_ansi_colors = false,
   status_update_interval = 1000,
   exit_behavior = 'CloseOnCleanExit',
   disable_default_key_bindings = true,
   adjust_window_size_when_changing_font_size = false,
   show_tab_index_in_tab_bar = true,
-  -- background = {
-  --   {
-  --     source = {
-  --       File = '/image.jpg',
-  --     },
-  --     hsb = { brightness = 0.1},
-  --   },
-  -- },
   window_background_opacity = 1.0,
-  window_padding = {
-    left = 8,
-    bottom = 0,
-    right = 2,
-    top = 8,
-  },
+  window_padding = { left = 8, right = 8, top = 8, bottom = 0 },
   macos_window_background_blur = 20,
   enable_tab_bar = true,
   hide_tab_bar_if_only_one_tab = false,
   use_fancy_tab_bar = true,
   check_for_updates = false,
+  hyperlink_rules = {
+    -- Linkify things that look like URLs
+    -- This is actually the default if you don't specify any hyperlink_rules
+    {
+      regex = '\\b\\w+://(?:[\\w.-]+)\\.[a-z]{2,15}\\S*\\b',
+      format = '$0',
+    },
+
+    -- match the URL with a PORT
+    -- such 'http://localhost:3000/index.html'
+    {
+      regex = '\\b\\w+://(?:[\\w.-]+):\\d+\\S*\\b',
+      format = '$0',
+    },
+
+    -- linkify email addresses
+    {
+      regex = '\\b\\w+@[\\w-]+(\\.[\\w-]+)+\\b',
+      format = 'mailto:$0',
+    },
+
+    -- file:// URI
+    {
+      regex = '\\bfile://\\S*\\b',
+      format = '$0',
+    },
+  },
   colors = {
     tab_bar = {
-      -- background = colors.background,
       active_tab = {
         bg_color = colors.ansi[1],
         fg_color = colors.ansi[8],
@@ -89,6 +109,10 @@ return {
       { Background = { Color = colors.background } },
       { Foreground = { Color = battery.color() } },
       { Text = battery.get() },
+      separator(),
+      { Background = { Color = colors.background } },
+      { Foreground = { Color = colors.ansi[4] } },
+      { Text = string.format('%s', weather.conditions()) },
       separator(),
       { Background = { Color = colors.background } },
       { Foreground = { Color = colors.ansi[5] } },

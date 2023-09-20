@@ -46,7 +46,7 @@ M.run = function()
     window:gui_window():perform_action(actions.ActivateTab(0), home_pane)
   end)
 
-  wezterm.on('bell', function(window, pane)
+  wezterm.on('bell', function(_, pane)
     wezterm.log_info('The bell was rung in pane ' .. pane:pane_id() .. '!')
   end)
 end
