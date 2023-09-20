@@ -48,13 +48,10 @@ module.conditions = function()
       return
     end
 
-    wezterm.GLOBAL.weather_timer = wezterm.GLOBAL.weather_timer + 1
     wezterm.GLOBAL.weather_conditions = module.icon(wezterm.json_parse(stdout).current_weather.weathercode)
       .. ' '
       .. wezterm.json_parse(stdout).current_weather.temperature
       .. '°C'
-
-    return wezterm.GLOBAL.weather_conditions
   end
 
   wezterm.GLOBAL.weather_timer = wezterm.GLOBAL.weather_timer + 1
