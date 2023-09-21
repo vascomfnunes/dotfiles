@@ -204,29 +204,6 @@ return {
         o = { '<cmd>Lspsaga outline<CR>', 'Outline' },
         g = { vim.cmd.Neogen, 'Generate documentation' },
       },
-      -- Debug
-      ['<leader>d'] = {
-        name = 'Debug',
-        b = { vim.cmd.DapToggleBreakpoint, 'Breakpoint' },
-        c = { vim.cmd.DapContinue, 'Continue' },
-        i = { vim.cmd.DapStepInto, 'Step into' },
-        o = { vim.cmd.DapStepOver, 'Step over' },
-        O = { vim.cmd.DapStepOut, 'Step out' },
-        r = { vim.cmd.DapToggleRepl, 'Toggle repl' },
-        t = {
-          function()
-            require('dapui').toggle()
-          end,
-          'Toggle debug UI',
-        },
-        K = {
-          function()
-            require('dap.ui.widgets').hover()
-          end,
-          'Evaluate hover',
-        },
-        q = { vim.cmd.DapTerminate, 'Quit' },
-      },
       -- Tests
       ['<leader>t'] = {
         name = 'Tests',

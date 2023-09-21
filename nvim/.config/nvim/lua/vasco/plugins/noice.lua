@@ -7,7 +7,7 @@ return {
     messages = {
       enabled = true,
       view = nil,
-      view_error = 'mini',
+      view_error = 'notify',
       view_warn = nil,
     },
     views = {
