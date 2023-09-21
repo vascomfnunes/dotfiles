@@ -109,8 +109,9 @@ return {
 
         local servers = {
           tsserver = {},
-          html = { filetypes = { 'html', 'twig' } },
+          html = { filetypes = { 'html', 'eruby' } },
           cssls = { filetypes = { 'css', 'scss' } },
+          eslint = {},
           standardrb = {},
 
           lua_ls = {
@@ -135,8 +136,6 @@ return {
           'prettierd',
           'stylua',
           'shfmt',
-          -- 'chrome-debug-adapter',
-          -- 'node-debug2-adapter',
         }
 
         local mr = require 'mason-registry'

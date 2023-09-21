@@ -3,11 +3,11 @@ return {
   event = 'VeryLazy',
   opts = {
     formatters_by_ft = {
-      lua = { "stylua" },
-      javascript = { "prettierd" },
+      lua = { 'stylua' },
+      javascript = { 'prettierd', 'eslint' },
       html = { 'prettierd' },
-      css = { 'prettier' },
-      scss = { 'prettier' }
+      css = { 'prettierd' },
+      scss = { 'prettierd' },
     },
   },
 }
