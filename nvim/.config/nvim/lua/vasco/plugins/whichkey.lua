@@ -156,7 +156,7 @@ return {
         },
         f = {
           function()
-            vim.lsp.buf.format()
+            require('conform').format { async = true, lsp_fallback = true }
           end,
           'Format',
         },
@@ -411,7 +411,7 @@ return {
         name = 'Code',
         f = {
           function()
-            vim.lsp.buf.format()
+            require('conform').format { async = true, lsp_fallback = true }
           end,
           'Format',
         },
