@@ -32,8 +32,8 @@ return {
         local has_words_before = function()
           local cursor = vim.api.nvim_win_get_cursor(0)
           return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
-            :sub(cursor[2], cursor[2])
-            :match '%s'
+              :sub(cursor[2], cursor[2])
+              :match '%s'
         end
 
         cmp.setup {
@@ -74,7 +74,7 @@ return {
             { name = 'nvim_lsp', keyword_length = 3, group_index = 1, max_item_count = 30 },
             { name = 'luasnip' },
             { name = 'nvim_lua' },
-            { name = 'buffer', keyword_length = 3 },
+            { name = 'buffer',   keyword_length = 3 },
           },
           window = {
             completion = {
@@ -94,7 +94,7 @@ return {
             fields = { 'kind', 'abbr', 'menu' },
             expandable_indicator = true,
             format = function(entry, vim_item)
-              local kind = require('lspkind').cmp_format { mode = 'symbol_text', preset = 'default', maxwidth = 50 }(
+              local kind = require('lspkind').cmp_format { mode = 'symbol_text', preset = 'default', maxwidth = 50 } (
                 entry,
                 vim_item
               )
@@ -111,8 +111,10 @@ return {
           tsserver = {},
           html = { filetypes = { 'html', 'eruby' } },
           cssls = { filetypes = { 'css', 'scss' } },
+          stylelint_lsp = { filetypes = { 'css', 'scss' } },
           eslint = {},
           standardrb = {},
+          bashls = {},
 
           lua_ls = {
             Lua = {
@@ -134,8 +136,8 @@ return {
 
         local mason_tools = {
           'prettierd',
-          'stylua',
           'shfmt',
+          'shellcheck',
         }
 
         local mr = require 'mason-registry'
