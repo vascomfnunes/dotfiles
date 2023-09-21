@@ -29,6 +29,13 @@ return {
 
         luasnip.config.setup {}
 
+        local has_words_before = function()
+          local cursor = vim.api.nvim_win_get_cursor(0)
+          return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
+            :sub(cursor[2], cursor[2])
+            :match '%s'
+        end
+
         cmp.setup {
           snippet = {
             expand = function(args)
@@ -75,14 +82,17 @@ return {
               winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
               col_offset = -3,
               side_padding = 0,
+              scrollbar = true,
             },
             documentation = {
               border = config.border_style,
               winhighlight = 'FloatBorder:FloatBorder',
+              scrollbar = true,
             },
           },
           formatting = {
             fields = { 'kind', 'abbr', 'menu' },
+            expandable_indicator = true,
             format = function(entry, vim_item)
               local kind = require('lspkind').cmp_format { mode = 'symbol_text', preset = 'default', maxwidth = 50 }(
                 entry,
@@ -101,7 +111,7 @@ return {
           tsserver = {},
           html = { filetypes = { 'html', 'twig' } },
           cssls = { filetypes = { 'css', 'scss' } },
-          solargraph = {},
+          standardrb = {},
 
           lua_ls = {
             Lua = {
@@ -125,8 +135,8 @@ return {
           'prettierd',
           'stylua',
           'shfmt',
-          'chrome-debug-adapter',
-          'node-debug2-adapter',
+          -- 'chrome-debug-adapter',
+          -- 'node-debug2-adapter',
         }
 
         local mr = require 'mason-registry'
