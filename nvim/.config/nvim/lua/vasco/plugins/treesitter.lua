@@ -2,6 +2,7 @@ local config = require 'vasco.config'
 
 return {
   'nvim-treesitter/nvim-treesitter',
+  version = false,
   dependencies = {
     'nvim-treesitter/nvim-treesitter-textobjects',
     {
@@ -14,7 +15,8 @@ return {
     'RRethy/nvim-treesitter-endwise',
   },
   build = ':TSUpdate',
-  event = 'BufEnter',
+  event = { 'BufReadPost', 'BufNewFile' },
+  cmd = { "TSUpdateSync" },
   config = function()
     require('nvim-treesitter.configs').setup {
       -- Add languages to be installed here that you want installed for treesitter
@@ -38,7 +40,7 @@ return {
         'markdown',
         'markdown_inline',
         'latex',
-        'commonlisp'
+        'commonlisp',
       },
 
       highlight = { enable = true },

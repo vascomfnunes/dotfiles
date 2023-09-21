@@ -1,8 +1,9 @@
 return {
   'stevearc/conform.nvim',
-  event = 'VeryLazy',
+  event = { "BufReadPre", "BufNewFile" },
   opts = {
     formatters_by_ft = {
+      lua = { 'stylua' },
       javascript = { 'prettierd', 'eslint' },
       html = { 'prettierd' },
       css = { 'prettierd' },

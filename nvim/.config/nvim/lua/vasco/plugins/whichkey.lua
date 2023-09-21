@@ -92,13 +92,6 @@ return {
       ['<A-j>'] = { ':SmartResizeDown<cr>', 'Resize down' },
       ['<A-k>'] = { ':SmartResizeUp<cr>', 'Resize up' },
       ['<A-l>'] = { ':SmartResizeRight<cr>', 'Resize right' },
-      -- Splits
-      ['vv'] = { '<C-w>v', 'Split vertical' },
-      ['ss'] = { '<C-w>s', 'Split horizontal' },
-      ['Zz'] = { '<C-w>|<C-w>_', 'Split zoom in' },
-      ['Zo'] = { '<C-w>=', 'Split zoom out' },
-      -- Zen mode
-      ['<leader>Z'] = { vim.cmd.ZenMode, 'Zen mode' },
       -- Buffers
       ['.'] = {
         vim.cmd.bnext,

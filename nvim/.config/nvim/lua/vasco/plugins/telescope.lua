@@ -1,5 +1,7 @@
 return {
   'nvim-telescope/telescope.nvim',
+  commit = vim.fn.has 'nvim-0.9.0' == 0 and '057ee0f8783' or nil,
+  cmd = { 'Telescope' },
   dependencies = {
     {
       'nvim-telescope/telescope-fzf-native.nvim',
@@ -7,7 +9,6 @@ return {
     },
     'tsakirist/telescope-lazy.nvim',
   },
-  cmd = { 'Telescope' },
   config = function()
     local telescope = require 'telescope'
     local actions = require 'telescope.actions'

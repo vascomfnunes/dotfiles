@@ -1,60 +1,87 @@
-local custom_group = vim.api.nvim_create_augroup('CustomCmdGroup', { clear = true })
+local function augroup(name)
+  return vim.api.nvim_create_augroup('vasco_' .. name, { clear = true })
+end
 
--- Highlight line on yank
+-- Highlight on yank
 vim.api.nvim_create_autocmd('TextYankPost', {
+  group = augroup 'highlight_yank',
   callback = function()
-    vim.highlight.on_yank { higroup = 'Visual', timeout = 200 }
+    vim.highlight.on_yank()
   end,
-  group = custom_group,
-  pattern = '*',
 })
 
 -- Trim whitespaces
-vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
-  group = custom_group,
+vim.api.nvim_create_autocmd('BufWritePre', {
+  group = augroup 'trim_whitspaces',
   pattern = { '*' },
   command = '%s/\\s\\+$//e',
 })
 
+-- Go to last loc when opening a buffer
+vim.api.nvim_create_autocmd('BufReadPost', {
+  group = augroup 'last_loc',
+  callback = function()
+    local exclude = { 'gitcommit' }
+    local buf = vim.api.nvim_get_current_buf()
+
+    if vim.tbl_contains(exclude, vim.bo[buf].filetype) then
+      return
+    end
+
+    local mark = vim.api.nvim_buf_get_mark(buf, '"')
+    local lcount = vim.api.nvim_buf_line_count(buf)
+
+    if mark[1] > 0 and mark[1] <= lcount then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
 -- Disable diagnostics for specific patterns
 vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
-  group = custom_group,
+  group = augroup 'disable_diagnostics_for_patterns',
   pattern = { '*/node_modules/*' },
   command = 'lua vim.diagnostic.disable(0)',
 })
 
--- dont list quickfix buffers
+-- Don't list quickfix buffers
 vim.api.nvim_create_autocmd({ 'FileType' }, {
-  group = custom_group,
+  group = augroup 'quickfix_buffers',
   pattern = { 'qf' },
   callback = function()
     vim.opt_local.buflisted = false
   end,
 })
 
--- create directories when needed, when saving a file
-vim.api.nvim_create_autocmd('BufWritePre', {
-  group = vim.api.nvim_create_augroup('auto_create_dir', { clear = true }),
+-- Create directories when needed, when saving a file
+vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+  group = augroup 'auto_create_dir',
   callback = function(event)
+    if event.match:match '^%w%w+://' then
+      return
+    end
     local file = vim.loop.fs_realpath(event.match) or event.match
-
     vim.fn.mkdir(vim.fn.fnamemodify(file, ':p:h'), 'p')
-    local backup = vim.fn.fnamemodify(file, ':p:~:h')
-    backup = backup:gsub('[/\\]', '%%')
-    vim.go.backupext = backup
   end,
 })
 
--- close some filetypes with <q>
+-- Close some filetypes with <q>
 vim.api.nvim_create_autocmd('FileType', {
-  group = vim.api.nvim_create_augroup('close_with_q', { clear = true }),
+  group = augroup 'close_with_q',
   pattern = {
-    'qf',
+    'PlenaryTestPopup',
     'help',
+    'lspinfo',
     'man',
     'notify',
-    'lspinfo',
+    'qf',
     'spectre_panel',
+    'startuptime',
+    'tsplayground',
+    'neotest-output',
+    'checkhealth',
+    'neotest-summary',
+    'neotest-output-panel',
   },
   callback = function(event)
     vim.bo[event.buf].buflisted = false

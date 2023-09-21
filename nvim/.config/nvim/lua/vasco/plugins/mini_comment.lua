@@ -1,7 +1,7 @@
 return {
   'echasnovski/mini.comment',
   version = false,
-	lazy = false,
+  event = { "BufReadPre", "BufNewFile" },
   config = function()
     require('mini.comment').setup()
   end,

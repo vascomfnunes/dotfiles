@@ -2,7 +2,7 @@ local config = require 'vasco.config'
 
 return {
   'neovim/nvim-lspconfig',
-  lazy = false,
+  event = { "BufReadPre", "BufNewFile" },
   dependencies = {
     { 'williamboman/mason.nvim', config = true },
     'williamboman/mason-lspconfig.nvim',
@@ -135,6 +135,7 @@ return {
         }
 
         local mason_tools = {
+          'stylua',
           'prettierd',
           'shfmt',
           'shellcheck',
