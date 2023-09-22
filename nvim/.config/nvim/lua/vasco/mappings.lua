@@ -39,3 +39,39 @@ set('n', '<c-u>', '<c-u>zz')
 
 -- Clear highlight on escape in normal mode (use <esc> instead of ^[)
 set('n', '<esc>', ':noh<cr>', { desc = 'Clear highlights' })
+
+-- Spell
+set('n', '<leader><space>', function()
+  vim.o.spell = not vim.o.spell
+end, { desc = 'Toggle spell' })
+
+-- Wrapping
+set('n', '<leader>w', '<cmd>set wrap<cr>', { desc = 'Set wrap' })
+set('n', '<leader>w', '<cmd>set nowrap<cr>', { desc = 'Unset wrap' })
+
+-- Buffers
+set('n', '.', vim.cmd.bnext, { desc = 'Next buffer' })
+set('n', ',', vim.cmd.bprevious, { desc = 'Previous buffer' })
+set('n', '<leader>bd', vim.cmd.bwipeout, { desc = 'Remove current buffer' })
+
+-- Tabs
+set('n', '<leader><Tab>n', vim.cmd.tabnew, { desc = 'New' })
+set('n', '<leader><Tab>c', vim.cmd.tabclose, { desc = 'Close' })
+set('n', '<leader><Tab>]', vim.cmd.tabnext, { desc = 'Next' })
+set('n', '<leader><Tab>[', vim.cmd.tabprevious, { desc = 'Previous' })
+
+-- Quickfix
+set('n', '<leader>qq', function()
+  require('vasco.helpers.functions').toggle_qf()
+end, { desc = 'Toggle quicklist' })
+set('n', '<leader>qj', vim.cmd.cnext, { desc = 'Next' })
+set('n', '<leader>qk', vim.cmd.cprevious, { desc = 'Previous' })
+
+-- Lazy
+set('n', '<leader>up', vim.cmd.Lazy, { desc = 'Plugins' })
+
+-- Theme
+set('n', '<leader>Td', '<cmd>set background=dark<cr>', { desc = 'Dark' })
+set('n', '<leader>Tl', '<cmd>set background=light<cr>', { desc = 'Light' })
+
+set('n', '<leader>v', '<cmd>cd ~/.config/nvim|e init.lua<cr>', { desc = 'Neovim configuration' })

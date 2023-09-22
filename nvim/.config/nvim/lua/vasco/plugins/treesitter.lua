@@ -16,7 +16,10 @@ return {
   },
   build = ':TSUpdate',
   event = { 'BufReadPost', 'BufNewFile' },
-  cmd = { "TSUpdateSync" },
+  cmd = { 'TSUpdateSync' },
+  keys = {
+    vim.keymap.set('n', '<leader>ut', vim.cmd.TSUpdate, { desc = 'Treesitter definitions' }),
+  },
   config = function()
     require('nvim-treesitter.configs').setup {
       -- Add languages to be installed here that you want installed for treesitter

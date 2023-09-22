@@ -6,8 +6,22 @@ return {
   event = 'LspAttach',
   dependencies = {
     { 'nvim-tree/nvim-web-devicons' },
-    --Please make sure you install markdown and markdown_inline parser
     { 'nvim-treesitter/nvim-treesitter' },
+  },
+  keys = {
+    vim.keymap.set('n', '<leader>ck', '<cmd>Lspsaga hover_doc<cr>', { desc = 'LSP documentation' }),
+    vim.keymap.set('n', '<leader>cd', '<cmd>Lspsaga goto_definition<cr>', { desc = 'Go to definition' }),
+    vim.keymap.set('n', '<leader>cx', '<cmd>Lspsaga show_buf_diagnostics<cr>', { desc = 'Show buffer diagnostics' }),
+    vim.keymap.set('n', '<leader>cr', '<cmd>Lspsaga lsp_finder<cr>', { desc = 'References' }),
+    vim.keymap.set('n', '<leader>cR', '<cmd>Lspsaga rename<cr>', { desc = 'Rename' }),
+    vim.keymap.set('n', '<leader>cl', '<cmd>Lspsaga show_line_diagnostics<cr>', { desc = 'Line diagnostics' }),
+    vim.keymap.set('n', '<leader>c]', '<cmd>Lspsaga diagnostic_jump_next<cr>', { desc = 'Next diagnostic' }),
+    vim.keymap.set('n', '<leader>c[', '<cmd>Lspsaga diagnostic_jump_previous<cr>', { desc = 'Previous diagnostic' }),
+    vim.keymap.set('n', '<leader>co', '<cmd>Lspsaga outline<cr>', { desc = 'Code outline' }),
+    vim.keymap.set('n', '<leader>ca', '<cmd>Lspsaga code_action<cr>', { desc = 'Code actions' }),
+    vim.keymap.set('n', '<leader>cX', function()
+      vim.diagnostic.config { signs = false, virtual_text = false }
+    end, { desc = 'Hide diagnostics' }),
   },
   opts = {
     finder = {

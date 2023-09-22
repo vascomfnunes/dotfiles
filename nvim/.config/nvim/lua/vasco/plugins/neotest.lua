@@ -7,6 +7,27 @@ return {
     'haydenmeade/neotest-jest',
   },
   ft = { 'ruby', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
+  keys = {
+    vim.keymap.set('n', '<leader>tn', function()
+      require('neotest').run.run()
+    end, { desc = 'Run nearest test' }),
+
+    vim.keymap.set('n', '<leader>tf', function()
+      require('neotest').run.run(vim.fn.expand '%')
+    end, { desc = 'Run file tests' }),
+
+    vim.keymap.set('n', '<leader>tS', function()
+      require('neotest').run.stop()
+    end, { desc = 'Stop' }),
+
+    vim.keymap.set('n', '<leader>ts', function()
+      require('neotest').summary.toggle()
+    end, { desc = 'Toggle tests summary' }),
+
+    vim.keymap.set('n', '<leader>to', function()
+      require('neotest').output.open { enter = true }
+    end, { desc = 'Show test output' }),
+  },
   config = function()
     local neotest = require 'neotest'
     local icons = require 'vasco.helpers.icons'
