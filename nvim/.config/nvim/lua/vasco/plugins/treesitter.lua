@@ -32,6 +32,7 @@ return {
         'javascript',
         'jsdoc',
         'json',
+        'jsonc',
         'lua',
         'regex',
         'ruby',
