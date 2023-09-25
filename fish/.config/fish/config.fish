@@ -18,7 +18,14 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/bin:$PATH"
 
 # GPG
-export GPG_TTY=$(tty)
+if pgrep -x gpg-agent > /dev/null
+  # do nothing
+  # gpg-agent is already running
+else
+    gpg-agent --daemon
+end
+
+set -x GPG_TTY (tty)
 
 alias vi='nvim'
 alias v='fd --type f --hidden --exclude .git --exclude .cache --exclude Library --exclude .local | fzf-tmux -p --reverse | xargs nvim'
