@@ -96,6 +96,7 @@ return {
   { key = 'c', mods = 'SUPER', action = action { CopyTo = 'Clipboard' } },
   { key = 'v', mods = 'SUPER', action = action { PasteFrom = 'Clipboard' } },
   { key = 'w', mods = 'LEADER', action = wezterm.action.ShowTabNavigator },
+  { key = 'q', mods = 'SUPER|ALT', action = wezterm.action.QuitApplication },
   -- search
   { key = '/', mods = 'LEADER', action = action.Search 'CurrentSelectionOrEmptyString' },
   {
