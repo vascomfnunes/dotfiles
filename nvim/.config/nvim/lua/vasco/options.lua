@@ -1,5 +1,4 @@
 local options = {
-  fileencoding = 'utf-8',
   ruler = false,
   ignorecase = true,
   foldmethod = 'expr',
