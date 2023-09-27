@@ -3,7 +3,15 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     { 'folke/neoconf.nvim', cmd = 'Neoconf', config = false, dependencies = { 'nvim-lspconfig' } },
-    { 'folke/neodev.nvim', opts = {} },
+    {
+      'folke/neodev.nvim',
+      opts = {},
+      config = function()
+        require('neodev').setup {
+          library = { plugins = { 'neotest' }, types = true },
+        }
+      end,
+    },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'hrsh7th/cmp-nvim-lsp',

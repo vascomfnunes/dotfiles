@@ -30,6 +30,14 @@ return {
           visit_first_call = false,
           focus_when_call = false,
         },
+        t = tmux_term.run_wk {
+          cmd = 'bundle exec rails test',
+          name = 'Run all minitests',
+          open_as = 'pane',
+          close_on_timer = 2,
+          visit_first_call = false,
+          focus_when_call = false,
+        },
         g = tmux_term.run_wk {
           cmd = 'bundle exec rails generate %1',
           name = 'Rails Generate',

@@ -1,10 +1,11 @@
 return {
   'nvim-neotest/neotest',
   dependencies = {
-    'olimorris/neotest-rspec',
     'nvim-lua/plenary.nvim',
     'nvim-treesitter/nvim-treesitter',
     'haydenmeade/neotest-jest',
+    'zidhuss/neotest-minitest',
+    'olimorris/neotest-rspec',
   },
   ft = { 'ruby', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact' },
   keys = {
@@ -59,6 +60,16 @@ return {
               'bundle',
               'exec',
               'rspec',
+            }
+          end,
+        },
+        require 'neotest-minitest' {
+          test_cmd = function()
+            return vim.tbl_flatten {
+              'bundle',
+              'exec',
+              'rails',
+              'test',
             }
           end,
         },
