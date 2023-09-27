@@ -81,7 +81,10 @@ if palette then
       ['echasnovski/mini.nvim'] = true,
       ['TimUntersberger/neogit'] = true,
       ['hrsh7th/nvim-cmp'] = true,
-      ['nvim-telescope/telescope.nvim'] = true
+      ['nvim-telescope/telescope.nvim'] = true,
+      ['folke/todo-comments.nvim'] = true,
+      ['HiPhish/rainbow-delimiters.nvim'] = true,
+      ['lukas-reineke/indent-blankline.nvim'] = true,
     },
   }
   vim.g.colors_name = 'mini_gruvbox_material'
