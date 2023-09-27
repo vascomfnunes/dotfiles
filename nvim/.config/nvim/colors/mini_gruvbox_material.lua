@@ -85,6 +85,7 @@ if palette then
       ['folke/todo-comments.nvim'] = true,
       ['HiPhish/rainbow-delimiters.nvim'] = true,
       ['lukas-reineke/indent-blankline.nvim'] = true,
+      ['nvim-lualine/lualine.nvim'] = true,
     },
   }
   vim.g.colors_name = 'mini_gruvbox_material'

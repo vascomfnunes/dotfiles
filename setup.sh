@@ -13,15 +13,10 @@ function main() {
 	/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 	msg "Installing packages"
-	brew install stow neovim bat git gnupg lazygit mpd mpc \
-		mpv ncmpcpp htop newsboat tmux vifm w3m weechat imageoptim-cli \
-    node go yarn wget git-delta gum universal-ctags ripgrep reattach-to-user-namespace \
-    pinentry openssl gnupg jq go exa fd the_silver_searcher \
-    pandoc wget gnu-sed rbenv ruby-build nvm pyenv
+  for i in $(cat homebrew_packages); do brew install "$i"; done
 
 	msg "Installing casks"
-	brew install --cask alacritty appcleaner \
-		dash iina bitwarden
+	brew install --cask alacritty appcleaner dash iina
 
 	msg "Creating dotfiles symlinks"
 	stow -R alacritty bat bin git gnupg htop lazygit mpd mpv \
@@ -38,13 +33,12 @@ function main() {
 	cp misc/Pictures/vasco.jpeg ~/Pictures
 
   msg "Initializing rbenv"
-  cd ~
+  cd $HOME
   eval "$(rbenv init -)"
   msg "Initializing Ruby"
-  rbenv install 3.1.3
-  rbenv global 3.1.3
-  gem install bundler solargraph solargraph-rails typecheck erb-formatter bundler-audit
-  solargraph download-core
+  rbenv install 3.2.2
+  rbenv global 3.2.2
+  gem install bundler typecheck erb-formatter bundler-audit
   yard gems -safe
 
 	msg "Setup complete"

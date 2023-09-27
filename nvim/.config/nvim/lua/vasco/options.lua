@@ -1,3 +1,12 @@
+local function winbar()
+  local file_name = '%f'
+  local modified = ' %-m'
+  local file_type = ' %y'
+  local right_align = '%='
+
+  return string.format('%s%s%s%s', right_align, file_name, modified, file_type)
+end
+
 local options = {
   ruler = false,
   ignorecase = true,
@@ -35,8 +44,8 @@ local options = {
   clipboard = 'unnamed,unnamedplus',
   laststatus = 3,
   cmdheight = 0,
-  winbar = '%=%m\\ %f',
   completeopt = { 'menuone', 'noselect' },
+  winbar = winbar(),
 }
 
 for k, v in pairs(options) do

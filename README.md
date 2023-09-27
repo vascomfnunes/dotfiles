@@ -2,7 +2,7 @@
 
 I currently use [Alacritty](https://github.com/alacritty/alacritty) under macOS with
 the **Fish** shell. My colour theme is Gruvbox Material Medium and my font is a
-patched Meslo Nerd font.
+patched MesloLGLDZ Nerd font.
 
 - **Tmux** is my terminal multiplexer
 - **Neovim** is my editor of choice
@@ -12,7 +12,6 @@ patched Meslo Nerd font.
 - **Vifm** as my file manager
 - **w3m** when browsing the internet from the terminal
 - **Weechat** for IRC
-- **tuir** for all Reddit stuff
 - **MPV** for watching videos
 
 ![./shot.png](shot.png)
@@ -71,12 +70,12 @@ themes, like so:
 theme <light|dark>
 ```
 
-From Neovim, you can change all of them at the same time using `<leader>C`
+From Neovim, you can change all of them at the same time using `<leader>T`
 followed by `d` for `dark` and `l` for light.
 
 ## Neovim
 
-This configuration requires Neovim 0.8.x and uses `Lazy` as the
+This configuration requires Neovim 0.9.x and uses `Lazy` as the
 package manager of choice.
 
 The leader key is set to the `spacebar` key.
@@ -91,10 +90,6 @@ LSP clients/Linters/Debuggers are installed automatically and handled by
 
 If you got some error just restart `Neovim` to load the new plugins and
 configuration.
-
-### Additional linting and formatting with null-ls
-
-This configuration uses `null-ls` for additional formatting and linting.
 
 ## Tmux
 
