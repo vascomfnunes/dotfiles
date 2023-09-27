@@ -19,14 +19,6 @@ export PATH="/usr/local/sbin:$PATH"
 export XDG_CONFIG_HOME="$HOME/.config"
 export PATH="$HOME/bin:$PATH"
 
-# GPG
-if pgrep -x gpg-agent > /dev/null
-  # do nothing
-  # gpg-agent is already running
-else
-    gpg-agent --daemon
-end
-
 set -x GPG_TTY (tty)
 
 alias vi='nvim'
