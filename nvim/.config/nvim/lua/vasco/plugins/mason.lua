@@ -1,6 +1,6 @@
 return {
   'williamboman/mason.nvim',
-  cmd = 'Mason',
+  cmd = { 'Mason', 'MasonInstall' },
   keys = { { '<leader>um', '<cmd>Mason<cr>', desc = 'Mason' } },
   build = ':MasonUpdate',
   opts = {
@@ -8,8 +8,8 @@ return {
       'stylua',
       'shfmt',
       'prettierd',
-      'shellcheck'
-    }
+      'shellcheck',
+    },
   },
   config = function(_, opts)
     local config = require 'vasco.config'
@@ -17,7 +17,7 @@ return {
 
     require('mason').setup(opts)
 
-    local mr = require("mason-registry")
+    local mr = require 'mason-registry'
     local function ensure_installed()
       for _, tool in ipairs(opts.ensure_installed) do
         local p = mr.get_package(tool)

@@ -3,6 +3,7 @@ vim.cmd 'colorscheme mini_gruvbox_material'
 
 -- Define colors for later use
 local gray = '#665c54'
+local dark_gray = '#404040'
 local green = '#a9b665'
 local red = '#ea6962'
 local yellow = '#d8a657'
@@ -37,4 +38,4 @@ set_hl('RainbowDelimiterYellow', { fg = yellow })
 set_hl('RainbowDelimiterBlue', { fg = blue })
 set_hl('RainbowDelimiterOrange', { fg = yellow })
 set_hl('RainbowDelimiterGreen', { fg = green })
-set_hl('IndentBlankLineChar', { fg = gray })
+set_hl('IndentBlankLineChar', { fg = dark_gray })
