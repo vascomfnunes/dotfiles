@@ -9,9 +9,13 @@ return {
     'hrsh7th/cmp-nvim-lsp',
   },
   keys = {
-    vim.keymap.set('n', '<leader>cs', function()
-      vim.lsp.buf.signature_help()
-    end, { desc = 'Signature help' }),
+    {
+      '<leader>cs',
+      function()
+        vim.lsp.buf.signature_help()
+      end,
+      desc = 'Signature help',
+    },
   },
   opts = {
     diagnostics = {

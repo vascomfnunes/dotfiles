@@ -12,9 +12,13 @@ return {
     vim.g.neo_tree_remove_legacy_commands = 1
   end,
   keys = {
-    vim.keymap.set('n', '<leader>e', function()
-      require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
-    end, { desc = 'File explorer' }),
+    {
+      '<leader>e',
+      function()
+        require('neo-tree.command').execute { toggle = true, dir = vim.loop.cwd() }
+      end,
+      desc = 'File explorer',
+    },
   },
 
   opts = {

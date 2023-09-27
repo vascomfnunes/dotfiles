@@ -10,23 +10,22 @@ return {
     'tsakirist/telescope-lazy.nvim',
   },
   keys = {
-    vim.keymap.set('n', 'z=', '<cmd>Telescope spell_suggest<cr>', { desc = 'Spell suggestions' }),
-    vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', { desc = 'Files' }),
-    vim.keymap.set('n', '<leader>fr', '<cmd>Telescope resume<cr>', { desc = 'Resume' }),
-    vim.keymap.set('n', '<leader>fn', '<cmd>Telescope noice<cr>', { desc = 'Noice' }),
-    vim.keymap.set('n', '<leader>fc', '<cmd>Telescope colorscheme<cr>', { desc = 'Colorschemes' }),
-    vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = 'Grep' }),
-    vim.keymap.set('n', '<leader>fG', '<cmd>Telescope grep_string<cr>', { desc = 'Grep string' }),
-    vim.keymap.set('n', '<leader>fd', '<cmd>Telescope diagnostics<cr>', { desc = 'LSP diagnostics' }),
-    vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Help' }),
-    vim.keymap.set('n', '<leader>fq', '<cmd>Telescope quickfix<cr>', { desc = 'Quickfix' }),
-    vim.keymap.set('n', '<leader>fp', '<cmd>Telescope lazy<cr>', { desc = 'Plugins' }),
-    vim.keymap.set(
-      'n',
+    { 'z=', '<cmd>Telescope spell_suggest<cr>', desc = 'Spell suggestions' },
+    { '<leader>ff', '<cmd>Telescope find_files hidden=true<cr>', desc = 'Files' },
+    { '<leader>fr', '<cmd>Telescope resume<cr>', desc = 'Resume' },
+    { '<leader>fn', '<cmd>Telescope noice<cr>', desc = 'Noice' },
+    { '<leader>fc', '<cmd>Telescope colorscheme<cr>', desc = 'Colorschemes' },
+    { '<leader>fg', '<cmd>Telescope live_grep<cr>', desc = 'Grep' },
+    { '<leader>fG', '<cmd>Telescope grep_string<cr>', desc = 'Grep string' },
+    { '<leader>fd', '<cmd>Telescope diagnostics<cr>', desc = 'LSP diagnostics' },
+    { '<leader>fh', '<cmd>Telescope help_tags<cr>', desc = 'Help' },
+    { '<leader>fq', '<cmd>Telescope quickfix<cr>', desc = 'Quickfix' },
+    { '<leader>fp', '<cmd>Telescope lazy<cr>', desc = 'Plugins' },
+    {
       '<leader>fb',
       '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true<cr>',
-      { desc = 'Buffers' }
-    ),
+      desc = 'Buffers',
+    },
   },
   config = function()
     local telescope = require 'telescope'

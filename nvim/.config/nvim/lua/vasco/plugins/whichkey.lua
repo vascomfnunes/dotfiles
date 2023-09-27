@@ -40,6 +40,7 @@ return {
       q = { name = 'Quickfix' },
       s = { name = 'Quickfix' },
       u = { name = 'Updates' },
+      r = { name = 'Rails' },
       ['<tab>'] = { name = 'Tabs' },
     }, { prefix = '<leader>' })
   end,

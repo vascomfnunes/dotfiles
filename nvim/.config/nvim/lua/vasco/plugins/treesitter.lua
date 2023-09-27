@@ -18,7 +18,7 @@ return {
   event = { 'BufReadPost', 'BufNewFile' },
   cmd = { 'TSUpdateSync' },
   keys = {
-    vim.keymap.set('n', '<leader>ut', vim.cmd.TSUpdate, { desc = 'Treesitter definitions' }),
+    { '<leader>ut', vim.cmd.TSUpdate, desc = 'Treesitter definitions' },
   },
   config = function()
     require('nvim-treesitter.configs').setup {

@@ -5,7 +5,7 @@ return {
   dependencies = { 'sindrets/diffview.nvim', 'nvim-lua/plenary.nvim' },
   cmd = 'Neogit',
   keys = {
-    vim.keymap.set('n', '<leader>gg', vim.cmd.Neogit, { desc = 'Neogit' }),
+    { '<leader>gg', vim.cmd.Neogit, desc = 'Neogit' },
   },
   opts = {
     disable_signs = false,
