@@ -12,6 +12,7 @@ return {
       'markdownlint',
       'stylelint',
       'yamllint',
+      'htmlbeautifier'
     },
   },
   config = function(_, opts)

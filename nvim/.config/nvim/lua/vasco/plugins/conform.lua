@@ -21,6 +21,7 @@ return {
       sh = { 'shfmt' },
       markdown = { 'prettierd' },
       yaml = { 'prettierd' },
+      eruby = { 'htmlbeautifier'}
     },
   },
 }
