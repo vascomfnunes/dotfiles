@@ -20,6 +20,7 @@ return {
       scss = { 'prettierd' },
       sh = { 'shfmt' },
       markdown = { 'prettierd' },
+      yaml = { 'prettierd' },
     },
   },
 }

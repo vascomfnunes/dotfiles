@@ -9,6 +9,9 @@ return {
       'shfmt',
       'prettierd',
       'shellcheck',
+      'markdownlint',
+      'stylelint',
+      'yamllint',
     },
   },
   config = function(_, opts)

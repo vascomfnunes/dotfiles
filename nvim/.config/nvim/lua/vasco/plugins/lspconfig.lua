@@ -62,6 +62,7 @@ return {
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
       standardrb = {},
+      yamlls = { 'yaml' },
       bashls = {},
 
       lua_ls = {

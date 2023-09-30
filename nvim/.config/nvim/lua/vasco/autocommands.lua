@@ -88,3 +88,11 @@ vim.api.nvim_create_autocmd('FileType', {
     vim.keymap.set('n', 'q', '<cmd>close<cr>', { buffer = event.buf, silent = true })
   end,
 })
+
+-- Linter
+vim.api.nvim_create_autocmd({ 'BufRead', 'BufWritePost' }, {
+  group = augroup 'linter',
+  callback = function()
+    require('lint').try_lint()
+  end,
+})
