@@ -64,6 +64,7 @@ return {
       standardrb = {},
       yamlls = {},
       bashls = {},
+      tailwindcss = {},
 
       lua_ls = {
         -- keys = {},
