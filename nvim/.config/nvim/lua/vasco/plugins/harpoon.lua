@@ -13,7 +13,7 @@ return {
     {
       '<leader>hh',
       function()
-        require('harpoon.mark').toggle_quick_menu()
+        require('harpoon.ui').toggle_quick_menu()
       end,
       desc = 'Toggle files',
     },

@@ -8,6 +8,7 @@ return {
       build = 'cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build',
     },
     'tsakirist/telescope-lazy.nvim',
+    'nvim-telescope/telescope-file-browser.nvim',
   },
   keys = {
     { 'z=', '<cmd>Telescope spell_suggest<cr>', desc = 'Spell suggestions' },
@@ -25,6 +26,11 @@ return {
       '<leader>fb',
       '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true<cr>',
       desc = 'Buffers',
+    },
+    {
+      '<leader><space>',
+      '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>',
+      desc = 'File browser',
     },
   },
   config = function()
@@ -81,6 +87,20 @@ return {
           },
         },
         extensions = {
+          file_browser = {
+            theme = 'ivy',
+            hijack_netrw = true,
+            mappings = {
+              ['i'] = {
+                ['<C-l>'] = require('telescope').extensions.file_browser.actions.open,
+                ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
+              },
+              ['n'] = {
+                ['<C-l>'] = require('telescope').extensions.file_browser.actions.open,
+                ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
+              },
+            },
+          },
           fzf = {
             fuzzy = true,
             override_generic_sorter = true, -- override the generic sorter
@@ -110,5 +130,6 @@ return {
     telescope.load_extension 'fzf'
     telescope.load_extension 'noice'
     telescope.load_extension 'lazy'
+    telescope.load_extension 'file_browser'
   end,
 }

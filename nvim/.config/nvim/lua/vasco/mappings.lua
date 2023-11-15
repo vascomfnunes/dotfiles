@@ -33,7 +33,7 @@ set('n', '<c-u>', '<c-u>zz')
 set('n', '<esc>', ':noh<cr>', { desc = 'Clear highlights' })
 
 -- Spell
-set('n', '<leader><space>', function()
+set('n', '<leader>S', function()
   vim.o.spell = not vim.o.spell
 end, { desc = 'Toggle spell' })
 
