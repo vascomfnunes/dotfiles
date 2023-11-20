@@ -11,7 +11,6 @@ return {
         require('various-textobjs').setup { useDefaultKeymaps = false }
       end,
     },
-    'JoosepAlviste/nvim-ts-context-commentstring',
     'RRethy/nvim-treesitter-endwise',
   },
   build = ':TSUpdate',
@@ -54,10 +53,6 @@ return {
       },
       autopairs = {
         enable = true,
-      },
-      context_commentstring = {
-        enable = true,
-        enable_autocmd = false,
       },
       endwise = {
         enable = true,
