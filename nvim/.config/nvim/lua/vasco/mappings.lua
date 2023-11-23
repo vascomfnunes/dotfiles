@@ -65,7 +65,7 @@ set('n', '<leader>qk', vim.cmd.cprevious, { desc = 'Previous' })
 set('n', '<leader>up', vim.cmd.Lazy, { desc = 'Plugins' })
 
 -- Theme
-set('n', '<leader>Td', '<cmd>set background=dark<cr>', { desc = 'Dark' })
-set('n', '<leader>Tl', '<cmd>set background=light<cr>', { desc = 'Light' })
+set('n', '<leader>Td', '<cmd>colorscheme onedark<cr>', { desc = 'Dark' })
+set('n', '<leader>Tl', '<cmd>colorscheme onelight<cr>', { desc = 'Light' })
 
 set('n', '<leader>v', '<cmd>cd ~/.config/nvim|e init.lua<cr>', { desc = 'Neovim configuration' })

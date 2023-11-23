@@ -2,6 +2,7 @@ vim.loader.enable()
 
 require 'vasco.options'
 require 'vasco.lazy'
-require 'vasco.theme'
 require 'vasco.mappings'
 require 'vasco.autocommands'
+
+vim.cmd("colorscheme onedark")
