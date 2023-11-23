@@ -11,9 +11,5 @@ return {
     { '˚', '<cmd>SmartResizeUp<cr>', desc = 'Resize up' },
     { '¬', '<cmd>SmartResizeRight<cr>', desc = 'Resize right' },
   },
-  config = function()
-    require('smart-splits').setup {
-      -- add any options here
-    }
-  end,
+  opts = {},
 }

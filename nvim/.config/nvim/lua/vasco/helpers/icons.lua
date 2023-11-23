@@ -1,6 +1,4 @@
-local M = {}
-
-M = {
+local M = {
   cog = ' ',
   error = ' ',
   warning = ' ',
