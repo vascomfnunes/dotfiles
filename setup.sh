@@ -20,7 +20,7 @@ function main() {
 
 	msg "Creating dotfiles symlinks"
 	stow -R alacritty bat bin git gnupg htop lazygit mpd mpv \
-		ncmpcpp newsboat nvim pgcli ssh tmux vifm w3m weechat zsh misc
+		ncmpcpp newsboat nvim pgcli ssh tmux vifm w3m weechat fish misc
 
   msg "Installing node dependencies"
   npm install -g live-server
