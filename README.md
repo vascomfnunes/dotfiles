@@ -73,6 +73,22 @@ theme <light|dark>
 From Neovim, you can change all of them at the same time using `<leader>T`
 followed by `d` for `dark` and `l` for light.
 
+## Fish
+
+Add the fish shell to `/etc/shells`:
+
+```bash
+sudo sh -c 'echo /opt/homebrew/bin/fish >> /etc/shells'
+```
+
+Restart the terminal and make fish the default shell for the current user:
+
+```bash
+chsh -s /opt/homebrew/bin/fish
+```
+
+Logout and login again to make sure you're using the new fish shell.
+
 ## Neovim
 
 This configuration requires Neovim 0.9.x and uses `Lazy` as the
