@@ -1,27 +1,24 @@
-local cmd = vim.cmd
-local fn = vim.fn
+local cmd, fn = vim.cmd, vim.fn
 
 local M = {}
 
 -- check if a variable is not empty nor nil
-M.isNotEmpty = function(s)
+local function is_not_empty(s)
   return s ~= nil and s ~= ''
 end
 
 -- toggle quickfixlist
 M.toggle_qf = function()
-  local windows = fn.getwininfo()
   local qf_exists = false
-  for _, win in pairs(windows) do
-    if win['quickfix'] == 1 then
+  for _, win in ipairs(fn.getwininfo()) do
+    if win.quickfix == 1 then
       qf_exists = true
+      break
     end
   end
-  if qf_exists == true then
+  if qf_exists then
     cmd 'cclose'
-    return
-  end
-  if M.isNotEmpty(fn.getqflist()) then
+  elseif is_not_empty(fn.getqflist()) then
     cmd 'copen'
   end
 end

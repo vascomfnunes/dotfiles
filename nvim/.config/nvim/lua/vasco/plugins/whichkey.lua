@@ -29,6 +29,7 @@ return {
       },
     }
     require('which-key').register({
+      a = { name = 'AI Assistant' },
       g = { name = 'Git' },
       m = { name = 'Markdown' },
       t = { name = 'Tests' },
@@ -42,6 +43,13 @@ return {
       u = { name = 'Updates' },
       r = { name = 'Rails' },
       ['<tab>'] = { name = 'Tabs' },
-    }, { prefix = '<leader>' })
+    }, { prefix = '<leader>', mode = { 'n' } })
+
+    require('which-key').register({
+      a = { name = 'AI Assistant' },
+      g = { name = 'Git' },
+      c = { name = 'Code' },
+      s = { name = 'Quickfix' },
+    }, { prefix = '<leader>', mode = { 'v' } })
   end,
 }

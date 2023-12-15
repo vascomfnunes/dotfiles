@@ -1,6 +1,4 @@
-local M = {}
-
-M = {
+local M = {
   border_style = 'rounded', -- single, double, rounded, none
 }
 

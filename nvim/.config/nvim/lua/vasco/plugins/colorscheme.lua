@@ -22,6 +22,9 @@ return {
       NeoTreeCursorLine = {
         bg = '${bg_statusline}',
       },
+      GpHandlerStandout = {
+        bg = 'NONE',
+      },
     }, -- Override default highlight groups or create your own
     styles = { -- For example, to apply bold and italic, use "bold,italic"
       types = 'NONE', -- Style that is applied to types
