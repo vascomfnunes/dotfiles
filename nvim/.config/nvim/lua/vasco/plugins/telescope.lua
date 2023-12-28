@@ -1,6 +1,5 @@
 return {
   'nvim-telescope/telescope.nvim',
-  commit = vim.fn.has 'nvim-0.9.0' == 0 and '057ee0f8783' or nil,
   cmd = { 'Telescope' },
   dependencies = {
     {

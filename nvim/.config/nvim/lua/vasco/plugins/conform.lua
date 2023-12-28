@@ -14,14 +14,18 @@ return {
   opts = {
     formatters_by_ft = {
       lua = { 'stylua' },
-      javascript = { 'prettierd', 'eslint' },
+      javascript = { 'prettierd' },
+      javascriptreact = { 'prettierd' },
+      typescript = { 'prettierd' },
+      typescriptreact = { 'prettierd' },
       html = { 'prettierd' },
+      json = { 'prettierd' },
       css = { 'prettierd' },
       scss = { 'prettierd' },
       sh = { 'shfmt' },
       markdown = { 'prettierd' },
       yaml = { 'prettierd' },
-      eruby = { 'htmlbeautifier'}
+      eruby = { 'htmlbeautifier' },
     },
   },
 }

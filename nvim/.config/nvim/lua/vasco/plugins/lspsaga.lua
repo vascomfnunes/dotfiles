@@ -12,7 +12,7 @@ return {
     { '<leader>ck', '<cmd>Lspsaga hover_doc<cr>', desc = 'LSP documentation' },
     { '<leader>cd', '<cmd>Lspsaga goto_definition<cr>', desc = 'Go to definition' },
     { '<leader>cx', '<cmd>Lspsaga show_buf_diagnostics<cr>', desc = 'Show buffer diagnostics' },
-    { '<leader>cr', '<cmd>Lspsaga lsp_finder<cr>', desc = 'References' },
+    { '<leader>cr', '<cmd>Lspsaga finder<cr>', desc = 'References' },
     { '<leader>cR', '<cmd>Lspsaga rename<cr>', desc = 'Rename' },
     { '<leader>cl', '<cmd>Lspsaga show_line_diagnostics<cr>', desc = 'Line diagnostics' },
     { '<leader>c]', '<cmd>Lspsaga diagnostic_jump_next<cr>', desc = 'Next diagnostic' },
