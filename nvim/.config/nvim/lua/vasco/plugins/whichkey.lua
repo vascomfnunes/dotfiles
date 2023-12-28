@@ -39,7 +39,7 @@ return {
       b = { name = 'Buffers' },
       c = { name = 'Code' },
       q = { name = 'Quickfix' },
-      s = { name = 'Quickfix' },
+      s = { name = 'Search/Replace' },
       u = { name = 'Utils' },
       v = { name = 'Vim Configuration' },
       r = { name = 'Rails' },

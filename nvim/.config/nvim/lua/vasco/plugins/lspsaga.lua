@@ -11,7 +11,6 @@ return {
   keys = {
     { '<leader>ck', '<cmd>Lspsaga hover_doc<cr>', desc = 'LSP documentation' },
     { '<leader>cd', '<cmd>Lspsaga goto_definition<cr>', desc = 'Go to definition' },
-    { '<leader>cx', '<cmd>Lspsaga show_buf_diagnostics<cr>', desc = 'Show buffer diagnostics' },
     { '<leader>cr', '<cmd>Lspsaga finder<cr>', desc = 'References' },
     { '<leader>cR', '<cmd>Lspsaga rename<cr>', desc = 'Rename' },
     { '<leader>cl', '<cmd>Lspsaga show_line_diagnostics<cr>', desc = 'Line diagnostics' },
@@ -19,13 +18,6 @@ return {
     { '<leader>c[', '<cmd>Lspsaga diagnostic_jump_previous<cr>', desc = 'Previous diagnostic' },
     { '<leader>co', '<cmd>Lspsaga outline<cr>', desc = 'Code outline' },
     { '<leader>ca', '<cmd>Lspsaga code_action<cr>', desc = 'Code actions' },
-    {
-      '<leader>cX',
-      function()
-        vim.diagnostic.config { signs = false, virtual_text = false }
-      end,
-      desc = 'Hide diagnostics',
-    },
   },
   opts = {
     finder = {

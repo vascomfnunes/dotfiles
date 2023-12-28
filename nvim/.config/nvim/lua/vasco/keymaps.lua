@@ -48,15 +48,6 @@ set('n', '<c-u>', '<c-u>zz')
 -- Clear highlight on escape in normal mode (use <esc> instead of ^[)
 set('n', '<esc>', ':noh<cr>', { desc = 'Clear highlights' })
 
--- Spell
-set('n', '<leader>S', function()
-  vim.o.spell = not vim.o.spell
-end, { desc = 'Toggle spell' })
-
--- Wrapping
-set('n', '<leader>w', '<cmd>set wrap<cr>', { desc = 'Set wrap' })
-set('n', '<leader>w', '<cmd>set nowrap<cr>', { desc = 'Unset wrap' })
-
 -- Buffers
 set('n', '.', vim.cmd.bnext, { desc = 'Next buffer' })
 set('n', ',', vim.cmd.bprevious, { desc = 'Previous buffer' })
