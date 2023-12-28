@@ -1,4 +1,4 @@
-local icons = require 'vasco.helpers.icons'
+local icons = require 'vasco.utils.icons'
 
 return {
   'NeogitOrg/neogit',

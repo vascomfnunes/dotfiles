@@ -4,6 +4,7 @@ env:
 tabspaces: 2
 window:
   dynamic_padding: true
+  option_as_alt: Both
 font:
   normal:
     family: MesloLGLDZ Nerd Font

@@ -1,5 +1,3 @@
-local config = require 'vasco.config'
-
 return {
   'nvim-treesitter/nvim-treesitter',
   version = false,
@@ -17,7 +15,7 @@ return {
   event = { 'BufReadPost', 'BufNewFile' },
   cmd = { 'TSUpdateSync' },
   keys = {
-    { '<leader>ut', vim.cmd.TSUpdate, desc = 'Treesitter definitions' },
+    { '<leader>vt', vim.cmd.TSUpdate, desc = 'Update Treesitter definitions' },
   },
   config = function()
     require('nvim-treesitter.configs').setup {

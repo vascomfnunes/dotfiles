@@ -17,7 +17,7 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
-local icons = require 'vasco.helpers.icons'
+local icons = require 'vasco.utils.icons'
 
 -- load lazy
 require('lazy').setup('vasco.plugins', {
@@ -27,7 +27,7 @@ require('lazy').setup('vasco.plugins', {
     -- a number <1 is a percentage., >1 is a fixed size
     size = { width = 0.8, height = 0.8 },
     -- The border to use for the UI window. Accepts same border values as |nvim_open_win()|.
-    border = config.border_style,
+    border = config.border.style,
     icons = {
       cmd = ' ',
       config = icons.cog,

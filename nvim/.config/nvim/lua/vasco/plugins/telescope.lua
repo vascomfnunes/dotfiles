@@ -35,7 +35,7 @@ return {
   config = function()
     local telescope = require 'telescope'
     local actions = require 'telescope.actions'
-    local icons = require 'vasco.helpers.icons'
+    local icons = require 'vasco.utils.icons'
 
     telescope.setup {
       defaults = {

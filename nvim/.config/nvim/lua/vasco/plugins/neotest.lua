@@ -47,7 +47,7 @@ return {
   },
   config = function()
     local neotest = require 'neotest'
-    local icons = require 'vasco.helpers.icons'
+    local icons = require 'vasco.utils.icons'
 
     neotest.setup {
       adapters = {

@@ -1,5 +1,8 @@
 local M = {
-  border_style = 'rounded', -- single, double, rounded, none
+  border = {
+    style = 'rounded', -- single, double, rounded, none
+    color = '#666666',
+  },
 }
 
 return M

@@ -1,7 +1,7 @@
 return {
   'echasnovski/mini.hipatterns',
   version = false,
-  event = { "BufReadPre", "BufNewFile" },
+  event = { 'BufReadPre', 'BufNewFile' },
   config = function()
     local patterns = require 'mini.hipatterns'
 

@@ -95,7 +95,7 @@ return {
   },
 
   config = function(_, opts)
-    local icons = require 'vasco.helpers.icons'
+    local icons = require 'vasco.utils.icons'
     local config = require 'vasco.config'
     local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.info }
 
@@ -105,7 +105,7 @@ return {
     end
 
     vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = config.border_style })
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = config.border.style })
 
     local servers = opts.servers
     local has_cmp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')

@@ -1,5 +1,5 @@
 local config = require 'vasco.config'
-local icons = require 'vasco.helpers.icons'
+local icons = require 'vasco.utils.icons'
 
 return {
   'folke/which-key.nvim',
@@ -16,7 +16,7 @@ return {
         group = icons.plus,
       },
       window = {
-        border = config.border_style,
+        border = config.border.style,
         position = 'bottom',
         margin = { 0, 0, 0, 0 },
         padding = { 0, 0, 0, 0 },
@@ -40,13 +40,13 @@ return {
       c = { name = 'Code' },
       q = { name = 'Quickfix' },
       s = { name = 'Quickfix' },
-      u = { name = 'Updates' },
+      u = { name = 'Utils' },
+      v = { name = 'Vim Configuration' },
       r = { name = 'Rails' },
       ['<tab>'] = { name = 'Tabs' },
     }, { prefix = '<leader>', mode = { 'n' } })
 
     require('which-key').register({
-      a = { name = 'AI Assistant' },
       g = { name = 'Git' },
       c = { name = 'Code' },
       s = { name = 'Quickfix' },

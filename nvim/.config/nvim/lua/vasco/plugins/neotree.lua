@@ -1,4 +1,4 @@
-local icons = require 'vasco.helpers.icons'
+local icons = require 'vasco.utils.icons'
 local config = require 'vasco.config'
 
 return {
@@ -27,7 +27,7 @@ return {
     --   winbar = true,
     --   content_layout = 'center',
     -- },
-    popup_border_style = config.border_style,
+    popup_border_style = config.border.style,
     enable_git_status = true,
     enable_diagnostics = false,
     default_component_configs = {

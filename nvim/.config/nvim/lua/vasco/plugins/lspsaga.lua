@@ -1,4 +1,4 @@
-local icons = require 'vasco.helpers.icons'
+local icons = require 'vasco.utils.icons'
 local config = require 'vasco.config'
 
 return {
@@ -89,7 +89,7 @@ return {
     },
     ui = {
       title = true,
-      border = config.border_style,
+      border = config.border.style,
       winblend = 0,
       expand = icons.right_arrow,
       collapse = icons.down_arrow,

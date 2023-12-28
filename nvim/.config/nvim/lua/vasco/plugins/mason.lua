@@ -1,7 +1,7 @@
 return {
   'williamboman/mason.nvim',
   cmd = { 'Mason', 'MasonInstall' },
-  keys = { { '<leader>um', '<cmd>Mason<cr>', desc = 'Mason' } },
+  keys = { { '<leader>vm', '<cmd>Mason<cr>', desc = 'Mason' } },
   build = ':MasonUpdate',
   opts = {
     ensure_installed = {
@@ -12,12 +12,12 @@ return {
       'markdownlint',
       'stylelint',
       'yamllint',
-      'htmlbeautifier'
+      'htmlbeautifier',
     },
   },
   config = function(_, opts)
     local config = require 'vasco.config'
-    local icons = require 'vasco.helpers.icons'
+    local icons = require 'vasco.utils.icons'
 
     require('mason').setup(opts)
 
@@ -38,7 +38,7 @@ return {
 
     require('mason.settings').set {
       ui = {
-        border = config.border_style,
+        border = config.border.style,
         icons = {
           package_installed = icons.check,
           package_pending = icons.cog,

@@ -22,7 +22,7 @@ return {
         'RainbowDelimiterViolet',
         'RainbowDelimiterCyan',
       },
-      blacklist = { },
+      blacklist = {},
     }
   end,
 }

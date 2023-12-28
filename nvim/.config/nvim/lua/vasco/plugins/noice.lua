@@ -24,7 +24,7 @@ return {
         },
         size = 'auto',
         border = {
-          style = config.border_style,
+          style = config.border.style,
         },
         zindex = 20,
         win_options = {

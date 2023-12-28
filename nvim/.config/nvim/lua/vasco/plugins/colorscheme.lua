@@ -1,3 +1,6 @@
+local config = require 'vasco.config'
+local none = 'NONE'
+
 return {
   'olimorris/onedarkpro.nvim',
   priority = 1000,
@@ -5,40 +8,42 @@ return {
     colors = {}, -- Override default colors or create your own
     highlights = {
       NormalFloat = {
-        bg = 'NONE',
-      },
-      FloatBorder = {
-        bg = 'NONE',
+        bg = none,
       },
       TelescopeBorder = {
-        bg = 'NONE',
+        fg = config.border.color,
+        bg = none,
       },
       TelescopeNormal = {
-        bg = 'NONE',
+        bg = none,
       },
       WhichKeyFloat = {
-        bg = 'NONE',
+        bg = none,
       },
       NeoTreeCursorLine = {
         bg = '${bg_statusline}',
       },
       GpHandlerStandout = {
-        bg = 'NONE',
+        bg = none,
+      },
+      FloatBorder = {
+        bg = none,
+        fg = config.border.color,
       },
     }, -- Override default highlight groups or create your own
     styles = { -- For example, to apply bold and italic, use "bold,italic"
-      types = 'NONE', -- Style that is applied to types
-      methods = 'NONE', -- Style that is applied to methods
-      numbers = 'NONE', -- Style that is applied to numbers
-      strings = 'NONE', -- Style that is applied to strings
+      types = none, -- Style that is applied to types
+      methods = none, -- Style that is applied to methods
+      numbers = none, -- Style that is applied to numbers
+      strings = none, -- Style that is applied to strings
       comments = 'italic', -- Style that is applied to comments
-      keywords = 'NONE', -- Style that is applied to keywords
-      constants = 'NONE', -- Style that is applied to constants
-      functions = 'NONE', -- Style that is applied to functions
-      operators = 'NONE', -- Style that is applied to operators
-      variables = 'NONE', -- Style that is applied to variables
-      parameters = 'NONE', -- Style that is applied to parameters
-      conditionals = 'NONE', -- Style that is applied to conditionals
+      keywords = none, -- Style that is applied to keywords
+      constants = none, -- Style that is applied to constants
+      functions = none, -- Style that is applied to functions
+      operators = none, -- Style that is applied to operators
+      variables = none, -- Style that is applied to variables
+      parameters = none, -- Style that is applied to parameters
+      conditionals = none, -- Style that is applied to conditionals
       virtual_text = 'bold,italic', -- Style that is applied to virtual text
     },
     filetypes = { -- Override which filetype highlight groups are loaded

@@ -67,21 +67,21 @@ return {
       },
       window = {
         completion = {
-          border = config.border_style,
+          border = config.border.style,
           winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
           col_offset = -3,
           side_padding = 0,
           scrollbar = true,
         },
         documentation = {
-          border = config.border_style,
+          border = config.border.style,
           winhighlight = 'FloatBorder:FloatBorder',
           scrollbar = true,
         },
       },
       formatting = {
         format = function(_, item)
-          local icons = require 'vasco.helpers.icons'
+          local icons = require 'vasco.utils.icons'
 
           if icons[item.kind] then
             item.kind = icons[item.kind] .. item.kind
