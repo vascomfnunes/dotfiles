@@ -1,67 +1,22 @@
 import = ["/Users/vnunes/.config/alacritty/themes/onedarkpro.toml"]
 live_config_reload = true
 
-[colors.bright]
-black = "#3e4451"
-blue = "#8fc6f4"
-cyan = "#7bc6d0"
-green = "#b3d39c"
-magenta = "#d7a1e7"
-red = "#e9969d"
-white = "#c8cdd5"
-yellow = "#edd4a6"
-
-[colors.cursor]
-cursor = "CellForeground"
-text = "CellBackground"
-
-[colors.normal]
-black = "#282c34"
-blue = "#61afef"
-cyan = "#56b6c2"
-green = "#98c379"
-magenta = "#c678dd"
-red = "#e06c75"
-white = "#abb2bf"
-yellow = "#e5c07b"
-
-[colors.primary]
-background = "#282c34"
-foreground = "#abb2bf"
-
-[colors.selection]
-background = "#5c6370"
-text = "CellForeground"
-
 [env]
 TERM = "screen-256color"
 
 [font]
 size = 15
 
-[font.bold]
-family = "MesloLGLDZ Nerd Font"
-style = "Bold"
+normal.family = "MesloLGLDZ Nerd Font"
+bold.family = "MesloLGLDZ Nerd Font"
+bold_italic.family = "MesloLGLDZ Nerd Font"
+italic.family = "MesloLGLDZ Nerd Font"
 
-[font.bold_italic]
-family = "MesloLGLDZ Nerd Font"
-style = "Bold Italic"
+offset.x = 0
+offset.y = 0
 
-[font.glyph_offset]
-x = 0
-y = 0
-
-[font.italic]
-family = "MesloLGLDZ Nerd Font"
-style = "Italic"
-
-[font.normal]
-family = "MesloLGLDZ Nerd Font"
-style = "Regular"
-
-[font.offset]
-x = 0
-y = 0
+glyph_offset.x = 0
+glyph_offset.y = 0
 
 [[hints.enabled]]
 command = "open"
@@ -82,3 +37,8 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>\t"
 [window]
 dynamic_padding = true
 option_as_alt = "Both"
+opacity = 1.0
+padding.x = 0
+padding.y = 0
+decorations = "Full"
+decorations_theme_variant = "Dark" # "Light"

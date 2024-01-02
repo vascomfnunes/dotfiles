@@ -4,6 +4,7 @@ env:
 tabspaces: 2
 window:
   dynamic_padding: true
+  option_as_alt: Both
 font:
   normal:
     family: MesloLGLDZ Nerd Font
@@ -41,29 +42,29 @@ import:
   - ~/.config/alacritty/themes/onedarkpro.yml
 colors:
   primary:
-    background: '#fafafa'
-    foreground: '#6a6a6a'
+    background: '0xfbf1c7'
+    foreground: '0x654735'
   normal:
-    black: '#6a6a6a'
-    red: '#e05661'
-    green: '#1da912'
-    yellow: '#eea825'
-    blue: '#118dc3'
-    magenta: '#9a77cf'
-    cyan: '#56b6c2'
-    white: '#fafafa'
+    black: '0x654735'
+    red: '0xc14a4a'
+    green: '0x6c782e'
+    yellow: '0xb47109'
+    blue: '0x45707a'
+    magenta: '0x945e80'
+    cyan: '0x4c7a5d'
+    white: '0xeee0b7'
   bright:
-    black: '#848484'
-    red: '#e88189'
-    green: '#25d717'
-    yellow: '#f2bb54'
-    blue: '#1caceb'
-    magenta: '#b69ddc'
-    cyan: '#7bc6d0'
-    white: '#ffffff'
+    black: '0x654735'
+    red: '0xc14a4a'
+    green: '0x6c782e'
+    yellow: '0xb47109'
+    blue: '0x45707a'
+    magenta: '0x945e80'
+    cyan: '0x4c7a5d'
+    white: '0xeee0b7'
   cursor:
     text: CellBackground
     cursor: CellForeground
   selection:
     text: CellForeground
-    background: '#bebebe'
+    background: '#5c6370'
