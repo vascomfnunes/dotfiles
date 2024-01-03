@@ -21,7 +21,7 @@ local icons = require 'vasco.utils.icons'
 
 -- load lazy
 require('lazy').setup('vasco.plugins', {
-  defaults = { lazy = false },
+  defaults = { lazy = true },
   checker = { enabled = false },
   ui = {
     -- a number <1 is a percentage., >1 is a fixed size

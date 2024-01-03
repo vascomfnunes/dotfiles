@@ -39,6 +39,7 @@ return {
 
     telescope.setup {
       defaults = {
+        color_devicons = true,
         vimgrep_arguments = {
           'rg',
           '--color=never',
@@ -48,8 +49,10 @@ return {
           '--column',
           '--smart-case',
           '--hidden',
+          '--glob=!.git/',
         },
         prompt_prefix = icons.search,
+        entry_prefix = '   ',
         preview = { hide_on_startup = false },
         file_ignore_patterns = { 'node_modules', '.git', 'undo', 'tmp', 'fonts', 'images', 'public' },
         selection_caret = '❯ ',

@@ -55,14 +55,12 @@ return {
     },
     -- LSP Server Settings
     servers = {
-      jsonls = {},
       tsserver = {},
       html = { filetypes = { 'html', 'eruby' } },
       cssls = { filetypes = { 'css', 'scss' } },
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
       standardrb = {},
-      yamlls = {},
       bashls = {},
       tailwindcss = {},
 
@@ -76,6 +74,26 @@ return {
             telemety = { enable = false },
             completion = {
               callSnippet = 'Replace',
+            },
+          },
+        },
+      },
+      yamlls = {
+        settings = {
+          yaml = {
+            validate = true,
+            schemaStore = {
+              enable = true,
+            },
+          },
+        },
+      },
+      jsonls = {
+        settings = {
+          json = {
+            validate = true,
+            schemaStore = {
+              enable = true,
             },
           },
         },

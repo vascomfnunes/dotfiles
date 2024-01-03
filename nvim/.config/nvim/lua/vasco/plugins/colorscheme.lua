@@ -3,6 +3,7 @@ local none = 'NONE'
 
 return {
   'olimorris/onedarkpro.nvim',
+  lazy = false,
   priority = 1000,
   opts = {
     colors = {}, -- Override default colors or create your own
