@@ -1,10 +1,13 @@
+local gpt = require 'codegpt'
+
 return {
   'nvim-lualine/lualine.nvim',
+  event = 'VeryLazy',
   config = function()
     local lsp = {
       function()
         local msg = 'LS Inactive'
-        local buf_clients = vim.lsp.buf_get_clients()
+        local buf_clients = vim.lsp.get_active_clients()
 
         if next(buf_clients) == nil then
           if type(msg) == 'boolean' or #msg == 0 then
@@ -46,7 +49,7 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
+        lualine_b = { 'branch', 'diff', 'diagnostics', gpt.get_status },
         lualine_c = { { 'filename' }, lsp },
         lualine_x = { { 'encoding' }, { 'filetype' }, 'encoding', 'fileformat' },
         lualine_y = { 'progress' },

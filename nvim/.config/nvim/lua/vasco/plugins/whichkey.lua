@@ -47,6 +47,7 @@ return {
     }, { prefix = '<leader>', mode = { 'n' } })
 
     require('which-key').register({
+      a = { name = 'AI Assistant' },
       g = { name = 'Git' },
       c = { name = 'Code' },
       s = { name = 'Quickfix' },
