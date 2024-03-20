@@ -1,6 +1,6 @@
 return {
   'mrjones2014/smart-splits.nvim',
-  event = { 'BufReadPre', 'BufNewFile' },
+  lazy = false,
   keys = {
     { '<C-h>', '<cmd>SmartCursorMoveLeft<cr>', desc = 'Move left' },
     { '<C-j>', '<cmd>SmartCursorMoveDown<cr>', desc = 'Move down' },

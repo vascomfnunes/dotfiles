@@ -33,7 +33,7 @@ return {
     harfbuzz_features = { 'calt=0', 'clig=0', 'liga=0' },
   },
   font_size = 15.0,
-  line_height = 1.3,
+  line_height = 1.1,
   window_decorations = 'RESIZE',
   native_macos_fullscreen_mode = true,
   animation_fps = 1,
@@ -81,12 +81,12 @@ return {
   colors = {
     tab_bar = {
       active_tab = {
-        bg_color = colors.ansi[1],
-        fg_color = colors.ansi[8],
+        bg_color = colors.ansi[3],
+        fg_color = colors.ansi[1],
       },
       inactive_tab = {
         bg_color = colors.background,
-        fg_color = colors.ansi[1],
+        fg_color = colors.ansi[8],
       },
     },
   },

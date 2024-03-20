@@ -9,7 +9,7 @@ end
 module.now_playing = function()
   -- gets current playing track on mpd via mpc
   local success, data, _ = wezterm.run_child_process {
-    '/usr/local/bin/mpc',
+    '/opt/homebrew/bin/mpc',
     'current',
     '-f',
     '%artist% - %title%',

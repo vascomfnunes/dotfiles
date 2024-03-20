@@ -12,14 +12,6 @@ set({ 'n', 'x' }, '<Down>', "v:count == 0 ? 'gj' : 'j'", opts)
 set({ 'n', 'x' }, 'k', "v:count == 0 ? 'gk' : 'k'", opts)
 set({ 'n', 'x' }, '<Up>', "v:count == 0 ? 'gk' : 'k'", opts)
 
--- Move Lines
-set('n', '<A-j>', '<cmd>m .+1<cr>==', { desc = 'Move down' })
-set('n', '<A-k>', '<cmd>m .-2<cr>==', { desc = 'Move up' })
-set('i', '<A-j>', '<esc><cmd>m .+1<cr>==gi', { desc = 'Move down' })
-set('i', '<A-k>', '<esc><cmd>m .-2<cr>==gi', { desc = 'Move up' })
-set('v', '<A-j>', ":m '>+1<cr>gv=gv", { desc = 'Move down' })
-set('v', '<A-k>', ":m '<-2<cr>gv=gv", { desc = 'Move up' })
-
 -- Indentation
 set('v', '<', '<gv', { desc = 'Indent left' })
 set('v', '>', '>gv', { desc = 'Indent right' })
