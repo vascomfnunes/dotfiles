@@ -1,5 +1,3 @@
-local gpt = require 'codegpt'
-
 return {
   'nvim-lualine/lualine.nvim',
   event = 'VeryLazy',
@@ -49,7 +47,7 @@ return {
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics', gpt.get_status },
+        lualine_b = { 'branch', 'diff', 'diagnostics' },
         lualine_c = { { 'filename' }, lsp },
         lualine_x = { { 'encoding' }, { 'filetype' }, 'encoding', 'fileformat' },
         lualine_y = { 'progress' },
