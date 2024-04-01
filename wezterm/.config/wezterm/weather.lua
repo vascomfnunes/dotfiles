@@ -37,7 +37,7 @@ module.icon = function(weathercode)
 end
 
 module.conditions = function()
-  if wezterm.GLOBAL.weather_timer % (3600 * 2) == 0 then -- every 2 hours
+  if wezterm.GLOBAL.weather_timer % (3600 * 1) == 0 then -- every 1 hour
     local success, stdout, stderr = wezterm.run_child_process {
       'curl',
       '--silent',
