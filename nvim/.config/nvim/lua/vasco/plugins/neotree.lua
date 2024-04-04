@@ -23,11 +23,7 @@ return {
 
   opts = {
     close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-    -- source_selector = {
-    --   winbar = true,
-    --   content_layout = 'center',
-    -- },
-    popup_border_style = config.border.style,
+    popup_border_style = 'rounded',
     enable_git_status = true,
     enable_diagnostics = false,
     default_component_configs = {

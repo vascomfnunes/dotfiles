@@ -1,4 +1,4 @@
-import = ["~/.config/alacritty/themes/onedarkpro.toml"]
+import = ["~/.config/alacritty/themes/gruvbox_material_medium_dark.toml"]
 live_config_reload = true
 
 [env]
