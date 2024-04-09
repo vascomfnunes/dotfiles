@@ -5,12 +5,19 @@ return {
     {
       '<leader>at',
       vim.cmd.CodeCompanionToggle,
-      desc = 'Toggle'
+      desc = 'Toggle',
     },
     {
       '<leader>aa',
       vim.cmd.CodeCompanionActions,
-      desc = 'Actions'
+      desc = 'Actions',
+      mode = { 'n', 'v' },
+    },
+    {
+      '<leader>ai',
+      vim.cmd.CodeCompanion,
+      desc = 'In line',
+      mode = { 'n', 'v' },
     },
   },
   dependencies = {
