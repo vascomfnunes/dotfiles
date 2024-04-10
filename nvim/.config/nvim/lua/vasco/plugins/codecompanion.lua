@@ -19,6 +19,18 @@ return {
       desc = 'In line',
       mode = { 'n', 'v' },
     },
+    {
+      '<leader>ac',
+      '<cmd>CodeCompanionChat<cr>',
+      desc = 'New chat',
+      mode = { 'n', 'v' },
+    },
+    {
+      '<leader>ag',
+      '<cmd>CodeCompanionChat openai<cr>',
+      desc = 'New chat (gpt-4)',
+      mode = { 'n', 'v' },
+    },
   },
   dependencies = {
     'nvim-lua/plenary.nvim',
@@ -29,5 +41,12 @@ return {
       opts = {},
     },
   },
-  config = true,
+  config = function()
+    require('codecompanion').setup {
+      strategies = {
+        chat = 'ollama',
+        inline = 'ollama',
+      },
+    }
+  end,
 }

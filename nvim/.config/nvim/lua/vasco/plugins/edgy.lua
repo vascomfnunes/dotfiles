@@ -11,7 +11,7 @@ return {
     },
     left = {},
     right = {
-      { ft = 'codecompanion', title = 'Code Companion Chat', size = { width = 0.30 } },
+      { ft = 'codecompanion', title = 'Code Companion Chat', size = { width = 0.50 } },
     },
     bottom = {
       {
