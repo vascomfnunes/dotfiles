@@ -47,6 +47,16 @@ return {
         chat = 'ollama',
         inline = 'ollama',
       },
+      adapters = {
+        ollama = require('codecompanion.adapters').use('ollama', {
+          schema = {
+            model = {
+              -- default = 'llama3:latest',
+              default = 'deepseek-coder:6.7b-instruct-q5_K_M',
+            },
+          },
+        }),
+      },
     }
   end,
 }
