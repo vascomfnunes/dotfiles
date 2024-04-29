@@ -1,0 +1,48 @@
+{
+  "theme": "Gruvbox Dark",
+  "ui_font_family": "MesloLGLDZ Nerd Font",
+  "ui_font_size": 16,
+  "buffer_font_size": 16,
+  "tab_size": 2,
+  "vim_mode": true,
+  "relative_line_numbers": true,
+  "remove_trailing_whitespace_on_save": true,
+  "scrollbar": { "show": "never" },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_multiline_find": true
+  },
+  "lsp": {
+    "solargraph": {
+      "initialization_options": {
+        "diagnostics": true,
+        "formatting": true
+      }
+    }
+  },
+  "languages": {
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    }
+  },
+  "language_overrides": {
+    "JavaScript": {
+      "format_on_save": {
+        "external": {
+          "command": "prettier",
+          "arguments": ["--stdin-filepath", "{buffer_path}"]
+        }
+      }
+    }
+  },
+  "terminal": {
+    "font_family": "MesloLGLDZ Nerd Font",
+    "font_size": 14
+  }
+}
