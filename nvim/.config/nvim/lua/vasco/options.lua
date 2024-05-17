@@ -18,7 +18,6 @@ local options = {
   foldlevelstart = 99,
   mouse = 'a',
   pumheight = 10,
-  termguicolors = true,
   scrolloff = 10,
   sidescrolloff = 10,
   hlsearch = true,

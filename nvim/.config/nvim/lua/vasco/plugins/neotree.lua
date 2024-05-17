@@ -5,12 +5,30 @@ return {
   'nvim-neo-tree/neo-tree.nvim',
   branch = 'v3.x',
   dependencies = {
+    'nvim-lua/plenary.nvim',
     'nvim-tree/nvim-web-devicons',
+    'MunifTanjim/nui.nvim',
+    {
+        's1n7ax/nvim-window-picker',
+        version = '2.*',
+        config = function()
+            require 'window-picker'.setup({
+                filter_rules = {
+                    include_current_win = false,
+                    autoselect_one = true,
+                    -- filter using buffer options
+                    bo = {
+                        -- if the file type is one of following, the window will be ignored
+                        filetype = { 'neo-tree', "neo-tree-popup", "notify" },
+                        -- if the buffer type is one of following, the window will be ignored
+                        buftype = { 'terminal', "quickfix" },
+                    },
+            },
+        })
+        end,
+      },
   },
   cmd = 'Neotree',
-  init = function()
-    vim.g.neo_tree_remove_legacy_commands = 1
-  end,
   keys = {
     {
       '<leader>e',
@@ -23,7 +41,7 @@ return {
 
   opts = {
     close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
-    popup_border_style = 'rounded',
+    popup_border_style = config.border.style,
     enable_git_status = true,
     enable_diagnostics = false,
     default_component_configs = {

@@ -18,11 +18,25 @@ return {
   },
   keys = {
     {
-      '<leader>cs',
+      'gd',
       function()
-        vim.lsp.buf.signature_help()
+        vim.lsp.buf.definition()
       end,
-      desc = 'Signature help',
+      desc = 'Go to definition',
+    },
+    {
+      'gD',
+      function()
+        vim.lsp.buf.declaration()
+      end,
+      desc = 'Go to declaration',
+    },
+    {
+      '<leader>cd',
+      function()
+        vim.diagnostic.open_float()
+      end,
+      desc = 'Line diagnostics',
     },
   },
   opts = {
@@ -36,11 +50,17 @@ return {
       },
       severity_sort = true,
     },
-    -- Enable this to enable the builtin LSP inlay hints on Neovim >= 0.10.0
+    -- Enable this to enable the builtin LSP inlay hints
     -- Be aware that you also will need to properly configure your LSP server to
     -- provide the inlay hints.
     inlay_hints = {
-      enabled = false,
+      enabled = true,
+    },
+    -- Enable this to enable the builtin LSP code lenses
+    -- Be aware that you also will need to properly configure your LSP server to
+    -- provide the code lenses.
+    codelens = {
+      enabled = true,
     },
     -- add any global capabilities here
     capabilities = {},
@@ -71,9 +91,23 @@ return {
             workspace = {
               checkThirdParty = false,
             },
+            codeLens = {
+              enable = true,
+            },
             telemety = { enable = false },
             completion = {
               callSnippet = 'Replace',
+            },
+            doc = {
+              privateName = { '^_' },
+            },
+            hint = {
+              enable = true,
+              setType = false,
+              paramType = true,
+              paramName = 'Disable',
+              semicolon = 'Disable',
+              arrayIndex = 'Disable',
             },
           },
         },
