@@ -44,5 +44,12 @@
   "terminal": {
     "font_family": "MesloLGLDZ Nerd Font",
     "font_size": 14
+  },
+  "assistant": {
+    "version": "1",
+    "provider": {
+      "name": "ollama",
+      "low_speed_timeout_in_seconds": 30
+    }
   }
 }
