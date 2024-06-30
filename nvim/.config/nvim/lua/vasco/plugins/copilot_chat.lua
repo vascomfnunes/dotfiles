@@ -18,7 +18,7 @@ return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'canary',
-    event = 'VeryLazy',
+    event = 'InsertEnter',
     dependencies = {
       { 'zbirenbaum/copilot.lua' }, -- or github/copilot.vim
       { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
@@ -31,35 +31,8 @@ return {
         prompts = prompts,
       }
       require('copilot').setup {
-        panel = {
-          enabled = true,
-          auto_refresh = false,
-          keymap = {
-            jump_prev = '[[',
-            jump_next = ']]',
-            accept = '<C-l>',
-            refresh = 'gr',
-            open = '<M-CR>',
-          },
-          layout = {
-            position = 'bottom', -- | top | left | right
-            ratio = 0.4,
-          },
-        },
-        suggestion = {
-          enabled = true,
-          auto_trigger = false,
-          hide_during_completion = true,
-          debounce = 75,
-          keymap = {
-            accept = '<C-l>',
-            accept_word = false,
-            accept_line = false,
-            next = '<C-]>',
-            prev = '<C-[>',
-            dismiss = '<Esc>',
-          },
-        },
+        suggestion = { enabled = false },
+        panel = { enabled = false },
         filetypes = {
           yaml = false,
           markdown = false,

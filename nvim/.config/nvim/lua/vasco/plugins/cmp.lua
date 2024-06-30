@@ -5,10 +5,17 @@ return {
   version = false, -- last release is way too old
   event = 'InsertEnter',
   dependencies = {
+    'onsails/lspkind.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
     'saadparwaiz1/cmp_luasnip',
+    {
+      'zbirenbaum/copilot-cmp',
+      config = function()
+        require('copilot_cmp').setup()
+      end,
+    },
   },
   opts = function()
     vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
@@ -22,6 +29,8 @@ return {
         :sub(cursor[2], cursor[2])
         :match '%s'
     end
+
+    local lspkind = require('lspkind')
 
     return {
       completion = {
@@ -60,6 +69,7 @@ return {
         end, { 'i', 's' }),
       },
       sources = cmp.config.sources {
+        { name = 'copilot' },
         { name = 'nvim_lsp' },
         { name = 'luasnip' },
         { name = 'buffer' },
@@ -80,14 +90,11 @@ return {
         },
       },
       formatting = {
-        format = function(_, item)
-          local icons = require 'vasco.utils.icons'
-
-          if icons[item.kind] then
-            item.kind = icons[item.kind] .. item.kind
-          end
-          return item
-        end,
+        format = lspkind.cmp_format {
+          mode = 'symbol',
+          max_width = 50,
+          symbol_map = { Copilot = '' },
+        },
       },
       experimental = {
         ghost_text = {

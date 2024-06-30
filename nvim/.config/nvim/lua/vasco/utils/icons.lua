@@ -26,6 +26,7 @@ local M = {
   search = '   ',
   breadcrumb = '',
   git = ' ',
+  copilot = ' ',
 }
 
 return M
