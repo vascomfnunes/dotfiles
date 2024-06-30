@@ -38,6 +38,13 @@ return {
       end,
       desc = 'Line diagnostics',
     },
+    {
+      '<leader>ca',
+      function()
+        vim.lsp.buf.code_action()
+      end,
+      desc = 'Actions',
+    },
   },
   opts = {
     diagnostics = {
