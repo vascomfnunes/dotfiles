@@ -83,6 +83,7 @@ return {
       standardrb = {},
       bashls = {},
       tailwindcss = {},
+      stimulus_ls = {},
 
       lua_ls = {
         -- keys = {},
