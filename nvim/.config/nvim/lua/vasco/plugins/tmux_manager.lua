@@ -13,15 +13,19 @@ return {
 
     wk.register({
       r = {
-        -- name = 'Rails',
-        R = tmux_term.run_wk {
+        r = tmux_term.run_wk {
           cmd = 'bundle exec rails s',
           name = 'Rails Server',
           visit_first_call = false,
-          open_as = 'separated_session',
-          session_name = 'My Terms',
+          open_as = 'pane',
         },
-        r = tmux_term.run_wk { cmd = 'bundle exec rails c', name = 'Rails Console', open_as = 'window' },
+        o = tmux_term.run_wk {
+          cmd = 'overmind start',
+          name = 'Overmind',
+          visit_first_call = false,
+          open_as = 'pane',
+        },
+        c = tmux_term.run_wk { cmd = 'bundle exec rails c', name = 'Rails Console', open_as = 'window' },
         b = tmux_term.run_wk {
           cmd = 'bundle install',
           name = 'Bundle Install',
@@ -33,6 +37,14 @@ return {
         t = tmux_term.run_wk {
           cmd = 'bundle exec rails test',
           name = 'Run all minitests',
+          open_as = 'pane',
+          close_on_timer = 2,
+          visit_first_call = false,
+          focus_when_call = false,
+        },
+        j = tmux_term.run_wk {
+          cmd = 'yarn test',
+          name = 'Run all Jest tests',
           open_as = 'pane',
           close_on_timer = 2,
           visit_first_call = false,
