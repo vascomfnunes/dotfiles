@@ -29,7 +29,7 @@ return {
       },
     }
     require('which-key').register({
-      a = { name = 'AI Assistant' },
+      p = { name = 'Co-pilot' },
       g = { name = 'Git' },
       m = { name = 'Markdown' },
       t = { name = 'Tests' },
@@ -41,6 +41,7 @@ return {
       q = { name = 'Quickfix' },
       s = { name = 'Search/Replace' },
       u = { name = 'Utils' },
+      n = { name = 'Notes' },
       v = { name = 'Vim Configuration' },
       r = { name = 'Rails' },
       ['<tab>'] = { name = 'Tabs' },

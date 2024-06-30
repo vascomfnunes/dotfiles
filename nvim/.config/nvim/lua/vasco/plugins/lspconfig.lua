@@ -92,6 +92,7 @@ return {
       bashls = {},
       tailwindcss = {},
       stimulus_ls = {},
+      marksman = {},
 
       lua_ls = {
         -- keys = {},
