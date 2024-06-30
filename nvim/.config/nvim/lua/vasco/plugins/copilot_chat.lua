@@ -51,7 +51,7 @@ return {
     keys = {
       -- Show help actions with telescope
       {
-        '<leader>ah',
+        '<leader>ph',
         function()
           local actions = require 'CopilotChat.actions'
           require('CopilotChat.integrations.telescope').pick(actions.help_actions())
@@ -60,7 +60,7 @@ return {
       },
       -- Show prompts actions with telescope
       {
-        '<leader>ap',
+        '<leader>pp',
         function()
           local actions = require 'CopilotChat.actions'
           require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
@@ -68,33 +68,33 @@ return {
         desc = 'Prompt actions',
       },
       {
-        '<leader>ap',
+        '<leader>pp',
         ":lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
         mode = 'x',
         desc = 'Prompt actions',
       },
       -- Code related commands
-      { '<leader>ae', '<cmd>CopilotChatExplain<cr>', desc = 'Explain code' },
-      { '<leader>at', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests' },
-      { '<leader>ar', '<cmd>CopilotChatReview<cr>', desc = 'Review code' },
-      { '<leader>aR', '<cmd>CopilotChatRefactor<cr>', desc = 'Refactor code' },
-      { '<leader>an', '<cmd>CopilotChatBetterNamings<cr>', desc = 'Better Naming' },
+      { '<leader>pe', '<cmd>CopilotChatExplain<cr>', desc = 'Explain code' },
+      { '<leader>pt', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests' },
+      { '<leader>pr', '<cmd>CopilotChatReview<cr>', desc = 'Review code' },
+      { '<leader>pR', '<cmd>CopilotChatRefactor<cr>', desc = 'Refactor code' },
+      { '<leader>pn', '<cmd>CopilotChatBetterNamings<cr>', desc = 'Better Naming' },
       -- Chat with Copilot in visual mode
       {
-        '<leader>av',
+        '<leader>pv',
         ':CopilotChatVisual',
         mode = 'x',
         desc = 'Open in vertical split',
       },
       {
-        '<leader>ax',
+        '<leader>px',
         ':CopilotChatInline<cr>',
         mode = 'x',
         desc = 'Inline chat',
       },
       -- Custom input for CopilotChat
       {
-        '<leader>ai',
+        '<leader>pi',
         function()
           local input = vim.fn.input 'Ask Copilot: '
           if input ~= '' then
@@ -105,18 +105,18 @@ return {
       },
       -- Generate commit message based on the git diff
       {
-        '<leader>am',
+        '<leader>pm',
         '<cmd>CopilotChatCommit<cr>',
         desc = 'Generate commit message for all changes',
       },
       {
-        '<leader>aM',
+        '<leader>pM',
         '<cmd>CopilotChatCommitStaged<cr>',
         desc = 'Generate commit message for staged changes',
       },
       -- Quick chat with Copilot
       {
-        '<leader>aq',
+        '<leader>pq',
         function()
           local input = vim.fn.input 'Quick Chat: '
           if input ~= '' then
@@ -126,13 +126,13 @@ return {
         desc = 'Quick chat',
       },
       -- Debug
-      { '<leader>ad', '<cmd>CopilotChatDebugInfo<cr>', desc = 'Debug Info' },
+      { '<leader>pd', '<cmd>CopilotChatDebugInfo<cr>', desc = 'Debug Info' },
       -- Fix the issue with diagnostic
-      { '<leader>af', '<cmd>CopilotChatFixDiagnostic<cr>', desc = 'Fix Diagnostic' },
+      { '<leader>pf', '<cmd>CopilotChatFixDiagnostic<cr>', desc = 'Fix Diagnostic' },
       -- Clear buffer and chat history
-      { '<leader>al', '<cmd>CopilotChatReset<cr>', desc = 'Clear buffer and chat history' },
+      { '<leader>pl', '<cmd>CopilotChatReset<cr>', desc = 'Clear buffer and chat history' },
       -- Toggle Copilot Chat Vsplit
-      { '<leader>av', '<cmd>CopilotChatToggle<cr>', desc = 'Toggle' },
+      { '<leader>pv', '<cmd>CopilotChatToggle<cr>', desc = 'Toggle' },
     },
   },
 }
