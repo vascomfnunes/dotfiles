@@ -43,11 +43,12 @@ return {
     diagnostics = {
       underline = false,
       update_in_insert = false,
-      virtual_text = {
-        spacing = 4,
-        source = 'if_many',
-        prefix = '●',
-      },
+      -- virtual_text = {
+      --   spacing = 4,
+      --   source = 'if_many',
+      --   prefix = '●',
+      -- },
+      virtual_text = false,
       severity_sort = true,
     },
     -- Enable this to enable the builtin LSP inlay hints
