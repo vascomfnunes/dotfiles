@@ -51,3 +51,5 @@
   cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
 [pull]
 	rebase = true
+[gpg]
+	program = /opt/homebrew/bin/gpg

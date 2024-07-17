@@ -8,50 +8,49 @@ return {
     vim.o.timeout = true
     vim.o.timeoutlen = 300
   end,
+  opts = {
+    icons = {
+      breadcrumb = icons.breadcrumb,
+      separator = icons.right_arrow,
+      group = icons.plus,
+    },
+    win = {
+      border = config.border.style,
+      padding = { 0, 0, 0, 0 },
+    },
+    layout = {
+      width = { min = 20, max = 50 },
+      spacing = 4,
+      align = 'left',
+    },
+  },
   config = function()
-    require('which-key').setup {
-      icons = {
-        breadcrumb = icons.breadcrumb,
-        separator = icons.right_arrow,
-        group = icons.plus,
-      },
-      window = {
-        border = config.border.style,
-        position = 'bottom',
-        margin = { 0, 0, 0, 0 },
-        padding = { 0, 0, 0, 0 },
-      },
-      layout = {
-        height = { min = 4, max = 25 },
-        width = { min = 20, max = 50 },
-        spacing = 4,
-        align = 'left',
+    local wk = require 'which-key'
+
+    wk.add {
+      { '<leader><tab>', group = 'Tabs' },
+      { '<leader>T', group = 'Theme' },
+      { '<leader>b', group = 'Buffers' },
+      { '<leader>c', group = 'Code' },
+      { '<leader>f', group = 'Files' },
+      { '<leader>g', group = 'Git' },
+      { '<leader>h', group = 'Harpoon' },
+      { '<leader>m', group = 'Markdown' },
+      { '<leader>n', group = 'Notes' },
+      { '<leader>p', group = 'Co-pilot' },
+      { '<leader>q', group = 'Quickfix' },
+      { '<leader>r', group = 'Rails' },
+      { '<leader>s', group = 'Search/Replace' },
+      { '<leader>t', group = 'Tests' },
+      { '<leader>u', group = 'Utils' },
+      { '<leader>v', group = 'Vim Configuration' },
+      {
+        mode = { 'v' },
+        { '<leader>a', group = 'AI Assistant' },
+        { '<leader>c', group = 'Code' },
+        { '<leader>g', group = 'Git' },
+        { '<leader>s', group = 'Quickfix' },
       },
     }
-    require('which-key').register({
-      p = { name = 'Co-pilot' },
-      g = { name = 'Git' },
-      m = { name = 'Markdown' },
-      t = { name = 'Tests' },
-      f = { name = 'Files' },
-      h = { name = 'Harpoon' },
-      T = { name = 'Theme' },
-      b = { name = 'Buffers' },
-      c = { name = 'Code' },
-      q = { name = 'Quickfix' },
-      s = { name = 'Search/Replace' },
-      u = { name = 'Utils' },
-      n = { name = 'Notes' },
-      v = { name = 'Vim Configuration' },
-      r = { name = 'Rails' },
-      ['<tab>'] = { name = 'Tabs' },
-    }, { prefix = '<leader>', mode = { 'n' } })
-
-    require('which-key').register({
-      a = { name = 'AI Assistant' },
-      g = { name = 'Git' },
-      c = { name = 'Code' },
-      s = { name = 'Quickfix' },
-    }, { prefix = '<leader>', mode = { 'v' } })
   end,
 }
