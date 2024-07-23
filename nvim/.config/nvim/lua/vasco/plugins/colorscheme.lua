@@ -7,5 +7,6 @@ return {
       telescope = false,
     }
     vim.cmd 'colorscheme base16-gruvbox-material-dark-medium'
+    vim.cmd 'hi WhichKeyNormal guibg=#333333'
   end,
 }

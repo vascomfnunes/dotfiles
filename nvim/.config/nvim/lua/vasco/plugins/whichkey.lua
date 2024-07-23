@@ -3,19 +3,21 @@ local icons = require 'vasco.utils.icons'
 
 return {
   'folke/which-key.nvim',
+  module = true,
   event = 'VeryLazy',
   init = function()
     vim.o.timeout = true
     vim.o.timeoutlen = 300
   end,
   opts = {
+    preset = "modern",
     icons = {
       breadcrumb = icons.breadcrumb,
       separator = icons.right_arrow,
       group = icons.plus,
     },
     win = {
-      border = config.border.style,
+      -- border = config.border.style,
       padding = { 0, 0, 0, 0 },
     },
     layout = {
