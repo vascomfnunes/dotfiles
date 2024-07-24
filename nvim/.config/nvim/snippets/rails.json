@@ -82,5 +82,12 @@
       "I18n.l ${1:Time.now}, format: :${2:short}"
     ],
     "description": "Adds a locale translation (reference: https://guides.rubyonrails.org/i18n.html#adding-date-time-formats)"
+  },
+  "pry": {
+    "prefix": "pry",
+    "body": [
+      "binding.pry"
+    ],
+    "description": "Add a pry breakpoint"
   }
 }

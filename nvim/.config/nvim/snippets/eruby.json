@@ -118,5 +118,12 @@
       "data: { controller: '${1:stimulus-controller}', action: 'turbo:submit-end->post-reset#reset' })"
     ],
     "description": "Add stimulus data to an eruby from"
+  },
+  "pry": {
+    "prefix": "pry",
+    "body": [
+      "<% binding.pry %>"
+    ],
+    "description": "Adds a pry debug breakpoint"
   }
 }
