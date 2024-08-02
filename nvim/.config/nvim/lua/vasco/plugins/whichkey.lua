@@ -10,7 +10,7 @@ return {
     vim.o.timeoutlen = 300
   end,
   opts = {
-    preset = "modern",
+    preset = 'modern',
     icons = {
       breadcrumb = icons.breadcrumb,
       separator = icons.right_arrow,
@@ -39,13 +39,13 @@ return {
       { '<leader>h', group = 'Harpoon' },
       { '<leader>m', group = 'Markdown' },
       { '<leader>n', group = 'Notes' },
-      { '<leader>p', group = 'Co-pilot' },
       { '<leader>q', group = 'Quickfix' },
       { '<leader>r', group = 'Rails' },
       { '<leader>s', group = 'Search/Replace' },
       { '<leader>t', group = 'Tests' },
       { '<leader>u', group = 'Utils' },
       { '<leader>v', group = 'Vim Configuration' },
+      { '<leader>a', group = 'AI Assistant' },
       {
         mode = { 'v' },
         { '<leader>a', group = 'AI Assistant' },

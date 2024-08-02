@@ -12,8 +12,11 @@ return {
     'saadparwaiz1/cmp_luasnip',
     {
       'zbirenbaum/copilot-cmp',
-      config = function()
-        require('copilot_cmp').setup()
+      dependencies = 'copilot.lua',
+      opts = {},
+      config = function(_, opts)
+        local copilot_cmp = require 'copilot_cmp'
+        copilot_cmp.setup(opts)
       end,
     },
   },
@@ -30,7 +33,7 @@ return {
         :match '%s'
     end
 
-    local lspkind = require('lspkind')
+    local lspkind = require 'lspkind'
 
     return {
       completion = {

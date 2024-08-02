@@ -1,67 +1,96 @@
 return {
   'nvim-lualine/lualine.nvim',
   event = 'VeryLazy',
-  config = function()
-    local lsp = {
-      function()
-        local msg = 'LS Inactive'
-        local buf_clients = vim.lsp.get_active_clients()
+  init = function()
+    vim.g.lualine_laststatus = vim.o.laststatus
+    if vim.fn.argc(-1) > 0 then
+      -- set an empty statusline till lualine loads
+      vim.o.statusline = ' '
+    else
+      -- hide the statusline on the starter page
+      vim.o.laststatus = 0
+    end
+  end,
+  opts = function()
+    -- PERF: we don't need this lualine require madness 🤷
+    local lualine_require = require 'lualine_require'
+    lualine_require.require = require
 
-        if next(buf_clients) == nil then
-          if type(msg) == 'boolean' or #msg == 0 then
-            return 'LS Inactive'
-          end
-          return msg
-        end
+    local icons = require 'vasco.utils.icons'
 
-        local buf_client_names = {}
+    vim.o.laststatus = vim.g.lualine_laststatus
 
-        for _, client in pairs(buf_clients) do
-          table.insert(buf_client_names, client.name)
-        end
-
-        local unique_client_names = vim.fn.uniq(buf_client_names)
-        local language_servers = '[' .. table.concat(unique_client_names, ', ') .. ']'
-
-        return language_servers
-      end,
-    }
-
-    require('lualine').setup {
+    local opts = {
       options = {
         theme = 'auto',
-        component_separators = { left = '', right = '' },
-        section_separators = { left = '', right = '' },
-        icons_enabled = true,
-        disabled_filetypes = {
-          statusline = { 'neo-tree', 'sagaoutline', 'NeogitStatus', 'spectre_panel' },
-          winbar = {},
-        },
-        globalstatus = true,
-        always_divide_middle = true,
-        refresh = {
-          statusline = 1000,
-          tabline = 1000,
-          winbar = 1000,
-        },
+        globalstatus = vim.o.laststatus == 3,
+        disabled_filetypes = { statusline = { 'dashboard', 'alpha', 'ministarter' } },
       },
       sections = {
         lualine_a = { 'mode' },
-        lualine_b = { 'branch', 'diff', 'diagnostics' },
-        lualine_c = { { 'filename' }, lsp },
-        lualine_x = { { 'encoding' }, { 'filetype' }, 'encoding', 'fileformat' },
-        lualine_y = { 'progress' },
-        lualine_z = { 'location' },
-      },
-      inactive_sections = {
-        lualine_a = {},
-        lualine_b = {},
-        lualine_c = {},
-        lualine_x = {},
-        lualine_y = {},
-        lualine_z = {},
+        lualine_b = { 'branch' },
+
+        lualine_c = {
+          {
+            'diagnostics',
+            symbols = {
+              error = icons.error,
+              warn = icons.warning,
+              info = icons.info,
+              hint = icons.hint,
+            },
+          },
+          { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
+          { 'filename' },
+        },
+        lualine_x = {
+            -- stylua: ignore
+            {
+              function() return require("noice").api.status.command.get() end,
+              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+            },
+            -- stylua: ignore
+            {
+              function() return require("noice").api.status.mode.get() end,
+              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+            },
+            -- stylua: ignore
+            {
+              function() return "  " .. require("dap").status() end,
+              cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+            },
+            -- stylua: ignore
+            {
+              require("lazy.status").updates,
+              cond = require("lazy.status").has_updates,
+            },
+          {
+            'diff',
+            symbols = {
+              added = icons.git_add,
+              modified = icons.git_change,
+              removed = icons.git_delete,
+            },
+            source = function()
+              local gitsigns = vim.b.gitsigns_status_dict
+              if gitsigns then
+                return {
+                  added = gitsigns.added,
+                  modified = gitsigns.changed,
+                  removed = gitsigns.removed,
+                }
+              end
+            end,
+          },
+        },
+        lualine_y = {
+          { 'progress', separator = ' ', padding = { left = 1, right = 0 } },
+          { 'location', padding = { left = 0, right = 1 } },
+        },
       },
       extensions = { 'neo-tree', 'lazy' },
     }
+
+    return opts
   end,
 }

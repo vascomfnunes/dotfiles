@@ -6,20 +6,19 @@ return {
   end,
   keys = {
     {
-      '<leader>ss',
+      '<leader>sr',
       function()
-        require('grug-far').grug_far {}
+        local grug = require 'grug-far'
+        local ext = vim.bo.buftype == '' and vim.fn.expand '%:e'
+        grug.grug_far {
+          transient = true,
+          prefills = {
+            filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
+          },
+        }
       end,
-      desc = 'Search & replace',
       mode = { 'n', 'v' },
-    },
-    {
-      '<leader>sg',
-      function()
-        require('grug-far').grug_far { prefills = { search = vim.fn.expand '<cword>' } }
-      end,
-      desc = 'Search & replace current string',
-      mode = { 'n', 'v' },
+      desc = 'Search and Replace',
     },
   },
 }

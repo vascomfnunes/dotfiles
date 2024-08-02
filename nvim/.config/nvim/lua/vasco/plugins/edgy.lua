@@ -5,24 +5,12 @@ return {
     vim.opt.laststatus = 3
     vim.opt.splitkeep = 'screen'
   end,
-  opts = {
-    animate = {
-      enabled = false,
-    },
-    left = {},
-    right = {
-      { ft = 'codecompanion', title = 'Code Companion Chat', size = { width = 0.50 } },
-    },
-    bottom = {
-      {
-        ft = 'help',
-        size = { height = 20 },
-        -- only show help buffers
-        filter = function(buf)
-          return vim.bo[buf].buftype == 'help'
-        end,
-      },
-      { ft = 'spectre_panel', size = { height = 0.4 } },
-    },
-  },
+  opts = function(_, opts)
+    opts.right = opts.right or {}
+    table.insert(opts.right, {
+      ft = 'copilot-chat',
+      title = 'Copilot Chat',
+      size = { width = 50 },
+    })
+  end,
 }

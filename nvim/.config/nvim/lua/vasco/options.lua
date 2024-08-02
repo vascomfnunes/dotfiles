@@ -13,6 +13,7 @@ local options = {
   list = true,
   listchars = { tab = '» ', trail = '·', nbsp = '␣' },
   foldmethod = 'expr',
+  foldtext = "",
   foldexpr = 'nvim_treesitter#foldexpr()',
   inccommand = 'split',
   foldlevelstart = 99,
@@ -50,6 +51,7 @@ local options = {
   cmdheight = 0,
   completeopt = { 'menuone', 'noselect' },
   winbar = winbar(),
+  smoothscroll = true
 }
 
 for k, v in pairs(options) do

@@ -8,5 +8,8 @@ return {
     }
     vim.cmd 'colorscheme base16-gruvbox-material-dark-medium'
     vim.cmd 'hi WhichKeyNormal guibg=#333333'
+    vim.cmd 'hi LazyNormal guibg=#282828'
+    vim.cmd 'hi LazyBackdrop guibg=#282828'
+    vim.cmd 'hi LazyDimmed guibg=#282828'
   end,
 }
