@@ -35,7 +35,7 @@ return {
   font_size = 15.0,
   line_height = 1.1,
   window_decorations = 'RESIZE',
-  native_macos_fullscreen_mode = true,
+  native_macos_fullscreen_mode = false,
   animation_fps = 1,
   audible_bell = 'Disabled',
   bold_brightens_ansi_colors = false,

@@ -1,0 +1,31 @@
+local function override_dark_highlights()
+  vim.cmd 'hi WhichKeyNormal guibg=#333333'
+  vim.cmd 'hi LazyNormal guibg=#282828'
+  vim.cmd 'hi LazyBackdrop guibg=#282828'
+  vim.cmd 'hi LazyDimmed guibg=#282828'
+end
+
+local function override_light_highlights()
+  vim.cmd 'hi WhichKeyNormal guibg=#f4e8be'
+  vim.cmd 'hi LazyNormal guibg=#fbf1c7'
+  vim.cmd 'hi LazyBackdrop guibg=#fbf1c7'
+  vim.cmd 'hi LazyDimmed guibg=#fbf1c7'
+end
+
+return {
+  'f-person/auto-dark-mode.nvim',
+  event = 'VeryLazy',
+  opts = {
+    update_interval = 1000,
+    set_dark_mode = function()
+      vim.api.nvim_set_option_value('background', 'dark', {})
+      vim.cmd 'colorscheme base16-gruvbox-material-dark-medium'
+      override_dark_highlights()
+    end,
+    set_light_mode = function()
+      vim.api.nvim_set_option_value('background', 'light', {})
+      vim.cmd 'colorscheme base16-gruvbox-material-light-medium'
+      override_light_highlights()
+    end,
+  },
+}

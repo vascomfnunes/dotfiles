@@ -1,7 +1,7 @@
 local wezterm = require 'wezterm'
 
-local dark_theme = 'OneDark (base16)'
-local light_theme = 'One Light (base16)'
+local dark_theme = 'Gruvbox dark, medium (base16)'
+local light_theme = 'Gruvbox light, medium (base16)'
 
 local M = {}
 
