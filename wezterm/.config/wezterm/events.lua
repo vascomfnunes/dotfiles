@@ -9,32 +9,25 @@ M.run = function()
     -- Default pane
     local home_tab, home_pane, window = mux.spawn_window {
       workspace = 'default',
-      cwd = home .. '/.dotfiles',
-    }
-    home_pane:send_text 'vi nvim/.config/nvim/init.lua\n'
-    home_tab:set_title 'dotfiles'
-
-    -- Repos#1 pane
-    local repos_tab = window:spawn_tab {
       cwd = home .. '/repos',
     }
-    repos_tab:set_title 'repos #1'
+    home_tab:set_title 'home'
 
-    -- Repos#2 pane
-    local repos2_tab, repos2_pane = window:spawn_tab {
-      cwd = home .. '/repos',
+    -- Repos pane
+    local servers_tab, servers_pane = window:spawn_tab {
+      cwd = home .. '/servers',
     }
-    repos2_tab:set_title 'repos #2'
+    servers_tab:set_title 'servers'
 
-    local repos2_split_pane = repos2_pane:split {}
-    repos2_split_pane:split { direction = 'Bottom' }
+    local servers_split_pane = servers_pane:split {}
+    servers_split_pane:split { direction = 'Bottom' }
 
     -- Music pane
     local music_tab, music_pane = window:spawn_tab {
       cwd = home,
     }
     music_pane:send_text 'music\n'
-    music_tab:set_title 'music'
+    music_tab:set_title 'media'
 
     -- Newsboat
     local news_tab, news_pane = window:spawn_tab {

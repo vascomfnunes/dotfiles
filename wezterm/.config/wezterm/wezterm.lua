@@ -44,8 +44,9 @@ return {
   disable_default_key_bindings = true,
   adjust_window_size_when_changing_font_size = false,
   show_tab_index_in_tab_bar = true,
+  show_new_tab_button_in_tab_bar = false,
   window_background_opacity = 1.0,
-  window_padding = { left = 8, right = 8, top = 8, bottom = 0 },
+  window_padding = { left = 0, right = 0, top = 8, bottom = 0 },
   macos_window_background_blur = 20,
   enable_tab_bar = true,
   hide_tab_bar_if_only_one_tab = false,
@@ -91,8 +92,7 @@ return {
     },
   },
   inactive_pane_hsb = {
-    saturation = 0.8,
-    brightness = 0.5,
+    brightness = 0.7,
   },
   window_frame = {
     font_size = 13.0,
@@ -100,7 +100,7 @@ return {
   },
   leader = { key = 'a', mods = 'CTRL' },
   keys = keys,
-  wezterm.on('update-right-status', function(window, _)
+  wezterm.on('update-status', function(window, _)
     window:set_right_status(wezterm.format {
       { Background = { Color = colors.background } },
       { Foreground = { Color = colors.ansi[6] } },
