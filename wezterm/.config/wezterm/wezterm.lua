@@ -81,6 +81,7 @@ return {
   },
   colors = {
     tab_bar = {
+      background = colors.background,
       active_tab = {
         bg_color = colors.ansi[3],
         fg_color = colors.ansi[1],
@@ -100,7 +101,7 @@ return {
   },
   leader = { key = 'a', mods = 'CTRL' },
   keys = keys,
-  wezterm.on('update-status', function(window, _)
+  wezterm.on('update-right-status', function(window, _)
     window:set_right_status(wezterm.format {
       { Background = { Color = colors.background } },
       { Foreground = { Color = colors.ansi[6] } },
