@@ -20,6 +20,14 @@ return {
 
     vim.o.laststatus = vim.g.lualine_laststatus
 
+    local function IsZoomedIn()
+      if vim.t['simple-zoom'] == nil then
+        return ''
+      elseif vim.t['simple-zoom'] == 'zoom' then
+        return '󰍉'
+      end
+    end
+
     local opts = {
       options = {
         theme = 'auto',
@@ -42,6 +50,7 @@ return {
           },
           { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
           { 'filename' },
+          { IsZoomedIn },
         },
         lualine_x = {
             -- stylua: ignore

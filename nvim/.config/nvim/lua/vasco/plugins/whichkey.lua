@@ -44,6 +44,7 @@ return {
       { '<leader>s', group = 'Search/Replace' },
       { '<leader>t', group = 'Tests' },
       { '<leader>u', group = 'Utils' },
+      { '<leader>d', group = 'Debug' },
       { '<leader>v', group = 'Vim Configuration' },
       { '<leader>a', group = 'AI Assistant' },
       {
