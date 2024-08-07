@@ -8,8 +8,6 @@ end
 local function override_light_highlights()
   vim.cmd 'hi WhichKeyNormal guibg=#f4e8be'
   vim.cmd 'hi LazyNormal guibg=#fbf1c7'
-  vim.cmd 'hi LazyBackdrop guibg=#fbf1c7'
-  vim.cmd 'hi LazyDimmed guibg=#fbf1c7'
 end
 
 return {

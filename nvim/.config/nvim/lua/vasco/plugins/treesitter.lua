@@ -18,9 +18,10 @@ return {
     { '<leader>vt', vim.cmd.TSUpdate, desc = 'Update Treesitter definitions' },
   },
   config = function()
+    require('nvim-dap-repl-highlights').setup()
     require('nvim-treesitter.configs').setup {
       auto_install = true,
-      ensure_installed = { 'lua' },
+      ensure_installed = { 'lua', 'dap_repl' },
       highlight = { enable = true },
       indent = { enable = true },
       autotag = {
