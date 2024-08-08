@@ -7,6 +7,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
     'LiadOz/nvim-dap-repl-highlights',
     'theHamsta/nvim-dap-virtual-text',
+    'suketa/nvim-dap-ruby',
   },
   keys = function(_, keys)
     local dap = require 'dap'
@@ -37,6 +38,7 @@ return {
     local dap = require 'dap'
     local dapui = require 'dapui'
 
+    require('dap-ruby').setup()
     require('nvim-dap-repl-highlights').setup()
     require('nvim-dap-virtual-text').setup()
 
@@ -80,43 +82,6 @@ return {
       { text = '', texthl = 'DapLogPoint', linehl = 'DapLogPoint', numhl = 'DapLogPoint' }
     )
     vim.fn.sign_define('DapStopped', { text = '', texthl = 'DiagnosticSign' })
-
-    dap.adapters.ruby = function(callback)
-      callback {
-        type = 'server',
-        host = '127.0.0.1',
-        port = '${port}',
-        executable = {
-          command = 'bundle',
-          args = {
-            'exec',
-            'rdbg',
-            '-n',
-            '--open',
-            '--port',
-            '${port}',
-            '-c',
-            '--',
-            'bundle',
-            'exec',
-            'rails',
-            's',
-          },
-        },
-      }
-    end
-
-    dap.configurations.ruby = {
-      {
-        type = 'ruby',
-        name = 'debug rails',
-        request = 'attach',
-        localfs = true,
-        command = 'bundle',
-        args = { 'exec', 'rails', 's' },
-        script = '${file}',
-      },
-    }
 
     dap.listeners.after.event_initialized['dapui_config'] = dapui.open
     dap.listeners.before.event_terminated['dapui_config'] = dapui.close
