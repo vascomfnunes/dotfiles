@@ -42,7 +42,7 @@ return {
       '<leader>ca',
       function()
         -- vim.lsp.buf.code_action()
-        require("tiny-code-action").code_action()
+        require('tiny-code-action').code_action()
       end,
       desc = 'Actions',
     },
@@ -83,7 +83,6 @@ return {
     },
     -- LSP Server Settings
     servers = {
-      tsserver = {},
       html = { filetypes = { 'html', 'eruby' } },
       cssls = { filetypes = { 'css', 'scss' } },
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
@@ -200,6 +199,20 @@ return {
     local have_mason, mlsp = pcall(require, 'mason-lspconfig')
     local all_mslp_servers = {}
     if have_mason then
+      -- https://github.com/neovim/nvim-lspconfig/pull/3232
+      require('mason-lspconfig').setup_handlers {
+        function(server_name)
+          if server_name == 'tsserver' then
+            server_name = 'ts_ls'
+          end
+          local capabilities = require('cmp_nvim_lsp').default_capabilities()
+          require('lspconfig')[server_name].setup {
+
+            capabilities = capabilities,
+          }
+        end,
+      }
+
       all_mslp_servers = vim.tbl_keys(require('mason-lspconfig.mappings.server').lspconfig_to_package)
     end
 
