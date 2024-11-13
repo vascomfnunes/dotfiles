@@ -35,3 +35,5 @@ fish/.config/fish/fish_variables
 fish/.config/fish/functions
 tmux/.tmux/plugins
 alacritty/.config/alacritty/*.bak
+zed/.config/zed/embeddings
+zed/.config/zed/prompts
