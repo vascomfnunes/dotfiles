@@ -9,7 +9,7 @@ local colorscheme = require 'colorscheme'
 local colors = colorscheme.theme.config.colors
 local keys = require 'keybindings'
 local battery = require 'battery'
-local mpd = require 'mpd'
+-- local mpd = require 'mpd'
 local events = require 'events'
 local weather = require 'weather'
 
@@ -103,10 +103,10 @@ return {
   keys = keys,
   wezterm.on('update-right-status', function(window, _)
     window:set_right_status(wezterm.format {
-      { Background = { Color = colors.background } },
-      { Foreground = { Color = colors.ansi[6] } },
-      { Text = mpd.now_playing() },
-      separator(),
+      -- { Background = { Color = colors.background } },
+      -- { Foreground = { Color = colors.ansi[6] } },
+      -- { Text = mpd.now_playing() },
+      -- separator(),
       { Background = { Color = colors.background } },
       { Foreground = { Color = battery.color() } },
       { Text = battery.get() },
