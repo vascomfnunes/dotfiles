@@ -53,3 +53,5 @@
 	rebase = true
 [gpg]
 	program = /opt/homebrew/bin/gpg
+[rerere]
+	enabled = true
