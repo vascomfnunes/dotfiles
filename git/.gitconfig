@@ -1,8 +1,8 @@
 # Install delta plugin from https://github.com/dandavison/delta
 [user]
   name = Vasco Nunes
-  email = contact@vasco.dev
-  signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
+  email = vasco.m.nunes@me.com
+  signingkey = 7531A03F3184C1492BDAF1F9E38CDD2D5AC53E67
 [includeIf "gitdir:~/repos/**"]
   path = ~/repos/.gitconfig
 [core]

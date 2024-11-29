@@ -23,6 +23,7 @@ gnupg/.gnupg/sshcontrol
 gnupg/.gnupg/.#*
 gnupg/.gnupg/tofu*
 gnupg/.gnupg/random_seed
+gnupg/.gnupg/openpgp-revocs.d/*.*
 weechat/.config/weechat
 !/weechat/.config/weechat/weechat.conf
 !/weechat/.config/weechat/irc.conf
