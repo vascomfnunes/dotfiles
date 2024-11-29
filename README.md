@@ -1,7 +1,7 @@
 # Vasco's dotfiles
 
-I currently use [Alacritty](https://github.com/alacritty/alacritty) under macOS with
-the **Fish** shell. My colour theme is Gruvbox Material Medium and my font is a
+I currently use [iTerm2](https://iterm2.com) under macOS with
+the **Fish** shell. My colour theme is One Dark Pro and my font is a
 patched MesloLGLDZ Nerd font.
 
 - **Tmux** is my terminal multiplexer
@@ -54,25 +54,6 @@ stow <package>
 
 Where `<package>` is the directory name.
 
-## Alacritty
-
-For changing between dark and light themes please install
-alacritty-theme-switch:
-
-```bash
-npm install -g alacritty-theme-switch
-```
-
-There's a script in `bin` directory that is able to toggle tmux and alacritty
-themes, like so:
-
-```bash
-theme <light|dark>
-```
-
-From Neovim, you can change all of them at the same time using `<leader>T`
-followed by `d` for `dark` and `l` for light.
-
 ## Fish
 
 Add the fish shell to `/etc/shells`:
@@ -91,7 +72,7 @@ Logout and login again to make sure you're using the new fish shell.
 
 ## Neovim
 
-This configuration requires Neovim 0.9.x and uses `Lazy` as the
+This configuration requires Neovim 0.10.x and uses `Lazy` as the
 package manager of choice.
 
 The leader key is set to the `spacebar` key.
@@ -130,6 +111,3 @@ To secure the password for the IRC servers:
 /secure passphrase <pass>
 /secure set libera <pass>
 ```
-
-Useful documentation to use safe Base16 colours:
-[https://gist.github.com/zer4tul/80bf7a8783b14cc10449](https://gist.github.com/zer4tul/80bf7a8783b14cc10449)
