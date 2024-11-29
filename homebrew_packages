@@ -1,15 +1,16 @@
 bat
+git
 cmake
-exa
 fd
+fish
 fisher
 fzf
-git-delta
 gnu-sed
 gnupg
 jq
 llvm
 luarocks
+luajit
 mpc
 mpd
 mpv
@@ -22,7 +23,6 @@ rbenv
 reattach-to-user-namespace
 ripgrep
 rust
-starship
 stow
 terminal-notifier
 tmux
@@ -30,3 +30,4 @@ vifm
 w3m
 wget
 yarn
+universal-ctags

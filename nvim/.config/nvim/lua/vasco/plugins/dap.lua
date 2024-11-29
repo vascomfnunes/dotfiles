@@ -7,7 +7,7 @@ return {
     'jay-babu/mason-nvim-dap.nvim',
     'LiadOz/nvim-dap-repl-highlights',
     'theHamsta/nvim-dap-virtual-text',
-    'suketa/nvim-dap-ruby',
+    'suketa/nvim-dap-ruby', -- This requires debug gem to be installed!
   },
   keys = function(_, keys)
     local dap = require 'dap'

@@ -14,9 +14,9 @@
   ui = true
 [commit]
 	verbose = true
-  ; gpgsign = true
+  gpgsign = true
 [tag]
-  ; gpgsign = true
+  gpgsign = true
 [diff]
   colorMoved = default
 [init]
