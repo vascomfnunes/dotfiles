@@ -1,0 +1,11 @@
+vim.opt_local.relativenumber = false
+vim.opt_local.number = false
+vim.opt_local.signcolumn = 'no'
+vim.opt_local.spell = true
+vim.opt_local.spelllang = 'en_gb'
+vim.opt.list = false
+vim.opt.number = false
+vim.opt.relativenumber = false
+vim.opt.cursorline = false
+vim.opt_local.tw = 72
+vim.opt.colorcolumn = '50,72'

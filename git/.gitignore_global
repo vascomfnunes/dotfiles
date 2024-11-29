@@ -1,0 +1,29 @@
+tags
+rspec-tests-local.bash
+
+# JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+## Directory-based project format
+.idea/
+
+## File-based project format
+*.ipr
+*.iws
+*.iml
+
+# Visual Studio Code
+.vscode/
+.vs/
+
+# Mac
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Rails
+.bundle/
+
+# Misc
+
+node_modules
+.env

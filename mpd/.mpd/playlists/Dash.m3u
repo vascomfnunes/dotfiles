@@ -1,0 +1,30 @@
+#EXTM3U
+#EXTINF:1,Ratpack
+http://ice65.securenetsystems.net:80/DASH5
+#EXTINF:2,Cool-Classic Jazz
+http://ice65.securenetsystems.net:80/DASH6
+#EXTINF:3,80s
+http://ice65.securenetsystems.net:80/DASH7
+#EXTINF:4,Monsters of Rock
+http://ice65.securenetsystems.net:80/DASH14
+#EXTINF:5,Imperio
+http://ice65.securenetsystems.net:80/DASH27
+#EXTINF:6,Cinescore
+http://ice65.securenetsystems.net:80/DASH29
+#EXTINF:7,Michael Jackson
+http://ice65.securenetsystems.net:80/DASH31
+#EXTINF:8,Concerto Classical
+http://ice65.securenetsystems.net:80/DASH33
+#EXTINF:9,Waves - Chill Eletronic & Lofi
+http://ice65.securenetsystems.net:80/DASH55
+#EXTINF:10,The Blue Spot - Home of the Blues
+http://ice65.securenetsystems.net:80/DASH59
+#EXTINF:11,Grunge - 90's Rock
+http://ice65.securenetsystems.net:80/DASH61
+#EXTINF:12,Broadway
+http://ice65.securenetsystems.net:80/DASH75
+#EXTINF:13,Swing
+http://ice65.securenetsystems.net:80/DASH80
+#EXTINF:13,Myndstream
+http://ice65.securenetsystems.net:80/DASH93
+

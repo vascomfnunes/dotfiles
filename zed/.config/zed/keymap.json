@@ -1,0 +1,61 @@
+[
+  {
+    "bindings": {
+      "cmd-t": "workspace::ToggleBottomDock",
+      "cmd-e": "workspace::ToggleLeftDock",
+      "ctrl-h": ["workspace::ActivatePaneInDirection", "Left"],
+      "ctrl-l": ["workspace::ActivatePaneInDirection", "Right"],
+      "ctrl-k": ["workspace::ActivatePaneInDirection", "Up"],
+      "ctrl-j": ["workspace::ActivatePaneInDirection", "Down"],
+      "cmd-,": "pane::ActivatePrevItem",
+      "cmd-.": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "cmd-,": "pane::ActivatePrevItem",
+      "cmd-.": "pane::ActivateNextItem"
+    }
+  },
+  {
+    "context": "Workspace",
+    "bindings": {}
+  },
+  {
+    "context": "Editor && vim_mode == normal && !VimWaiting && !menu",
+    "bindings": {
+      "space m p": "markdown::OpenPreview",
+      "space m P": "markdown::OpenPreviewToTheSide",
+      "space o": "outline::Toggle",
+      "v v": "pane::SplitRight",
+      "s s": "pane::SplitDown",
+      "] g": "editor::GoToHunk",
+      "[ g": "editor::GoToPrevHunk",
+      "space g h r": "editor::RevertSelectedHunks",
+      "space g h d": "editor::ToggleHunkDiff",
+      "space z": "workspace::ToggleZoom",
+      "g ]": "editor::GoToDiagnostic",
+      "g [": "editor::GoToPrevDiagnostic",
+      "g shift-r": "editor::FindAllReferences",
+      "shift-k": "editor::Hover",
+      "g a": "editor::ToggleCodeActions",
+      "g r": "editor::Rename",
+      "g c c": "editor::ToggleComments",
+      "space g": ["task::Spawn", { "task_name:": "News" }]
+    }
+  },
+  {
+    "context": "ProjectPanel && not_editing",
+    "bindings": {
+      "a": "project_panel::NewFile",
+      "A": "project_panel::NewDirectory",
+      "r": "project_panel::Rename",
+      "d": "project_panel::Delete",
+      "x": "project_panel::Cut",
+      "c": "project_panel::Copy",
+      "y": "project_panel::Paste",
+      "space g g": ["task::Spawn", { "task_name": "LazyGit" }]
+    }
+  }
+]

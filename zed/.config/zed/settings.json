@@ -1,0 +1,112 @@
+// Zed settings
+//
+// For information on how to configure Zed, see the Zed
+// documentation: https://zed.dev/docs/configuring-zed
+//
+// To see all of Zed's default settings without changing your
+// custom settings, run `zed: open default settings` from the
+// command palette (cmd-shift-p / ctrl-shift-p)
+{
+  "assistant": {
+    "default_model": {
+      "provider": "zed.dev",
+      "model": "claude-3-5-sonnet-latest"
+    },
+    "version": "2"
+  },
+  "tab_size": 2,
+  "relative_line_numbers": true,
+  "remove_trailing_whitespace_on_save": true,
+  "tabs": {
+    "git_status": true
+  },
+  "buffer_font_size": 15,
+  "terminal": {
+    "font_family": "Menlo",
+    "font_size": 13,
+    "copy_on_select": true
+  },
+  "wrap_guides": [80, 120],
+  "show_wrap_guides": true,
+  "soft_wrap": "none",
+  "vim_mode": true,
+  "working_directory": "current_project_directory",
+  "vim": {
+    "use_system_clipboard": "always",
+    "use_multiline_find": false,
+    "use_smartcase_find": true
+  },
+  "file_scan_exclusions": [
+    "**/.git",
+    "**/.svn",
+    "**/.hg",
+    "**/.jj",
+    "**/CVS",
+    "**/.DS_Store",
+    "**/Thumbs.db",
+    "**/.classpath",
+    "**/.settings"
+  ],
+  "format_on_save": "off",
+  "git": {
+    "git_gutter": "tracked_files",
+    "inline_blame": {
+      "enabled": true,
+      "delay_ms": 500
+    }
+  },
+  "git_diff": true,
+  "git_status": true,
+  "inlay_hints": {
+    "enabled": true,
+    "show_type_hints": true,
+    "show_parameter_hints": true,
+    "show_other_hints": true
+  },
+  "indent_guides": {
+    "enabled": true,
+    "line_width": 1,
+    "coloring": "fixed",
+    "background_coloring": "disabled"
+  },
+  "telemetry": {
+    "diagnostics": false,
+    "metrics": false
+  },
+  "theme": {
+    "mode": "system",
+    "light": "Gruvbox Light Soft",
+    "dark": "Gruvbox Material"
+  },
+  "languages": {
+    "Ruby": {
+      "language_servers": ["solargraph", "!rubocop"]
+    },
+    "JavaScript": {
+      "code_actions_on_format": {
+        "source.fixAll.eslint": true
+      }
+    },
+    "YAML": {},
+    "JSON": {},
+    "Markdown": {
+      "preferred_line_length": 80
+      // "formatter": {
+      //   "external": {
+      //     "command": "my-formatter"
+      //   }
+      // }
+    },
+    "Plain Text": {
+      "soft_wrap": "preferred_line_length"
+    }
+  },
+  "lsp": {
+    "solargraph": {
+      "initialization_options": {
+        "diagnostics": true,
+        "formatting": true
+      }
+    }
+  }
+}

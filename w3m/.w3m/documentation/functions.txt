@@ -1,0 +1,801 @@
+Order of entries in DESCRIPTION section
+The first entry is the official description in README.func
+https://raw.githubusercontent.com/tats/w3m/master/doc/README.func
+The second is a personal description if it is necessary
+The seemingly duplicated functions
+Examples, and tips
+Testing, pending
+
+current review line 673
+legend
+        n:              number
+        SC:             Execute the shortcut associated with the function
+        n SC:           press the number, release the number, execute the
+                        shortcut
+        ==:             Are the same
+                        The meaning of the previous element
+                        The result of the previous execution
+        e.g.Run:        example inside w3m. When w3m is running
+        e.g.Key:        example in keymap. if the example shows something like
+                        e.g.Key EXTERN_LINK  copy_url.sh    in the file
+                        ~/.w3m/keymap this should look something like
+                        keymap yf       EXTERN_LINK  copy_url.sh
+        e.g.Run/key:    example that works in the both above
+        Test:           Testing to figure out what the functions do
+        pending:        no tested yet or it needs other revision
+        nothing:        Do nothing
+
+General notes:
+- You generally can cancel/hide a menu/frozen situation with C-c
+
+FUNCTION                DESCRIPTION
+
+ABORT           - Quit w3m without confirmation
+                - Seemingly ABORT == EXIT
+
+ACCESSSKEY      - Popup acceskey menu
+                - pending nothing
+                - Test keymap C-x ACCESSKEY ==print invalid command 'ACCESSSKEY'
+                  at start or when keymap is reloaded with REINIT
+
+ADD_BOOKMARK    - Add current page to bookmark
+                - Add current page to bookmarks
+
+ALARM           - Set alarm
+                - Execute a function each n seconds (forever)
+                - e.g.Run "(Alarm)sec command: 3 PREV" == each 3s go back in
+                  history
+                - Each command will overwrite the previous one
+                - Execute without commands to cancel previous command and do
+                  nothing
+
+BACK            - Back to previous buffer
+                - Delete the current buffer and Go back in history
+                - You cannot go forward in history after using this function
+
+BEGIN           - Go to the first line
+                - e.g.Run n SC == move the cursor to the line number n
+
+BOOKMARK        - Read bookmark
+                - Show bookmarks
+                - Seemingly BOOKMARK == VIEW_BOOKMARK
+
+CENTER_H        - Move to the center line
+                - Adjust the horizontal center of the screen in the current
+                  cursor position
+                - It only works if the current line is wider than the page and
+                  it is not folded/wrapped and the current cusor position can
+                  be centered
+
+CENTER_V        - Move to the center column
+                - Adjust the vertical center of the screen in the current
+                  cursor position
+
+CHARSET         - Change the current document charset
+                - e.g.Run "Document charset: UTF-8"
+
+CLOSE_TAB       - Close current tab
+                - e.g.Run n SC == close the tab number n
+
+CLOSE_TAB_MOUSE - Close tab on mouse cursor (for mouse action)
+                - See README.mouse
+                - This Functions can be use only in the ~/.w3m/mouse file
+                - This file is not reloaded with REINIT, so in order to reload
+                  it you need to quit and enter w3m
+                - pending inquire if the REINIT function can reload this file
+                - Test. It does not work with tmux
+
+COMMAND         - Execute w3m command(s)
+                - Execute w3m function(s)
+                - e.g.Run "command [; ...]: PREV" == execute the function PREV
+                - e.g.Key "COMMAND [FUNCTION]" == will execute the function
+                  immediately
+                - e.g.Key COMMAND "GOTO www.google.com PREV" == goto to
+                  www.goole.com and return in history
+                - e.g.Run/Key COMMAND "SET_OPTION fold_line=toggle ; RESHAPE"
+                  fold/wrap lines
+
+COOKIE          - View cookie list
+                - Show the current size loaded e.g "3.35Mb loaded"
+                - Interactively enable/disable cookies
+
+DEFAULT_CHARSET - Change the default document charset
+                - e.g.Run Default document charset: UTF-8
+
+DEFINE_KEY      - Define a binding between a key stroke and a user command
+                - e.g.Run "Key definition: C-v PREV"
+                - The shortcut is available only during the current session
+                  (until close)
+
+DELETE_PREVBUF  - Delete previous buffer (mainly for local-CGI)
+                - Delete previous element in history
+                - If you execute PREV after DELETE_PREVBUF you will go to the
+                  previous previous element in history
+
+DICT_WORD       - Execute dictionary command (see README.dict)
+                - Send a word interactively entered to the cgi script
+                  specified in "URL of dictionary lookup command" in "Display
+                  Settings" in "Option Setting Panel (OPTIONS)"
+                - e.g.Run (dictionary)!table == search the word table
+                  interactively
+
+DICT_WORD_AT    - Execute dictionary command for word at cursor
+                - Execute dictionary command for word under the cursor
+                - Test e.g.Key DICT_WORD_AT 'printf %s "$0" | xsel -b' this
+                  does not work and search the word under cursor
+
+DISPLAY_IMAGE   - Restart loading and drawing of images
+                - It can be used after STOP_IMAGE
+                - It can be used If "Load inline images automatically" is (NO)
+                  and "Display inline images" is (YES) this settings are in
+                  "Display Settings" in OPTIONS
+
+DOWN            - Scroll down one line
+                - Go up (like a pager)
+                - e.g.Run n SC == execute DOWN n times
+                - e.g.Key DOWN n == execute DOWN n times
+
+DOWNLOAD        - Save document source to file
+                - Download source code of current page (html)
+                - Seemingly DOWNLOAD == SAVE
+                - The download directory is where w3m was started
+                - Sometimes the downloaded file does not have extension
+                  (gz, html, etc.)
+                - If "Uncompress compressed data automatically when
+                  downloading" is (YES) in "Miscellaneous Settings" in OPTIONS
+                  then you will not have to uncompress the file manually
+
+DOWNLOAD_LIST   - Display download list panel
+                - Open new tab and show a list of downloaded files
+                - It opens automatically after a download is started e.g
+                  a tar file
+                - It does not open if there is no downloaded files
+                - Files downloaded with DOWNLOAD or PRINT do not appear in the
+                  list
+
+EDIT            - Edit current document
+                - Edit current document with sensible-editor (vim, nano, etc.)
+                - In "Editor" in "External Program Settings" in OPTIONS can be
+                  edited the default editor
+                - Can't edit other than local file
+
+EDIT_SCREEN     - Edit currently rendered document
+                - Edit with sensible-editor (vim, nano, etc.)
+                - In "Editor" in "External Program Settings" in OPTIONS can be
+                  edited the default editor
+
+END             - Go to the last line
+                - Move cursor to the last line
+                - n SC == go to line number n
+
+EXEC_SHELL      - Execute shell command
+                - Execute a shell command
+                - Seemingly EXEC_SHELL == SHELL
+                - e.g.Run (exec shell)!ls == will show the output of ls and it
+                  will print [Hit any key] to return to the session
+                - e.g.Key EXEC_SHELL ls == The same behavior as above but
+                  automatically
+
+EXIT            - Quit w3m without confirmation
+                - Seemingly ABORT == EXIT
+
+EXTERN          - Execute external browser
+                - open current page url with sensible-browser
+                - n SC open current page url with the command linked to the n
+                  number
+                - See "External Program Settings" in "Option Setting Panel" in
+                  (OPTIONS)
+                - e.g.Key EXTERN     copy_url.sh
+                - e.g.Key EXTERN     "echo -n %s | xsel -b"
+
+EXTERN_LINK     - View current link using external browser
+                - open link under cursor with sensible-browser
+                - send url under cursor to EXTERN
+                - e.g.Key EXTERN_LINK  copy_url.sh
+
+FRAME           - Render frame
+                - Toggle rendering HTML frames
+                - pending. What frame?
+                - pending. See "Render frames automatically" in OPTIONS
+
+GOTO            - Go to URL
+                - Open specified document in a new buffer
+                - Open the address bar with the url of the current page
+                - e.g.Run Goto URL: https://en.wikipedia.org/
+                - e.g.Key GOTO www.foobar.com == You will be redirected to
+                  www.foobar.com. automatically
+                - It Uses readline commands see "Readline Command Names"
+                  section of the manual of bash $ man bash
+                - useful readline commands
+                  C-u == Kill backward from point to the beginning of the line
+                  C-k == Kill the text from point to the end of the line
+                  C-a == Move to the start of the current line
+                  C-e == Move to the end of the line
+                  C-d == Delete character under cursor
+                  C-w == Kill  the  word  behind point, using white space as a
+                        word boundary
+
+GOTO_LINE       - Go to specified line
+                - Go to specified line interactively
+                - e.g.Run Goto line:n == go to line number n interactively
+                - e.g.Key GOTO_LINE n == go to line number n automatically
+
+GOTO_LINK       - Go to current link
+                - Open link under cursor in the current tab
+
+GOTO_RELATIVE   - Go to relative URL
+                - interactively go to a relative link in the current page
+                - If you are in foobar.com and search "word", you will be
+                  redirected to foobar.com/word
+                - The interactive dialog is opened with the current url, so you
+                  may need to clean the field first (C-u)
+                - e.g.Key GOTO_RELATIVE "word" == If you are in foobar.com, you
+                  will be redirected to foobar.com/word
+
+HELP            - View help
+                - View the current keymap with explanations of the functions
+                - In help there are different descriptions of functions (more
+                  information)
+
+HISTORY         - View history of URL
+                - Show history (a list with visited url and files)
+
+INFO            - View info of current document
+                - View info of current page
+                - Header, page size stylesheet, SSL Certificate, more
+
+INTERRUPT       - Stop loading document
+                - Stop w3m process and send it to the background == C-Z in bash
+                - seemingly INTERRUPT == SUSPEND
+                - To resume w3m execute in bash $ fg
+
+INIT_MAILCAP    - Reread mailcap (mainly for local-CGI)
+                - ~/.w3m/mailcap is the file where you can define the
+                  applications to open specif files
+                - Image/Gif; /usr/bin/viewnior '%s' # a mailcap entry, it
+                  opens gif images with the image viewer viewnior
+                - pending. This message appears when w3m start with this entry
+                  keymap C-x INIT_MAILCAP "invalid command 'INIT_MAILCAP'"
+                - pending in the file NEWS says "INIT_MAILCAP deleted, use
+                  REINIT MAILCAP instead"
+
+ISEARCH         - Incremental search forward
+                - Enter find mode
+                - Incremental search == Find as you type
+                - As you type the first match is highlighted
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+
+ISEARCH_BACK    - Incremental search backward
+                - Incremental search == Find as you type
+                - As you type the first match is highlighted
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+
+LEFT            - Shift screen one column
+                - Move screen to the left (like a pager)
+                - e.g.Run n SC == execute LEFT n times
+                - e.g.Key LEFT n == execute LEFT n times
+
+LINE_BEGIN      - Go to the beginning of line
+                - Go to the first column in the current line
+
+LINE_END        - Go to the end of line
+                - Move the cursor to the last column in the current line
+
+LINE_INFO       - Show current line number
+                - Show current line info
+                - e.g.Run "line 21/115 (18%) col 59/59  Unicode (UTF-8)"
+
+LINK_BEGIN      - Go to the first link
+                - e.g.Run n SC == go to the link number n
+
+LINK_END        - Go to the last link
+                - e.g.Run n SC == go to the link number
+                  [last link number] - [n - 1] == if you have 10 links in the
+                  current page and you use 3 SC, then you will go to the link
+                  number 8
+
+LINK_MENU       - Popup link element menu
+                - The menu contains links contained in the section "Link
+                  information" of the screen printed by the INFO function
+                - You can see Stylesheets source and other things
+		- It does not work in local files
+
+LIST            - Show all links and images
+                - Show a list of all the links, anchors and images in the
+                  current page (similar to urlview)
+
+LIST_MENU       - Popup link list menu and go to selected link
+                - Popup a menu with a list of all the links in the current page
+                  and open the selected link in the current tab
+                - Each link in the list has a prefix (e.g. 1a, 3b) that you can
+                  type as a shortcut to the link
+                - The initial position of the cursor in the menu is determined
+                  by your current position in the page
+                - e.g.Run you can search (with ISEARCH, SEARCH, etc.) while
+                  the menu is displayed
+
+LOAD            - Load local file
+                - The default directory is where w3m was started
+                - In the interactive dialog "(Load)Filename?" you can use
+                  autocompletion with TAB
+                - In the interactive dialog you can use tab to alternate
+                  between files in the directory
+                - In the interactive dialog "(Load)Filename?" you can press C-d
+                  to show the files in the current directory
+
+MAIN_MENU       - Popup menu
+                - Show Context menu (like the right click in firefox). It has
+                  specific option for links under the cursor
+                - Seemingly MAIN_MENU == MENU
+                - Close menu with C-c
+
+MARK            - Set/unset mark
+                - You can navigate between marks with NEXT_MARK and PREV_MARK
+                - The character-under-the-cursor/mark is highlighted
+                - RELOAD cleans all marks
+
+MARK_MID        - Mark Message-ID-like strings as anchors
+                - Turn Message-ID-like strings into hyperlinks
+                - pending What is this?
+
+MARK_URL        - Mark URL-like strings as anchors
+                - Turn URL-like strings into hyperlinks
+                - If you have a  local text file with url-like strings inside
+                  MARK_URL will convert those strings in hyperlinks you can do
+                  this automatically with url.txt
+                  $ w3m /usr/lib/w3m/cgi-bin/treat_as_url.cgi file-with-urls.txt
+                - pending. what defines "url-like"?
+
+MARK_WORD       - Mark current word as anchor
+                - Turn current word into hyperlink
+                - If you are in https://en.wikipedia.org/wiki/Internet and use
+                  MARK_WORD over the word network, it will have the following
+                  url https://en.wikipedia.org/wiki/network
+                - pending. Find the usefulness. Find a way to specify what urls
+                  to convert
+                - test. If you put the cursor over this string
+                  http://www.google.com over the "http" part convert http in a
+                  clickable url
+
+MENU            - Popup menu
+                - Show Context menu (like the right click in firefox). It has
+                  specific option for links under the cursor
+                - seemingly MAIN_MENU == MENU
+                - Close menu with C-c
+
+MENU_MOUSE      - Popup menu at mouse cursor (for mouse action)
+                - Popup Contextual menu in the mouse position
+                - See README.mouse
+                - This Functions can be use only in the ~/.w3m/mouse file
+                - This file is not reloaded with REINIT, so in order to reload
+                  it you need to quit and enter w3m
+                - Test. It does not work with tmux
+
+MOUSE_TOGGLE    - Toggle activity of mouse
+                - Test. It does not work with tmux
+
+MOVE_DOWN       - Move cursor down (a half screen scroll at the end of screen)
+                - Move cursor down one character
+                - When you reach the border of the screen you scroll half
+                  screen
+                - e.g.Key MOVE_DOWN n == execute MOVE_DOWN n times
+                - e.g.Run n SC == execute MOVE_DOWN n times
+
+MOVE_DOWN1      - Move cursor down (1 line scroll at the end of screen)
+                - Move cursor down one character
+                - e.g.Key MOVE_DOWN1 n == execute MOVE_DOWN1 n times
+                - e.g.Run n SC == execute MOVE_DOWN1 n times
+
+MOVE_LEFT       - Move cursor left (a half screen shift at the left edge)
+                - Move cursor left one character
+                - When you reach the border of the screen you scroll half
+                  screen
+                - e.g.Key MOVE_LEFT n == execute MOVE_LEFT n times
+                - e.g.Run n SC == execute MOVE_LEFT n times
+
+MOVE_LEFT1      - Move cursor left (1 columns shift at the left edge)
+                - Move cursor left one character
+                - e.g.Key MOVE_LEFT1 n == execute MOVE_LEFT1 n times
+                - e.g.Run n SC == execute MOVE_LEFT1 n times
+
+MOVE_LIST_MENU  - Popup link list menu and move cursor to selected link
+                - Popup a menu with all the links in the current page, the
+                  cursor will be putted in the selected link
+                - Each link in the list as a prefix (e.g. 1a, 3b) that you can
+                  tipe as a shortcut to the link
+
+MOVE_MOUSE      - Move cursor to mouse cursor (for mouse action)
+                - See README.mouse
+                - This Functions can be use only in the ~/.w3m/mouse file
+                - This file is not reloaded with REINIT, so in order to reload
+                  it you need to quit and enter w3m
+                - Test. It does not work with tmux
+
+MOVE_RIGHT      - Move cursor right (a half screen shift at the right edge)
+                - Move cursor left one character
+                - When you reach the border of the screen you scroll half
+                  screen
+                - e.g.Key MOVE_RIGHT n == execute MOVE_RIGHT n times
+                - e.g.Run n SC == execute MOVE_RIGHT n times
+
+MOVE_RIGHT1     - Move cursor right (1 columns shift at the right edge)
+                - Move cursor left one character
+                - e.g.Key MOVE_RIGHT1 n == execute MOVE_RIGHT1 n times
+                - e.g.Run n SC == execute MOVE_RIGHT1 n times
+
+MOVE_UP         - Move cursor up (a half screen scroll at the top of screen)
+                - Move cursor left one character
+                - When you reach the border of the screen you scroll half
+                  screen
+                - e.g.Key MOVE_UP n == execute MOVE_UP n times
+                - e.g.Run n SC == execute MOVE_UP n times
+
+MOVE_UP1        - Move cursor up (1 line scroll at the top of screen)
+                - Move cursor left one character
+                - e.g.Key MOVE_UP1 n == execute MOVE_UP1 n times
+                - e.g.Run n SC == execute MOVE_UP1 n times
+
+MSGS            - Display error messages
+                - Display a scree with "List of error messages"
+                - e.g line 376: invalid command 'C-v'
+
+NEW_TAB         - Open new tab
+                - Duplicate current tab
+
+NEXT            - Move to next buffer
+                - Go forward in history
+                - e.g.Run n NEXT == execute NEXT n times
+
+NEXT_DOWN       - Move to next downward link
+                - e.g.Run n SC == execute NEXT_DOWN n times
+                - e.g.Key NEXT_DOWN n == execute NEXT_DOWN n times
+
+NEXT_HALF_PAGE  -  Scroll down half a page
+                - e.g.Run n SC == execute NEXT_HALF_PAGE n times
+                - e.g Key NEXT_HALF_PAGE == execute NEXT_HALF_PAGE n times
+
+NEXT_LEFT       - Move to next left link
+                - e.g.Run n SC == execute NEXT_LEFT n times
+                - e.g.Key NEXT_LEFT n == execute NEXT_LEFT n times
+
+NEXT_LEFT_UP    - Move to next left (or upward) link
+                - e.g.Run n SC == execute NEXT_LEFT_UP n times
+                - e.g.Key NEXT_LEFT_UP n == execute NEXT_LEFT_UP n times
+
+NEXT_LINK       - Move to next link
+                - e.g.Run n SC == execute NEXT_LINK n times
+                - e.g Key NEXT_LINK n == execute NEXT_LINK n times
+                - test. Move to the next page in LIST_MENU
+
+NEXT_MARK       - Move to next word
+                - Move to next mark
+
+NEXT_PAGE       - Move to next page
+                - Advance one page like Av Pag
+                - e.g.Run n SC == Move the cursor to the line: current-line + n
+                - e.g.Key NEXT_PAGE n == execute NEXT_PAGE n times
+
+NEXT_RIGHT      - Move to next right link
+                - e.g.Run n SC == execute NEXT_RIGHT n times
+                - e.g.Key NEXT_LEFT n == execute NEXT_RIGHT n times
+
+NEXT_RIGHT_DOWN - Move to next right (or downward) link
+                - e.g.Run n SC == execute NEXT_RIGHT_DOWN n times
+                - e.g.Key NEXT_RIGHT_DOWN n == execute NEXT_RIGHT_DOWN n times
+
+NEXT_TAB        - Move to next tab
+                - Change focus to left tab
+                - When the focus is on the rightmost tab and execute NEXT_TAB
+                  you move the focus to the leftmost tab
+                - e.g.Run n SC == execute NEXT_TAB n times
+
+NEXT_UP         - Move to next upward link
+                - e.g.Run n SC == execute NEXT_UP n times
+                - e.g.Key NEXT_UP n == execute NEXT_UP n times
+
+NEXT_VISITED    - Move to next visited link
+
+NEXT_WORD       - Move to next word
+                - Move the cursor to first character of next word
+                - e.g.Run n SC == execute NEXT_WORD n times
+                - e.g.Key NEXT_WORD n == execute NEXT_WORD n times
+
+NOTHING         - Do nothing
+                - seemingly NOTHING == NULL
+
+NULL            - Do nothing
+                - seemingly NOTHING == NULL
+
+OPTIONS         - Option setting panel
+                - A interactive screen with many options to configure
+                - It is a nicer way (it has comments and is divided by
+                  sections) to configure the ~/.w3m/config file
+
+PEEK            - Peek current URL
+                - Show current page url
+
+PEEK_IMG        - Peek image URL
+                - Show url under cursor (only urls of images)
+                - pending. the urls shown with PEEK_IMG are not the same than
+                  PEEK_LINK's
+
+PEEK_LINK       - Peek link URL
+                - Show url under cursor (images included)
+
+PIPE_BUF        - Send rendered document to pipe
+                - Pipe rendered-document and print output in a new buffer
+                - e.g.Run "Pipe buffer to: less" to navigate the rendered
+                  document with less, to go back execute PREV
+                - e.g.Key PIPE_BUF less == pipe rendered document to less
+
+PIPE_SHELL      - Execute shell command and browse
+                - Print output of a shell command in a new buffer
+                - Seemingly PIPE_SHELL == READ_SHELL
+                - e.g.Run (read shell[pipe])!ls to go back execute PREV
+                - e.g.Key PIPE_SHELL ls == execute ls automatically
+
+PREV            - Move to previous buffer
+                - Go back in history
+                - e.g.Run n SC == execute PREV n times
+
+PREV_HALF_PAGE  - Scroll up half a page
+                - e.g.Run n SC == execute PREV_HALF_PAGE n times
+                - e.g.Key PREV_HALF_PAGE n == execute PREV_HALF_PAGE n times
+
+PREV_LINK       - Move to previous link
+                - e.g.Run n SC == execute PREV_LINK n times
+                - e.g Key PREV_LINK n == execute PREV_LINK n times
+                - test.Move to the next page in LIST_MENU
+
+PREV_MARK       - Move to previous mark
+
+PREV_PAGE       - Move to previous page
+                - Return one page like Re Pag
+                - e.g.Run n SC == Move the cursor to the line: current-line - n
+                - e.g.Key NEXT_PAGE n == execute PREV_PAGE n times
+
+PREV_TAB        - Move to previous tab
+                - Change focus to right tab
+                - When the focus is on the leftmost tab and execute PREV_TAB
+                  you move the focus to the rightmost tab
+                - e.g.Run n SC == execute PREV_TAB n times
+
+
+PREV_VISITED    - Move to previous visited link
+
+PREV_WORD       - Move to previous word
+                - Move the cursor to first character of previous word
+                - e.g.Run n SC == execute PREV_WORD n times
+                - e.g.Key PREV_WORD n == execute PREV_WORD n times
+
+PRINT           - Save buffer to file
+                - Save rendered document as a text file
+                - seemingly PRINT == SAVE_SCREEN
+                - The download directory is where w3m was started
+                - e.g.Key PRINT name.txt == save rendered document
+                  automatically with the name "name.txt"
+
+QUIT            - Quit w3m
+                - Quit w3m with confirmation
+
+READ_SHELL      - Execute shell command and load
+                - Print output of a shell command in a new buffer
+                - Seemingly PIPE_SHELL == READ_SHELL
+                - e.g.Run (read shell[pipe])!ls to go back execute PREV
+                - e.g.Key PIPE_SHELL ls == execute ls automatically
+
+REDO            - Cancel the last undo
+                - This operates on the cursor position
+                - e.g.Run SC n == execute REDO n times
+                - pending. find out if this works in other situations (other
+                  than cursor position)
+
+REDRAW          - Redraw screen
+                - pending. What is this?, when is useful?
+
+REG_MARK        - Set mark using regexp
+                - creates as many marks as matches
+                - highlight each first-character in a match
+                - You can navigate between marks with NEXT_MARK and PREV_MARK
+
+REINIT          - Reload configuration files
+                - It reloads: keymap, urimethodmap, siteconf, mailcap, config,
+                  menu
+                - It does not reload: mouse
+                - pending. list all the files reloaded/not-reloaded (cookie
+                  ,history)
+
+RELOAD          - Reload buffer
+                - Reload current page
+
+RESHAPE         - Re-render buffer
+                - It removes all marks
+                - e.g.Key Folding lines for plain text files
+                  COMMAND  "SET_OPTION fold_line=toggle ; RESHAPE"
+                - pending.
+
+RIGHT           - Shift screen one column right
+                - Go up (like a pager)
+                - e.g.Run n SC == execute RIGHT n times
+                - e.g.Key RIGHT n == execute RIGHT n times
+
+SAVE            - Save document source to file
+                - Download source code of current page (html)
+                - Seemingly DOWNLOAD == SAVE
+                - The download directory is where w3m was started
+                - Sometimes the downloaded file does not have extension
+                  (gz, html, etc.)
+                - If "Uncompress compressed data automatically when
+                  downloading" is (YES) in "Miscellaneous Settings" in OPTIONS
+                  then you will not have to uncompress the file manually
+
+SAVE_IMAGE      - Save image to file
+                - The download directory is where w3m was started
+
+SAVE_LINK       - Save link to file
+                - Download source code (html) of the link under cursor
+                - The default directory is the directory where w3m was started
+                - Sometimes the downloaded file does not have extension
+                  (gz, html, etc.)
+
+SAVE_SCREEN     - Save rendered document to file
+                - Save rendered document as a text file
+                - seemingly PRINT == SAVE_SCREEN
+                - The download directory is where w3m was started
+                - e.g.Key PRINT name.txt == save rendered document
+                  automatically with the name "name.txt"
+
+SEARCH          - Search forward
+                - seemingly SEARCH  == SEARCH_FORE == WHEREIS
+                - e.g.Key SEARCH keyword == search keyword automatically
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+
+SEARCH_BACK     - Search backward
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+                - SEARCH_NEXT and SEARCH_PREV will go backwards
+
+SEARCH_FORE     - Search forward
+                - seemingly SEARCH  == SEARCH_FORE == WHEREIS
+                - e.g.Key SEARCH keyword == search keyword automatically
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+
+SEARCH_NEXT     - Search next regexp
+                - Move cursor to next match
+
+SEARCH_PREV     - Search previous regexp
+                - Move cursor to previous match
+
+SELECT          - Go to buffer selection panel
+                - Go to a intecative buffer with all the history of the current
+                  tab
+                - e.g.Run Buffer selection mode: SPC for select / D for delete
+                  buffer
+
+SELECT_MENU     - Popup buffer selection menu
+                - Popup a interactive buffer with all the history of the
+                  current tab
+                - Buffer selection mode: SPC for select / D for delete buffer
+
+SETENV          - Set environment variable
+                - pending
+
+SET_OPTION      - Set option
+                - e.g.Key COMMAND  "SET_OPTION fold_line=toggle ; RESHAPE" ==
+                  fold/wrap the lines in a local file
+                - See $ w3m -show-option for available options
+
+SHELL           - Execute shell command
+                - Seemingly EXEC_SHELL == SHELL
+                - e.g.Key SHELL ls == will execute ls automatically
+                - e.g.Run (exec shell)!ls == will show the output of ls and it
+                  will print [Hit any key] to return to the session
+
+SHIFT_LEFT      - Shift screen left
+                - Move a screen to the left like Av Pag but horizontally
+
+SHIFT_RIGHT     - Shift screen right
+                - Move a screen to the right like Av Pag but horizontally
+
+SOURCE          - View HTML source
+                - Toggle between the source code and the rendered version
+                - Seemingly SOURCE == VIEW
+
+STOP_IMAGE      - Stop loading and drawing of images
+
+SUBMIT          - Submit form
+                - e.g.When you stop editing a field in a search engine execute
+                  this to make the search
+                - Useful for sites where the search button (to make the search)
+                  is not visible or It is hard to find e.g., Youtube
+
+SUSPEND         - Stop loading document
+                - Stop w3m process and send it to the background == C-Z in bash
+                - seemingly INTERRUPT == SUSPEND
+                - To resume w3m execute "fg" in bash
+
+TAB_GOTO        - Open URL on new tab
+                - Open editable dialog with current page link, and open in a
+                  new foreground tab the inputted link
+                - e.g.Key TAB_GOTO [URL] == open URL in new tab
+                - e.g.Run n SC It will load the page over the nth tab
+
+TAB_GOTO_RELATIVE - Open relative URL on new tab
+                - If you are in www.foo.com and you search "bar" you will be
+                  redirected to www.foo.com/bar in a new foreground tab
+                - e.g.Key TAB_GOTO_RELATIVE search_string == open URL in new
+                  tab
+                - e.g.Run n SC It will load the page over the nth tab
+
+TAB_LEFT        - Move current tab left
+                - Move current tab to the left
+                - e.g.Run n SC will execute TAB_LEFT n times
+                - If n exceed the current number of positions needed to move
+                  to the first tab, the tab will move to the first tab (i.e.
+                  If you want to move to the first tab type a big number)
+
+TAB_LINK        - Open current link on new tab
+                - Open link under cursor in a new foreground tab
+                - e.g.Run n SC It will load the page over the nth tab
+
+TAB_MENU        - Popup tab selection menu
+                - Show Tab Menu, an interactive list of open tabs
+                - e.g.Run you can search between opened tabs while the
+                  TAB_MENU is displayed (with ISEARCH, SEARCH, etc.)
+                - SPC for select / D for delete tab
+                - from rel0.4 documentation: You can handle the menu in the
+                  same way with the buffer selection menu
+                - Close it C-c
+
+TAB_MOUSE       - Move to tab on mouse cursor (for mouse action)
+                - pending
+
+TAB_RIGHT       - Move current tab right
+                - Move current tab to the right
+                - e.g.Run n SC will execute TAB_RIGHT n times
+                - If n exceed the current number of positions needed to move
+                  to the last tab, the tab will move to the last tab (i.e.
+                  If you want to move to the last tab type a big number)
+
+UNDO            - Cancel the last cursor movement
+                - Return to the last position of the cursor
+                - e.g.Run SC n == execute UNDO n times
+                - pending. find out if this works in other situations (other
+                  than cursor position)
+
+UP              - Scroll up one line
+                - Go up (like a pager)
+                - e.g.Run n SC == execute UP n times
+                - e.g.Key UP n == execute UP n times
+
+
+VERSION         - Display version of w3m
+                - e.g. w3m version w3m/0.5.3+git20170102
+
+VIEW            - View HTML source
+                - Toggle between the source code and the rendered version
+                - Seemingly SOURCE == VIEW
+
+VIEW_BOOKMARK   - View bookmark
+                - Show bookmarks
+                - Seemingly BOOKMARK == VIEW_BOOKMARK
+
+VIEW_IMAGE      - View image
+                - Display the image under the cursor
+                - If "Use external image viewer" is (YES) this function will
+                  open the image in the external image viewer
+                - If "Use external image viewer" is (NO) then the image is
+                  opened with w3mimgdisplay in a new buffer in the current tab
+
+WHEREIS         - Search forward
+                - seemingly SEARCH  == SEARCH_FORE == WHEREIS
+                - e.g.Key SEARCH keyword == search keyword automatically
+                - It supports regular expressions, so the expression "wik.*fre"
+                  will match "Wikipedia, the free"
+
+WRAP_TOGGLE     - Toggle wrap search mode
+                - pending

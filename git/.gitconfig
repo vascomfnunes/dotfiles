@@ -1,0 +1,43 @@
+# Install delta plugin from https://github.com/dandavison/delta
+[user]
+  name = Vasco Nunes
+  email = contact@vasco.dev
+  signingkey = A5EB75AD5B1D0E211E9FDE6121F9288BCED1AF2C
+[includeIf "gitdir:~/repos/**"]
+  path = ~/repos/.gitconfig
+[core]
+  excludesfile = ~/.gitignore_global
+  editor = nvim
+[github]
+  user = vascomfnunes
+[color]
+  ui = true
+[commit]
+	verbose = true
+  ; gpgsign = true
+[tag]
+  ; gpgsign = true
+[diff]
+  colorMoved = default
+[init]
+  defaultBranch = main
+[diff]
+  tool = nvimdiff
+  colorMoved = default
+[difftool]
+  prompt = false
+[difftool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
+[merge]
+  tool = vimdiff
+  conflictstyle = diff3
+[mergetool]
+  prompt = true
+[mergetool "nvimdiff"]
+  cmd = "nvim -d \"$LOCAL\" \"$REMOTE\" \"$MERGED\" -c 'wincmd w' -c 'wincmd J'"
+[pull]
+  rebase = true
+[gpg]
+  program = /opt/homebrew/bin/gpg
+[rerere]
+  enabled = true

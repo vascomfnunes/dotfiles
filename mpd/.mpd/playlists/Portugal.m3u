@@ -1,0 +1,25 @@
+#EXTM3U
+#EXTINF:1,Antena 1
+http://radiocast.rtp.pt/antena180a.mp3
+#EXTINF:2,Antena 1 Fado
+http://radiocast.rtp.pt/antena1fado80a.mp3
+#EXTINF:3,Antena 1 Vida
+http://radiocast.rtp.pt/antena1vida80a.mp3
+#EXTINF:4,Antena 2
+http://radiocast.rtp.pt/antena280a.mp3
+#EXTINF:5,Antena 2 Opera
+http://radiocast.rtp.pt/antena2opera80a.mp3
+#EXTINF:6,Antena 2 JazzIn
+http://radiocast.rtp.pt/antena2jazzin80a.mp3
+#EXTINF:7,Zig Zag
+http://radiocast.rtp.pt/zigzag80a.mp3
+#EXTINF:8,M80
+https://mcrscast.mcr.iol.pt/m80
+#EXTINF:9,Radar
+https://proic1.evspt.com/radar_aac
+#EXTINF:10,TSF
+https://tsfdirecto.tsf.pt/tsfdirecto.mp3
+#EXTINF:11,SBSR
+https://centova.radios.pt/proxy/435?mp=/stream
+#EXTINF:12,Futura
+https://s4.radio.co/s7e7b6c165/listen
