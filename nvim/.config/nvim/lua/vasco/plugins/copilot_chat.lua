@@ -18,7 +18,7 @@ local prompts = {
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'canary',
+    branch = 'main',
     cmd = 'CopilotChat',
     dependencies = {
       { 'github/copilot.vim' },
@@ -69,11 +69,11 @@ return {
           show_diff = {
             normal = 'gd',
           },
-          show_system_prompt = {
-            normal = 'gp',
+          show_info = {
+            normal = 'gi',
           },
-          show_user_selection = {
-            normal = 'gs',
+          show_context = {
+            normal = 'gc',
           },
         },
       }
