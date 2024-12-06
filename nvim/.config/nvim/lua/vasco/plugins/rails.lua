@@ -27,6 +27,24 @@ return {
         end,
       }
 
+      local overmind = Terminal:new {
+        cmd = 'overmind s',
+        direction = 'horizontal',
+        size = 15,
+        on_open = function(term)
+          vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+        end,
+      }
+
+      local overmind_connect = Terminal:new {
+        cmd = 'overmind connect web',
+        direction = 'horizontal',
+        size = 15,
+        on_open = function(term)
+          vim.api.nvim_buf_set_keymap(term.bufnr, 'n', 'q', '<cmd>close<CR>', { noremap = true, silent = true })
+        end,
+      }
+
       -- Functions to toggle specific terminals
       function _RAILS_SERVER()
         rails_server:toggle()
@@ -34,6 +52,12 @@ return {
 
       function _RAILS_CONSOLE()
         rails_console:toggle()
+      end
+      function _OVERMIND()
+        overmind:toggle()
+      end
+      function _OVERMIND_CONNECT()
+        overmind_connect:toggle()
       end
     end,
     keys = {
@@ -83,6 +107,16 @@ return {
         '<leader>ri',
         '<cmd>lua _RAILS_CONSOLE()<CR>',
         desc = 'Rails Console',
+      },
+      {
+        '<leader>ro',
+        '<cmd>lua _OVERMIND()<CR>',
+        desc = 'Start overmind',
+      },
+      {
+        '<leader>rC',
+        '<cmd>lua _OVERMIND_CONNECT()<CR>',
+        desc = 'Overmind connect web',
       },
     },
   },
