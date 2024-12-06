@@ -96,5 +96,5 @@ set('n', '<leader>uT', function()
 end, { desc = 'Toggle Treesitter Highlight' })
 
 -- Theme
-set('n', '<leader>Td', '<cmd>colorscheme base16-gruvbox-material-dark-medium<cr>', { desc = 'Dark' })
-set('n', '<leader>Tl', '<cmd>colorscheme base16-gruvbox-material-light-medium<cr>', { desc = 'Light' })
+set('n', '<leader>Cd', '<cmd>colorscheme base16-gruvbox-material-dark-medium<cr>', { desc = 'Dark' })
+set('n', '<leader>Cl', '<cmd>colorscheme base16-gruvbox-material-light-medium<cr>', { desc = 'Light' })

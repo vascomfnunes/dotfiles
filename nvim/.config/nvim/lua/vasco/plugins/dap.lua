@@ -2,14 +2,14 @@ return {
   'mfussenegger/nvim-dap',
   dependencies = {
     'rcarriga/nvim-dap-ui',
-    'nvim-neotest/nvim-nio',
+    'nvim-neotest/neotest',
     'williamboman/mason.nvim',
     'jay-babu/mason-nvim-dap.nvim',
     'LiadOz/nvim-dap-repl-highlights',
     'theHamsta/nvim-dap-virtual-text',
     'suketa/nvim-dap-ruby', -- This requires debug gem to be installed!
   },
-  keys = function(_, keys)
+  keys = function()
     local dap = require 'dap'
     local dapui = require 'dapui'
     return {
@@ -31,7 +31,6 @@ return {
       },
       -- Toggle to see last session result. Without this, you can't see session output in case of unhandled exception.
       { '<leader>dt', dapui.toggle, desc = 'Toggle UI' },
-      unpack(keys),
     }
   end,
   config = function()

@@ -31,7 +31,7 @@ return {
 
     wk.add {
       { '<leader><tab>', group = 'Tabs' },
-      { '<leader>T', group = 'Theme' },
+      { '<leader>C', group = 'Colours' },
       { '<leader>b', group = 'Buffers' },
       { '<leader>c', group = 'Code' },
       { '<leader>f', group = 'Files' },
@@ -42,7 +42,8 @@ return {
       { '<leader>q', group = 'Quickfix' },
       { '<leader>r', group = 'Rails' },
       { '<leader>s', group = 'Search/Replace' },
-      { '<leader>t', group = 'Tests' },
+      { '<leader>T', group = 'Tests' },
+      { '<leader>t', group = 'Terminal' },
       { '<leader>u', group = 'Utils' },
       { '<leader>d', group = 'Debug' },
       { '<leader>v', group = 'Vim Configuration' },

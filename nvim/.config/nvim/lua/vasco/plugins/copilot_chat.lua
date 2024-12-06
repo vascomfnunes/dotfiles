@@ -1,24 +1,33 @@
 local prompts = {
-  -- Code related prompts
-  Explain = 'Please explain how the following code works.',
-  Review = 'Please review the following code and provide suggestions for improvement.',
-  Tests = 'Please explain how the selected code works, then generate unit tests for it. If this is a Ruby file write the tests using minitest. If is a JavaScript file, use Jest.',
-  Refactor = 'Please refactor the following code to improve its clarity and readability.',
-  FixCode = 'Please fix the following code to make it work as intended.',
-  FixError = 'Please explain the error in the following text and provide a solution.',
-  Documentation = 'Please provide documentation for the following code.',
-  Commit = 'Write a git commit message for the changes. The title should have 50 characters or less and start with a Jira ticket reference, but only if present in the branch name, in the format "AB-1234 Commit title here" (replace the ticket example with the correct ticet reference from the branch name and use imperative mode. The body should provide a meaningful commit message, which should be wrapped at 72 characters. Start with a concise paragraph explaining what is included in the commit. Then make sure to list what has changed or added and explaining how those changes were implemented and why. At the end, include any relevant links to tickets, documentation or online resources if that makes sense. If you include any file name or command, please wrap them in backticks. Use markdown when possible.',
-  -- Text related prompts
-  Summarize = 'Please summarize the following text.',
-  Spelling = 'Please correct any grammar and spelling errors in the following text.',
-  Wording = 'Please improve the grammar and wording of the following text.',
-  Concise = 'Please rewrite the following text to make it more concise.',
+  Explain = {
+    prompt = '> /COPILOT_EXPLAIN\n\nWrite an explanation for the selected code as paragraphs of text.',
+  },
+  Review = {
+    prompt = '> /COPILOT_REVIEW\n\nReview the selected code.',
+    -- see config.lua for implementation
+  },
+  Fix = {
+    prompt = '> /COPILOT_GENERATE\n\nThere is a problem in this code. Rewrite the code to show it with the bug fixed.',
+  },
+  Optimize = {
+    prompt = '> /COPILOT_GENERATE\n\nOptimize the selected code to improve performance and readability.',
+  },
+  Docs = {
+    prompt = '> /COPILOT_GENERATE\n\nPlease add documentation comments to the selected code.',
+  },
+  Tests = {
+    prompt = '> /COPILOT_GENERATE\n\nPlease generate tests for my code. If using Ruby write the tests with minitest. If using JavaScript write the tests with Jest.',
+  },
+  Commit = {
+    prompt = '> #git:staged\n\nWrite a git commit message for the changes. The title should have 50 characters or less and start with a Jira ticket reference, but only if present in the branch name, in the format "AB-1234 Commit title here" (replace the ticket example with the correct ticket reference from the branch name and use imperative mode. The body should provide a meaningful commit message, which should be wrapped at 72 characters. Start with a concise paragraph explaining what is included in the commit. Then make sure to list what has changed or added and explaining how those changes were implemented and why. At the end, include any relevant links to tickets, documentation or online resources if that makes sense. If you include any file name or command, please wrap them in backticks. Use markdown when possible.',
+  },
 }
 
 return {
   {
     'CopilotC-Nvim/CopilotChat.nvim',
     branch = 'main',
+    build = 'make tiktoken',
     cmd = 'CopilotChat',
     dependencies = {
       { 'github/copilot.vim' },
@@ -28,6 +37,9 @@ return {
       local user = vim.env.USER or 'User'
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
+        model="claude-3.5-sonnet",
+        agent="copilot",
+        context="buffer",
         auto_insert_mode = false,
         prompts = prompts,
         question_header = '  ' .. user .. ' ',

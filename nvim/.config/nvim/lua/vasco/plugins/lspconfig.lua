@@ -5,84 +5,52 @@ return {
     { 'folke/neoconf.nvim', cmd = 'Neoconf', config = false, dependencies = { 'nvim-lspconfig' } },
     {
       'folke/neodev.nvim',
-      opts = {},
-      config = function()
-        require('neodev').setup {
-          library = { plugins = { 'neotest' }, types = true },
-        }
-      end,
+      opts = {
+        library = {
+          plugins = { 'neotest', 'nvim-dap-ui' },
+          types = true,
+        },
+      },
     },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'hrsh7th/cmp-nvim-lsp',
   },
   keys = {
-    {
-      'gd',
-      function()
-        vim.lsp.buf.definition()
-      end,
-      desc = 'Go to definition',
-    },
-    {
-      'gD',
-      function()
-        vim.lsp.buf.declaration()
-      end,
-      desc = 'Go to declaration',
-    },
-    {
-      '<leader>cd',
-      function()
-        vim.diagnostic.open_float()
-      end,
-      desc = 'Line diagnostics',
-    },
-    {
-      '<leader>ca',
-      function()
-        -- vim.lsp.buf.code_action()
-        require('tiny-code-action').code_action()
-      end,
-      desc = 'Actions',
-    },
+    { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
+    { 'gD', vim.lsp.buf.declaration, desc = 'Go to declaration' },
+    { 'gr', vim.lsp.buf.references, desc = 'Go to references' },
+    { 'gi', vim.lsp.buf.implementation, desc = 'Go to implementation' },
+    { 'K', vim.lsp.buf.hover, desc = 'Hover Documentation' },
+    { '<leader>cd', vim.diagnostic.open_float, desc = 'Line diagnostics' },
+    { '<leader>ca', require('tiny-code-action').code_action, desc = 'Code Actions' },
+    { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename' },
   },
   opts = {
     diagnostics = {
-      underline = false,
+      underline = true,
       update_in_insert = false,
-      virtual_text = false, -- handled by lsp_lines.nvim plugin
-      -- virtual_text = {
-      --   spacing = 4,
-      --   source = 'if_many',
-      --   prefix = '●',
-      -- },
+      virtual_text = {
+        spacing = 4,
+        source = 'if_many',
+        prefix = '●',
+      },
       severity_sort = true,
     },
-    -- Enable this to enable the builtin LSP inlay hints
-    -- Be aware that you also will need to properly configure your LSP server to
-    -- provide the inlay hints.
     inlay_hints = {
       enabled = true,
     },
-    -- Enable this to enable the builtin LSP code lenses
-    -- Be aware that you also will need to properly configure your LSP server to
-    -- provide the code lenses.
     codelens = {
       enabled = true,
+      refresh_interval = 200,
     },
-    -- add any global capabilities here
     capabilities = {},
-    -- Automatically format on save
-    autoformat = false,
-    -- Enable this to show formatters used in a notification
-    -- Useful for debugging formatter issues
-    format_notify = false,
+    autoformat = true,
+    format_notify = true,
     format = {
       formatting_options = nil,
-      timeout_ms = nil,
+      timeout_ms = 3000,
     },
-    -- LSP Server Settings
     servers = {
       html = { filetypes = { 'html', 'eruby' } },
       cssls = { filetypes = { 'css', 'scss' } },
@@ -93,31 +61,24 @@ return {
       tailwindcss = {},
       stimulus_ls = {},
       markdown_oxide = {},
-
       lua_ls = {
-        -- keys = {},
         settings = {
           Lua = {
-            workspace = {
-              checkThirdParty = false,
-            },
-            codeLens = {
-              enable = true,
-            },
-            telemety = { enable = false },
-            completion = {
-              callSnippet = 'Replace',
-            },
-            doc = {
-              privateName = { '^_' },
-            },
+            workspace = { checkThirdParty = false },
+            codeLens = { enable = true },
+            telemetry = { enable = false },
+            completion = { callSnippet = 'Replace' },
+            doc = { privateName = { '^_' } },
             hint = {
               enable = true,
-              setType = false,
+              setType = true,
               paramType = true,
-              paramName = 'Disable',
+              paramName = 'Literal',
               semicolon = 'Disable',
-              arrayIndex = 'Disable',
+              arrayIndex = 'Enable',
+            },
+            diagnostics = {
+              globals = { 'vim' },
             },
           },
         },
@@ -126,9 +87,7 @@ return {
         settings = {
           yaml = {
             validate = true,
-            schemaStore = {
-              enable = true,
-            },
+            schemaStore = { enable = true },
           },
         },
       },
@@ -136,24 +95,12 @@ return {
         settings = {
           json = {
             validate = true,
-            schemaStore = {
-              enable = true,
-            },
+            schemaStore = { enable = true },
           },
         },
       },
     },
-    -- you can do any additional lsp server setup here
-    -- return true if you don't want this server to be setup with lspconfig
-    setup = {
-      -- example to setup with typescript.nvim
-      -- tsserver = function(_, opts)
-      --   require("typescript").setup({ server = opts })
-      --   return true
-      -- end,
-      -- Specify * to use this function as a fallback for any server
-      -- ["*"] = function(server, opts) end,
-    },
+    setup = {},
   },
 
   config = function(_, opts)
@@ -170,12 +117,11 @@ return {
     vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = config.border.style })
 
     local servers = opts.servers
-    local has_cmp, cmp_nvim_lsp = pcall(require, 'cmp_nvim_lsp')
     local capabilities = vim.tbl_deep_extend(
       'force',
       {},
       vim.lsp.protocol.make_client_capabilities(),
-      has_cmp and cmp_nvim_lsp.default_capabilities() or {},
+      require('cmp_nvim_lsp').default_capabilities(),
       opts.capabilities or {}
     )
 
@@ -196,21 +142,12 @@ return {
       require('lspconfig')[server].setup(server_opts)
     end
 
-    -- get all the servers that are available through mason-lspconfig
     local have_mason, mlsp = pcall(require, 'mason-lspconfig')
     local all_mslp_servers = {}
     if have_mason then
-      -- https://github.com/neovim/nvim-lspconfig/pull/3232
-      require('mason-lspconfig').setup_handlers {
+      mlsp.setup_handlers {
         function(server_name)
-          if server_name == 'tsserver' then
-            server_name = 'ts_ls'
-          end
-          local capabilities = require('cmp_nvim_lsp').default_capabilities()
-          require('lspconfig')[server_name].setup {
-
-            capabilities = capabilities,
-          }
+          setup(server_name)
         end,
       }
 
@@ -221,7 +158,6 @@ return {
     for server, server_opts in pairs(servers) do
       if server_opts then
         server_opts = server_opts == true and {} or server_opts
-        -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
         if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
           setup(server)
         else

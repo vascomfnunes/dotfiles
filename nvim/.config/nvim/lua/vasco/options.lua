@@ -1,12 +1,9 @@
+-- Function to set the winbar
 local function winbar()
-  local file_name = '%f'
-  local modified = ' %-m'
-  local file_type = ' %y'
-  local right_align = '%='
-
-  return string.format('%s%s%s%s', right_align, file_name, modified, file_type)
+  return '%=%f %-m %y'
 end
 
+-- Options table
 local options = {
   ruler = false,
   ignorecase = true,
@@ -31,8 +28,8 @@ local options = {
   splitright = true,
   breakindent = true,
   swapfile = false,
-  thesaurus = os.getenv 'HOME' .. '/.config/nvim/thesaurii.txt',
-  undodir = os.getenv 'HOME' .. '/.config/nvim/undo',
+  thesaurus = vim.fn.expand('~/.config/nvim/thesaurii.txt'),
+  undodir = vim.fn.expand('~/.config/nvim/undo'),
   undofile = true,
   undolevels = 1000,
   updatetime = 100,
@@ -49,30 +46,28 @@ local options = {
   clipboard = 'unnamed,unnamedplus',
   laststatus = 3,
   cmdheight = 0,
-  completeopt = { 'menuone', 'noselect' },
+  completeopt = { 'menuone', 'noselect', 'popup', 'noinsert' },
   winbar = winbar(),
   smoothscroll = true
 }
 
+-- Apply options
 for k, v in pairs(options) do
   vim.opt[k] = v
 end
 
-vim.opt.iskeyword:append '-'
-vim.opt.shortmess:append 'cI' -- don't show redundant messages from ins-completion-menu and the default intro message
-vim.opt.whichwrap:append '<>,[],hl'
+-- Additional settings
+vim.opt.iskeyword:append('-')
+vim.opt.shortmess:append('cI') -- don't show redundant messages from ins-completion-menu and the default intro message
+vim.opt.whichwrap:append('<>,[],hl')
 
-local default_providers = {
-  'node',
-  'perl',
-  'python3',
-  'ruby',
-}
-
+-- Disable default providers
+local default_providers = { 'node', 'perl', 'python3', 'ruby' }
 for _, provider in ipairs(default_providers) do
   vim.g['loaded_' .. provider .. '_provider'] = 0
 end
 
+-- Global variables
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.g.have_nerd_font = true

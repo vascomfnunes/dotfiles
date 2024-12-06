@@ -2,13 +2,14 @@ local config = require 'vasco.config'
 
 return {
   'hrsh7th/nvim-cmp',
-  version = false, -- last release is way too old
-  event = 'InsertEnter',
+  version = false,
+  event = { 'InsertEnter', 'CmdlineEnter' },
   dependencies = {
     'onsails/lspkind.nvim',
     'hrsh7th/cmp-nvim-lsp',
     'hrsh7th/cmp-buffer',
     'hrsh7th/cmp-path',
+    'hrsh7th/cmp-cmdline',
     'saadparwaiz1/cmp_luasnip',
     {
       'zbirenbaum/copilot-cmp',
@@ -24,13 +25,11 @@ return {
     vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
     local cmp = require 'cmp'
     local luasnip = require 'luasnip'
-    local defaults = require 'cmp.config.default'()
 
     local has_words_before = function()
-      local cursor = vim.api.nvim_win_get_cursor(0)
-      return (vim.api.nvim_buf_get_lines(0, cursor[1] - 1, cursor[1], true)[1] or '')
-        :sub(cursor[2], cursor[2])
-        :match '%s'
+      unpack = unpack or table.unpack
+      local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+      return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match '%s' == nil
     end
 
     local lspkind = require 'lspkind'
@@ -47,9 +46,11 @@ return {
       mapping = cmp.mapping.preset.insert {
         ['<C-Space>'] = cmp.mapping.complete(),
         ['<C-q>'] = cmp.mapping.abort(),
-        ['<C-l>'] = cmp.mapping.confirm { select = true },
-
-        ['<C-j>'] = cmp.mapping(function(fallback)
+        ['<C-l>'] = cmp.mapping.confirm {
+          behavior = cmp.ConfirmBehavior.Replace,
+          select = true,
+        },
+        ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
           elseif luasnip.expand_or_jumpable() then
@@ -60,8 +61,7 @@ return {
             fallback()
           end
         end, { 'i', 's' }),
-
-        ['<C-k>'] = cmp.mapping(function(fallback)
+        ['<S-Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_prev_item()
           elseif luasnip.jumpable(-1) then
@@ -71,12 +71,24 @@ return {
           end
         end, { 'i', 's' }),
       },
-      sources = cmp.config.sources {
-        { name = 'copilot' },
-        { name = 'nvim_lsp' },
-        { name = 'luasnip' },
-        { name = 'buffer' },
-        { name = 'path' },
+      sources = cmp.config.sources({
+        { name = 'copilot', priority = 1000 },
+        { name = 'nvim_lsp', priority = 900 },
+        { name = 'luasnip', priority = 750 },
+        { name = 'path', priority = 500 },
+      }, {
+        { name = 'buffer', priority = 250 },
+      }),
+      sorting = {
+        priority_weight = 2.0,
+        comparators = {
+          cmp.config.compare.exact,
+          cmp.config.compare.locality,
+          cmp.config.compare.score,
+          cmp.config.compare.recently_used,
+          cmp.config.compare.offset,
+          cmp.config.compare.order,
+        },
       },
       window = {
         completion = {
@@ -90,13 +102,25 @@ return {
           border = config.border.style,
           winhighlight = 'FloatBorder:FloatBorder',
           scrollbar = true,
+          max_height = 20,
         },
       },
       formatting = {
         format = lspkind.cmp_format {
-          mode = 'symbol',
-          max_width = 50,
-          symbol_map = { Copilot = '' },
+          mode = 'symbol_text',
+          maxwidth = 50,
+          ellipsis_char = '...',
+          symbol_map = { Copilot = '' },
+          before = function(entry, vim_item)
+            vim_item.menu = ({
+              copilot = '[Copilot]',
+              nvim_lsp = '[LSP]',
+              luasnip = '[Snippet]',
+              buffer = '[Buffer]',
+              path = '[Path]',
+            })[entry.source.name]
+            return vim_item
+          end,
         },
       },
       experimental = {
@@ -104,7 +128,20 @@ return {
           hl_group = 'CmpGhostText',
         },
       },
-      sorting = defaults.sorting,
     }
+  end,
+  config = function(_, opts)
+    local cmp = require 'cmp'
+    cmp.setup(opts)
+
+    -- Set up specific completion for cmdline
+    cmp.setup.cmdline(':', {
+      mapping = cmp.mapping.preset.cmdline(),
+      sources = cmp.config.sources({
+        { name = 'path' },
+      }, {
+        { name = 'cmdline' },
+      }),
+    })
   end,
 }
