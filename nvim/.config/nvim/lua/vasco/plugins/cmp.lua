@@ -37,6 +37,11 @@ return {
     return {
       completion = {
         completeopt = 'menu,menuone,noinsert',
+        border = config.border.style,
+        winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None,NormalFloat:Normal',
+        col_offset = -3,
+        side_padding = 0,
+        scrollbar = true,
       },
       snippet = {
         expand = function(args)
@@ -50,6 +55,8 @@ return {
           behavior = cmp.ConfirmBehavior.Replace,
           select = true,
         },
+        ['<C-j>'] = cmp.mapping.select_next_item(),
+        ['<C-k>'] = cmp.mapping.select_prev_item(),
         ['<Tab>'] = cmp.mapping(function(fallback)
           if cmp.visible() then
             cmp.select_next_item()
@@ -93,14 +100,14 @@ return {
       window = {
         completion = {
           border = config.border.style,
-          winhighlight = 'Normal:NormalFloat,FloatBorder:FloatBorder,CursorLine:PmenuSel,Search:None',
+          winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,CursorLine:PmenuSel,Search:None',
           col_offset = -3,
           side_padding = 0,
           scrollbar = true,
         },
         documentation = {
           border = config.border.style,
-          winhighlight = 'FloatBorder:FloatBorder',
+          winhighlight = 'Normal:Pmenu,FloatBorder:Pmenu,Search:None',
           scrollbar = true,
           max_height = 20,
         },

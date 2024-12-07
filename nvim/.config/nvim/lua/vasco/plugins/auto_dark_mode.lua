@@ -18,12 +18,12 @@ return {
     update_interval = 1000,
     set_dark_mode = function()
       vim.api.nvim_set_option_value('background', 'dark', {})
-      vim.cmd 'colorscheme onedark'
+      vim.cmd 'colorscheme kanagawa-dragon'
       override_dark_highlights()
     end,
     set_light_mode = function()
       vim.api.nvim_set_option_value('background', 'light', {})
-      vim.cmd 'colorscheme onelight'
+      vim.cmd 'colorscheme kanagawa-lotus'
       override_light_highlights()
     end,
   },

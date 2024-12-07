@@ -1,6 +1,6 @@
 local M = {
   border = {
-    style = 'none', -- single, double, rounded, none
+    style = 'rounded', -- single, double, rounded, none
     color = '#444',
   },
 }

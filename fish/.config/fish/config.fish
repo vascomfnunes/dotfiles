@@ -73,3 +73,4 @@ alias ctags='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript
 
 # source environment variables that we do not want in source control
 source ~/.env_variables
+source ~/.config/fish/themes/kanagawa.theme

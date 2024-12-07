@@ -1,4 +1,5 @@
 local M = {
+  arrow_right = '▶',
   cog = ' ',
   error = ' ',
   warning = ' ',

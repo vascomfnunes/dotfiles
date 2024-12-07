@@ -1,0 +1,29 @@
+# Kanagawa Fish Shell Theme
+
+# Syntax Highlighting Colors
+set -U fish_color_normal dcd7ba
+set -U fish_color_command 7e9cd8
+set -U fish_color_quote 98bb6c
+set -U fish_color_redirection 7fb4ca
+set -U fish_color_end dcd7ba
+set -U fish_color_error ff5d62
+set -U fish_color_param ff5d62
+set -U fish_color_comment 727169
+set -U fish_color_match --background=7fb4ca
+set -U fish_color_search_match --background=223249
+set -U fish_color_operator 957fb8
+set -U fish_color_escape 7fb4ca
+set -U fish_color_cwd ff5d62
+set -U fish_color_autosuggestion 727169
+set -U fish_color_valid_path --underline ff5d62
+set -U fish_color_history_current 7fb4ca
+set -U fish_color_selection --background=2d4f67
+set -U fish_color_user 7aa89f
+set -U fish_color_host 98bb6c
+set -U fish_color_cancel 727169
+
+# Completion Pager Colors
+set -U fish_pager_color_completion dcd7ba
+set -U fish_pager_color_prefix 98bb6c
+set -U fish_pager_color_description dcd7ba
+set -U fish_pager_color_progress dcd7ba

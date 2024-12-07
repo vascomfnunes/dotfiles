@@ -1,4 +1,5 @@
 return {
+  -- fd and ripgrep are required
   'nvim-telescope/telescope.nvim',
   cmd = { 'Telescope' },
   dependencies = {
@@ -8,6 +9,7 @@ return {
     },
     'tsakirist/telescope-lazy.nvim',
     'nvim-telescope/telescope-file-browser.nvim',
+    'nvim-telescope/telescope-ui-select.nvim',
   },
   keys = {
     { 'z=', '<cmd>Telescope spell_suggest<cr>', desc = 'Spell suggestions' },
@@ -21,6 +23,9 @@ return {
     { '<leader>fh', '<cmd>Telescope help_tags<cr>', desc = 'Help' },
     { '<leader>fq', '<cmd>Telescope quickfix<cr>', desc = 'Quickfix' },
     { '<leader>fp', '<cmd>Telescope lazy<cr>', desc = 'Plugins' },
+    { '<leader>fs', '<cmd>Telescope lsp_document_symbols<cr>', desc = 'Document Symbols' },
+    { '<leader>fS', '<cmd>Telescope lsp_workspace_symbols<cr>', desc = 'Workspace Symbols' },
+    { '<leader>ft', '<cmd>Telescope treesitter<cr>', desc = 'Treesitter Symbols' },
     {
       '<leader>fb',
       '<cmd>Telescope buffers ignore_current_buffer=true sort_mru=true<cr>',
@@ -28,7 +33,24 @@ return {
     },
     {
       '<leader><space>',
-      '<cmd>Telescope file_browser path=%:p:h select_buffer=true<CR>',
+      function()
+        require('telescope').extensions.file_browser.file_browser {
+          path = vim.fn.expand '%:p:h',
+          select_buffer = true,
+          respect_gitignore = false,
+          hidden = true,
+          grouped = true,
+          initial_mode = 'insert',
+          layout_strategy = 'bottom_pane',
+          layout_config = {
+            bottom_pane = {
+              height = 0.5,
+              preview_cutoff = 120,
+              prompt_position = 'bottom',
+            },
+          },
+        }
+      end,
       desc = 'File browser',
     },
   },
@@ -51,21 +73,37 @@ return {
           '--hidden',
           '--glob=!.git/',
         },
-        prompt_prefix = icons.search,
+        prompt_prefix = icons.search .. ' ',
+        selection_caret = icons.arrow_right .. ' ',
         entry_prefix = '   ',
-        preview = { hide_on_startup = false },
-        file_ignore_patterns = { 'node_modules', '.git', 'undo', 'tmp', 'fonts', 'images', 'public' },
-        selection_caret = '❯ ',
+        initial_mode = 'insert',
         selection_strategy = 'reset',
         sorting_strategy = 'ascending',
-        scroll_strategy = 'cycle',
-        file_sorter = require('telescope.sorters').get_fuzzy_file,
-        generic_sorter = require('telescope.sorters').get_generic_fuzzy_sorter,
-        file_previewer = require('telescope.previewers').vim_buffer_cat.new,
-        grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
-        qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
-        path_display = { 'truncate' },
+        layout_strategy = 'horizontal',
+        preview = {
+          hide_on_startup = false,
+          filesize_limit = 1,
+          timeout = 250,
+        },
+        file_ignore_patterns = {
+          'node_modules',
+          '.git/',
+          'undo/',
+          'tmp/',
+          'fonts/',
+          'images/',
+          'public/',
+          '%.lock',
+          '%.sqlite3',
+          '%.svg',
+          '%.otf',
+          '%.ttf',
+          '__pycache__',
+        },
+        path_display = { truncate = 3 },
         winblend = 0,
+        border = {},
+        borderchars = { '─', '│', '─', '│', '╭', '╮', '╯', '╰' },
         set_env = { ['COLORTERM'] = 'truecolor' },
         layout_config = {
           horizontal = {
@@ -73,9 +111,7 @@ return {
             preview_width = 0.55,
             results_width = 0.8,
           },
-          vertical = {
-            mirror = false,
-          },
+          vertical = { mirror = false },
           width = 0.87,
           height = 0.80,
           preview_cutoff = 120,
@@ -84,53 +120,105 @@ return {
           i = {
             ['<C-j>'] = actions.move_selection_next,
             ['<C-k>'] = actions.move_selection_previous,
-            ['<c-l>'] = actions.select_default + actions.center,
+            ['<C-n>'] = actions.cycle_history_next,
+            ['<C-p>'] = actions.cycle_history_prev,
+            ['<C-c>'] = actions.close,
+            ['<C-u>'] = actions.preview_scrolling_up,
+            ['<C-d>'] = actions.preview_scrolling_down,
+            ['<C-l>'] = function(prompt_bufnr)
+              actions.select_default(prompt_bufnr)
+              actions.center(prompt_bufnr)
+            end,
           },
         },
-        extensions = {
-          file_browser = {
-            theme = 'ivy',
-            hijack_netrw = true,
-            mappings = {
-              ['i'] = {
-                ['<C-l>'] = require('telescope').extensions.file_browser.actions.open,
-                ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
-              },
-              ['n'] = {
-                ['<C-l>'] = require('telescope').extensions.file_browser.actions.open,
-                ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
-              },
+      },
+      pickers = {
+        find_files = {
+          hidden = true,
+          find_command = { 'fd', '--type', 'f', '--strip-cwd-prefix', '--no-ignore', '--no-ignore-vcs' },
+        },
+        live_grep = {
+          additional_args = function()
+            return { '--hidden' }
+          end,
+        },
+      },
+      extensions = {
+        file_browser = {
+          hijack_netrw = true,
+          respect_gitignore = false,
+          hidden = true,
+          grouped = true,
+          initial_mode = 'insert',
+          select_buffer = true,
+          use_last_dir = true,
+          dir_icon = '',
+          dir_icon_hl = 'Default',
+          display_stat = { date = true, size = true },
+          path = '%:p:h',
+          layout_strategy = 'bottom_pane',
+          layout_config = {
+            bottom_pane = {
+              height = 0.5,
+              preview_cutoff = 120,
+              prompt_position = 'bottom',
             },
           },
-          fzf = {
-            fuzzy = true,
-            override_generic_sorter = true, -- override the generic sorter
-            override_file_sorter = true, -- override the file sorter
-            case_mode = 'smart_case', -- or "ignore_case" or "respect_case". the default case_mode is "smart_case"
-          },
-          lazy = {
-            -- Optional theme (the extension doesn't set a default theme)
-            theme = 'ivy',
-            -- Whether or not to show the icon in the first column
-            show_icon = true,
-            -- Mappings for the actions
-            mappings = {
-              open_in_browser = '<C-o>',
-              open_in_file_browser = '<M-b>',
-              open_in_find_files = '<C-f>',
-              open_in_live_grep = '<C-g>',
-              open_plugins_picker = '<C-b>', -- Works only after having called first another action
-              open_lazy_root_find_files = '<C-r>f',
-              open_lazy_root_live_grep = '<C-r>g',
+          mappings = {
+            ['i'] = {
+              ['<C-l>'] = require('telescope.actions').select_default,
+              ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
+              ['<C-n>'] = require('telescope').extensions.file_browser.actions.create,
+              ['<C-r>'] = require('telescope').extensions.file_browser.actions.rename,
+              ['<C-m>'] = require('telescope').extensions.file_browser.actions.move,
+              ['<C-d>'] = require('telescope').extensions.file_browser.actions.remove,
+              ['<C-j>'] = require('telescope.actions').move_selection_next,
+              ['<C-k>'] = require('telescope.actions').move_selection_previous,
+              ['<tab>'] = require('telescope.actions').toggle_selection,
             },
+            ['n'] = {
+              ['<C-l>'] = require('telescope.actions').select_default,
+              ['<C-h>'] = require('telescope').extensions.file_browser.actions.goto_parent_dir,
+              ['<C-n>'] = require('telescope').extensions.file_browser.actions.create,
+              ['<C-r>'] = require('telescope').extensions.file_browser.actions.rename,
+              ['<C-m>'] = require('telescope').extensions.file_browser.actions.move,
+              ['<C-d>'] = require('telescope').extensions.file_browser.actions.remove,
+              ['<C-j>'] = require('telescope.actions').move_selection_next,
+              ['<C-k>'] = require('telescope.actions').move_selection_previous,
+              ['<tab>'] = require('telescope.actions').toggle_selection,
+            },
+          },
+        },
+        fzf = {
+          fuzzy = true,
+          override_generic_sorter = true,
+          override_file_sorter = true,
+          case_mode = 'smart_case',
+        },
+        ['ui-select'] = {
+          require('telescope.themes').get_dropdown {},
+        },
+        lazy = {
+          theme = 'ivy',
+          show_icon = true,
+          mappings = {
+            open_in_browser = '<C-o>',
+            open_in_file_browser = '<M-b>',
+            open_in_find_files = '<C-f>',
+            open_in_live_grep = '<C-g>',
+            open_plugins_picker = '<C-b>',
+            open_lazy_root_find_files = '<C-r>f',
+            open_lazy_root_live_grep = '<C-r>g',
           },
         },
       },
     }
 
+    -- Load extensions
     telescope.load_extension 'fzf'
     telescope.load_extension 'noice'
     telescope.load_extension 'lazy'
     telescope.load_extension 'file_browser'
+    telescope.load_extension 'ui-select'
   end,
 }
