@@ -10,7 +10,7 @@ local options = {
   list = true,
   listchars = { tab = '» ', trail = '·', nbsp = '␣' },
   foldmethod = 'expr',
-  foldtext = "",
+  foldtext = '',
   foldexpr = 'nvim_treesitter#foldexpr()',
   inccommand = 'split',
   foldlevelstart = 99,
@@ -28,8 +28,8 @@ local options = {
   splitright = true,
   breakindent = true,
   swapfile = false,
-  thesaurus = vim.fn.expand('~/.config/nvim/thesaurii.txt'),
-  undodir = vim.fn.expand('~/.config/nvim/undo'),
+  thesaurus = vim.fn.expand '~/.config/nvim/thesaurii.txt',
+  undodir = vim.fn.expand '~/.config/nvim/undo',
   undofile = true,
   undolevels = 1000,
   updatetime = 100,
@@ -57,9 +57,9 @@ for k, v in pairs(options) do
 end
 
 -- Additional settings
-vim.opt.iskeyword:append('-')
-vim.opt.shortmess:append('cI') -- don't show redundant messages from ins-completion-menu and the default intro message
-vim.opt.whichwrap:append('<>,[],hl')
+vim.opt.iskeyword:append '-'
+vim.opt.shortmess:append 'cI' -- don't show redundant messages from ins-completion-menu and the default intro message
+vim.opt.whichwrap:append '<>,[],hl'
 
 -- Disable default providers
 local default_providers = { 'node', 'perl', 'python3', 'ruby' }
