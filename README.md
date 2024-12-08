@@ -1,8 +1,8 @@
 # Vasco's dotfiles
 
 I currently use [iTerm2](https://iterm2.com) under macOS with
-the **Fish** shell. My colour theme is One Dark Pro and my font is a
-patched MesloLGLDZ Nerd font.
+the **Fish** shell. My colour theme is Kanagawa and my font is a
+patched JetBrains Nerd font.
 
 - **Tmux** is my terminal multiplexer
 - **Neovim** is my editor of choice

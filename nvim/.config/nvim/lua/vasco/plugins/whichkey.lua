@@ -1,4 +1,3 @@
-local config = require 'vasco.config'
 local icons = require 'vasco.utils.icons'
 
 return {
@@ -15,17 +14,6 @@ return {
       breadcrumb = icons.breadcrumb,
       separator = icons.right_arrow,
       group = icons.plus,
-    },
-    win = {
-      border = config.border.style,
-      padding = { 0, 0, 0, 0 },
-    },
-    window = {
-      border = 'rounded',
-      winblend = 0,
-      margin = { 1, 0, 1, 0 },
-      padding = { 1, 2, 1, 2 },
-      background = 'Normal',
     },
     layout = {
       width = { min = 20, max = 50 },
