@@ -14,7 +14,8 @@ return {
     },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'hrsh7th/cmp-nvim-lsp',
+    'saghen/blink.cmp',
+    'netmute/ctags-lsp.nvim', -- install manually with `brew install netmute/tap/ctags-lsp`
   },
   keys = {
     { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
@@ -104,9 +105,10 @@ return {
   },
 
   config = function(_, opts)
+    local lspconfig = require 'lspconfig'
     local icons = require 'vasco.utils.icons'
-    local config = require 'vasco.config'
     local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.info }
+    local settings = require 'vasco.config'
 
     for type, icon in pairs(signs) do
       local hl = 'DiagnosticSign' .. type
@@ -114,55 +116,23 @@ return {
     end
 
     vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = config.border.style })
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = settings.border.style })
 
-    local servers = opts.servers
-    local capabilities = vim.tbl_deep_extend(
-      'force',
-      {},
-      vim.lsp.protocol.make_client_capabilities(),
-      require('cmp_nvim_lsp').default_capabilities(),
-      opts.capabilities or {}
-    )
-
-    local function setup(server)
-      local server_opts = vim.tbl_deep_extend('force', {
-        capabilities = vim.deepcopy(capabilities),
-      }, servers[server] or {})
-
-      if opts.setup[server] then
-        if opts.setup[server](server, server_opts) then
-          return
-        end
-      elseif opts.setup['*'] then
-        if opts.setup['*'](server, server_opts) then
-          return
-        end
-      end
-      require('lspconfig')[server].setup(server_opts)
+    for server, config in pairs(opts.servers) do
+      config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+      lspconfig[server].setup(config)
     end
+
+    require('lspconfig').ctags_lsp.setup {}
 
     local have_mason, mlsp = pcall(require, 'mason-lspconfig')
-    local all_mslp_servers = {}
-    if have_mason then
-      mlsp.setup_handlers {
-        function(server_name)
-          setup(server_name)
-        end,
-      }
-
-      all_mslp_servers = vim.tbl_keys(require('mason-lspconfig.mappings.server').lspconfig_to_package)
-    end
-
     local ensure_installed = {}
+    local servers = opts.servers
+
     for server, server_opts in pairs(servers) do
       if server_opts then
         server_opts = server_opts == true and {} or server_opts
-        if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-          setup(server)
-        else
-          ensure_installed[#ensure_installed + 1] = server
-        end
+        ensure_installed[#ensure_installed + 1] = server
       end
     end
 

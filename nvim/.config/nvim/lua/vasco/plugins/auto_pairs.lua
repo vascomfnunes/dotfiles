@@ -48,10 +48,5 @@ return {
         return line:sub(col - 1, col - 1):match '%w' ~= nil
       end):use_key '(',
     }
-
-    -- cmp integration
-    local cmp_autopairs = require 'nvim-autopairs.completion.cmp'
-    local cmp = require 'cmp'
-    cmp.event:on('confirm_done', cmp_autopairs.on_confirm_done())
   end,
 }

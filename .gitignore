@@ -1,7 +1,7 @@
 *.DS_Store
 mpd/.mpd/state
 nvim/.config/nvim/undo
-nvim/.config/nvim/*
+nvim/.config/nvim/lazy-lock*
 newsboat/.newsboat/cache.db*
 newsboat/.newsboat/cookies.txt
 mpd/.mpd/log
