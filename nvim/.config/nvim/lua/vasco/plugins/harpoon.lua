@@ -1,21 +1,22 @@
 return {
   'ThePrimeagen/harpoon',
-  event = { 'BufReadPre', 'BufNewFile' },
+  branch = 'harpoon2',
+  event = 'VeryLazy',
   keys = {
     {
       '<leader>ha',
       function()
-        require('harpoon.mark').add_file()
+        require('harpoon'):list():add()
       end,
-      desc = 'Add file',
+      desc = 'Harpoon File',
     },
-
     {
-      '<leader>hh',
+      '<leader>hl',
       function()
-        require('harpoon.ui').toggle_quick_menu()
+        local harpoon = require 'harpoon'
+        harpoon.ui:toggle_quick_menu(harpoon:list())
       end,
-      desc = 'Toggle files',
+      desc = 'List harpoons',
     },
   },
 }
