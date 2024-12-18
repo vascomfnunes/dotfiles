@@ -11,14 +11,6 @@ return {
       desc = 'Copy git permalink to clipboard',
       mode = { 'n', 'v' },
     },
-    {
-      '<leader>gy',
-      function()
-        require('gitlinker').get_buf_range_url 'v'
-      end,
-      desc = 'Copy git permalink to clipboard',
-      mode = { 'v' },
-    },
   },
   opts = {
     callbacks = {

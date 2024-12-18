@@ -1,6 +1,6 @@
 return {
   'ibhagwan/fzf-lua',
-  event = 'BufWinEnter',
+  cmd = 'FzfLua',
   dependencies = { 'nvim-tree/nvim-web-devicons' },
   keys = {
     { '<c-j>', '<c-j>', ft = 'fzf', mode = 't', nowait = true },
@@ -27,6 +27,7 @@ return {
   },
   opts = function(_, opts)
     local config = require 'fzf-lua.config'
+    local actions = require 'fzf-lua.actions'
 
     -- Quickfix
     config.defaults.keymap.fzf['ctrl-q'] = 'select-all+accept'
@@ -37,11 +38,8 @@ return {
     config.defaults.keymap.fzf['ctrl-b'] = 'preview-page-up'
     config.defaults.keymap.builtin['<c-f>'] = 'preview-page-down'
     config.defaults.keymap.builtin['<c-b>'] = 'preview-page-up'
-  end,
-  config = function()
-    local actions = require 'fzf-lua.actions'
 
-    require('fzf-lua').setup {
+    return {
       actions = {
         files = {
           -- instead of the default action 'actions.file_edit_or_qf'
@@ -64,5 +62,8 @@ return {
         },
       },
     }
+  end,
+  config = function(_, opts)
+    require('fzf-lua').setup(opts)
   end,
 }
