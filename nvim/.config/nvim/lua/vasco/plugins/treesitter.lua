@@ -6,7 +6,7 @@ return {
     {
       'chrisgrieser/nvim-various-textobjs',
       config = function()
-        require('various-textobjs').setup { useDefaultKeymaps = false }
+        require('various-textobjs').setup { useDefaults = false }
       end,
     },
     'RRethy/nvim-treesitter-endwise',

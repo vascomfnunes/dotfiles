@@ -37,9 +37,9 @@ return {
       local user = vim.env.USER or 'User'
       user = user:sub(1, 1):upper() .. user:sub(2)
       return {
-        model="claude-3.5-sonnet",
-        agent="copilot",
-        context="buffer",
+        model = 'claude-3.5-sonnet',
+        agent = 'copilot',
+        context = 'buffer',
         auto_insert_mode = false,
         prompts = prompts,
         question_header = '  ' .. user .. ' ',
@@ -106,30 +106,6 @@ return {
       chat.setup(opts)
     end,
     keys = {
-      -- Show help actions with telescope
-      {
-        '<leader>ah',
-        function()
-          local actions = require 'CopilotChat.actions'
-          require('CopilotChat.integrations.telescope').pick(actions.help_actions())
-        end,
-        desc = 'Help actions',
-      },
-      -- Show prompts actions with telescope
-      {
-        '<leader>ap',
-        function()
-          local actions = require 'CopilotChat.actions'
-          require('CopilotChat.integrations.telescope').pick(actions.prompt_actions())
-        end,
-        desc = 'Prompt actions',
-      },
-      {
-        '<leader>ap',
-        ":lua require('CopilotChat.integrations.telescope').pick(require('CopilotChat.actions').prompt_actions({selection = require('CopilotChat.select').visual}))<CR>",
-        mode = 'x',
-        desc = 'Prompt actions',
-      },
       -- Code related commands
       { '<leader>pe', '<cmd>CopilotChatExplain<cr>', desc = 'Explain code' },
       { '<leader>pt', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests' },

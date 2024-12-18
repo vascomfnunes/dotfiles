@@ -9,7 +9,7 @@ return {
       enable_bracket_in_quote = true,
       enable_moveright = true,
       ignored_next_char = string.gsub([[ [%w%%%'%[%"%.] ]], '%s+', ''),
-      disable_filetype = { 'TelescopePrompt', 'vim' },
+      disable_filetype = { 'vim' },
       check_ts = true,
       map_char = {
         all = '(',
