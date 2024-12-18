@@ -24,7 +24,7 @@ return {
     { 'gi', vim.lsp.buf.implementation, desc = 'Go to implementation' },
     { 'K', vim.lsp.buf.hover, desc = 'Hover Documentation' },
     { '<leader>cd', vim.diagnostic.open_float, desc = 'Line diagnostics' },
-    { '<leader>ca', require('tiny-code-action').code_action, desc = 'Code Actions' },
+    { '<leader>ca', vim.lsp.buf.code_action, desc = 'Code Actions' },
     { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename' },
   },
   opts = {
