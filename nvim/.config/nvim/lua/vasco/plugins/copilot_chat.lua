@@ -158,10 +158,10 @@ return {
       {
         '<leader>aa',
         function()
-          return require('CopilotChat').toggle()
+          local actions = require 'CopilotChat.actions'
+          require('CopilotChat.integrations.fzflua').pick(actions.prompt_actions())
         end,
-        desc = 'Toggle',
-        mode = { 'n', 'v' },
+        desc = 'Prompt actions',
       },
       -- Debug
       { '<leader>ad', '<cmd>CopilotChatDebugInfo<cr>', desc = 'Debug Info' },
