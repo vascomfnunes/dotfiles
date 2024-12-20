@@ -163,6 +163,11 @@ return {
         end,
         desc = 'Prompt actions',
       },
+      {
+        '<leader>ac',
+        '<cmd>CopilotChat<cr>',
+        desc = 'Chat',
+      },
       -- Debug
       { '<leader>ad', '<cmd>CopilotChatDebugInfo<cr>', desc = 'Debug Info' },
       -- Fix the issue with diagnostic
