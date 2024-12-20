@@ -6,8 +6,20 @@ return {
   dependencies = {
     'rafamadriz/friendly-snippets',
     { 'L3MON4D3/LuaSnip', version = 'v2.*' },
+    {
+      'saghen/blink.compat',
+      optional = true,
+      opts = {},
+      version = not vim.g.lazyvim_blink_main and '*',
+    },
   },
   version = 'v0.*',
+  event = 'InsertEnter',
+  opts_extend = {
+    'sources.completion.enabled_providers',
+    'sources.compat',
+    'sources.default',
+  },
   opts = {
     keymap = {
       preset = 'default',
@@ -16,25 +28,58 @@ return {
       ['<C-l>'] = { 'accept', 'fallback' },
     },
     appearance = {
-      use_nvim_cmp_as_default = true,
+      use_nvim_cmp_as_default = false,
       -- Set to 'mono' for 'Nerd Font Mono' or 'normal' for 'Nerd Font'
       -- Adjusts spacing to ensure icons are aligned
       nerd_font_variant = 'mono',
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer' },
+      default = { 'lsp', 'path', 'snippets', 'buffer' }
     },
 
     -- experimental signature help support
     signature = { enabled = true },
     -- allows extending the providers array elsewhere in your config
     -- without having to redefine it
-    opts_extend = { 'sources.default' },
 
     completion = {
+      accept = {
+        -- experimental auto-brackets support
+        auto_brackets = {
+          enabled = true,
+        },
+      },
       menu = {
         border = config.border.style,
+        draw = {
+          treesitter = { 'lsp' },
+        },
+      },
+      documentation = {
+        auto_show = true,
+        auto_show_delay_ms = 200,
+        treesitter_highlighting = true,
+        window = {
+          min_width = 10,
+          max_width = 60,
+          max_height = 20,
+          border = 'rounded',
+          winblend = 0,
+          winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
+          -- Note that the gutter will be disabled when border ~= 'none'
+          scrollbar = true,
+          -- Which directions to show the documentation window,
+          -- for each of the possible menu window directions,
+          -- falling back to the next direction when there's not enough space
+          direction_priority = {
+            menu_north = { 'e', 'w', 'n', 's' },
+            menu_south = { 'e', 'w', 's', 'n' },
+          },
+        },
+      },
+      ghost_text = {
+        enabled = vim.g.ai_cmp,
       },
     },
     snippets = {
@@ -50,36 +95,6 @@ return {
       jump = function(direction)
         require('luasnip').jump(direction)
       end,
-    },
-    documentation = {
-      auto_show = true,
-      -- Delay before showing the documentation window
-      auto_show_delay_ms = 500,
-      -- Delay before updating the documentation window when selecting a new item,
-      -- while an existing item is still visible
-      update_delay_ms = 50,
-      -- Whether to use treesitter highlighting, disable if you run into performance issues
-      treesitter_highlighting = true,
-      window = {
-        min_width = 10,
-        max_width = 60,
-        max_height = 20,
-        border = 'padded',
-        winblend = 0,
-        winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
-        -- Note that the gutter will be disabled when border ~= 'none'
-        scrollbar = true,
-        -- Which directions to show the documentation window,
-        -- for each of the possible menu window directions,
-        -- falling back to the next direction when there's not enough space
-        direction_priority = {
-          menu_north = { 'e', 'w', 'n', 's' },
-          menu_south = { 'e', 'w', 's', 'n' },
-        },
-      },
-    },
-    draw = {
-      treesitter = { treesitter = { 'lsp' } },
     },
   },
 }
