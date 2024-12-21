@@ -1,4 +1,5 @@
 local icons = require 'vasco.utils.icons'
+local config = require 'vasco.config'
 
 return {
   'folke/which-key.nvim',
@@ -30,7 +31,7 @@ return {
       align = 'left',
     },
     window = {
-      border = 'single', -- none, single, double, shadow
+      border = config.border.style,
       position = 'bottom', -- bottom, top
       margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
       padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]

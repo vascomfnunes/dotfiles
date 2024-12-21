@@ -21,7 +21,7 @@ return {
     require('nvim-dap-repl-highlights').setup()
     require('nvim-treesitter.configs').setup {
       auto_install = true,
-      ensure_installed = { 'lua', 'dap_repl' },
+      ensure_installed = { 'lua', 'dap_repl', 'regex' },
       highlight = { enable = true },
       indent = { enable = true },
       autotag = {

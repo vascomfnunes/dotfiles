@@ -1,3 +1,5 @@
+local config = require 'vasco.config'
+
 return {
   'rebelot/kanagawa.nvim',
   lazy = false,
@@ -52,7 +54,7 @@ return {
     -- we need to wait a bit for the colorscheme to be fully loaded
     vim.defer_fn(function()
       for _, group in ipairs(transparent_groups) do
-        vim.api.nvim_set_hl(0, group, { bg = 'NONE' })
+        vim.api.nvim_set_hl(0, group, { bg = 'NONE', fg = config.foreground.color })
       end
     end, 100)
   end,
