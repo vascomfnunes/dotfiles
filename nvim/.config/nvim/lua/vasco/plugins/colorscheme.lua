@@ -36,7 +36,7 @@ return {
       },
     }
 
-    vim.cmd.colorscheme 'kanagawa'
+    vim.cmd.colorscheme 'kanagawa-dragon'
 
     -- Override the highlights immediately after
     local transparent_groups = {
