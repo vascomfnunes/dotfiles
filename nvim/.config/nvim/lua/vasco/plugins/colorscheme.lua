@@ -51,13 +51,15 @@ return {
       'LazyNormal',
       'NotifyBackground',
       'MiniNotifyNormal',
-      'MiniNotifyBorder'
+      'MiniNotifyBorder',
+      'IblIndent'
     }
 
     -- we need to wait a bit for the colorscheme to be fully loaded
     vim.defer_fn(function()
       for _, group in ipairs(transparent_groups) do
         vim.api.nvim_set_hl(0, group, { bg = 'NONE', fg = config.foreground.color })
+        vim.api.nvim_set_hl(0, "IblIndent", { fg = "#404040" }) -- Replace #404040 with your desired color
       end
     end, 100)
   end,
