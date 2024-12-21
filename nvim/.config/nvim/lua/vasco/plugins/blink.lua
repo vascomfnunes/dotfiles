@@ -35,13 +35,18 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer' }
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'dadbod', 'cmdline' },
+      providers = {
+        dadbod = { name = 'Dadbod', module = 'vim_dadbod_completion.blink' },
+        lsp = {
+          name = 'LSP',
+          module = 'blink.cmp.sources.lsp',
+        },
+      },
     },
 
     -- experimental signature help support
     signature = { enabled = true },
-    -- allows extending the providers array elsewhere in your config
-    -- without having to redefine it
 
     completion = {
       accept = {
@@ -54,6 +59,7 @@ return {
         border = config.border.style,
         draw = {
           treesitter = { 'lsp' },
+          columns = { { 'label', 'label_description', gap = 1 }, { 'kind_icon', 'kind' } },
         },
       },
       documentation = {
