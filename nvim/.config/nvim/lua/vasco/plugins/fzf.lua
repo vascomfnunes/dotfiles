@@ -17,7 +17,7 @@ return {
     { '<leader>fq', '<cmd>FzfLua quickfix<cr>', desc = 'Quickfix' },
     { '<leader>gg', '<cmd>FzfLua git_status<cr>', desc = 'Git status' },
     { '<leader>gc', '<cmd>FzfLua git_commits<cr>', desc = 'Git commits' },
-    { '<leader>gb', '<cmd>FzfLua git_branches<cr>', desc = 'Git branches' },
+    { '<leader>gB', '<cmd>FzfLua git_branches<cr>', desc = 'Git branches' },
     { '<leader>gs', '<cmd>FzfLua git_stash<cr>', desc = 'Git stash' },
     {
       '<leader>fb',
