@@ -49,6 +49,9 @@ return {
       'PmenuBorder',
       'WhichKeyNormal',
       'LazyNormal',
+      'NotifyBackground',
+      'MiniNotifyNormal',
+      'MiniNotifyBorder'
     }
 
     -- we need to wait a bit for the colorscheme to be fully loaded
