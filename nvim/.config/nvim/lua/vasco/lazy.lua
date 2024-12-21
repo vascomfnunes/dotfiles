@@ -28,23 +28,6 @@ require('lazy').setup('vasco.plugins', {
     size = { width = 0.8, height = 0.8 },
     -- The border to use for the UI window. Accepts same border values as |nvim_open_win()|.
     border = config.border.style,
-    custom_highlights = {
-      LazyNormal = { bg = 'none', link = nil },
-      LazyFloatBorder = { bg = 'none', blend = 0 },
-      LazyNormalFloat = { bg = 'none' },
-      NormalFloat = { bg = 'none' },
-      Normal = { bg = 'none' },
-      FloatBorder = { bg = 'none' },
-    },
-    float = {
-      blend = 0,
-      background = 'none',
-      padding = { top = 0, bottom = 0, left = 1, right = 1 },
-    },
-    theme = {
-      normal_float = { bg = 'NONE' },
-      float = { bg = 'none' },
-    },
     icons = {
       cmd = ' ',
       config = icons.cog,

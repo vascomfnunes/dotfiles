@@ -34,25 +34,26 @@ return {
           },
         },
       },
-   }
+    }
 
     vim.cmd.colorscheme 'kanagawa'
 
-    -- Set transparent backgrounds for various UI elements
-    vim.api.nvim_create_autocmd('ColorScheme', {
-      callback = function()
-        local transparent_groups = {
-          'NormalFloat',
-          'FloatBorder',
-          'Pmenu',
-          'PmenuBorder',
-          'LazyNormal',
-        }
+    -- Override the highlights immediately after
+    local transparent_groups = {
+      'NormalFloat',
+      'Normal',
+      'FloatBorder',
+      'Pmenu',
+      'PmenuBorder',
+      'WhichKeyNormal',
+      'LazyNormal',
+    }
 
-        for _, group in ipairs(transparent_groups) do
-          vim.api.nvim_set_hl(0, group, { bg = 'none' })
-        end
-      end,
-    })
+    -- we need to wait a bit for the colorscheme to be fully loaded
+    vim.defer_fn(function()
+      for _, group in ipairs(transparent_groups) do
+        vim.api.nvim_set_hl(0, group, { bg = 'NONE' })
+      end
+    end, 100)
   end,
 }

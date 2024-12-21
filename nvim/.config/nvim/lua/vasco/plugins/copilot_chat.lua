@@ -83,12 +83,6 @@ local mappings = {
   { '<leader>am', '<cmd>CopilotChatCommit<cr>', desc = 'Generate commit message for all changes' },
   { '<leader>aM', '<cmd>CopilotChatCommitStaged<cr>', desc = 'Generate commit message for staged changes' },
 
-  -- Visual mode operations
-  { '<leader>av', ':CopilotChatVisual<cr>', mode = 'x', desc = 'Open in vertical split' },
-  { '<leader>ai', ':CopilotChatInline<cr>', mode = 'x', desc = 'Inline chat' },
-
-  -- Debug operations
-  { '<leader>aD', '<cmd>CopilotChatFixDiagnostic<cr>', desc = 'Fix Diagnostic' },
   { '<leader>al', '<cmd>CopilotChatReset<cr>', desc = 'Clear buffer and chat history' },
   { '<leader>aV', '<cmd>CopilotChatToggle<cr>', desc = 'Toggle' },
 
