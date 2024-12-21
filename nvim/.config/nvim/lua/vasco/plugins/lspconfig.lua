@@ -6,8 +6,7 @@ return {
     { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest', 'nvim-dap-ui' }, types = true } } },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'saghen/blink.cmp',
-    'netmute/ctags-lsp.nvim',
+    'saghen/blink.cmp'
   },
   keys = {
     { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
@@ -84,7 +83,6 @@ return {
         config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
         lspconfig[server].setup(config)
       end
-      require('lspconfig').ctags_lsp.setup {}
     end
 
     local function setup_mason()
