@@ -3,55 +3,35 @@ return {
   event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     { 'folke/neoconf.nvim', cmd = 'Neoconf', config = false, dependencies = { 'nvim-lspconfig' } },
-    {
-      'folke/neodev.nvim',
-      opts = {
-        library = {
-          plugins = { 'neotest', 'nvim-dap-ui' },
-          types = true,
-        },
-      },
-    },
+    { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest', 'nvim-dap-ui' }, types = true } } },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
     'saghen/blink.cmp',
-    'netmute/ctags-lsp.nvim', -- install manually with `brew install netmute/tap/ctags-lsp`
+    'netmute/ctags-lsp.nvim',
   },
   keys = {
     { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
     { 'gD', vim.lsp.buf.declaration, desc = 'Go to declaration' },
     { 'gr', vim.lsp.buf.references, desc = 'Go to references' },
     { 'gi', vim.lsp.buf.implementation, desc = 'Go to implementation' },
+    { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename' },
     { 'K', vim.lsp.buf.hover, desc = 'Hover Documentation' },
     { '<leader>cd', vim.diagnostic.open_float, desc = 'Line diagnostics' },
     { '<leader>ca', vim.lsp.buf.code_action, desc = 'Code Actions' },
-    { '<leader>rn', vim.lsp.buf.rename, desc = 'Rename' },
   },
   opts = {
     diagnostics = {
       underline = true,
       update_in_insert = false,
-      virtual_text = {
-        spacing = 4,
-        source = 'if_many',
-        prefix = '●',
-      },
+      virtual_text = { spacing = 4, source = 'if_many', prefix = '●' },
       severity_sort = true,
     },
-    inlay_hints = {
-      enabled = true,
-    },
-    codelens = {
-      enabled = true,
-      refresh_interval = 200,
-    },
+    inlay_hints = { enabled = true },
+    codelens = { enabled = true, refresh_interval = 200 },
     capabilities = {},
     autoformat = true,
     format_notify = true,
-    format = {
-      formatting_options = nil,
-      timeout_ms = 3000,
-    },
+    format = { formatting_options = nil, timeout_ms = 3000 },
     servers = {
       html = { filetypes = { 'html', 'eruby' } },
       cssls = { filetypes = { 'css', 'scss' } },
@@ -78,66 +58,63 @@ return {
               semicolon = 'Disable',
               arrayIndex = 'Enable',
             },
-            diagnostics = {
-              globals = { 'vim' },
-            },
+            diagnostics = { globals = { 'vim' } },
           },
         },
       },
-      yamlls = {
-        settings = {
-          yaml = {
-            validate = true,
-            schemaStore = { enable = true },
-          },
-        },
-      },
-      jsonls = {
-        settings = {
-          json = {
-            validate = true,
-            schemaStore = { enable = true },
-          },
-        },
-      },
+      yamlls = { settings = { yaml = { validate = true, schemaStore = { enable = true } } } },
+      jsonls = { settings = { json = { validate = true, schemaStore = { enable = true } } } },
     },
     setup = {},
   },
-
   config = function(_, opts)
     local lspconfig = require 'lspconfig'
     local icons = require 'vasco.utils.icons'
-    local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.info }
     local settings = require 'vasco.config'
 
-    for type, icon in pairs(signs) do
-      local hl = 'DiagnosticSign' .. type
-      vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-    end
-
-    vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
-    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = settings.border.style })
-
-    for server, config in pairs(opts.servers) do
-      config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-      lspconfig[server].setup(config)
-    end
-
-    require('lspconfig').ctags_lsp.setup {}
-
-    local have_mason, mlsp = pcall(require, 'mason-lspconfig')
-    local ensure_installed = {}
-    local servers = opts.servers
-
-    for server, server_opts in pairs(servers) do
-      if server_opts then
-        server_opts = server_opts == true and {} or server_opts
-        ensure_installed[#ensure_installed + 1] = server
+    local function setup_diagnostic_signs()
+      local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.info }
+      for type, icon in pairs(signs) do
+        local hl = 'DiagnosticSign' .. type
+        vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
       end
     end
 
-    if have_mason then
-      mlsp.setup { ensure_installed = ensure_installed, handlers = { setup } }
+    local function setup_servers()
+      for server, config in pairs(opts.servers) do
+        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+        lspconfig[server].setup(config)
+      end
+      require('lspconfig').ctags_lsp.setup {}
     end
+
+    local function setup_mason()
+      local have_mason, mlsp = pcall(require, 'mason-lspconfig')
+      if not have_mason then
+        return
+      end
+
+      local ensure_installed = {}
+      for server, server_opts in pairs(opts.servers) do
+        if server_opts then
+          table.insert(ensure_installed, server)
+        end
+      end
+
+      mlsp.setup { ensure_installed = ensure_installed }
+      mlsp.setup_handlers {
+        function(server_name)
+          local server_opts = opts.servers[server_name] or {}
+          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
+          lspconfig[server_name].setup(server_opts)
+        end,
+      }
+    end
+
+    setup_diagnostic_signs()
+    vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
+    vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = settings.border.style })
+    setup_servers()
+    setup_mason()
   end,
 }

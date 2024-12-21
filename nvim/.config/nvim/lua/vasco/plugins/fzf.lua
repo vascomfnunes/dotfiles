@@ -25,7 +25,7 @@ return {
       desc = 'Buffers',
     },
   },
-  opts = function(_, opts)
+  opts = function()
     local config = require 'fzf-lua.config'
     local actions = require 'fzf-lua.actions'
 

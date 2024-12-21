@@ -10,6 +10,15 @@ return {
   end,
   opts = {
     preset = 'modern',
+    ignore_missing = true,
+    triggers_blacklist = {
+      -- list of mode / prefixes that should never be hooked by WhichKey
+      i = { 'j', 'k' },
+      v = { 'j', 'k' },
+    },
+    sorting = {
+      enable = true, -- sort by alphabet for same-level keys
+    },
     icons = {
       breadcrumb = icons.breadcrumb,
       separator = icons.right_arrow,
@@ -19,6 +28,12 @@ return {
       width = { min = 20, max = 50 },
       spacing = 4,
       align = 'left',
+    },
+    window = {
+      border = 'single', -- none, single, double, shadow
+      position = 'bottom', -- bottom, top
+      margin = { 1, 0, 1, 0 }, -- extra window margin [top, right, bottom, left]
+      padding = { 2, 2, 2, 2 }, -- extra window padding [top, right, bottom, left]
     },
   },
   config = function()
