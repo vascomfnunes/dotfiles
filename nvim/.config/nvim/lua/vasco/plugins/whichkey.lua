@@ -4,7 +4,7 @@ local config = require 'vasco.config'
 return {
   'folke/which-key.nvim',
   module = true,
-  event = 'VeryLazy',
+  event = 'VimEnter',
   init = function()
     vim.o.timeout = true
     vim.o.timeoutlen = 300
