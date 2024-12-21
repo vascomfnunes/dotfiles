@@ -16,7 +16,7 @@ return {
   keys = {
     {
       '<leader>dd',
-      '<cmd>DBUI<CR>',
+      '<cmd>DBUIToggle<CR>',
       desc = 'Databases',
     },
   },
