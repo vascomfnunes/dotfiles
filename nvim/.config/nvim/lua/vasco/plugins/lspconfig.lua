@@ -35,6 +35,8 @@ return {
       cssls = { filetypes = { 'css', 'scss' } },
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
+      ts_ls = {},
+      solargraph = { diagnostics = false, completion = true, hover = true, documentSymbol = true, codeAction = true, formatting = false },
       standardrb = {},
       bashls = {},
       tailwindcss = {},
