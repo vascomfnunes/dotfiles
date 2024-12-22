@@ -71,6 +71,9 @@ alias weechat="OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES weechat"
 # where LSP is not so great for Gems&Co and tags deliver a much better job...
 alias ctags='ctags --tag-relative -R --sort=yes --languages=ruby,scss,javascript --exclude=.git --exclude=doc --exclude=coverage --exclude=log --exclude=public --exclude=tmp --exclude=node_modules . $(bundle list --paths)'
 
+# Yazi
+alias y="yazi"
+
 # source environment variables that we do not want in source control
 source ~/.env_variables
 source ~/.config/fish/themes/kanagawa.theme
