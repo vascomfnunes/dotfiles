@@ -6,7 +6,7 @@ return {
     { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest', 'nvim-dap-ui' }, types = true } } },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'saghen/blink.cmp'
+    'saghen/blink.cmp',
   },
   keys = {
     { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
@@ -36,7 +36,20 @@ return {
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
       ts_ls = {},
-      solargraph = { diagnostics = false, completion = true, hover = true, documentSymbol = true, codeAction = true, formatting = false },
+      solargraph = {
+        settings = {
+          solargraph = {
+            autoformat = false,
+            completion = true,
+            diagnostic = false,
+            folding = true,
+            formatting = false,
+            references = true,
+            rename = true,
+            symbols = true,
+          },
+        },
+      },
       standardrb = {},
       bashls = {},
       tailwindcss = {},

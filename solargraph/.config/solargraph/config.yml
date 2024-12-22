@@ -1,0 +1,21 @@
+---
+include:
+  - "app/**/*.rb"
+  - "lib/**/*.rb"
+  - "spec/**/*.rb"
+exclude: []
+require:
+  - actioncable
+  - actionmailer
+  - actionpack
+  - actionview
+  - activejob
+  - activemodel
+  - activerecord
+  - activestorage
+  - activesupport
+domains: []
+reporters: []
+require_paths: []
+plugins: []
+max_files: 5000
