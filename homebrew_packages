@@ -26,8 +26,9 @@ rust
 stow
 terminal-notifier
 tmux
-vifm
 w3m
 wget
 yarn
 universal-ctags
+yazi
+lazygit
