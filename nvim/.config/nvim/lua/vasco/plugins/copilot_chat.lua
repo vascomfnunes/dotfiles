@@ -63,7 +63,7 @@ local function setup_buffer_settings()
 end
 
 local mappings = {
-  { '<leader>ac', '<cmd>CopilotChat<cr>', desc = 'Open chat' },
+  -- { '<leader>ac', '<cmd>CopilotChat<cr>', desc = 'Open chat' },
   -- Code operations
   { '<leader>ae', '<cmd>CopilotChatExplain<cr>', desc = 'Explain code' },
   { '<leader>at', '<cmd>CopilotChatTests<cr>', desc = 'Generate tests' },
@@ -83,7 +83,7 @@ local mappings = {
   { '<leader>am', '<cmd>CopilotChatCommit<cr>', desc = 'Generate commit message for all changes' },
   { '<leader>aM', '<cmd>CopilotChatCommitStaged<cr>', desc = 'Generate commit message for staged changes' },
 
-  { '<leader>al', '<cmd>CopilotChatReset<cr>', desc = 'Clear buffer and chat history' },
+  -- { '<leader>al', '<cmd>CopilotChatReset<cr>', desc = 'Clear buffer and chat history' },
   { '<leader>aV', '<cmd>CopilotChatToggle<cr>', desc = 'Toggle' },
 
   -- Chat management
@@ -97,14 +97,14 @@ local mappings = {
     end,
     desc = 'Prompt Copilot with custom input',
   },
-  {
-    '<leader>ax',
-    function()
-      require('CopilotChat').reset()
-    end,
-    desc = 'Clear',
-    mode = { 'n', 'v' },
-  },
+  -- {
+  --   '<leader>ax',
+  --   function()
+  --     require('CopilotChat').reset()
+  --   end,
+  --   desc = 'Clear',
+  --   mode = { 'n', 'v' },
+  -- },
   {
     '<leader>aa',
     function()
