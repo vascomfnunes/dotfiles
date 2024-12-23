@@ -26,7 +26,7 @@ return {
     },
   },
   keys = {
-    { '<leader>ac', '<cmd>AvanteToggle<cr>', desc = 'Open chat' },
-    { '<leader>ax', '<cmd>AvanteClear<cr>', desc = 'Clear buffer and chat history' },
+    { '<leader>at', '<cmd>AvanteToggle<cr>', desc = 'Toggle' },
+    { '<leader>ax', '<cmd>AvanteClear<cr>', desc = 'Clear history' },
   },
 }
