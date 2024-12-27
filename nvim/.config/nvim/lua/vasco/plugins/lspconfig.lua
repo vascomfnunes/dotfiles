@@ -36,18 +36,12 @@ return {
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
       ts_ls = {},
-      solargraph = {
-        settings = {
-          solargraph = {
-            autoformat = false,
-            completion = true,
-            diagnostic = false,
-            folding = true,
-            formatting = false,
-            references = true,
-            rename = true,
-            symbols = true,
-          },
+      ruby_lsp = {
+        mason = false,
+        cmd = { vim.fn.expand '~/.rbenv/shims/ruby-lsp' },
+        init_options = {
+          formatter = 'standard',
+          linters = { 'standard' },
         },
       },
       standardrb = {},
