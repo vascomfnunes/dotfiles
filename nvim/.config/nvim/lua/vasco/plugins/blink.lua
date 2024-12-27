@@ -37,8 +37,9 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'dadbod', 'cmdline' },
+      default = { 'lsp', 'path', 'snippets', 'buffer', 'dadbod', 'cmdline', 'markdown' },
       providers = {
+        markdown = { name = 'RenderMarkdown', module = 'render-markdown.integ.blink' },
         dadbod = {
           name = 'Dadbod',
           module = 'vim_dadbod_completion.blink',
