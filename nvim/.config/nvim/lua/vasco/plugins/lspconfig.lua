@@ -93,13 +93,6 @@ return {
       end
     end
 
-    local function setup_servers()
-      for server, config in pairs(opts.servers) do
-        config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
-        lspconfig[server].setup(config)
-      end
-    end
-
     local function setup_mason()
       local have_mason, mlsp = pcall(require, 'mason-lspconfig')
       if not have_mason then
@@ -126,7 +119,6 @@ return {
     setup_diagnostic_signs()
     vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
     vim.lsp.handlers['textDocument/hover'] = vim.lsp.with(vim.lsp.handlers.hover, { border = settings.border.style })
-    setup_servers()
     setup_mason()
   end,
 }
