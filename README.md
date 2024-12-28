@@ -9,7 +9,7 @@ patched JetBrains Nerd font.
 - **Newsboat** for staying updated on my RSS feeds, podcasts, YouTube
   subscriptions
 - **ncmpcpp** and **mpd** for my music
-- **Vifm** as my file manager
+- **Yazi** as my file manager
 - **w3m** when browsing the internet from the terminal
 - **Weechat** for IRC
 - **MPV** for watching videos
