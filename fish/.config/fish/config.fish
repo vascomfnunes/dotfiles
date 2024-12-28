@@ -23,6 +23,7 @@ set -x GPG_TTY (tty)
 
 # Aliases
 alias v='fd --type f --hidden --exclude .git --exclude .cache --exclude Library --exclude .local | fzf-tmux -p --reverse | xargs nvim'
+alias ls='eza --icons'
 
 # Abbreviations
 abbr -a -- vi 'nvim'
@@ -41,11 +42,11 @@ abbr -a -- yarn_interactive_upgrade 'yarn upgrade-interactive --latest'
 
 # Git
 abbr -a -- gP 'git push'
+abbr -a -- gco 'checkout'
 abbr -a -- gc 'git commit'
 abbr -a -- gf 'git fetch'
 abbr -a -- gp 'git pull'
 abbr -a -- gr 'git restore'
-abbr -a -- gc 'git checkout'
 abbr -a -- gb 'git branch'
 abbr -a -- gs 'git status'
 abbr -a -- gl 'git log'
