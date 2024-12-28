@@ -26,29 +26,60 @@ return {
     },
     inlay_hints = { enabled = true },
     codelens = { enabled = true, refresh_interval = 200 },
-    capabilities = {},
     autoformat = true,
     format_notify = true,
     format = { formatting_options = nil, timeout_ms = 3000 },
     servers = {
+      -- Web Development
       html = { filetypes = { 'html', 'eruby' } },
       cssls = { filetypes = { 'css', 'scss' } },
       stylelint_lsp = { filetypes = { 'css', 'scss' } },
       eslint = {},
-      ts_ls = {},
+      ts_ls = {
+        settings = {
+          typescript = {
+            inlayHints = {
+              includeInlayParameterNameHints = 'all',
+              includeInlayParameterNameHintsWhenArgumentMatchesName = false,
+              includeInlayFunctionParameterTypeHints = true,
+              includeInlayVariableTypeHints = true,
+            },
+          },
+        },
+      },
+      tailwindcss = {},
+      stimulus_ls = {},
+
+      -- Ruby
       ruby_lsp = {
         mason = false,
-        cmd = { vim.fn.expand '~/.rbenv/shims/ruby-lsp' },
+        -- Safely resolve ruby-lsp path with fallback
+        cmd = function()
+          local ruby_lsp = vim.fn.exepath 'ruby-lsp'
+          if ruby_lsp then
+            return { ruby_lsp }
+          end
+          local rbenv_lsp = vim.fn.expand '~/.rbenv/shims/ruby-lsp'
+          if vim.fn.filereadable(rbenv_lsp) == 1 then
+            return { rbenv_lsp }
+          end
+          vim.notify('ruby-lsp not found', vim.log.levels.WARN)
+          return nil
+        end,
         init_options = {
           formatter = 'standard',
           linters = { 'standard' },
         },
       },
       standardrb = {},
+
+      -- Shell
       bashls = {},
-      tailwindcss = {},
-      stimulus_ls = {},
+
+      -- Documentation
       markdown_oxide = {},
+
+      -- Lua
       lua_ls = {
         settings = {
           Lua = {
@@ -69,6 +100,8 @@ return {
           },
         },
       },
+
+      -- Configuration Files
       yamlls = { settings = { yaml = { validate = true, schemaStore = { enable = true } } } },
       jsonls = { settings = { json = { validate = true, schemaStore = { enable = true } } } },
     },
@@ -78,6 +111,11 @@ return {
     local lspconfig = require 'lspconfig'
     local icons = require 'vasco.utils.icons'
     local settings = require 'vasco.config'
+
+    -- Initialize capabilities
+    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    capabilities.textDocument.completion.completionItem.snippetSupport = true
+    opts.capabilities = capabilities
 
     local function setup_diagnostic_signs()
       local signs = { Error = icons.error, Warn = icons.warning, Hint = icons.hint, Info = icons.info }
@@ -104,6 +142,7 @@ return {
       mlsp.setup_handlers {
         function(server_name)
           local server_opts = opts.servers[server_name] or {}
+          -- Enhance LSP capabilities with completion provider from blink.cmp
           server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
           lspconfig[server_name].setup(server_opts)
         end,
