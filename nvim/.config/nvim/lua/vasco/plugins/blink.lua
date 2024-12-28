@@ -4,11 +4,17 @@ return {
   'saghen/blink.cmp',
   lazy = false,
   version = 'v0.*',
-  event = 'InsertEnter',
+  event = { 'InsertEnter', 'CmdlineEnter' },
 
   dependencies = {
+    {
+      'L3MON4D3/LuaSnip',
+      version = 'v2.*',
+      config = function()
+        require('luasnip').setup()
+      end,
+    },
     'rafamadriz/friendly-snippets',
-    { 'L3MON4D3/LuaSnip', version = 'v2.*' },
     {
       'saghen/blink.compat',
       optional = true,
@@ -33,7 +39,7 @@ return {
 
     appearance = {
       use_nvim_cmp_as_default = false,
-      nerd_font_variant = 'mono', -- 'mono' for Nerd Font Mono, 'normal' for Nerd Font
+      nerd_font_variant = 'mono',
     },
 
     sources = {
@@ -79,7 +85,12 @@ return {
           max_height = 20,
           border = 'rounded',
           winblend = 0,
-          winhighlight = 'Normal:BlinkCmpDoc,FloatBorder:BlinkCmpDocBorder,CursorLine:BlinkCmpDocCursorLine,Search:None',
+          winhighlight = table.concat({
+            'Normal:BlinkCmpDoc',
+            'FloatBorder:BlinkCmpDocBorder',
+            'CursorLine:BlinkCmpDocCursorLine',
+            'Search:None',
+          }, ','),
           scrollbar = true,
           direction_priority = {
             menu_north = { 'e', 'w', 'n', 's' },
@@ -89,22 +100,44 @@ return {
       },
 
       ghost_text = {
-        enabled = vim.g.ai_cmp,
+        enabled = vim.g.ai_cmp or false,
       },
     },
 
     snippets = {
       expand = function(snippet)
-        require('luasnip').lsp_expand(snippet)
-      end,
-      active = function(filter)
-        if filter and filter.direction then
-          return require('luasnip').jumpable(filter.direction)
+        local luasnip = require 'luasnip'
+        local ok, err = pcall(function()
+          luasnip.lsp_expand(snippet)
+        end)
+        if not ok then
+          vim.notify('Failed to expand snippet: ' .. err, vim.log.levels.ERROR)
         end
-        return require('luasnip').in_snippet()
       end,
+
+      active = function(filter)
+        local luasnip = require 'luasnip'
+        local ok, result = pcall(function()
+          if filter and filter.direction then
+            return luasnip.jumpable(filter.direction)
+          end
+          return luasnip.in_snippet()
+        end)
+        if not ok then
+          vim.notify('Failed to check snippet state: ' .. result, vim.log.levels.ERROR)
+          return false
+        end
+        return result
+      end,
+
       jump = function(direction)
-        require('luasnip').jump(direction)
+        local luasnip = require 'luasnip'
+        local ok, err = pcall(function()
+          luasnip.jump(direction)
+        end)
+        if not ok then
+          vim.notify('Failed to jump in snippet: ' .. err, vim.log.levels.ERROR)
+        end
       end,
     },
   },
