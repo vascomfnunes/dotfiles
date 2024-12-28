@@ -53,6 +53,7 @@ abbr -a -- gl 'git log'
 abbr -a -- ga 'git add'
 abbr -a -- gd 'git diff'
 abbr -a -- lg 'lazygit'
+abbr -a -- pr 'git push origin (git rev-parse --abbrev-ref HEAD)'
 abbr -a -- gclean 'git clean -f -d'
 
 # Tmux

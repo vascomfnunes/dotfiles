@@ -28,7 +28,7 @@ local prompts = {
     prompt = '> /COPILOT_GENERATE\n\nPlease generate tests for my code. If using Ruby write the tests with minitest. If using JavaScript write the tests with Jest.',
   },
   Commit = {
-    prompt = '> #git:staged\n\nWrite a git commit message with these requirements:\n- 50 char max title with Jira ticket (if in branch name) using format "AB-1234 Title"\n- Use imperative mode\n- Body wrapped at 72 chars\n- Start with concise summary\n- List and explain changes, implementation, and rationale\n- Include context and technical details\n- Add relevant links if applicable\n- Use `backticks` for code terms',
+    prompt = '> #git:staged\n\nWrite a git commit message with these requirements:\n- 50 char max title with Jira ticket (if in branch name) using format "AB-1234 Title". If no Jira ticket is present write the commit using conventional specification.\n- Use imperative mode\n- Body wrapped at 72 chars\n- Start with concise summary\n- List and explain changes, implementation, and rationale\n- Include context and technical details\n- Add relevant links if applicable\n- Use `backticks` for code terms',
   },
   BetterNamings = {
     prompt = '> /COPILOT_GENERATE\n\nPlease suggest better names for the selected code.',
