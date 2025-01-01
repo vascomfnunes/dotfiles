@@ -1,6 +1,6 @@
 return {
   'github/copilot.vim',
-  event = 'VeryLazy',
+  event = 'BufWinEnter',
   config = function()
     -- Disable default tab mapping for Copilot suggestions
     vim.g.copilot_no_tab_map = true

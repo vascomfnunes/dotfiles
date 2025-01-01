@@ -32,9 +32,24 @@ return {
   opts = {
     keymap = {
       preset = 'default',
-      ['<C-k>'] = { 'select_prev', 'fallback' },
-      ['<C-j>'] = { 'select_next', 'fallback' },
-      ['<C-l>'] = { 'accept', 'fallback' },
+      ['<C-k>'] = {
+        'select_prev',
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-k>', true, true, true), 'n', true)
+        end,
+      },
+      ['<C-j>'] = {
+        'select_next',
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-j>', true, true, true), 'n', true)
+        end,
+      },
+      ['<C-l>'] = {
+        'accept',
+        function()
+          vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes('<C-l>', true, true, true), 'n', true)
+        end,
+      },
     },
 
     appearance = {
@@ -43,9 +58,19 @@ return {
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'buffer', 'dadbod', 'cmdline', 'markdown' },
+      -- Check for optional dependencies before enabling them
+      default = (function()
+        local sources = { 'lsp', 'path', 'snippets', 'buffer' }
+        if pcall(require, 'vim_dadbod_completion') then
+          table.insert(sources, 'dadbod')
+        end
+        if pcall(require, 'render-markdown') then
+          table.insert(sources, 'markdown')
+        end
+        return sources
+      end)(),
       providers = {
-        markdown = { name = 'RenderMarkdown', module = 'render-markdown.integ.blink' },
+        markdown = { name = 'RenderMarkdown', module = 'render-markdown.integ.blink', fallbacks = { 'lsp' } },
         dadbod = {
           name = 'Dadbod',
           module = 'vim_dadbod_completion.blink',
@@ -86,9 +111,9 @@ return {
           border = 'rounded',
           winblend = 0,
           winhighlight = table.concat({
-            'Normal:BlinkCmpDoc',
-            'FloatBorder:BlinkCmpDocBorder',
-            'CursorLine:BlinkCmpDocCursorLine',
+            'Normal:NormalFloat',
+            'FloatBorder:FloatBorder',
+            'CursorLine:Visual',
             'Search:None',
           }, ','),
           scrollbar = true,
@@ -100,7 +125,7 @@ return {
       },
 
       ghost_text = {
-        enabled = vim.g.ai_cmp or false,
+        enabled = type(vim.g.ai_cmp) == 'boolean' and vim.g.ai_cmp or false,
       },
     },
 

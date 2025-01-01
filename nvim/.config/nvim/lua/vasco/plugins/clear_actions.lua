@@ -1,5 +1,5 @@
 return {
   'luckasRanarison/clear-action.nvim',
-  event = 'VeryLazy',
+  event = 'BufWinEnter',
   opts = {},
 }
