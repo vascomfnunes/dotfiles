@@ -6,7 +6,7 @@ return {
     { 'folke/neodev.nvim', opts = { library = { plugins = { 'neotest', 'nvim-dap-ui' }, types = true } } },
     'mason.nvim',
     'williamboman/mason-lspconfig.nvim',
-    'saghen/blink.cmp',
+    'hrsh7th/cmp-nvim-lsp',
   },
   keys = {
     { 'gd', vim.lsp.buf.definition, desc = 'Go to definition' },
@@ -113,7 +113,14 @@ return {
     local settings = require 'vasco.config'
 
     -- Initialize capabilities
-    local capabilities = vim.lsp.protocol.make_client_capabilities()
+    local capabilities = vim.tbl_deep_extend(
+      'force',
+      {},
+      vim.lsp.protocol.make_client_capabilities(),
+      require('cmp_nvim_lsp').default_capabilities(),
+      opts.capabilities or {}
+    )
+    -- local capabilities = vim.lsp.protocol.make_client_capabilities()
     capabilities.textDocument.completion.completionItem.snippetSupport = true
     opts.capabilities = capabilities
 
@@ -142,8 +149,6 @@ return {
       mlsp.setup_handlers {
         function(server_name)
           local server_opts = opts.servers[server_name] or {}
-          -- Enhance LSP capabilities with completion provider from blink.cmp
-          server_opts.capabilities = require('blink.cmp').get_lsp_capabilities(server_opts.capabilities)
           lspconfig[server_name].setup(server_opts)
         end,
       }
