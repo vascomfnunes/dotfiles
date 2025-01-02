@@ -53,19 +53,7 @@ return {
       -- Ruby
       ruby_lsp = {
         mason = false,
-        -- Safely resolve ruby-lsp path with fallback
-        cmd = function()
-          local ruby_lsp = vim.fn.exepath 'ruby-lsp'
-          if ruby_lsp then
-            return { ruby_lsp }
-          end
-          local rbenv_lsp = vim.fn.expand '~/.rbenv/shims/ruby-lsp'
-          if vim.fn.filereadable(rbenv_lsp) == 1 then
-            return { rbenv_lsp }
-          end
-          vim.notify('ruby-lsp not found', vim.log.levels.WARN)
-          return nil
-        end,
+        cmd = { vim.fn.expand '~/.rbenv/shims/ruby-lsp' },
         init_options = {
           formatter = 'standard',
           linters = { 'standard' },
