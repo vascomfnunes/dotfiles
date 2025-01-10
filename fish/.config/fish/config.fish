@@ -16,6 +16,7 @@ export VISUAL='nvim'
 export PLAYER='mpv'
 export BROWSER_CLI='w3m'
 export XDG_CONFIG_HOME="$HOME/.config"
+export DISPLAY=:0
 
 # Update PATH using fish's built-in function
 fish_add_path /usr/local/sbin

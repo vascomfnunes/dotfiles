@@ -108,34 +108,34 @@ local mappings = {
 }
 
 return {
-  {
-    'CopilotC-Nvim/CopilotChat.nvim',
-    branch = 'main',
-    build = 'make tiktoken',
-    cmd = 'CopilotChat',
-    dependencies = {
-      { 'github/copilot.vim' },
-      { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
-    },
-    opts = function()
-      local user = vim.env.USER or 'User'
-      chat_config.question_header = '  ' .. capitalize_first_letter(user) .. ' '
-      chat_config.answer_header = '  Copilot '
-      chat_config.prompts = prompts
-      return chat_config
-    end,
-    config = function(_, opts)
-      local chat = require 'CopilotChat'
-      vim.g.copilot_no_tab_map = true
-      vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
-
-      vim.api.nvim_create_autocmd('BufEnter', {
-        pattern = 'copilot-chat',
-        callback = setup_buffer_settings,
-      })
-
-      chat.setup(opts)
-    end,
-    keys = mappings,
-  },
+  -- {
+  --   'CopilotC-Nvim/CopilotChat.nvim',
+  --   branch = 'main',
+  --   build = 'make tiktoken',
+  --   cmd = 'CopilotChat',
+  --   dependencies = {
+  --     { 'github/copilot.vim' },
+  --     { 'nvim-lua/plenary.nvim' }, -- for curl, log wrapper
+  --   },
+  --   opts = function()
+  --     local user = vim.env.USER or 'User'
+  --     chat_config.question_header = '  ' .. capitalize_first_letter(user) .. ' '
+  --     chat_config.answer_header = '  Copilot '
+  --     chat_config.prompts = prompts
+  --     return chat_config
+  --   end,
+  --   config = function(_, opts)
+  --     local chat = require 'CopilotChat'
+  --     vim.g.copilot_no_tab_map = true
+  --     vim.api.nvim_set_keymap('i', '<C-h>', 'copilot#Accept("<CR>")', { silent = true, expr = true })
+  --
+  --     vim.api.nvim_create_autocmd('BufEnter', {
+  --       pattern = 'copilot-chat',
+  --       callback = setup_buffer_settings,
+  --     })
+  --
+  --     chat.setup(opts)
+  --   end,
+  --   keys = mappings,
+  -- },
 }
