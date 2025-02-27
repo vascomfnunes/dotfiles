@@ -14,7 +14,7 @@
   ui = true
 [commit]
 	verbose = true
-  gpgsign = true
+  gpgsign = false
 [tag]
   gpgsign = true
 [diff]
