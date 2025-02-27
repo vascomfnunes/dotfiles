@@ -102,6 +102,9 @@ bindkey '^[[1;5D' backward-word
 # Initialize powerlevel10k prompt
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# Homebrew
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # Environment variables
 export EDITOR='nvim'
 export PATH="$HOME/.local/bin:$PATH"
@@ -111,6 +114,3 @@ eval "$(rbenv init - zsh)"
 
 # GPG TTY
 export GPG_TTY=$(tty)
-
-# Load any local configurations
-[[ -f ~/.zshrc.local ]] && source ~/.zshrc.local
