@@ -1,18 +1,31 @@
 ##### GPG
 
-export GPG_TTY=$(tty)
+export GPG_TTY=$TTY
 
 
 ##### History
 
 HISTFILE="$ZDOTDIR/.zhistory"
-SAVEHIST=10000
-HISTSIZE=10000
+SAVEHIST=50000
+# Keep HISTSIZE above SAVEHIST so hist_expire_dups_first has headroom
+# to drop duplicates before trimming unique entries.
+HISTSIZE=60000
 
 setopt share_history
 setopt hist_expire_dups_first
-setopt hist_ignore_dups
+setopt hist_ignore_all_dups
+setopt hist_save_no_dups
+setopt hist_ignore_space
+setopt hist_reduce_blanks
 setopt hist_verify
+
+
+##### Shell options
+
+setopt auto_cd
+setopt interactive_comments
+setopt no_flow_control
+setopt extended_glob
 
 
 ##### Aliases
@@ -28,6 +41,8 @@ alias gd="git diff"
 
 alias mkd="mkdir -p"
 alias c="clear"
+
+mkcd() { mkdir -p "$1" && cd "$1" }
 
 
 ##### Helper functions
@@ -83,6 +98,7 @@ source_command_cache() {
 ##### Optional command replacements
 
 if command -v eza >/dev/null 2>&1; then
+  alias ls="eza"
   alias ll="eza -l --icons --git"
   alias la="eza -la --icons --git"
 fi
@@ -114,19 +130,34 @@ fi
 
 unset zcompdump
 
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+# Disable the built-in menu so fzf-tab can take over selection.
+zstyle ':completion:*' menu no
+zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
+
 
 ##### Zinit plugins
 
+# fzf-tab wants to load after compinit and before autosuggestions
+# and syntax-highlighting, so it can wrap the completion widget first.
 if [ -f "$ZINIT_HOME/zinit.zsh" ]; then
   source "$ZINIT_HOME/zinit.zsh"
 
   zinit ice wait lucid
-  zinit light zsh-users/zsh-autosuggestions
-  zinit ice wait lucid
   zinit light Aloxaf/fzf-tab
+  zinit ice wait lucid
+  zinit light zsh-users/zsh-autosuggestions
   zinit ice wait lucid
   zinit light zsh-users/zsh-syntax-highlighting
 fi
+
+
+##### Key bindings
+
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
 
 
 ##### Shell integrations
