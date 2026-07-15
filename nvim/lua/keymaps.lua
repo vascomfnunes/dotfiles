@@ -61,23 +61,28 @@ map("n", "<leader>gn", function()
   end
 end, { desc = "Create new branch" })
 
+-- Fzf-lua
+-- Each picker loads fzf-lua on first use.
+local function fzf(command, fzf_opts)
+  return function()
+    vim.g.dotfiles_lazy.fzf()
+    require("fzf-lua")[command](fzf_opts)
+  end
+end
+
 -- LSP
-map("n", "gd", function() vim.lsp.buf.definition() end, { desc = "Go to definition" })
+map("n", "gd", fzf("lsp_definitions", { jump1 = true }), { desc = "Go to definition" })
+map("n", "grr", fzf("lsp_references"), { desc = "References" })
+map("n", "gri", fzf("lsp_implementations", { jump1 = true }), { desc = "Implementations" })
 map("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover docs" })
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename symbol" })
 map("n", "<leader>cf", function()
   require("conform").format({ async = true, lsp_format = "fallback" })
 end, { desc = "Format buffer" })
-
--- Fzf-lua
--- Each picker loads fzf-lua on first use.
-local function fzf(command)
-  return function()
-    vim.g.dotfiles_lazy.fzf()
-    require("fzf-lua")[command]()
-  end
-end
+map("n", "<leader>ch", function()
+  vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled({ bufnr = 0 }), { bufnr = 0 })
+end, { desc = "Toggle inlay hints" })
 
 local function selected_git_branch(selected)
   if not selected[1] then return nil end
@@ -137,6 +142,7 @@ end
 
 map("n", "<leader>fb", fzf("buffers"), { desc = "Buffers" })
 map("n", "<leader>ff", fzf("files"), { desc = "Files" })
+map("n", "<leader>fs", fzf("lsp_document_symbols"), { desc = "Document symbols" })
 map("n", "<leader>fg", fzf("live_grep"), { desc = "Grep" })
 map("n", "<leader>fw", fzf("grep_cword"), { desc = "Grep word" })
 map("n", "<leader>fr", fzf("resume"), { desc = "Resume" })
@@ -215,10 +221,6 @@ map("n", "<leader>gd", function()
   vim.g.dotfiles_lazy.codediff()
   vim.cmd.CodeDiff()
 end, { desc = "Diff Project" })
-map("n", "<leader>gm", function()
-  vim.g.dotfiles_lazy.codediff()
-  vim.cmd.CodeDiff()
-end, { desc = "Resolve merge conflicts" })
 map("n", "<leader>gF", function()
   vim.g.dotfiles_lazy.codediff()
   vim.cmd("CodeDiff history %")
@@ -252,6 +254,14 @@ map("n", "<leader>tt", function()
   vim.g.dotfiles_lazy.neotest()
   require("neotest").summary.toggle()
 end, { desc = "Toggle summary" })
+map("n", "<leader>tl", function()
+  vim.g.dotfiles_lazy.neotest()
+  require("neotest").run.run_last()
+end, { desc = "Run last" })
+map("n", "<leader>to", function()
+  vim.g.dotfiles_lazy.neotest()
+  require("neotest").output.open({ enter = true })
+end, { desc = "Show output" })
 
 -- AI (agentic.nvim)
 -- Wrap agentic.nvim calls so the plugin only loads when an AI mapping is used.

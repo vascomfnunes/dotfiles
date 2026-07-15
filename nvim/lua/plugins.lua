@@ -29,9 +29,18 @@ end, { desc = "Install configured Treesitter parsers" })
 
 vim.api.nvim_create_autocmd("FileType", {
   pattern = treesitter_languages,
-  callback = function()
-    pcall(vim.treesitter.start)
-    vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+  callback = function(ev)
+    local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
+    if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 then
+      treesitter.install({ lang }):await(vim.schedule_wrap(function()
+        if vim.api.nvim_buf_is_valid(ev.buf) then
+          pcall(vim.treesitter.start, ev.buf)
+        end
+      end))
+    else
+      pcall(vim.treesitter.start)
+    end
+    vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
 })
 
@@ -416,6 +425,17 @@ vim.api.nvim_create_autocmd("InsertEnter", {
   callback = lazy.cmp,
 })
 
+-- Open directories with mini.files since netrw is disabled (e.g. `nvim .`).
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function(ev)
+    local name = vim.api.nvim_buf_get_name(ev.buf)
+    if name == "" or vim.fn.isdirectory(name) == 0 then return end
+    lazy.mini_files()
+    vim.bo[ev.buf].buflisted = false
+    require("mini.files").open(name)
+  end,
+})
+
 -- Avoid making the first insert pay the full completion/snippet setup cost.
 vim.api.nvim_create_autocmd("BufReadPost", {
   once = true,
@@ -440,6 +460,6 @@ wk.add({
   { "<leader>f", group = "Find/Search", mode = { "n", "v" } },
   { "<leader>p", group = "Packages", mode = { "n", "v" } },
   { "<leader>r", group = "Ruby/Rails", mode = { "n", "v" } },
-  { "<leader>q", group = "Quicklist", mode = { "n", "v" } },
+  { "<leader>q", group = "Quickfix", mode = { "n", "v" } },
   { "<leader>t", group = "Tests", mode = { "n", "v" } },
 })

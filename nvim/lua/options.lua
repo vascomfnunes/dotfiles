@@ -21,6 +21,7 @@ opt.tabstop = 2
 
 opt.ignorecase = true
 opt.smartcase = true
+opt.inccommand = "split"
 
 -- Window layout
 
