@@ -131,10 +131,41 @@ ln -sf "$DOTFILES_DIR/bin/serve" "$HOME/.local/bin/serve"
 ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-weather-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-battery-status"
+ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
 
 if command -v pinentry-mac >/dev/null 2>&1; then
   ln -sf "$(command -v pinentry-mac)" "$HOME/.local/bin/pinentry-mac"
 fi
+
+
+##### tmux theme launchd agent
+
+# Reload tmux's config when the macOS appearance changes so the Catppuccin
+# variant in tmux.conf follows Light/Dark mode. The plist is generated here
+# rather than symlinked because launchd is unreliable with symlinked plists.
+echo "🌗 Installing tmux theme reload agent..."
+mkdir -p "$HOME/Library/LaunchAgents"
+TMUX_THEME_PLIST="$HOME/Library/LaunchAgents/com.vascomfnunes.tmux-theme-reload.plist"
+cat > "$TMUX_THEME_PLIST" <<EOF
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.vascomfnunes.tmux-theme-reload</string>
+  <key>ProgramArguments</key>
+  <array>
+    <string>$HOME/.local/bin/tmux-theme-reload</string>
+  </array>
+  <key>WatchPaths</key>
+  <array>
+    <string>$HOME/Library/Preferences/.GlobalPreferences.plist</string>
+  </array>
+</dict>
+</plist>
+EOF
+launchctl bootout "gui/$(id -u)/com.vascomfnunes.tmux-theme-reload" 2>/dev/null || true
+launchctl bootstrap "gui/$(id -u)" "$TMUX_THEME_PLIST"
 
 
 ##### Local config stubs
