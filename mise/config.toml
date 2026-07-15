@@ -8,4 +8,5 @@ compile = false
 # Core runtimes available in every shell through `mise activate`.
 ruby = "3.3.9"
 node = "22.22.3"
-python = "latest"
+# Pinned to a minor version so fresh installs are reproducible.
+python = "3.13"

@@ -102,8 +102,10 @@ mkdir -p "$HOME/.config/mise"
 mkdir -p "$HOME/.local/bin"
 mkdir -p "$HOME/.gnupg"
 mkdir -p "$HOME/.ssh"
+mkdir -p "$HOME/.ssh/sockets"
 chmod 700 "$HOME/.gnupg"
 chmod 700 "$HOME/.ssh"
+chmod 700 "$HOME/.ssh/sockets"
 
 
 ##### Symlinks
@@ -118,6 +120,8 @@ rm -f "$HOME/.config/nvim"
 ln -sf "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
+rm -f "$HOME/.config/tmux/themes"
+ln -sf "$DOTFILES_DIR/tmux/themes" "$HOME/.config/tmux/themes"
 ln -sf "$DOTFILES_DIR/gpg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
 ln -sf "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
 ln -sf "$DOTFILES_DIR/mise/config.toml" "$HOME/.config/mise/config.toml"
@@ -310,7 +314,7 @@ defaults write com.apple.finder ShowPathbar -bool true
 ##### Restart affected apps
 
 # Kill affected apps
-for app in "Dock" "Finder"; do
+for app in "Dock" "Finder" "ControlCenter"; do
   killall "${app}" > /dev/null 2>&1 || true
 done
 

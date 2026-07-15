@@ -30,7 +30,12 @@ weather=$(curl -fsS --max-time 3 "https://wttr.in/${location}?format=%c+%t&m" 2>
   | tr -d '\r\n')
 
 if [ -n "$weather" ]; then
-  printf '%s  ' "$weather" | tee "$cache_file"
+  # Write via temp file and rename so a concurrent run never reads a
+  # partially written cache.
+  cache_tmp="${cache_file}.tmp.$$"
+  printf '%s  ' "$weather" > "$cache_tmp"
+  mv -f "$cache_tmp" "$cache_file"
+  cat "$cache_file"
 elif [ -r "$cache_file" ]; then
   cat "$cache_file"
 fi

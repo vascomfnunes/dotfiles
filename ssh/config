@@ -6,3 +6,13 @@ Host *
   IgnoreUnknown AddKeysToAgent,UseKeychain
   AddKeysToAgent yes
   UseKeychain yes
+
+  # Detect dead connections instead of hanging forever.
+  ServerAliveInterval 60
+  ServerAliveCountMax 3
+
+  # Reuse one connection per host so repeat sessions skip the handshake.
+  # The sockets directory is created by install.sh.
+  ControlMaster auto
+  ControlPath ~/.ssh/sockets/%r@%h-%p
+  ControlPersist 10m
