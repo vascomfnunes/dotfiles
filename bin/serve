@@ -1,0 +1,8 @@
+#!/bin/sh
+
+set -eu
+
+# Serve the current directory unless a different port is passed.
+PORT="${1:-8000}"
+
+python3 -m http.server "$PORT"

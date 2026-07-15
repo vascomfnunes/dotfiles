@@ -1,0 +1,19 @@
+##### OS and editor files
+
+.DS_Store
+*~
+*.swp
+
+
+##### Project-local runtimes
+
+.python-version
+.ruby-version
+.venv
+node_modules/
+vendor/
+
+
+##### Tool state
+
+.gemini/

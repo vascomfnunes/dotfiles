@@ -1,0 +1,83 @@
+[init]
+	defaultBranch = main
+	templateDir = ~/.git_template
+
+[core]
+	; editor = /Applications/RubyMine.app/Contents/MacOS/rubymine --wait
+	editor = nvim
+	autocrlf = input
+	excludesFile = ~/.gitignore_global
+
+
+##### Sync behavior
+
+[pull]
+	rebase = false
+
+[push]
+	default = current
+	autoSetupRemote = true
+
+[fetch]
+	prune = true
+
+
+##### Diffs and merges
+
+[diff]
+	colorMoved = default
+	tool = codediff
+
+[merge]
+	conflictstyle = zdiff3
+	tool = codediff
+
+[difftool "codediff"]
+	cmd = nvim \"$LOCAL\" \"$REMOTE\" -c \"lua vim.g.dotfiles_lazy.codediff()\" +\"CodeDiff file $LOCAL $REMOTE\"
+
+[mergetool]
+	keepBackup = false
+
+[mergetool "codediff"]
+	cmd = nvim \"$MERGED\" -c \"lua vim.g.dotfiles_lazy.codediff()\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
+	trustExitCode = true
+
+[rerere]
+	enabled = true
+
+[branch]
+	sort = -committerdate
+
+
+##### Identity and signing
+
+[user]
+	name = Vasco Nunes
+	email = vasco.m.nunes@me.com
+	signingkey = 7531A03F3184C1492BDAF1F9E38CDD2D5AC53E67
+
+[commit]
+	gpgsign = true
+	verbose = true
+
+[tag]
+	gpgsign = true
+	forceSignAnnotated = true
+
+[gpg]
+	program = /opt/homebrew/bin/gpg
+
+
+##### Local and context-specific config
+
+[includeIf "gitdir:~/repos/**"]
+	path = ~/repos/.gitconfig
+
+[include]
+	path = ~/.gitconfig.local
+
+
+##### Credentials
+
+[credential "https://git.heroku.com"]
+	helper = !heroku git:credentials

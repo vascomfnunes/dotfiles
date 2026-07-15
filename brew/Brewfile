@@ -1,0 +1,40 @@
+##### Security and shell tooling
+
+brew "gnupg"
+brew "pinentry-mac"
+brew "atuin"
+brew "direnv"
+brew "mise"
+brew "starship"
+brew "zoxide"
+
+
+##### CLI utilities
+
+brew "bat"
+brew "fd"
+brew "fzf"
+brew "git"
+brew "eza"
+brew "pipx"
+brew "ripgrep"
+brew "tree-sitter-cli"
+brew "uv"
+brew "wget"
+brew "yarn"
+
+
+##### Editors and terminal
+
+brew "mpv"
+brew "neovim"
+brew "tmux"
+
+cask "font-jetbrains-mono-nerd-font"
+cask "ghostty"
+
+
+##### Desktop apps
+
+cask "the-unarchiver"
+cask "ungoogled-chromium"

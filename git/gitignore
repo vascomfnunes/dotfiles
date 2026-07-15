@@ -1,0 +1,19 @@
+##### IDEs and editor state
+
+.idea/
+*.iml
+*~
+*.swp
+
+
+##### Local environment and secrets
+
+.env
+*secrets.env
+*secrets.env.yml
+
+
+##### OS and tool-generated files
+
+.DS_Store
+**/.claude/settings.local.json

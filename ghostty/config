@@ -1,0 +1,30 @@
+##### Font and theme
+
+font-family = "JetBrainsMono Nerd Font"
+theme = "light:Catppuccin Latte,dark:Catppuccin Mocha"
+font-thicken = true
+font-thicken-strength = 1
+
+
+##### Cursor and shell integration
+
+cursor-style = block
+cursor-style-blink = true
+shell-integration-features = no-cursor
+confirm-close-surface = false
+
+
+##### Window appearance
+
+background-opacity = 0.85
+background-blur = 20
+macos-icon = xray
+
+
+##### Key bindings
+
+# Send Option+hjkl as Alt (Esc-prefixed) for tmux/nvim pane resizing
+keybind = alt+h=esc:h
+keybind = alt+j=esc:j
+keybind = alt+k=esc:k
+keybind = alt+l=esc:l

@@ -1,0 +1,11 @@
+[settings]
+
+[settings.ruby]
+# Prefer prebuilt Ruby installs where available.
+compile = false
+
+[tools]
+# Core runtimes available in every shell through `mise activate`.
+ruby = "3.3.9"
+node = "22.22.3"
+python = "latest"

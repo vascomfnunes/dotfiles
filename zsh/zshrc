@@ -1,0 +1,153 @@
+##### GPG
+
+export GPG_TTY=$(tty)
+
+
+##### History
+
+HISTFILE="$ZDOTDIR/.zhistory"
+SAVEHIST=10000
+HISTSIZE=10000
+
+setopt share_history
+setopt hist_expire_dups_first
+setopt hist_ignore_dups
+setopt hist_verify
+
+
+##### Aliases
+
+alias vim="nvim"
+
+alias gs="git status"
+alias gp="git pull"
+alias gP="git push"
+alias gc="git commit"
+alias gl="git log"
+alias gd="git diff"
+
+alias mkd="mkdir -p"
+alias c="clear"
+
+
+##### Helper functions
+
+# pyradio forces TERM=xterm-256color under tmux and prints a warning;
+# pre-set it to keep startup quiet. On exit, reset the terminal palette
+# (OSC 104) since the theme redefines colors via init_color and
+# tmux-256color has no `oc` capability to restore them.
+pyradio() {
+  TERM=xterm-256color command pyradio "$@"
+  printf '\e]104\a'
+}
+
+dotupdate() {
+  local profile="${1:-personal}"
+  local dotfiles_dir="${${(%):-%x}:A:h:h}"
+
+  if (( $# > 0 )); then shift; fi
+
+  (cd "$dotfiles_dir" && git pull && ./install.sh "$profile" "$@")
+}
+
+# Cache expensive shell init commands and compile the generated zsh snippets.
+source_command_cache() {
+  local name="$1"
+  local bin="$2"
+  shift 2
+
+  local bin_path
+  bin_path="$(command -v "$bin")" || return
+
+  local cache="${ZDOTDIR}/.${name}.zsh"
+
+  if [[ ! -r "$cache" ]] || [[ "$cache" -ot "$bin_path" ]]; then
+    local cache_tmp="${cache}.tmp.$$"
+    if "$bin" "$@" >| "$cache_tmp"; then
+      mv -f -- "$cache_tmp" "$cache"
+    else
+      rm -f -- "$cache_tmp"
+    fi
+  fi
+
+  [[ -r "$cache" ]] || return
+
+  if [[ ! -r "${cache}.zwc" ]] || [[ "${cache}.zwc" -ot "$cache" ]]; then
+    zcompile "${cache}.zwc" "$cache" 2>/dev/null || true
+  fi
+
+  source "$cache"
+}
+
+
+##### Optional command replacements
+
+if command -v eza >/dev/null 2>&1; then
+  alias ll="eza -l --icons --git"
+  alias la="eza -la --icons --git"
+fi
+
+if command -v bat >/dev/null 2>&1; then
+  alias cat="bat --paging=never"
+fi
+
+
+##### Completion
+
+ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+
+autoload -Uz compinit
+zmodload zsh/datetime
+zmodload zsh/stat
+
+zcompdump="${ZDOTDIR}/.zcompdump"
+
+if [[ ! -f "$zcompdump" ]] || (( EPOCHSECONDS - $(zstat +mtime -- "$zcompdump") > 86400 )); then
+  compinit -d "$zcompdump"
+else
+  compinit -C -d "$zcompdump"
+fi
+
+if [[ ! -r "${zcompdump}.zwc" ]] || [[ "${zcompdump}.zwc" -ot "$zcompdump" ]]; then
+  zcompile "${zcompdump}.zwc" "$zcompdump" 2>/dev/null || true
+fi
+
+unset zcompdump
+
+
+##### Zinit plugins
+
+if [ -f "$ZINIT_HOME/zinit.zsh" ]; then
+  source "$ZINIT_HOME/zinit.zsh"
+
+  zinit ice wait lucid
+  zinit light zsh-users/zsh-autosuggestions
+  zinit ice wait lucid
+  zinit light Aloxaf/fzf-tab
+  zinit ice wait lucid
+  zinit light zsh-users/zsh-syntax-highlighting
+fi
+
+
+##### Shell integrations
+
+source_command_cache starship starship init zsh
+source_command_cache mise mise activate zsh
+source_command_cache zoxide zoxide init zsh
+source_command_cache direnv direnv hook zsh
+
+if [[ -t 0 ]]; then
+  source_command_cache fzf fzf --zsh
+fi
+
+
+##### Local overrides
+
+if [ -f "$HOME/.zshrc.local" ]; then
+  . "$HOME/.zshrc.local"
+fi
+
+# Atuin is sourced last so its key bindings can override earlier widgets.
+if [[ -t 0 ]]; then
+  source_command_cache atuin atuin init zsh
+fi

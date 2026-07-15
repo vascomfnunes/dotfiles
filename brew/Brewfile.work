@@ -1,0 +1,15 @@
+##### CLI utilities
+
+brew "pv"
+
+
+##### Work apps
+
+cask "docker-desktop"
+cask "firefox"
+cask "rubymine"
+cask "claude"
+cask "claude-code"
+cask "sequel-ace"
+cask "ngrok"
+cask "slack"

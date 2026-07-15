@@ -1,0 +1,8 @@
+##### macOS keychain integration
+
+Host *
+  # IgnoreUnknown keeps this portable across OpenSSH builds without Apple's
+  # keychain-specific options.
+  IgnoreUnknown AddKeysToAgent,UseKeychain
+  AddKeysToAgent yes
+  UseKeychain yes

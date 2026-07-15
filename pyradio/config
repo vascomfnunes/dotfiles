@@ -1,0 +1,11 @@
+##### Theme
+
+theme = catppuccin-mocha
+
+
+##### Remote control
+
+# Used by the tmux status bar helper to read the current track title.
+remote_control_server_ip = localhost
+remote_control_server_port = 9998
+remote_control_server_auto_start = True

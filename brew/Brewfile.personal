@@ -1,0 +1,55 @@
+##### Custom taps
+
+tap "vascomfnunes/audio"
+
+
+##### Build tools
+
+brew "ninja"
+
+
+##### General apps
+
+cask "codex"
+cask "appcleaner"
+cask "nordvpn"
+cask "affinity"
+cask "adobe-digital-editions"
+cask "calibre"
+
+
+##### Audio hosts and managers
+
+cask "midi-monitor"
+cask "reaper"
+cask "bitwig-studio"
+cask "arturia-software-center"
+cask "ik-product-manager"
+cask "native-access"
+cask "ilok-license-manager"
+cask "steinberg-activation-manager"
+cask "wavelab"
+cask "korg-software-pass"
+cask "plugin-alliance-installation-manager"
+cask "roland-cloud-manager"
+cask "ssl-download-manager"
+cask "xln-online-installer"
+
+
+##### Audio plugins
+
+cask "fixate-midrange"
+cask "tape"
+cask "dirty-tape"
+cask "acoustic-feedback"
+cask "clipper"
+cask "transient-shaper"
+cask "crystallizer"
+cask "echoboy"
+cask "little-microshift"
+cask "little-plate"
+cask "phasemistress"
+cask "valhalla-supermassive"
+cask "paulxstretch"
+cask "blackhole"
+cask "blackhole-immersive"
