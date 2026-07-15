@@ -163,6 +163,58 @@ vim.api.nvim_create_user_command("LspInfo", function()
   vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO, { title = "LSP Status" })
 end, {})
 
+-- Tag the project and every bundled gem with ripper-tags so `gd` can fall
+-- back to tags for definitions ruby-lsp can't resolve. Tags go to .git/tags
+-- (see options.lua) with absolute paths, so jumps work from any cwd.
+vim.api.nvim_create_user_command("GemTags", function()
+  local root = vim.fs.root(0, "Gemfile")
+  if not root then
+    vim.notify("No Gemfile found", vim.log.levels.WARN)
+    return
+  end
+  local tag_file = vim.uv.fs_stat(root .. "/.git") and root .. "/.git/tags" or root .. "/tags"
+  -- ripper-tags occasionally emits an entry with an embedded newline, which
+  -- makes Vim reject the whole file (E431); drop malformed lines afterwards.
+  local quoted = vim.fn.shellescape(tag_file)
+  local sanitize = string.format(
+    [[LC_ALL=C awk -F'\t' 'NF>=3' %s > %s.tmp && mv %s.tmp %s]],
+    quoted, quoted, quoted, quoted
+  )
+  local function done(msg, level)
+    vim.schedule(function()
+      vim.g.gemtags_running = nil
+      vim.notify(msg, level)
+      require("lualine").refresh({ place = { "statusline" } })
+    end)
+  end
+  vim.g.gemtags_running = true
+  require("lualine").refresh({ place = { "statusline" } })
+  vim.system({ "mise", "x", "--", "bundle", "list", "--paths" }, { cwd = root, text = true }, function(list)
+    if list.code ~= 0 then
+      done("bundle list failed:\n" .. (list.stderr or ""), vim.log.levels.ERROR)
+      return
+    end
+    local cmd = {
+      "mise", "x", "--", "ripper-tags", "-R", "--tag-file", tag_file,
+      "--exclude=vendor", "--exclude=node_modules", root,
+    }
+    vim.list_extend(cmd, vim.split(vim.trim(list.stdout), "\n"))
+    vim.system(cmd, { cwd = root, text = true }, function(res)
+      if res.code ~= 0 then
+        done("ripper-tags failed (gem install ripper-tags?):\n" .. (res.stderr or ""), vim.log.levels.ERROR)
+        return
+      end
+      vim.system({ "sh", "-c", sanitize }, {}, function(s)
+        if s.code == 0 then
+          done("Tags written to " .. tag_file)
+        else
+          done("tags sanitize failed:\n" .. (s.stderr or ""), vim.log.levels.ERROR)
+        end
+      end)
+    end)
+  end)
+end, { desc = "Generate tags for project and bundled gems" })
+
 -- Always-on plugin setup
 
 local conform_util = require("conform.util")
@@ -194,11 +246,70 @@ require("conform").setup({
   },
 })
 
+-- Surface LSP work ($/progress, e.g. ruby-lsp indexing) in the statusline.
+-- Tracked per progress token instead of vim.lsp.status(), which also renders
+-- `end` events and therefore never clears the last message.
+local lsp_progress = ""
+local lsp_progress_groups = {}
+
+local function render_lsp_progress()
+  local parts = {}
+  for _, group in pairs(lsp_progress_groups) do
+    local msg = group.title
+    -- Some servers (ruby-lsp) restate the percentage in `message`; skip it
+    -- rather than showing two counters.
+    if group.message and not group.message:match("^%d+%%") then
+      msg = msg .. ": " .. group.message
+    end
+    if group.percentage then
+      msg = string.format("%d%% %s", group.percentage, msg)
+    end
+    parts[#parts + 1] = msg
+  end
+  local status = vim.fn.strcharpart(table.concat(parts, " | "), 0, 60)
+  -- Escape % so progress text can't be parsed as statusline items (E539).
+  lsp_progress = (status:gsub("%%", "%%%%"))
+  require("lualine").refresh({ place = { "statusline" } })
+end
+
+vim.api.nvim_create_autocmd("LspProgress", {
+  callback = function(ev)
+    local value = ev.data.params.value
+    if type(value) ~= "table" or not value.kind then return end
+    local key = ev.data.client_id .. ":" .. tostring(ev.data.params.token)
+    if value.kind == "end" then
+      lsp_progress_groups[key] = nil
+    else
+      local group = lsp_progress_groups[key] or {}
+      group.title = value.title or group.title or ""
+      group.message = value.message or group.message
+      group.percentage = value.percentage or group.percentage
+      lsp_progress_groups[key] = group
+    end
+    render_lsp_progress()
+  end,
+})
+
+-- A crashed or stopped server never sends its `end` events.
+vim.api.nvim_create_autocmd("LspDetach", {
+  callback = function(ev)
+    local prefix = ev.data.client_id .. ":"
+    for key in pairs(lsp_progress_groups) do
+      if vim.startswith(key, prefix) then lsp_progress_groups[key] = nil end
+    end
+    render_lsp_progress()
+  end,
+})
+
 require("lualine").setup({
   sections = {
     lualine_b = { "branch", require("git_fetch").status },
     lualine_c = { "filename" },
-    lualine_x = { "filetype" },
+    lualine_x = {
+      function() return lsp_progress end,
+      function() return vim.g.gemtags_running and "generating tags…" or "" end,
+      "filetype",
+    },
   },
 })
 require("mini.pairs").setup({})
