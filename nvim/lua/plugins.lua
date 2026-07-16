@@ -100,7 +100,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
       local characters = provider.triggerCharacters or {}
       local present = {}
       for _, character in ipairs(characters) do present[character] = true end
-      for character in ("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"):gmatch(".") do
+      for character in ("-_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"):gmatch(".") do
         if not present[character] then characters[#characters + 1] = character end
       end
       provider.triggerCharacters = characters
@@ -292,6 +292,8 @@ vim.api.nvim_create_user_command("GemTags", function()
 end, { desc = "Generate tags for project and bundled gems", force = true })
 
 -- Always-on plugin setup
+
+require("css_classes").setup()
 
 local conform_util = require("conform.util")
 require("conform").setup({
