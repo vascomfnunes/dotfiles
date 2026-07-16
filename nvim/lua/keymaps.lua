@@ -108,6 +108,7 @@ local function definition_or_tag()
   local function context_valid()
     return vim.api.nvim_buf_is_valid(bufnr)
       and vim.api.nvim_win_is_valid(winid)
+      and vim.api.nvim_get_current_win() == winid
       and vim.api.nvim_win_get_buf(winid) == bufnr
       and vim.api.nvim_buf_get_changedtick(bufnr) == changedtick
       and vim.deep_equal(vim.api.nvim_win_get_cursor(winid), cursor)
@@ -141,10 +142,8 @@ local function definition_or_tag()
     for _, res in pairs(results) do
       local r = res.result
       if r and (r.uri or not vim.tbl_isempty(r)) then
-        vim.api.nvim_win_call(winid, function()
-          vim.g.dotfiles_lazy.fzf()
-          require("fzf-lua").lsp_definitions({ jump1 = true })
-        end)
+        vim.g.dotfiles_lazy.fzf()
+        require("fzf-lua").lsp_definitions({ jump1 = true })
         return
       end
     end

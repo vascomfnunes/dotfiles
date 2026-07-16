@@ -20,11 +20,16 @@ vim.fn.writefile({ ".dependency { color: red; }" }, repository .. "/node_modules
 vim.fn.writefile({ ".generated { color: red; }" }, repository .. "/public/assets/application.css")
 vim.fn.writefile({ '<div class="vc-body-ma">Button</div>' }, repository .. "/index.html")
 vim.fn.writefile({ '<div class="car">Card</div>' }, repository .. "/card.html.erb")
+vim.fn.writefile({ '<div class="button panel">Button</div>' }, repository .. "/definition.html")
+vim.fn.writefile({ '<%= tag.div class: "panel button" %>' }, repository .. "/definition.html.erb")
 
 assert(vim.deep_equal(css_classes.parse(".alpha:hover, .beta-name {}"), { "alpha", "beta-name" }))
 assert(css_classes.is_completion_context('<div class="button'))
 assert(css_classes.is_completion_context('<%= tag.div class: "button'))
 assert(not css_classes.is_completion_context('<div id="button'))
+assert(vim.deep_equal(css_classes.definition_ranges(".alpha:hover {}", "alpha"), {
+  { start = { line = 0, character = 1 }, ["end"] = { line = 0, character = 6 } },
+}))
 
 local project = css_classes.index(repository)
 assert(project.classes.button)
@@ -76,5 +81,34 @@ assert(html_matches[1].word == "vc-body-main-content")
 
 local erb_items = completion_items(repository .. "/card.html.erb", "eruby", "car")
 assert(erb_items.card)
+
+local function definition_locations(path, filetype, name)
+  vim.cmd.edit(vim.fn.fnameescape(path))
+  vim.cmd.setfiletype(filetype)
+  assert(vim.wait(1000, function()
+    return #vim.lsp.get_clients({ name = "css_classes", bufnr = 0 }) == 1
+  end), "css_classes did not attach")
+
+  local line = vim.api.nvim_get_current_line()
+  local start_col = assert(line:find(name, 1, true))
+  vim.api.nvim_win_set_cursor(0, { 1, start_col })
+  local client = vim.lsp.get_clients({ name = "css_classes", bufnr = 0 })[1]
+  local params = vim.lsp.util.make_position_params(0, client.offset_encoding)
+  return assert(client:request_sync("textDocument/definition", params, 1000, 0)).result
+end
+
+local definitions = definition_locations(repository .. "/definition.html", "html", "button")
+assert(#definitions == 1)
+local expected_path = vim.uv.fs_realpath(repository .. "/app/assets/stylesheets/application.css")
+assert(definitions[1].uri == vim.uri_from_fname(expected_path))
+assert(vim.deep_equal(definitions[1].range, {
+  start = { line = 0, character = 1 },
+  ["end"] = { line = 0, character = 7 },
+}))
+
+definitions = definition_locations(repository .. "/definition.html.erb", "eruby", "panel")
+assert(#definitions == 1)
+expected_path = vim.uv.fs_realpath(repository .. "/app/components/panel.scss")
+assert(definitions[1].uri == vim.uri_from_fname(expected_path))
 
 vim.fn.delete(temporary, "rf")

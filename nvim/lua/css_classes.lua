@@ -108,6 +108,71 @@ function M.is_completion_context(text)
   return text:match("class%s*:%s*[\"'][^\"']*$") ~= nil
 end
 
+local function class_at_position(params)
+  local bufnr = vim.uri_to_bufnr(params.textDocument.uri)
+  if not vim.api.nvim_buf_is_valid(bufnr) then return nil end
+
+  local position = params.position
+  local start_line = math.max(0, position.line - 20)
+  local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, position.line + 1, false)
+  local current = lines[#lines] or ""
+  local byte_col = vim.str_byteindex(current, "utf-16", position.character, false)
+  local before = current:sub(1, byte_col):match("([%w_-]+)$") or ""
+  local after = current:sub(byte_col + 1):match("^([%w_-]+)") or ""
+  local name = before .. after
+  if name == "" then return nil end
+
+  lines[#lines] = current:sub(1, byte_col + #after)
+  if not M.is_completion_context(table.concat(lines, "\n")) then return nil end
+  return name
+end
+
+local function utf16_col(line, byte_col)
+  return vim.str_utfindex(line, "utf-16", byte_col, false)
+end
+
+function M.definition_ranges(text, name)
+  local lines = vim.split(text, "\n", { plain = true })
+  local ok, ranges = pcall(function()
+    local parser = vim.treesitter.get_string_parser(text, "css")
+    class_query = class_query or vim.treesitter.query.parse("css", "(class_selector (class_name) @class)")
+    local tree = parser:parse()[1]
+    local result = {}
+
+    for _, node in class_query:iter_captures(tree:root(), text, 0, -1) do
+      if vim.treesitter.get_node_text(node, text) == name then
+        local start_row, start_col, end_row, end_col = node:range()
+        result[#result + 1] = {
+          start = { line = start_row, character = utf16_col(lines[start_row + 1], start_col) },
+          ["end"] = { line = end_row, character = utf16_col(lines[end_row + 1], end_col) },
+        }
+      end
+    end
+    return result
+  end)
+  if ok and #ranges > 0 then return ranges end
+
+  -- Keep definitions working before the CSS parser has been installed.
+  ranges = {}
+  local escaped = name:gsub("([^%w])", "%%%1")
+  for row, line in ipairs(lines) do
+    local offset = 1
+    while true do
+      local start_col, end_col = line:find("%." .. escaped, offset)
+      if not start_col then break end
+      local next_character = line:sub(end_col + 1, end_col + 1)
+      if next_character == "" or not next_character:match("[%w_-]") then
+        ranges[#ranges + 1] = {
+          start = { line = row - 1, character = utf16_col(line, start_col) },
+          ["end"] = { line = row - 1, character = utf16_col(line, start_col + #name) },
+        }
+      end
+      offset = end_col + 1
+    end
+  end
+  return ranges
+end
+
 local function completion_context(params)
   local bufnr = vim.uri_to_bufnr(params.textDocument.uri)
   if not vim.api.nvim_buf_is_valid(bufnr) then return nil end
@@ -134,6 +199,7 @@ local function create_server(dispatchers, project)
       callback(nil, {
         capabilities = {
           completionProvider = { triggerCharacters = { "\"", "'", " ", "-" } },
+          definitionProvider = true,
           positionEncoding = "utf-16",
           textDocumentSync = { openClose = true, change = 1 },
         },
@@ -162,6 +228,18 @@ local function create_server(dispatchers, project)
         end
       end
       callback(nil, { isIncomplete = false, items = items })
+    elseif method == "textDocument/definition" then
+      local locations = {}
+      local name = class_at_position(params)
+      for _, path in ipairs(name and project.classes[name] or {}) do
+        local ok, content = pcall(vim.fn.readfile, path)
+        if ok then
+          for _, range in ipairs(M.definition_ranges(table.concat(content, "\n"), name)) do
+            locations[#locations + 1] = { uri = vim.uri_from_fname(path), range = range }
+          end
+        end
+      end
+      callback(nil, locations)
     elseif method == "shutdown" then
       callback(nil, nil)
     else
