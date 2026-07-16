@@ -30,6 +30,21 @@ map("n", "<leader>ql", function()
   end
 end, { desc = "Toggle quickfix" })
 
+local quickfix_group = vim.api.nvim_create_augroup("DotfilesQuickfix", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = quickfix_group,
+  pattern = "qf",
+  callback = function(ev)
+    local function quickfix_map(lhs, rhs, desc)
+      map("n", lhs, rhs, { buffer = ev.buf, silent = true, desc = desc })
+    end
+
+    quickfix_map("<C-j>", "j", "Next quickfix entry")
+    quickfix_map("<C-k>", "k", "Previous quickfix entry")
+    quickfix_map("<C-l>", "<CR>", "Open quickfix entry")
+  end,
+})
+
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
 
 -- Native LSP completion keeps selection explicit: choose an item first, then
