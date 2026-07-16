@@ -12,5 +12,5 @@ ruby = "3.3.9"
 "gem:htmlbeautifier" = "1.4.3"
 "gem:erb-formatter" = "0.7.3"
 node = "22.22.3"
-# Pinned to a minor version so fresh installs are reproducible.
-python = "3.13"
+# Pinned to a patch version so fresh installs are reproducible.
+python = "3.13.14"
