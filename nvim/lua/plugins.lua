@@ -358,7 +358,13 @@ end
 function lazy.mini_files()
   setup_once("mini.files", function()
     packs.load("mini.files")
-    require("mini.files").setup({ options = { use_as_default_explorer = true } })
+    require("mini.files").setup({
+      mappings = {
+        go_in = "L",
+        go_in_plus = "l",
+      },
+      options = { use_as_default_explorer = true },
+    })
   end)
 end
 
