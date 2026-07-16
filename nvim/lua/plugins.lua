@@ -51,10 +51,13 @@ vim.api.nvim_create_autocmd("FileType", {
 local mason_tools = {
   "lua-language-server",
   "tsgo", "eslint-lsp",
-  "css-lsp", "html-lsp", "stimulus-language-server", "htmlbeautifier",
+  "css-lsp", "html-lsp", "stimulus-language-server",
 }
 
-local mise_tools = { "gem:ruby-lsp", "gem:ripper-tags" }
+local mise_tools = {
+  "gem:ruby-lsp", "gem:ripper-tags",
+  "gem:htmlbeautifier", "gem:erb-formatter",
+}
 
 local function sync_editor_tools()
   packs.load("mason.nvim")
@@ -304,9 +307,18 @@ require("conform").setup({
       if vim.fs.root(path, { ".rubocop.yml" }) then return { "rubocop_mise" } end
       return {}
     end,
-    html = { "htmlbeautifier" },
+    html = { "htmlbeautifier_mise" },
+    eruby = { "erb_format_mise" },
   },
   formatters = {
+    erb_format_mise = {
+      command = "mise",
+      args = { "x", "--", "erb-format", "--stdin" },
+    },
+    htmlbeautifier_mise = {
+      command = "mise",
+      args = { "x", "--", "htmlbeautifier" },
+    },
     standardrb_mise = {
       command = "mise",
       args = { "x", "--", "standardrb", "--fix", "-f", "quiet", "--stderr", "--stdin", "$FILENAME" },
