@@ -236,12 +236,15 @@ local function commit_current_repo()
   local title = vim.trim(vim.fn.input("Commit title: "))
   if title == "" then return end
 
+  -- An empty message produces a title-only commit.
   local message = vim.trim(vim.fn.input("Commit message: "))
-  if message == "" then return end
+
+  local args = { "git", "-C", root, "commit", "-m", title }
+  if message ~= "" then vim.list_extend(args, { "-m", message }) end
 
   operations[root] = "commit"
   vim.system(
-    { "git", "-C", root, "commit", "-m", title, "-m", message },
+    args,
     { text = true, timeout = timeout },
     vim.schedule_wrap(function(result)
       operations[root] = nil
@@ -620,7 +623,7 @@ function M.setup()
     desc = "Fast-forward the current branch", force = true,
   })
   vim.api.nvim_create_user_command("GitCommit", commit_current_repo, {
-    desc = "Commit staged changes with a title and message", force = true,
+    desc = "Commit staged changes with a title and optional message", force = true,
   })
   vim.api.nvim_create_user_command("GitPush", push_current_repo, {
     desc = "Push HEAD to origin after confirmation", force = true,
