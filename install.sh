@@ -230,7 +230,6 @@ brew cleanup
 echo "📝 Setting up macOS system settings..."
 
 # Language
-defaults write ".GlobalPreferences_m" AppleLanguages -array en-GB
 defaults write -globalDomain AppleLanguages -array en-GB
 
 # Pointer Control >  Trackpad Options > Dragging Style: Three Finger Drag
