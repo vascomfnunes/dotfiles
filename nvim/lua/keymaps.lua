@@ -35,6 +35,18 @@ map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
 -- Native LSP completion keeps selection explicit: choose an item first, then
 -- Enter accepts it. Otherwise Enter retains its normal newline behavior.
 map("i", "<C-Space>", function() vim.lsp.completion.get() end, { desc = "Complete" })
+map("i", "<C-j>", function()
+  return vim.fn.pumvisible() == 1 and "<C-n>" or "<C-j>"
+end, { expr = true, desc = "Next completion or newline" })
+map("i", "<C-k>", function()
+  return vim.fn.pumvisible() == 1 and "<C-p>" or "<C-k>"
+end, { expr = true, desc = "Previous completion or digraph" })
+map("i", "<C-l>", function()
+  if vim.fn.pumvisible() ~= 1 then return "<C-l>" end
+
+  local completion = vim.fn.complete_info({ "selected" })
+  return completion.selected >= 0 and "<C-y>" or "<C-n><C-y>"
+end, { expr = true, desc = "Accept completion" })
 map("i", "<CR>", function()
   local completion = vim.fn.complete_info({ "selected" })
   return vim.fn.pumvisible() == 1 and completion.selected >= 0 and "<C-y>" or "<CR>"

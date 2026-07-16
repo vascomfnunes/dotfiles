@@ -339,6 +339,11 @@ function lazy.fzf()
     local actions = require("fzf-lua.actions")
     require("fzf-lua").setup({
       winopts = { height = 0.85, width = 0.80 },
+      keymap = {
+        fzf = {
+          ["ctrl-l"] = "accept",
+        },
+      },
       git = {
         status = {
           actions = {
