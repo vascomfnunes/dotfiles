@@ -54,7 +54,7 @@ fi
 session_id="$($tmux_bin new-session -d -P -F '#{session_id}' \
   -s "$session" -n zsh -c "$HOME")"
 
-"$tmux_bin" split-window -d -h -p 30 \
+"$tmux_bin" split-window -d -h -l '30%' \
   -t "${session_id}:zsh.1" -c "$HOME"
 start_app "${session_id}:zsh.2" pyradio
 
