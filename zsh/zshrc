@@ -47,6 +47,17 @@ mkcd() { mkdir -p "$1" && cd "$1" }
 
 ##### Helper functions
 
+# A bare `tmux` restores the standard workspace after a reboot, or reattaches
+# it when the tmux server is still alive. Explicit commands such as `tmux ls`
+# continue to call tmux directly.
+tmux() {
+  if (( $# == 0 )) && [[ -x "$HOME/.local/bin/tmux-workspace" ]]; then
+    "$HOME/.local/bin/tmux-workspace"
+  else
+    command tmux "$@"
+  fi
+}
+
 # pyradio forces TERM=xterm-256color under tmux and prints a warning;
 # pre-set it to keep startup quiet. On exit, reset the terminal palette
 # (OSC 104) since the theme redefines colors via init_color and

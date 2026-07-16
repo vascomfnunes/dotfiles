@@ -38,7 +38,7 @@ fi
 
 # Fail before installing packages or replacing other configuration if a
 # directory managed as a symlink would be overwritten.
-for path in "$HOME/.config/nvim" "$HOME/.config/pyradio"; do
+for path in "$HOME/.config/nvim" "$HOME/.config/pyradio" "$HOME/.config/tmux/themes"; do
   if [ -e "$path" ] && [ ! -L "$path" ]; then
     echo "Existing non-symlink config found at $path" >&2
     echo "Move it aside before re-running install.sh." >&2
@@ -136,6 +136,7 @@ ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-wea
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-battery-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
+ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
 
 if command -v pinentry-mac >/dev/null 2>&1; then
   ln -sf "$(command -v pinentry-mac)" "$HOME/.local/bin/pinentry-mac"
@@ -185,6 +186,10 @@ fi
 
 if [ ! -f "$HOME/.hushlogin" ]; then
   : > "$HOME/.hushlogin"
+fi
+
+if [ ! -f "$HOME/.tmux-workspace.local" ]; then
+  : > "$HOME/.tmux-workspace.local"
 fi
 
 
