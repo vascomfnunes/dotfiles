@@ -7,6 +7,13 @@ local packs = require("packs")
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
+vim.filetype.add({
+  extension = {
+    scss = "scss",
+    sass = "sass",
+  },
+})
+
 -- Treesitter
 
 local treesitter_languages = {
@@ -52,6 +59,7 @@ local mason_tools = {
   "lua-language-server",
   "tsgo", "eslint-lsp",
   "css-lsp", "html-lsp", "stimulus-language-server",
+  "prettier",
 }
 
 local mise_tools = {
@@ -208,7 +216,12 @@ local servers = {
     cmd = { "vscode-css-language-server", "--stdio" },
     filetypes = { "css", "scss", "less", "sass" },
     root_markers = { "package.json", ".git" },
-    settings = { css = { validate = true, lint = { unknownAtRules = "ignore" } } },
+    settings = {
+      css = { validate = true, lint = { unknownAtRules = "ignore" } },
+      scss = { validate = true, lint = { unknownAtRules = "ignore" } },
+      sass = { validate = true, lint = { unknownAtRules = "ignore" } },
+      less = { validate = true, lint = { unknownAtRules = "ignore" } },
+    },
   },
   html = {
     cmd = { "vscode-html-language-server", "--stdio" },
@@ -309,6 +322,10 @@ require("conform").setup({
     end,
     html = { "htmlbeautifier_mise" },
     eruby = { "erb_format_mise" },
+    css = { "prettier" },
+    scss = { "prettier" },
+    less = { "prettier" },
+    sass = { "prettier" },
   },
   formatters = {
     erb_format_mise = {
