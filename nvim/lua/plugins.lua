@@ -50,7 +50,7 @@ vim.api.nvim_create_autocmd("FileType", {
 
 local mason_tools = {
   "lua-language-server",
-  "typescript-language-server", "eslint-lsp",
+  "tsgo", "eslint-lsp",
   "css-lsp", "html-lsp", "htmlbeautifier",
 }
 
@@ -169,22 +169,35 @@ local servers = {
     cmd = { "vscode-eslint-language-server", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
     root_markers = {
-      ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.yaml",
-      ".eslintrc.yml", ".eslintrc.json", "package.json", "eslint.config.js",
+      ".eslintrc", ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.yaml",
+      ".eslintrc.yml", ".eslintrc.json", "package.json",
+      "eslint.config.js", "eslint.config.mjs", "eslint.config.cjs",
+      "eslint.config.ts", "eslint.config.mts", "eslint.config.cts",
     },
-    settings = { workingDirectory = { mode = "location" }, format = true },
+    settings = {
+      validate = "on",
+      experimental = {},
+      nodePath = "",
+      workingDirectory = { mode = "auto" },
+      format = true,
+    },
   },
-  ts_ls = {
-    cmd = { "typescript-language-server", "--stdio" },
+  tsgo = {
+    cmd = { "tsgo", "--lsp", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-    root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-    init_options = {
-      preferences = {
-        includeCompletionsForModuleExports = true,
-        includeCompletionsWithClassMemberSnippets = true,
-        includeCompletionsWithInsertText = true,
-        includeCompletionsWithObjectLiteralMethodSnippets = true,
-        includeCompletionsWithSnippetText = true,
+    root_markers = {
+      "package-lock.json", "yarn.lock", "pnpm-lock.yaml", "bun.lockb", "bun.lock", ".git",
+    },
+    settings = {
+      typescript = {
+        inlayHints = {
+          parameterNames = { enabled = "literals", suppressWhenArgumentMatchesName = true },
+          parameterTypes = { enabled = true },
+          variableTypes = { enabled = true },
+          propertyDeclarationTypes = { enabled = true },
+          functionLikeReturnTypes = { enabled = true },
+          enumMemberValues = { enabled = true },
+        },
       },
     },
   },
