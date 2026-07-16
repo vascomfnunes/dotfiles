@@ -143,7 +143,7 @@ Neovim installs plugins through its built-in `vim.pack` support and records
 their revisions in `nvim/nvim-pack-lock.json`.
 
 - `:PackUpdate` updates configured plugins.
-- `:PackSync` restores plugin revisions from the committed lockfile.
+- `:PackRestore` restores plugin revisions from the committed lockfile.
 
 Review and commit lockfile changes after intentionally updating plugins.
 

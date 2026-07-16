@@ -7,13 +7,6 @@ local packs = require("packs")
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
-vim.filetype.add({
-  extension = {
-    scss = "scss",
-    sass = "sass",
-  },
-})
-
 -- Treesitter
 
 local treesitter_languages = {
@@ -85,10 +78,6 @@ end
 
 vim.api.nvim_create_user_command("ToolsSync", sync_editor_tools, {
   desc = "Install configured editor tools",
-  force = true,
-})
-vim.api.nvim_create_user_command("MasonToolsSync", sync_editor_tools, {
-  desc = "Install configured editor tools (legacy name)",
   force = true,
 })
 
@@ -369,6 +358,15 @@ end
 
 local lazy = {}
 
+local function plugin_loader(package, module, options)
+  return function()
+    setup_once(package, function()
+      packs.load(package)
+      require(module).setup(options or {})
+    end)
+  end
+end
+
 function lazy.fzf()
   setup_once("fzf-lua", function()
     packs.load("fzf-lua")
@@ -404,19 +402,8 @@ function lazy.mini_files()
   end)
 end
 
-function lazy.flash()
-  setup_once("flash.nvim", function()
-    packs.load("flash.nvim")
-    require("flash").setup({})
-  end)
-end
-
-function lazy.gitsigns()
-  setup_once("gitsigns.nvim", function()
-    packs.load("gitsigns.nvim")
-    require("gitsigns").setup({ current_line_blame = true })
-  end)
-end
+lazy.flash = plugin_loader("flash.nvim", "flash")
+lazy.gitsigns = plugin_loader("gitsigns.nvim", "gitsigns", { current_line_blame = true })
 
 function lazy.codediff()
   setup_once("codediff.nvim", function()
@@ -502,35 +489,10 @@ function lazy.git_conflict()
   end)
 end
 
-function lazy.treesitter_context()
-  setup_once("nvim-treesitter-context", function()
-    packs.load("nvim-treesitter-context")
-    require("treesitter-context").setup({ max_lines = 3 })
-  end)
-end
-
-function lazy.grug_far()
-  setup_once("grug-far.nvim", function()
-    packs.load("grug-far.nvim")
-    require("grug-far").setup({ transient = true })
-  end)
-end
-
-function lazy.render_markdown()
-  setup_once("render-markdown.nvim", function()
-    packs.load("render-markdown.nvim")
-    require("render-markdown").setup({ latex = { enabled = false } })
-  end)
-end
-
-function lazy.agentic()
-  setup_once("agentic.nvim", function()
-    packs.load("agentic.nvim")
-    require("agentic").setup({
-      provider = "codex-acp",
-    })
-  end)
-end
+lazy.treesitter_context = plugin_loader("nvim-treesitter-context", "treesitter-context", { max_lines = 3 })
+lazy.grug_far = plugin_loader("grug-far.nvim", "grug-far", { transient = true })
+lazy.render_markdown = plugin_loader("render-markdown.nvim", "render-markdown", { latex = { enabled = false } })
+lazy.agentic = plugin_loader("agentic.nvim", "agentic", { provider = "codex-acp" })
 
 function lazy.neotest()
   setup_once("neotest", function()

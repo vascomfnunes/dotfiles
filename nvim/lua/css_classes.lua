@@ -28,6 +28,25 @@ local function sorted_keys(values)
   return result
 end
 
+local function parse_conventional_selectors(text, classes)
+  local uncommented = text:gsub("/%*.-%*/", "")
+  for selector in uncommented:gmatch("([^{}]+){") do
+    for name in selector:gmatch("%.([%a_%-][%w_%-]*)") do
+      classes[name] = true
+    end
+  end
+
+  -- Indented Sass has no braces. Restrict this fallback to lines beginning
+  -- with a class selector so property values such as `.5rem` are ignored.
+  for line in uncommented:gmatch("[^\r\n]+") do
+    if line:match("^%s*%.") then
+      for name in line:gmatch("%.([%a_%-][%w_%-]*)") do
+        classes[name] = true
+      end
+    end
+  end
+end
+
 function M.parse(text)
   local classes = {}
   local ok, parser = pcall(vim.treesitter.get_string_parser, text, "css")
@@ -37,16 +56,10 @@ function M.parse(text)
     for _, node in class_query:iter_captures(tree:root(), text, 0, -1) do
       classes[vim.treesitter.get_node_text(node, text)] = true
     end
-  else
-    -- Keep completions working before the CSS parser has been installed. This
-    -- intentionally handles only conventional class selectors.
-    local selectors = text:gsub("/%*.-%*/", "")
-    for selector in selectors:gmatch("([^{}]+){") do
-      for name in selector:gmatch("%.([%a_%-][%w_%-]*)") do
-        classes[name] = true
-      end
-    end
   end
+  -- Keep conventional CSS and indented Sass working before the parser is
+  -- installed, and when the CSS parser cannot understand the input.
+  if not ok or next(classes) == nil then parse_conventional_selectors(text, classes) end
   return sorted_keys(classes)
 end
 

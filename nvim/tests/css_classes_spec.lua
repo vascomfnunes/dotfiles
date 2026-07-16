@@ -16,6 +16,7 @@ vim.fn.writefile({
   ".vc-body-main-content { display: grid; }",
 }, repository .. "/app/assets/stylesheets/application.css")
 vim.fn.writefile({ ".panel { padding: 1rem; }" }, repository .. "/app/components/panel.scss")
+vim.fn.writefile({ ".sass-panel", "  padding: 1rem" }, repository .. "/app/components/panel.sass")
 vim.fn.writefile({ ".dependency { color: red; }" }, repository .. "/node_modules/example/index.css")
 vim.fn.writefile({ ".generated { color: red; }" }, repository .. "/public/assets/application.css")
 vim.fn.writefile({ '<div class="vc-body-ma">Button</div>' }, repository .. "/index.html")
@@ -24,6 +25,7 @@ vim.fn.writefile({ '<div class="button panel">Button</div>' }, repository .. "/d
 vim.fn.writefile({ '<%= tag.div class: "panel button" %>' }, repository .. "/definition.html.erb")
 
 assert(vim.deep_equal(css_classes.parse(".alpha:hover, .beta-name {}"), { "alpha", "beta-name" }))
+assert(vim.deep_equal(css_classes.parse(".alpha\n  color: red\n.beta:hover\n  color: blue"), { "alpha", "beta" }))
 assert(css_classes.is_completion_context('<div class="button'))
 assert(css_classes.is_completion_context('<%= tag.div class: "button'))
 assert(not css_classes.is_completion_context('<div id="button'))
@@ -36,6 +38,7 @@ assert(project.classes.button)
 assert(project.classes["button--primary"])
 assert(project.classes.card)
 assert(project.classes.panel)
+assert(project.classes["sass-panel"])
 assert(not project.classes.hover)
 assert(not project.classes.dependency)
 assert(not project.classes.generated)

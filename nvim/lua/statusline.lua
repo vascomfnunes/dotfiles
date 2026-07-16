@@ -57,10 +57,6 @@ local function render_progress()
     parts[#parts + 1] = message
   end
   progress = vim.fn.strcharpart(table.concat(parts, " | "), 0, 60)
-  M.redraw()
-end
-
-function M.redraw()
   vim.cmd.redrawstatus()
 end
 

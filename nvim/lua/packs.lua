@@ -119,9 +119,6 @@ return {
       packadd(name)
     end
   end,
-  install_lazy = function()
-    vim.pack.add(lazy_plugins, { confirm = false, load = false })
-  end,
   install_all = function()
     vim.pack.add(eager_plugins, { confirm = false, load = true })
     vim.pack.add(lazy_plugins, { confirm = false, load = false })
