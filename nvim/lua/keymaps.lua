@@ -48,19 +48,6 @@ map({ "n", "x", "o" }, "s", function()
   require("flash").jump()
 end, { desc = "Flash" })
 
--- Git helpers
-map("n", "<leader>gn", function()
-  local newbranch = vim.fn.input("New branch name: ")
-  if newbranch ~= "" then
-    local result = vim.system({ "git", "checkout", "-b", newbranch }):wait()
-    if result.code ~= 0 then
-      vim.notify("Failed to create branch: " .. newbranch, vim.log.levels.ERROR)
-    else
-      vim.notify("Created branch: " .. newbranch, vim.log.levels.INFO)
-    end
-  end
-end, { desc = "Create new branch" })
-
 -- Fzf-lua
 -- Each picker loads fzf-lua on first use.
 local function fzf(command, fzf_opts)
@@ -119,7 +106,8 @@ end, { desc = "Toggle inlay hints" })
 
 local function selected_git_branch(selected)
   if not selected[1] then return nil end
-  return selected[1]:match("^[%*+]*[%s]*[(]?([^%s)]+)")
+  local line = selected[1]:gsub("\27%[[0-9;]*m", "")
+  return line:match("^%s*[%*+]?%s*[(]?([^%s)]+)")
 end
 
 local function current_git_file()
@@ -145,7 +133,7 @@ local function current_git_file()
     return nil
   end
 
-  return relative
+  return relative, file
 end
 
 local function git_output(args)
@@ -180,21 +168,53 @@ map("n", "<leader>fg", fzf("live_grep"), { desc = "Grep" })
 map("n", "<leader>fw", fzf("grep_cword"), { desc = "Grep word" })
 map("n", "<leader>fr", fzf("resume"), { desc = "Resume" })
 
--- Git Plugins
-map("n", "<leader>gg", function()
-  vim.g.dotfiles_lazy.neogit()
-  require("neogit").open()
-end, { desc = "Neogit" })
-map("n", "<leader>gx", "<cmd>GitFetch<CR>", { desc = "Fetch remote updates" })
-map("n", "<leader>gP", "<cmd>GitPull<CR>", { desc = "Pull (fast-forward only)" })
-map("n", "<leader>gc", function()
+-- Git
+map("n", "<leader>gc", "<cmd>GitCommit<CR>", { desc = "Commit staged changes" })
+map("n", "<leader>gp", "<cmd>GitPull<CR>", { desc = "Pull (fast-forward only)" })
+map("n", "<leader>gP", "<cmd>GitPush<CR>", { desc = "Push HEAD to origin" })
+map("n", "<leader>gf", "<cmd>GitFetch<CR>", { desc = "Fetch remote updates" })
+map("n", "<leader>gi", "<cmd>GitRebaseInteractive<CR>", { desc = "Interactive rebase" })
+map("n", "<leader>gk", "<cmd>GitContinue<CR>", { desc = "Continue Git operation" })
+map("n", "<leader>gQ", "<cmd>GitAbort<CR>", { desc = "Abort Git operation" })
+map("n", "<leader>ga", "<cmd>GitAmend<CR>", { desc = "Amend commit" })
+map("n", "<leader>gA", "<cmd>GitAmendNow<CR>", { desc = "Amend commit with current date" })
+map("n", "<leader>gm", function()
+  vim.g.dotfiles_lazy.fzf()
+  require("fzf-lua").git_branches({
+    prompt = "Merge branch> ",
+    actions = {
+      ["enter"] = function(selected)
+        local branch = selected_git_branch(selected)
+        if not branch then
+          vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
+          return
+        end
+
+        require("git").merge(branch)
+      end,
+    },
+  })
+end, { desc = "Merge branch" })
+map("n", "<leader>gn", "<cmd>GitBranchNew<CR>", { desc = "Create new branch" })
+map("n", "<leader>gC", function()
+  if not require("git").can_checkout() then return end
+
+  vim.g.dotfiles_lazy.fzf()
+  require("fzf-lua").git_branches({
+    prompt = "Checkout branch> ",
+  })
+end, { desc = "Checkout branch" })
+map("n", "<leader>gs", fzf("git_status"), { desc = "Status / changed files" })
+
+-- Infrequent copy actions live under the Git yank subgroup.
+map("n", "<leader>gyb", function()
   copy_git_output({ "git", "branch", "--show-current" }, "Copied branch")
 end, { desc = "Copy branch" })
-map("n", "<leader>gC", function()
+map("n", "<leader>gyc", function()
   copy_git_output({ "git", "rev-parse", "--short", "HEAD" }, "Copied commit")
 end, { desc = "Copy commit" })
-map("n", "<leader>gf", fzf("git_status"), { desc = "Changed files" })
-map("n", "<leader>go", fzf("git_branches"), { desc = "Checkout branch" })
+
+-- Diffs and history
 map("n", "<leader>gb", function()
   vim.g.dotfiles_lazy.fzf()
   require("fzf-lua").git_branches({
@@ -213,7 +233,7 @@ map("n", "<leader>gb", function()
     },
   })
 end, { desc = "Compare branch" })
-map("n", "<leader>gB", function()
+map("n", "<leader>gF", function()
   local file = current_git_file()
   if not file then return end
 
@@ -234,30 +254,29 @@ map("n", "<leader>gB", function()
     },
   })
 end, { desc = "Compare file with branch" })
-map("n", "<leader>gs", fzf("git_stash"), { desc = "Stashes" })
-map("n", "<leader>gS", function()
-  local message = vim.fn.input("Stash message: ")
-  if message == "" then return end
-
-  local result = vim.system({ "git", "stash", "push", "-m", message }, { text = true }):wait()
-  if result.code ~= 0 then
-    vim.notify(vim.trim(result.stderr), vim.log.levels.ERROR)
-    return
-  end
-
-  vim.notify(vim.trim(result.stdout), vim.log.levels.INFO)
-end, { desc = "Create stash" })
-map("n", "<leader>gp", gitsigns_action("preview_hunk"), { desc = "Preview hunk" })
-map("n", "<leader>gr", gitsigns_action("reset_hunk"), { desc = "Reset hunk" })
-map("n", "<leader>gR", gitsigns_action("reset_buffer"), { desc = "Reset buffer" })
 map("n", "<leader>gd", function()
   vim.g.dotfiles_lazy.codediff()
   vim.cmd.CodeDiff()
-end, { desc = "Diff Project" })
-map("n", "<leader>gF", function()
+end, { desc = "Diff project" })
+map("n", "<leader>gh", function()
+  local _, file = current_git_file()
+  if not file then return end
+
   vim.g.dotfiles_lazy.codediff()
-  vim.cmd("CodeDiff history %")
-end, { desc = "File History" })
+  vim.cmd("CodeDiff history " .. vim.fn.fnameescape(file))
+end, { desc = "File history" })
+map("n", "<leader>gL", function()
+  if not require("git").can_checkout() then return end
+
+  vim.g.dotfiles_lazy.fzf()
+  require("fzf-lua").git_reflog()
+end, { desc = "Reflog" })
+
+-- Stashes and hunks
+map("n", "<leader>gt", fzf("git_stash"), { desc = "Stashes" })
+map("n", "<leader>gT", "<cmd>GitStash<CR>", { desc = "Create stash" })
+map("n", "<leader>gr", gitsigns_action("reset_hunk"), { desc = "Reset hunk" })
+map("n", "<leader>gR", gitsigns_action("reset_buffer"), { desc = "Reset buffer" })
 
 -- Rails/Ruby
 local function rails_find_files(cwd, prompt_title)

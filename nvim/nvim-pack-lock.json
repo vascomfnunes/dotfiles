@@ -84,10 +84,6 @@
       "rev": "c30ec60393b256427512c6996a2b37d9cbcbb66a",
       "src": "https://github.com/nvim-mini/mini.surround"
     },
-    "neogit": {
-      "rev": "95295edaa26e8e8db5a9bc4119256e602311c6bc",
-      "src": "https://github.com/NeogitOrg/neogit"
-    },
     "neotest": {
       "rev": "4e2cd42c4252ee9d2435571d9adcdbc1d47931fe",
       "src": "https://github.com/nvim-neotest/neotest"

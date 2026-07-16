@@ -16,7 +16,7 @@ vim.g.loaded_zipPlugin = 1
 require("options")
 require("keymaps")
 require("plugins")
-require("git_fetch").setup()
+require("git").setup()
 
 -- Theme
 

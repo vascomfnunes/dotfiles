@@ -32,7 +32,6 @@ local lazy_plugins = {
   { src = "https://github.com/olimorris/neotest-rspec" },
   { src = "https://github.com/zidhuss/neotest-minitest" },
   { src = "https://github.com/ibhagwan/fzf-lua" },
-  { src = "https://github.com/NeogitOrg/neogit" },
   { src = "https://github.com/esmuellert/codediff.nvim" },
   { src = "https://github.com/akinsho/git-conflict.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },

@@ -303,7 +303,7 @@ vim.api.nvim_create_autocmd("LspDetach", {
 
 require("lualine").setup({
   sections = {
-    lualine_b = { "branch", require("git_fetch").status },
+    lualine_b = { "branch", require("git").status },
     lualine_c = { "filename" },
     lualine_x = {
       function() return lsp_progress end,
@@ -360,7 +360,17 @@ end
 function lazy.fzf()
   setup_once("fzf-lua", function()
     packs.load("fzf-lua")
-    require("fzf-lua").setup({ winopts = { height = 0.85, width = 0.80 } })
+    local actions = require("fzf-lua.actions")
+    require("fzf-lua").setup({
+      winopts = { height = 0.85, width = 0.80 },
+      git = {
+        status = {
+          actions = {
+            ["ctrl-s"] = { fn = actions.git_stage_unstage, reload = true },
+          },
+        },
+      },
+    })
   end)
 end
 
@@ -375,18 +385,6 @@ function lazy.flash()
   setup_once("flash.nvim", function()
     packs.load("flash.nvim")
     require("flash").setup({})
-  end)
-end
-
-function lazy.neogit()
-  setup_once("neogit", function()
-    lazy.codediff()
-    packs.load("neogit")
-    require("neogit").setup({
-      integrations = { codediff = true, diffview = false },
-      diff_viewer = "codediff",
-      sections = { stashes = { hidden = true } },
-    })
   end)
 end
 
@@ -567,6 +565,7 @@ wk.setup({ preset = "classic", delay = 200 })
 wk.add({
   { "<leader>a", group = "AI", mode = { "n", "v" } },
   { "<leader>g", group = "Git", mode = { "n", "v" } },
+  { "<leader>gy", group = "Copy", mode = { "n", "v" } },
   { "<leader>c", group = "Code/Diagnostics", mode = { "n", "v" } },
   { "<leader>f", group = "Find/Search", mode = { "n", "v" } },
   { "<leader>p", group = "Packages", mode = { "n", "v" } },
