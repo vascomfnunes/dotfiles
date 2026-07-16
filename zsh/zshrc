@@ -3,9 +3,22 @@
 export GPG_TTY=$TTY
 
 
+##### State and cache directories
+
+# Keep mutable shell state (history) and regenerated files (init caches,
+# compdump) out of the config directory.
+ZSH_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
+ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
+mkdir -p "$ZSH_STATE_DIR" "$ZSH_CACHE_DIR"
+
+
 ##### History
 
-HISTFILE="$ZDOTDIR/.zhistory"
+HISTFILE="$ZSH_STATE_DIR/history"
+# Preserve history from the previous location in the config directory.
+if [[ ! -f "$HISTFILE" && -f "$ZDOTDIR/.zhistory" ]]; then
+  mv "$ZDOTDIR/.zhistory" "$HISTFILE"
+fi
 SAVEHIST=50000
 # Keep HISTSIZE above SAVEHIST so hist_expire_dups_first has headroom
 # to drop duplicates before trimming unique entries.
@@ -85,7 +98,7 @@ source_command_cache() {
   local bin_path
   bin_path="$(command -v "$bin")" || return
 
-  local cache="${ZDOTDIR}/.${name}.zsh"
+  local cache="${ZSH_CACHE_DIR}/${name}.zsh"
 
   if [[ ! -r "$cache" ]] || [[ "$cache" -ot "$bin_path" ]]; then
     local cache_tmp="${cache}.tmp.$$"
@@ -127,7 +140,7 @@ autoload -Uz compinit
 zmodload zsh/datetime
 zmodload zsh/stat
 
-zcompdump="${ZDOTDIR}/.zcompdump"
+zcompdump="${ZSH_CACHE_DIR}/zcompdump"
 
 if [[ ! -f "$zcompdump" ]] || (( EPOCHSECONDS - $(zstat +mtime -- "$zcompdump") > 86400 )); then
   compinit -d "$zcompdump"
