@@ -24,9 +24,7 @@ end
 
 -- Installed on demand and loaded by the helpers in plugins.lua.
 local lazy_plugins = {
-  { src = "https://github.com/stevearc/overseer.nvim" },
   { src = "https://github.com/mason-org/mason.nvim" },
-  { src = "https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim" },
   { src = "https://github.com/nvim-neotest/neotest" },
   { src = "https://github.com/nvim-neotest/nvim-nio" },
   { src = "https://github.com/olimorris/neotest-rspec" },
@@ -36,16 +34,8 @@ local lazy_plugins = {
   { src = "https://github.com/akinsho/git-conflict.nvim" },
   { src = "https://github.com/lewis6991/gitsigns.nvim" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter-context" },
-  { src = "https://github.com/hrsh7th/nvim-cmp" },
-  { src = "https://github.com/hrsh7th/cmp-buffer" },
-  { src = "https://github.com/hrsh7th/cmp-path" },
-  { src = "https://github.com/L3MON4D3/LuaSnip" },
-  { src = "https://github.com/saadparwaiz1/cmp_luasnip" },
-  { src = "https://github.com/rafamadriz/friendly-snippets" },
   { src = "https://github.com/nvim-mini/mini.files" },
-  { src = "https://github.com/folke/trouble.nvim" },
   { src = "https://github.com/MagicDuck/grug-far.nvim" },
-  { src = "https://github.com/hedyhli/outline.nvim" },
   { src = "https://github.com/MeanderingProgrammer/render-markdown.nvim" },
   { src = "https://github.com/folke/flash.nvim" },
   { src = "https://github.com/carlos-algms/agentic.nvim" },
@@ -78,16 +68,12 @@ vim.api.nvim_create_autocmd("PackChanged", { callback = on_pack_changed })
 local eager_plugins = {
   { src = "https://github.com/catppuccin/nvim", name = "catppuccin" },
   { src = "https://github.com/nvim-treesitter/nvim-treesitter", version = "main" },
-  { src = "https://github.com/hrsh7th/cmp-nvim-lsp" },
-  { src = "https://github.com/nvim-lua/plenary.nvim" },
   { src = "https://github.com/stevearc/conform.nvim" },
   { src = "https://github.com/nvim-mini/mini.pairs" },
-  { src = "https://github.com/nvim-lualine/lualine.nvim" },
   { src = "https://github.com/nvim-tree/nvim-web-devicons" },
   { src = "https://github.com/nvim-mini/mini.surround" },
   { src = "https://github.com/jlcrochet/vim-rbs" },
   { src = "https://github.com/folke/which-key.nvim" },
-  { src = "https://github.com/mrjones2014/smart-splits.nvim" },
 }
 
 -- Existing eager packages use packadd! during init: their Lua modules are

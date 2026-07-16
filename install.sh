@@ -213,6 +213,8 @@ fi
 if command -v mise >/dev/null 2>&1; then
   # Trust the config file to avoid the security prompt
   MISE_TRUSTED_CONFIG_PATHS="$DOTFILES_DIR/mise/config.toml" mise trust "$DOTFILES_DIR/mise/config.toml"
+  echo "💎 Installing Mise runtimes and developer tools..."
+  MISE_TRUSTED_CONFIG_PATHS="$DOTFILES_DIR/mise/config.toml" mise install --yes
 fi
 
 

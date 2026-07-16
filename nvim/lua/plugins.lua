@@ -2,8 +2,8 @@ local packs = require("packs")
 
 -- Tool paths
 
--- Mason tools should win over system binaries. Ruby tooling is deliberately
--- excluded: Mise launches it inside each project's Ruby and Bundler context.
+-- Mason tools should win over system binaries. Ruby tooling is managed by
+-- Mise and launched through it so each project's Ruby context is available.
 local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
 vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
 
@@ -52,20 +52,59 @@ local mason_tools = {
   "css-lsp", "html-lsp", "htmlbeautifier",
 }
 
-vim.api.nvim_create_user_command("MasonToolsSync", function()
-  packs.load_many({ "mason.nvim", "mason-tool-installer.nvim" })
+local mise_tools = { "gem:ruby-lsp", "gem:ripper-tags" }
+
+local function sync_editor_tools()
+  packs.load("mason.nvim")
   require("mason").setup()
-  require("mason-tool-installer").setup({
-    ensure_installed = mason_tools,
-    auto_update = false,
-    run_on_start = false,
-  })
-  vim.cmd.MasonToolsInstall()
-end, { desc = "Install configured Mason tools" })
+  vim.cmd("MasonInstall " .. table.concat(mason_tools, " "))
+  local command = { "mise", "install" }
+  vim.list_extend(command, mise_tools)
+  vim.system(command, { text = true }, vim.schedule_wrap(function(result)
+    if result.code == 0 then
+      vim.notify("Mise editor tools are installed", vim.log.levels.INFO)
+    else
+      local message = vim.trim(result.stderr or "")
+      vim.notify(message ~= "" and message or "Mise tool installation failed", vim.log.levels.ERROR)
+    end
+  end))
+end
+
+vim.api.nvim_create_user_command("ToolsSync", sync_editor_tools, {
+  desc = "Install configured editor tools",
+})
+vim.api.nvim_create_user_command("MasonToolsSync", sync_editor_tools, {
+  desc = "Install configured editor tools (legacy name)",
+})
 
 -- Native LSP config
 
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+
+-- Neovim 0.12 handles LSP completion items and snippets natively. Extend the
+-- server trigger list so completion remains automatic while typing words, as
+-- it was with nvim-cmp.
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    if not client:supports_method("textDocument/completion") then return end
+
+    local provider = client.server_capabilities.completionProvider
+    if provider then
+      local characters = provider.triggerCharacters or {}
+      local present = {}
+      for _, character in ipairs(characters) do present[character] = true end
+      for character in ("_0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"):gmatch(".") do
+        if not present[character] then characters[#characters + 1] = character end
+      end
+      provider.triggerCharacters = characters
+    end
+    vim.lsp.completion.enable(true, client.id, ev.buf, {
+      autotrigger = true,
+      convert = require("completion").convert,
+    })
+  end,
+})
 
 -- ruby-lsp currently behaves better with full semantic token delta disabled.
 local ruby_caps = vim.deepcopy(capabilities)
@@ -184,11 +223,11 @@ vim.api.nvim_create_user_command("GemTags", function()
     vim.schedule(function()
       vim.g.gemtags_running = nil
       vim.notify(msg, level)
-      require("lualine").refresh({ place = { "statusline" } })
+      vim.cmd.redrawstatus()
     end)
   end
   vim.g.gemtags_running = true
-  require("lualine").refresh({ place = { "statusline" } })
+  vim.cmd.redrawstatus()
   vim.system({ "mise", "x", "--", "bundle", "list", "--paths" }, { cwd = root, text = true }, function(list)
     if list.code ~= 0 then
       done("bundle list failed:\n" .. (list.stderr or ""), vim.log.levels.ERROR)
@@ -246,75 +285,9 @@ require("conform").setup({
   },
 })
 
--- Surface LSP work ($/progress, e.g. ruby-lsp indexing) in the statusline.
--- Tracked per progress token instead of vim.lsp.status(), which also renders
--- `end` events and therefore never clears the last message.
-local lsp_progress = ""
-local lsp_progress_groups = {}
-
-local function render_lsp_progress()
-  local parts = {}
-  for _, group in pairs(lsp_progress_groups) do
-    local msg = group.title
-    -- Some servers (ruby-lsp) restate the percentage in `message`; skip it
-    -- rather than showing two counters.
-    if group.message and not group.message:match("^%d+%%") then
-      msg = msg .. ": " .. group.message
-    end
-    if group.percentage then
-      msg = string.format("%d%% %s", group.percentage, msg)
-    end
-    parts[#parts + 1] = msg
-  end
-  local status = vim.fn.strcharpart(table.concat(parts, " | "), 0, 60)
-  -- Escape % so progress text can't be parsed as statusline items (E539).
-  lsp_progress = (status:gsub("%%", "%%%%"))
-  require("lualine").refresh({ place = { "statusline" } })
-end
-
-vim.api.nvim_create_autocmd("LspProgress", {
-  callback = function(ev)
-    local value = ev.data.params.value
-    if type(value) ~= "table" or not value.kind then return end
-    local key = ev.data.client_id .. ":" .. tostring(ev.data.params.token)
-    if value.kind == "end" then
-      lsp_progress_groups[key] = nil
-    else
-      local group = lsp_progress_groups[key] or {}
-      group.title = value.title or group.title or ""
-      group.message = value.message or group.message
-      group.percentage = value.percentage or group.percentage
-      lsp_progress_groups[key] = group
-    end
-    render_lsp_progress()
-  end,
-})
-
--- A crashed or stopped server never sends its `end` events.
-vim.api.nvim_create_autocmd("LspDetach", {
-  callback = function(ev)
-    local prefix = ev.data.client_id .. ":"
-    for key in pairs(lsp_progress_groups) do
-      if vim.startswith(key, prefix) then lsp_progress_groups[key] = nil end
-    end
-    render_lsp_progress()
-  end,
-})
-
-require("lualine").setup({
-  sections = {
-    lualine_b = { "branch", require("git").status },
-    lualine_c = { "filename" },
-    lualine_x = {
-      function() return lsp_progress end,
-      function() return vim.g.gemtags_running and "generating tags…" or "" end,
-      "filetype",
-    },
-  },
-})
+require("statusline").setup()
 require("mini.pairs").setup({})
 require("mini.surround").setup({})
-require("smart-splits").setup({})
 
 -- Lazy plugin setup
 
@@ -327,35 +300,6 @@ local function setup_once(name, callback)
 end
 
 local lazy = {}
-
-function lazy.cmp()
-  setup_once("nvim-cmp", function()
-    packs.load_many({ "nvim-cmp", "LuaSnip", "cmp_luasnip", "cmp-buffer", "cmp-path", "friendly-snippets" })
-    local cmp = require("cmp")
-    local luasnip = require("luasnip")
-    require("luasnip.loaders.from_vscode").lazy_load()
-
-    cmp.setup({
-      snippet = { expand = function(args) luasnip.lsp_expand(args.body) end },
-      mapping = cmp.mapping.preset.insert({
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<CR>"]      = cmp.mapping.confirm({ select = false }),
-        ["<Tab>"] = cmp.mapping(function(fallback)
-          if luasnip.expand_or_jumpable() then luasnip.expand_or_jump() else fallback() end
-        end, { "i", "s" }),
-        ["<S-Tab>"] = cmp.mapping(function(fallback)
-          if luasnip.jumpable(-1) then luasnip.jump(-1) else fallback() end
-        end, { "i", "s" }),
-      }),
-      sources = {
-        { name = "nvim_lsp" },
-        { name = "luasnip" },
-        { name = "buffer" },
-        { name = "path" },
-      },
-    })
-  end)
-end
 
 function lazy.fzf()
   setup_once("fzf-lua", function()
@@ -443,7 +387,36 @@ function lazy.git_conflict()
   setup_once("git-conflict.nvim", function()
     packs.load("git-conflict.nvim")
     require("git-conflict").setup({
-      disable_diagnostics = true,
+      -- Upstream still uses the pre-0.12 diagnostic API for this option.
+      disable_diagnostics = false,
+    })
+
+    local diagnostics_enabled = {}
+    local group = vim.api.nvim_create_augroup("DotfilesGitConflictDiagnostics", { clear = true })
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "GitConflictDetected",
+      callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        if diagnostics_enabled[buf] == nil then
+          diagnostics_enabled[buf] = vim.diagnostic.is_enabled({ bufnr = buf })
+        end
+        vim.diagnostic.enable(false, { bufnr = buf })
+      end,
+    })
+    vim.api.nvim_create_autocmd("User", {
+      group = group,
+      pattern = "GitConflictResolved",
+      callback = function()
+        local buf = vim.api.nvim_get_current_buf()
+        local was_enabled = diagnostics_enabled[buf]
+        diagnostics_enabled[buf] = nil
+        if was_enabled ~= nil then vim.diagnostic.enable(was_enabled, { bufnr = buf }) end
+      end,
+    })
+    vim.api.nvim_create_autocmd("BufWipeout", {
+      group = group,
+      callback = function(ev) diagnostics_enabled[ev.buf] = nil end,
     })
   end)
 end
@@ -455,13 +428,6 @@ function lazy.treesitter_context()
   end)
 end
 
-function lazy.trouble()
-  setup_once("trouble.nvim", function()
-    packs.load("trouble.nvim")
-    require("trouble").setup({})
-  end)
-end
-
 function lazy.grug_far()
   setup_once("grug-far.nvim", function()
     packs.load("grug-far.nvim")
@@ -469,24 +435,10 @@ function lazy.grug_far()
   end)
 end
 
-function lazy.outline()
-  setup_once("outline.nvim", function()
-    packs.load("outline.nvim")
-    require("outline").setup({ outline_window = { width = 30 } })
-  end)
-end
-
 function lazy.render_markdown()
   setup_once("render-markdown.nvim", function()
     packs.load("render-markdown.nvim")
     require("render-markdown").setup({ latex = { enabled = false } })
-  end)
-end
-
-function lazy.overseer()
-  setup_once("overseer.nvim", function()
-    packs.load("overseer.nvim")
-    require("overseer").setup({ templates = { "builtin" } })
   end)
 end
 
@@ -529,11 +481,6 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = lazy.render_markdown,
 })
 
-vim.api.nvim_create_autocmd("InsertEnter", {
-  once = true,
-  callback = lazy.cmp,
-})
-
 -- Open directories with mini.files since netrw is disabled (e.g. `nvim .`).
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function(ev)
@@ -542,14 +489,6 @@ vim.api.nvim_create_autocmd("BufEnter", {
     lazy.mini_files()
     vim.bo[ev.buf].buflisted = false
     require("mini.files").open(name)
-  end,
-})
-
--- Avoid making the first insert pay the full completion/snippet setup cost.
-vim.api.nvim_create_autocmd("BufReadPost", {
-  once = true,
-  callback = function()
-    vim.defer_fn(lazy.cmp, 1000)
   end,
 })
 

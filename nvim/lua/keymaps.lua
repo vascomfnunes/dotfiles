@@ -6,14 +6,14 @@ local uv = vim.uv
 vim.g.mapleader = " "
 
 -- Seamless window movement/resizing across Neovim and tmux.
-map("n", "<C-h>", function() require("smart-splits").move_cursor_left() end, opts)
-map("n", "<C-j>", function() require("smart-splits").move_cursor_down() end, opts)
-map("n", "<C-k>", function() require("smart-splits").move_cursor_up() end, opts)
-map("n", "<C-l>", function() require("smart-splits").move_cursor_right() end, opts)
-map("n", "<M-h>", function() require("smart-splits").resize_left() end, opts)
-map("n", "<M-j>", function() require("smart-splits").resize_down() end, opts)
-map("n", "<M-k>", function() require("smart-splits").resize_up() end, opts)
-map("n", "<M-l>", function() require("smart-splits").resize_right() end, opts)
+map("n", "<C-h>", function() require("splits").move("left") end, opts)
+map("n", "<C-j>", function() require("splits").move("down") end, opts)
+map("n", "<C-k>", function() require("splits").move("up") end, opts)
+map("n", "<C-l>", function() require("splits").move("right") end, opts)
+map("n", "<M-h>", function() require("splits").resize("left") end, opts)
+map("n", "<M-j>", function() require("splits").resize("down") end, opts)
+map("n", "<M-k>", function() require("splits").resize("up") end, opts)
+map("n", "<M-l>", function() require("splits").resize("right") end, opts)
 
 -- Core editing
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
@@ -31,6 +31,14 @@ map("n", "<leader>ql", function()
 end, { desc = "Toggle quickfix" })
 
 map("n", "<Esc>", "<cmd>nohlsearch<CR>", opts)
+
+-- Native LSP completion keeps selection explicit: choose an item first, then
+-- Enter accepts it. Otherwise Enter retains its normal newline behavior.
+map("i", "<C-Space>", function() vim.lsp.completion.get() end, { desc = "Complete" })
+map("i", "<CR>", function()
+  local completion = vim.fn.complete_info({ "selected" })
+  return vim.fn.pumvisible() == 1 and completion.selected >= 0 and "<C-y>" or "<CR>"
+end, { expr = true, desc = "Accept completion or newline" })
 
 vim.api.nvim_create_autocmd("TextYankPost", {
   callback = function()
@@ -337,13 +345,14 @@ map("n", "<leader>al", agentic("rotate_layout"), { desc = "Rotate layout" })
 
 -- UI
 map("n", "<leader>cx", function()
-  vim.g.dotfiles_lazy.trouble()
-  vim.cmd("Trouble diagnostics toggle")
+  local list = vim.fn.getqflist({ title = 0, winid = 0 })
+  if list.winid ~= 0 and list.title == "Diagnostics" then
+    vim.cmd.cclose()
+  else
+    vim.diagnostic.setqflist({ title = "Diagnostics", open = true })
+  end
 end, { desc = "Diagnostics" })
-map("n", "<leader>co", function()
-  vim.g.dotfiles_lazy.outline()
-  vim.cmd.Outline()
-end, { desc = "Toggle outline" })
+map("n", "<leader>co", fzf("lsp_document_symbols"), { desc = "Document outline" })
 map("n", "<leader>fS", function()
   vim.g.dotfiles_lazy.grug_far()
   require("grug-far").open()

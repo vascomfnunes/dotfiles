@@ -23,13 +23,14 @@ require("git").setup()
 require("catppuccin").setup({
   transparent_background = true,
   custom_highlights = function(colors)
-    return {
-      -- Default separator is near-invisible with transparency
-      WinSeparator = { fg = colors.overlay0 },
-    }
+    local highlights = require("completion").highlights(colors)
+    -- Default separator is near-invisible with transparency
+    highlights.WinSeparator = { fg = colors.overlay0 }
+    return highlights
   end,
 })
 vim.cmd("colorscheme catppuccin")
+require("completion").setup()
 
 -- Project root detection
 

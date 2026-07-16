@@ -22,6 +22,11 @@ opt.tabstop = 2
 opt.ignorecase = true
 opt.smartcase = true
 opt.inccommand = "split"
+opt.completeopt = { "menu", "menuone", "noselect", "popup" }
+opt.pumborder = "rounded"
+opt.pumheight = 12
+opt.pumwidth = 30
+opt.pummaxwidth = 88
 
 -- :GemTags writes project + gem tags into .git/tags to keep them out of
 -- the working tree.

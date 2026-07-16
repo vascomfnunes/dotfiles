@@ -7,6 +7,7 @@ local operations = {}
 local checking = {}
 local checking_dirty = {}
 local tracking = {}
+local branches = {}
 local dirty = {}
 local fetch_failed = {}
 local last_attempt = {}
@@ -31,29 +32,25 @@ local function current_root()
 end
 
 local function redraw_status()
-  local lualine = package.loaded.lualine
-  if lualine then
-    lualine.refresh({ place = { "statusline" } })
-  else
-    vim.cmd.redrawstatus()
-  end
+  vim.cmd.redrawstatus()
 end
 
-local function parse_tracking(output)
+local function parse_head(output)
   for line in (output .. "\n"):gmatch("(.-)\n") do
     local value = line:match("^%*%s*(.-)%s*$")
     if value then
-      if value == "[gone]" then return "gone" end
+      local branch, status = value:match("^(%S+)%s*(.-)%s*$")
+      if status == "[gone]" then return branch, "gone" end
 
-      local ahead = value:match("ahead (%d+)")
-      local behind = value:match("behind (%d+)")
+      local ahead = status:match("ahead (%d+)")
+      local behind = status:match("behind (%d+)")
       local parts = {}
       if behind then table.insert(parts, "↓" .. behind) end
       if ahead then table.insert(parts, "↑" .. ahead) end
-      return table.concat(parts, " ")
+      return branch, table.concat(parts, " ")
     end
   end
-  return ""
+  return "", ""
 end
 
 local function update_tracking(root)
@@ -62,7 +59,7 @@ local function update_tracking(root)
 
   checking[root] = true
   vim.system(
-    { "git", "-C", root, "for-each-ref", "--format=%(HEAD) %(upstream:track)", "refs/heads" },
+    { "git", "-C", root, "for-each-ref", "--format=%(HEAD) %(refname:short) %(upstream:track)", "refs/heads" },
     {
       env = { LC_ALL = "C" },
       text = true,
@@ -71,8 +68,10 @@ local function update_tracking(root)
     vim.schedule_wrap(function(result)
       checking[root] = nil
 
-      local status = result.code == 0 and parse_tracking(result.stdout or "") or ""
-      if tracking[root] ~= status then
+      local branch, status = "", ""
+      if result.code == 0 then branch, status = parse_head(result.stdout or "") end
+      if branches[root] ~= branch or tracking[root] ~= status then
+        branches[root] = branch
         tracking[root] = status
         redraw_status()
       end
@@ -590,6 +589,11 @@ function M.status()
   if dirty[root] or vim.bo.modified then table.insert(parts, "●") end
   if fetch_failed[root] then table.insert(parts, "!") end
   return table.concat(parts, " ")
+end
+
+function M.branch()
+  local root = current_root()
+  return root and branches[root] or ""
 end
 
 function M.setup()
