@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("FileType", {
 local mason_tools = {
   "lua-language-server",
   "tsgo", "eslint-lsp",
-  "css-lsp", "html-lsp", "htmlbeautifier",
+  "css-lsp", "html-lsp", "stimulus-language-server", "htmlbeautifier",
 }
 
 local mise_tools = { "gem:ruby-lsp", "gem:ripper-tags" }
@@ -211,6 +211,11 @@ local servers = {
     cmd = { "vscode-html-language-server", "--stdio" },
     filetypes = { "html" },
     root_markers = { "package.json", ".git" },
+  },
+  stimulus_ls = {
+    cmd = { "stimulus-language-server", "--stdio" },
+    filetypes = { "html", "ruby", "eruby", "blade", "php", "javascript", "typescript" },
+    root_markers = { "Gemfile", ".git" },
   },
 }
 
