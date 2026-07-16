@@ -40,7 +40,7 @@ vim.api.nvim_create_autocmd("FileType", {
         end
       end))
     else
-      pcall(vim.treesitter.start)
+      pcall(vim.treesitter.start, ev.buf)
     end
     vim.bo[ev.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
   end,
@@ -83,8 +83,6 @@ vim.api.nvim_create_user_command("ToolsSync", sync_editor_tools, {
 
 -- Native LSP config
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-
 -- Neovim 0.12 handles LSP completion items and snippets natively. Extend the
 -- server trigger list so completion remains automatic while typing words, as
 -- it was with nvim-cmp.
@@ -113,11 +111,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
 })
 
 -- ruby-lsp currently behaves better with full semantic token delta disabled.
-local ruby_caps = vim.deepcopy(capabilities)
-local full = ruby_caps.textDocument
-  and ruby_caps.textDocument.semanticTokens
-  and ruby_caps.textDocument.semanticTokens.requests
-  and ruby_caps.textDocument.semanticTokens.requests.full
+local ruby_caps = vim.lsp.protocol.make_client_capabilities()
+local full = vim.tbl_get(ruby_caps, "textDocument", "semanticTokens", "requests", "full")
 if type(full) == "table" then
   full.delta = false
 end
@@ -153,15 +148,15 @@ local servers = {
       return vim.lsp.rpc.start(
         { "mise", "x", "--", "ruby-lsp" },
         dispatchers,
-        config and config.root_dir and { cwd = config.cmd_cwd or config.root_dir }
+        config and config.root_dir and { cwd = config.root_dir }
       )
     end,
     filetypes = { "ruby", "eruby" },
     root_markers = { "Gemfile", ".git" },
     init_options = { formatter = "auto" },
     capabilities = ruby_caps,
+    -- One ruby-lsp per project root; ruby-lsp does not support multi-root.
     reuse_client = function(client, config)
-      config.cmd_cwd = config.root_dir
       return client.name == config.name and client.config.root_dir == config.root_dir
     end,
   },
@@ -225,7 +220,6 @@ local servers = {
 }
 
 for name, config in pairs(servers) do
-  config.capabilities = config.capabilities or capabilities
   vim.lsp.config[name] = config
   vim.lsp.enable(name)
 end

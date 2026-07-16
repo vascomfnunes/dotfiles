@@ -19,7 +19,10 @@ map("n", "<M-l>", function() require("splits").resize("right") end, opts)
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader>e", function()
   vim.g.dotfiles_lazy.mini_files()
-  require("mini.files").open(vim.api.nvim_buf_get_name(0), true)
+  -- Unnamed or deleted-file buffers have no path mini.files can open.
+  local path = vim.api.nvim_buf_get_name(0)
+  if path == "" or not uv.fs_stat(path) then path = nil end
+  require("mini.files").open(path, true)
 end, { desc = "Explorer" })
 
 map("n", "<leader>ql", function()
@@ -165,7 +168,6 @@ end, { desc = "Toggle inlay hints" })
 
 map("n", "<leader>fb", fzf("buffers"), { desc = "Buffers" })
 map("n", "<leader>ff", fzf("files"), { desc = "Files" })
-map("n", "<leader>fs", fzf("lsp_document_symbols"), { desc = "Document symbols" })
 map("n", "<leader>fg", fzf("live_grep"), { desc = "Grep" })
 map("n", "<leader>fw", fzf("grep_cword"), { desc = "Grep word" })
 map("n", "<leader>fr", fzf("resume"), { desc = "Resume" })

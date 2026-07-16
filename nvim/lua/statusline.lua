@@ -122,11 +122,11 @@ function M.setup()
       if value.kind == "end" then
         progress_groups[key] = nil
       else
-        local group = progress_groups[key] or {}
-        group.title = value.title or group.title or ""
-        group.message = value.message or group.message
-        group.percentage = value.percentage or group.percentage
-        progress_groups[key] = group
+        local entry = progress_groups[key] or {}
+        entry.title = value.title or entry.title or ""
+        entry.message = value.message or entry.message
+        entry.percentage = value.percentage or entry.percentage
+        progress_groups[key] = entry
       end
       render_progress()
     end,

@@ -22,6 +22,9 @@ opt.tabstop = 2
 opt.ignorecase = true
 opt.smartcase = true
 opt.inccommand = "split"
+
+-- Completion menu
+
 opt.completeopt = { "menu", "menuone", "noselect", "popup", "fuzzy" }
 opt.pumborder = "rounded"
 opt.pumheight = 12

@@ -13,7 +13,7 @@ end
 -- unless a plugin needs an explicit name override.
 local function package_name(spec)
   if spec.name then return spec.name end
-  return spec.src:match("([^/]+)$"):gsub("%.git$", "")
+  return (spec.src:match("([^/]+)$"):gsub("%.git$", ""))
 end
 
 local function is_installed(name)

@@ -44,13 +44,12 @@ function M.resize(name)
   -- No split exists on this axis, so resize the containing tmux pane.
   if not has_forward and not has_backward and tmux("resize-pane", direction, amount) then return end
 
-  local at_end = not has_forward and has_backward
-  local grow
-  if name == "right" or name == "down" then
-    grow = not at_end
-  else
-    grow = at_end
-  end
+  -- The right/bottom separator is the one being moved when it exists,
+  -- otherwise the left/top one. Growing the window pushes its right/bottom
+  -- edge forward; shrinking pulls it back.
+  local positive = name == "right" or name == "down"
+  local has_positive = positive and has_forward or (not positive and has_backward)
+  local grow = positive == has_positive
   local command = direction.axis == "vertical" and "vertical resize " or "resize "
   vim.cmd(command .. (grow and "+" or "-") .. amount)
 end

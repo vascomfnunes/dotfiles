@@ -103,10 +103,21 @@ local function rebuild(project)
     end
   end
   project.names = sorted_keys(project.classes)
+
+  -- Precompute completion details so per-keystroke requests stay cheap, and
+  -- sort sources so completions and definitions are deterministic.
+  project.details = {}
+  for name, sources in pairs(project.classes) do
+    table.sort(sources)
+    local relative = vim.tbl_map(function(path)
+      return vim.fs.relpath(project.root, path) or path
+    end, sources)
+    project.details[name] = table.concat(relative, ", ")
+  end
 end
 
 function M.index(root)
-  local project = { root = root, files = {}, classes = {}, names = {} }
+  local project = { root = root, files = {} }
   for _, path in ipairs(stylesheet_paths(root)) do
     project.files[path] = read_classes(path)
   end
@@ -121,7 +132,8 @@ function M.is_completion_context(text)
   return text:match("class%s*:%s*[\"'][^\"']*$") ~= nil
 end
 
-local function class_at_position(params)
+-- Lines up to the cursor plus the cursor's byte column, for context checks.
+local function cursor_context(params)
   local bufnr = vim.uri_to_bufnr(params.textDocument.uri)
   if not vim.api.nvim_buf_is_valid(bufnr) then return nil end
 
@@ -130,6 +142,13 @@ local function class_at_position(params)
   local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, position.line + 1, false)
   local current = lines[#lines] or ""
   local byte_col = vim.str_byteindex(current, "utf-16", position.character, false)
+  return lines, current, byte_col
+end
+
+local function class_at_position(params)
+  local lines, current, byte_col = cursor_context(params)
+  if not lines then return nil end
+
   local before = current:sub(1, byte_col):match("([%w_-]+)$") or ""
   local after = current:sub(byte_col + 1):match("^([%w_-]+)") or ""
   local name = before .. after
@@ -187,19 +206,14 @@ function M.definition_ranges(text, name)
 end
 
 local function completion_context(params)
-  local bufnr = vim.uri_to_bufnr(params.textDocument.uri)
-  if not vim.api.nvim_buf_is_valid(bufnr) then return nil end
+  local lines, current, byte_col = cursor_context(params)
+  if not lines then return nil end
 
-  local position = params.position
-  local start_line = math.max(0, position.line - 20)
-  local lines = vim.api.nvim_buf_get_lines(bufnr, start_line, position.line + 1, false)
-  local current = lines[#lines] or ""
-  local byte_col = vim.str_byteindex(current, "utf-16", position.character, false)
   lines[#lines] = current:sub(1, byte_col)
   if not M.is_completion_context(table.concat(lines, "\n")) then return nil end
 
   local fragment = lines[#lines]:match("([%w_-]*)$") or ""
-  return position.character - #fragment
+  return params.position.character - #fragment
 end
 
 local function create_server(dispatchers, project)
@@ -223,13 +237,10 @@ local function create_server(dispatchers, project)
       local edit_start = completion_context(params)
       if edit_start then
         for _, name in ipairs(project.names) do
-          local sources = vim.tbl_map(function(path)
-            return vim.fs.relpath(project.root, path) or path
-          end, project.classes[name])
           items[#items + 1] = {
             label = name,
             kind = vim.lsp.protocol.CompletionItemKind.Class,
-            detail = table.concat(sources, ", "),
+            detail = project.details[name],
             textEdit = {
               newText = name,
               range = {
