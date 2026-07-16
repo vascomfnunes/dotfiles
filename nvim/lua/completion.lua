@@ -169,6 +169,10 @@ function M.setup()
     group = group,
     callback = style_documentation_when_ready,
   })
+  vim.api.nvim_create_autocmd("CompleteDone", {
+    group = group,
+    callback = function() documentation_request = documentation_request + 1 end,
+  })
 end
 
 return M

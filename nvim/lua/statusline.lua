@@ -43,7 +43,10 @@ end
 
 local function render_progress()
   local parts = {}
-  for _, group in pairs(progress_groups) do
+  local keys = vim.tbl_keys(progress_groups)
+  table.sort(keys)
+  for _, key in ipairs(keys) do
+    local group = progress_groups[key]
     local message = group.title
     if group.message and not group.message:match("^%d+%%") then
       message = message .. ": " .. group.message
@@ -106,14 +109,16 @@ end
 
 function M.setup()
   vim.o.statusline = "%!v:lua.require'statusline'.render()"
+  local group = vim.api.nvim_create_augroup("DotfilesStatusline", { clear = true })
 
   local function highlights()
     vim.api.nvim_set_hl(0, "DotfilesStatusMode", { link = "Keyword" })
   end
   highlights()
-  vim.api.nvim_create_autocmd("ColorScheme", { callback = highlights })
+  vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = highlights })
 
   vim.api.nvim_create_autocmd("LspProgress", {
+    group = group,
     callback = function(ev)
       local value = ev.data.params.value
       if type(value) ~= "table" or not value.kind then return end
@@ -133,6 +138,7 @@ function M.setup()
 
   -- A stopped server may never send the final progress event.
   vim.api.nvim_create_autocmd("LspDetach", {
+    group = group,
     callback = function(ev)
       local prefix = ev.data.client_id .. ":"
       for key in pairs(progress_groups) do

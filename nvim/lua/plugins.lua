@@ -25,9 +25,11 @@ treesitter.setup({
 
 vim.api.nvim_create_user_command("TreesitterInstallAll", function()
   treesitter.install(treesitter_languages)
-end, { desc = "Install configured Treesitter parsers" })
+end, { desc = "Install configured Treesitter parsers", force = true })
 
+local treesitter_group = vim.api.nvim_create_augroup("DotfilesTreesitter", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
+  group = treesitter_group,
   pattern = treesitter_languages,
   callback = function(ev)
     local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
@@ -72,9 +74,11 @@ end
 
 vim.api.nvim_create_user_command("ToolsSync", sync_editor_tools, {
   desc = "Install configured editor tools",
+  force = true,
 })
 vim.api.nvim_create_user_command("MasonToolsSync", sync_editor_tools, {
   desc = "Install configured editor tools (legacy name)",
+  force = true,
 })
 
 -- Native LSP config
@@ -84,7 +88,9 @@ local capabilities = vim.lsp.protocol.make_client_capabilities()
 -- Neovim 0.12 handles LSP completion items and snippets natively. Extend the
 -- server trigger list so completion remains automatic while typing words, as
 -- it was with nvim-cmp.
+local lsp_group = vim.api.nvim_create_augroup("DotfilesLspCompletion", { clear = true })
 vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
   callback = function(ev)
     local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
     if not client:supports_method("textDocument/completion") then return end
@@ -135,7 +141,12 @@ local servers = {
     cmd = { "lua-language-server" },
     filetypes = { "lua" },
     root_markers = { { ".luarc.json", ".luarc.jsonc" }, ".git" },
-    settings = { Lua = { diagnostics = { globals = { "vim" } } } },
+    settings = {
+      Lua = {
+        completion = { callSnippet = "Replace" },
+        diagnostics = { globals = { "vim" } },
+      },
+    },
   },
   ruby_lsp = {
     cmd = function(dispatchers, config)
@@ -167,7 +178,15 @@ local servers = {
     cmd = { "typescript-language-server", "--stdio" },
     filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     root_markers = { "package.json", "tsconfig.json", "jsconfig.json", ".git" },
-    settings = { typescript = { preferences = { includeCompletionsForModuleExports = true } } },
+    init_options = {
+      preferences = {
+        includeCompletionsForModuleExports = true,
+        includeCompletionsWithClassMemberSnippets = true,
+        includeCompletionsWithInsertText = true,
+        includeCompletionsWithObjectLiteralMethodSnippets = true,
+        includeCompletionsWithSnippetText = true,
+      },
+    },
   },
   cssls = {
     cmd = { "vscode-css-language-server", "--stdio" },
@@ -200,18 +219,18 @@ vim.api.nvim_create_user_command("LspInfo", function()
     table.insert(msg, string.format("- %s (id: %d, root: %s)", client.name, client.id, client.root_dir or "N/A"))
   end
   vim.notify(table.concat(msg, "\n"), vim.log.levels.INFO, { title = "LSP Status" })
-end, {})
+end, { force = true })
 
 -- Tag the project and every bundled gem with ripper-tags so `gd` can fall
--- back to tags for definitions ruby-lsp can't resolve. Tags go to .git/tags
--- (see options.lua) with absolute paths, so jumps work from any cwd.
+-- back to tags for definitions ruby-lsp can't resolve. Resolve the Git tags
+-- path through Git itself so linked worktrees are supported.
 vim.api.nvim_create_user_command("GemTags", function()
   local root = vim.fs.root(0, "Gemfile")
   if not root then
     vim.notify("No Gemfile found", vim.log.levels.WARN)
     return
   end
-  local tag_file = vim.uv.fs_stat(root .. "/.git") and root .. "/.git/tags" or root .. "/tags"
+  local tag_file = require("tags").path(root)
   -- ripper-tags occasionally emits an entry with an embedded newline, which
   -- makes Vim reject the whole file (E431); drop malformed lines afterwards.
   local quoted = vim.fn.shellescape(tag_file)
@@ -252,7 +271,7 @@ vim.api.nvim_create_user_command("GemTags", function()
       end)
     end)
   end)
-end, { desc = "Generate tags for project and bundled gems" })
+end, { desc = "Generate tags for project and bundled gems", force = true })
 
 -- Always-on plugin setup
 
@@ -369,7 +388,9 @@ function lazy.codediff()
 
     -- Keep <CR> as CodeDiff's select action and add the familiar tree-style
     -- `l`: expand directories, or open a file and focus its diff/result pane.
+    local group = vim.api.nvim_create_augroup("DotfilesCodeDiff", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
+      group = group,
       pattern = "codediff-explorer",
       callback = function(ev)
         vim.keymap.set("n", "l", "<CR>", {
@@ -470,19 +491,23 @@ vim.g.dotfiles_lazy = lazy
 
 -- Lazy-load triggers
 
+local lazy_group = vim.api.nvim_create_augroup("DotfilesLazyPlugins", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
+  group = lazy_group,
   pattern = treesitter_languages,
   once = true,
   callback = lazy.treesitter_context,
 })
 
 vim.api.nvim_create_autocmd("FileType", {
+  group = lazy_group,
   pattern = "markdown",
   callback = lazy.render_markdown,
 })
 
 -- Open directories with mini.files since netrw is disabled (e.g. `nvim .`).
 vim.api.nvim_create_autocmd("BufEnter", {
+  group = lazy_group,
   callback = function(ev)
     local name = vim.api.nvim_buf_get_name(ev.buf)
     if name == "" or vim.fn.isdirectory(name) == 0 then return end

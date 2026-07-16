@@ -1,4 +1,6 @@
 local M = {}
+local detect_git_operation = require("git.operation").detect
+local parsers = require("git.parsers")
 
 local interval = 5 * 60 * 1000
 local status_interval = 10 * 1000
@@ -35,24 +37,6 @@ local function redraw_status()
   vim.cmd.redrawstatus()
 end
 
-local function parse_head(output)
-  for line in (output .. "\n"):gmatch("(.-)\n") do
-    local value = line:match("^%*%s*(.-)%s*$")
-    if value then
-      local branch, status = value:match("^(%S+)%s*(.-)%s*$")
-      if status == "[gone]" then return branch, "gone" end
-
-      local ahead = status:match("ahead (%d+)")
-      local behind = status:match("behind (%d+)")
-      local parts = {}
-      if behind then table.insert(parts, "↓" .. behind) end
-      if ahead then table.insert(parts, "↑" .. ahead) end
-      return branch, table.concat(parts, " ")
-    end
-  end
-  return "", ""
-end
-
 local function update_tracking(root)
   if not root then return end
   if checking[root] then return end
@@ -69,7 +53,7 @@ local function update_tracking(root)
       checking[root] = nil
 
       local branch, status = "", ""
-      if result.code == 0 then branch, status = parse_head(result.stdout or "") end
+      if result.code == 0 then branch, status = parsers.head(result.stdout or "") end
       if branches[root] ~= branch or tracking[root] ~= status then
         branches[root] = branch
         tracking[root] = status
@@ -115,20 +99,26 @@ local function git_error(result)
   return message ~= "" and message or "Git command failed"
 end
 
-local function git_path(root, name)
+local function git_directory(root)
   local result = vim.system(
-    { "git", "-C", root, "rev-parse", "--git-path", name },
+    { "git", "-C", root, "rev-parse", "--absolute-git-dir" },
     { text = true, timeout = timeout }
   ):wait()
   if result.code ~= 0 then return nil end
 
   local path = vim.trim(result.stdout or "")
-  if path == "" then return nil end
-  if path:sub(1, 1) ~= "/" then path = root .. "/" .. path end
-  return path
+  return path ~= "" and path or nil
 end
 
-local function repository_ready(root, action)
+local function git_operation(directory)
+  if not directory then return nil end
+
+  return detect_git_operation(function(name)
+    return vim.uv.fs_stat(vim.fs.joinpath(directory, name)) ~= nil
+  end)
+end
+
+local function repository_ready(root, action, allow_in_progress, directory)
   if operations[root] then
     vim.notify("Finish the Git " .. operations[root] .. " operation before " .. action, vim.log.levels.WARN, {
       title = "Git " .. action,
@@ -136,9 +126,18 @@ local function repository_ready(root, action)
     return false
   end
 
-  local lock_path = git_path(root, "index.lock")
+  directory = directory or git_directory(root)
+  local lock_path = directory and vim.fs.joinpath(directory, "index.lock")
   if lock_path and vim.uv.fs_stat(lock_path) then
     vim.notify("Another Git operation is still running; finish it before " .. action, vim.log.levels.WARN, {
+      title = "Git " .. action,
+    })
+    return false
+  end
+
+  local in_progress = git_operation(directory)
+  if in_progress and not allow_in_progress then
+    vim.notify("Finish or abort the Git " .. in_progress.name .. " before " .. action, vim.log.levels.WARN, {
       title = "Git " .. action,
     })
     return false
@@ -333,6 +332,7 @@ local function run_git_in_terminal(root, operation, args, options)
       vim.schedule(function()
         operations[root] = nil
         if exit_code == 0 then
+          vim.cmd.checktime()
           if vim.api.nvim_buf_is_valid(terminal_buffer) then
             vim.api.nvim_buf_delete(terminal_buffer, { force = true })
           end
@@ -416,31 +416,6 @@ local function stash_current_repo()
   })
 end
 
-local function git_operation(root)
-  local function exists(name)
-    local path = git_path(root, name)
-    return path and vim.uv.fs_stat(path) ~= nil
-  end
-
-  if exists("rebase-apply/applying") then
-    return { name = "am", continue_args = { "am", "--continue" }, abort_args = { "am", "--abort" } }
-  elseif exists("rebase-merge") or exists("rebase-apply") then
-    return { name = "rebase", continue_args = { "rebase", "--continue" }, abort_args = { "rebase", "--abort" } }
-  elseif exists("MERGE_HEAD") then
-    return { name = "merge", continue_args = { "merge", "--continue" }, abort_args = { "merge", "--abort" } }
-  elseif exists("CHERRY_PICK_HEAD") then
-    return {
-      name = "cherry-pick",
-      continue_args = { "cherry-pick", "--continue" },
-      abort_args = { "cherry-pick", "--abort" },
-    }
-  elseif exists("REVERT_HEAD") then
-    return { name = "revert", continue_args = { "revert", "--continue" }, abort_args = { "revert", "--abort" } }
-  end
-
-  return nil
-end
-
 local function continue_git_operation()
   local root = current_root()
   if not root then
@@ -448,14 +423,15 @@ local function continue_git_operation()
     return
   end
 
-  local operation = git_operation(root)
+  local directory = git_directory(root)
+  local operation = git_operation(directory)
   if not operation then
     vim.notify("No rebase, merge, cherry-pick, revert, or am operation to continue", vim.log.levels.INFO, {
       title = "Git continue",
     })
     return
   end
-  if not repository_ready(root, "continuing " .. operation.name) then return end
+  if not repository_ready(root, "continuing " .. operation.name, true, directory) then return end
 
   run_git_in_terminal(root, operation.name .. " continue", operation.continue_args, {
     env = { GIT_EDITOR = vim.fn.shellescape(vim.v.progpath) },
@@ -472,14 +448,15 @@ local function abort_git_operation()
     return
   end
 
-  local operation = git_operation(root)
+  local directory = git_directory(root)
+  local operation = git_operation(directory)
   if not operation then
     vim.notify("No rebase, merge, cherry-pick, revert, or am operation to abort", vim.log.levels.INFO, {
       title = "Git abort",
     })
     return
   end
-  if not repository_ready(root, "aborting " .. operation.name) then return end
+  if not repository_ready(root, "aborting " .. operation.name, true, directory) then return end
 
   local choice = vim.fn.confirm(
     ("Abort the current Git %s operation?\n\nThis discards its in-progress changes."):format(operation.name),
@@ -598,6 +575,7 @@ end
 
 function M.setup()
   if timer then return end
+  local group = vim.api.nvim_create_augroup("DotfilesGit", { clear = true })
 
   timer = assert(vim.uv.new_timer())
   timer:start(interval, interval, vim.schedule_wrap(function()
@@ -605,63 +583,68 @@ function M.setup()
   end))
 
   vim.api.nvim_create_autocmd("FocusLost", {
+    group = group,
     callback = function()
       focused = false
     end,
   })
   vim.api.nvim_create_autocmd("FocusGained", {
+    group = group,
     callback = function()
       focused = true
       update_status(current_root(), true)
     end,
   })
   vim.api.nvim_create_autocmd("BufEnter", {
+    group = group,
     callback = function()
       if vim.bo.buftype ~= "" then return end
       update_status(current_root(), false)
     end,
   })
   vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
     callback = function()
       update_status(current_root(), true)
     end,
   })
   vim.api.nvim_create_autocmd("BufModifiedSet", {
+    group = group,
     callback = redraw_status,
   })
 
   vim.api.nvim_create_user_command("GitFetch", function()
     fetch_current_repo(true, true)
-  end, { desc = "Fetch remote updates now" })
+  end, { desc = "Fetch remote updates now", force = true })
   vim.api.nvim_create_user_command("GitPull", pull_current_repo, {
-    desc = "Fast-forward the current branch",
+    desc = "Fast-forward the current branch", force = true,
   })
   vim.api.nvim_create_user_command("GitCommit", commit_current_repo, {
-    desc = "Commit staged changes with a title and message",
+    desc = "Commit staged changes with a title and message", force = true,
   })
   vim.api.nvim_create_user_command("GitPush", push_current_repo, {
-    desc = "Push HEAD to origin after confirmation",
+    desc = "Push HEAD to origin after confirmation", force = true,
   })
   vim.api.nvim_create_user_command("GitBranchNew", create_branch_current_repo, {
-    desc = "Create and check out a new branch",
+    desc = "Create and check out a new branch", force = true,
   })
   vim.api.nvim_create_user_command("GitStash", stash_current_repo, {
-    desc = "Create a named stash",
+    desc = "Create a named stash", force = true,
   })
   vim.api.nvim_create_user_command("GitContinue", continue_git_operation, {
-    desc = "Continue the active Git operation",
+    desc = "Continue the active Git operation", force = true,
   })
   vim.api.nvim_create_user_command("GitAbort", abort_git_operation, {
-    desc = "Abort the active Git operation after confirmation",
+    desc = "Abort the active Git operation after confirmation", force = true,
   })
   vim.api.nvim_create_user_command("GitAmend", function()
     amend_current_commit(false)
-  end, { desc = "Amend the current commit in an editor" })
+  end, { desc = "Amend the current commit in an editor", force = true })
   vim.api.nvim_create_user_command("GitAmendNow", function()
     amend_current_commit(true)
-  end, { desc = "Amend the current commit with the current author date" })
+  end, { desc = "Amend the current commit with the current author date", force = true })
   vim.api.nvim_create_user_command("GitRebaseInteractive", interactive_rebase_current_repo, {
-    desc = "Interactively rebase a number of recent commits",
+    desc = "Interactively rebase a number of recent commits", force = true,
   })
 
   vim.defer_fn(function()
@@ -669,6 +652,7 @@ function M.setup()
   end, 1000)
 
   vim.api.nvim_create_autocmd("VimLeavePre", {
+    group = group,
     once = true,
     callback = function()
       timer:stop()

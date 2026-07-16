@@ -36,7 +36,9 @@ require("completion").setup()
 
 -- Keep the working directory local to the current window and cache each
 -- buffer's resolved root so normal buffer movement stays cheap.
+local project_root_group = vim.api.nvim_create_augroup("DotfilesProjectRoot", { clear = true })
 vim.api.nvim_create_autocmd("BufEnter", {
+  group = project_root_group,
   callback = function()
     if vim.bo.buftype ~= "" then return end
     local buf = vim.api.nvim_get_current_buf()
@@ -49,7 +51,7 @@ vim.api.nvim_create_autocmd("BufEnter", {
       return
     end
 
-    root = vim.fs.root(path, { ".git", "Gemfile", "package.json" })
+    root = require("project").root(path)
     vim.b[buf].project_root_path = path
     vim.b[buf].project_root = root
     if root then vim.cmd.lcd(vim.fn.fnameescape(root)) end

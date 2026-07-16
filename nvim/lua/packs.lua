@@ -60,7 +60,8 @@ local function on_pack_changed(ev)
   end
 end
 
-vim.api.nvim_create_autocmd("PackChanged", { callback = on_pack_changed })
+local pack_group = vim.api.nvim_create_augroup("DotfilesPackages", { clear = true })
+vim.api.nvim_create_autocmd("PackChanged", { group = pack_group, callback = on_pack_changed })
 
 -- Eager plugins
 
