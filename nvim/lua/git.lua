@@ -35,6 +35,14 @@ local function current_root()
   return root
 end
 
+local function require_root()
+  local root = current_root()
+  if not root then
+    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
+  end
+  return root
+end
+
 local function redraw_status()
   vim.cmd.redrawstatus()
 end
@@ -164,6 +172,14 @@ local function repository_ready(root, action, allow_in_progress, directory)
   return true
 end
 
+-- Root of the current repository, only when no conflicting operation is
+-- running; nil (after notifying) otherwise.
+local function ready_root(action, allow_in_progress, directory)
+  local root = require_root()
+  if root and repository_ready(root, action, allow_in_progress, directory) then return root end
+  return nil
+end
+
 local function fetch(root, notify)
   if operations[root] then
     if notify then vim.notify("Git " .. operations[root] .. " already in progress", vim.log.levels.INFO) end
@@ -212,12 +228,8 @@ local function fetch_current_repo(force, notify)
 end
 
 local function pull_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "pull") then return end
+  local root = ready_root("pull")
+  if not root then return end
 
   operations[root] = "pull"
   last_attempt[root] = vim.uv.now()
@@ -244,12 +256,8 @@ local function pull_current_repo()
 end
 
 local function commit_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "commit") then return end
+  local root = ready_root("commit")
+  if not root then return end
 
   local title = vim.trim(vim.fn.input("Commit title: "))
   if title == "" then return end
@@ -278,12 +286,8 @@ local function commit_current_repo()
 end
 
 local function push_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "push") then return end
+  local root = ready_root("push")
+  if not root then return end
 
   local branch_result = vim.system(
     { "git", "-C", root, "branch", "--show-current" },
@@ -404,12 +408,8 @@ local function run_git_command(root, operation, args, options)
 end
 
 local function create_branch_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "creating a branch") then return end
+  local root = ready_root("creating a branch")
+  if not root then return end
 
   local branch = vim.trim(vim.fn.input("New branch name: "))
   if branch == "" then return end
@@ -421,12 +421,8 @@ local function create_branch_current_repo()
 end
 
 local function stash_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "creating a stash") then return end
+  local root = ready_root("creating a stash")
+  if not root then return end
 
   local message = vim.trim(vim.fn.input("Stash message: "))
   if message == "" then return end
@@ -438,12 +434,8 @@ local function stash_current_repo()
 end
 
 local function stage_all_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "staging all changes", true) then return end
+  local root = ready_root("staging all changes", true)
+  if not root then return end
 
   run_git_command(root, "stage all", { "add", "--all" }, {
     title = "Git stage",
@@ -453,12 +445,8 @@ local function stage_all_current_repo()
 end
 
 local function unstage_all_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "unstaging all changes", true) then return end
+  local root = ready_root("unstaging all changes", true)
+  if not root then return end
 
   run_git_command(root, "unstage all", { "reset", "--mixed", "--quiet" }, {
     title = "Git unstage",
@@ -468,11 +456,8 @@ local function unstage_all_current_repo()
 end
 
 local function continue_git_operation()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
+  local root = require_root()
+  if not root then return end
 
   local directory = git_directory(root)
   local operation = git_operation(directory)
@@ -493,11 +478,8 @@ local function continue_git_operation()
 end
 
 local function abort_git_operation()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
+  local root = require_root()
+  if not root then return end
 
   local directory = git_directory(root)
   local operation = git_operation(directory)
@@ -523,12 +505,8 @@ local function abort_git_operation()
 end
 
 local function amend_current_commit(refresh_date)
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "amend") then return end
+  local root = ready_root("amend")
+  if not root then return end
 
   local args = refresh_date and { "commit", "--date=now", "--amend" } or { "commit", "--amend" }
   run_git_in_terminal(root, "amend", args, {
@@ -540,12 +518,8 @@ local function amend_current_commit(refresh_date)
 end
 
 local function interactive_rebase_current_repo()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "rebase") then return end
+  local root = ready_root("rebase")
+  if not root then return end
 
   local input = vim.trim(vim.fn.input("Number of commits to rebase: "))
   if input == "" then return end
@@ -570,12 +544,8 @@ function M.merge(branch)
     return
   end
 
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "merge") then return end
+  local root = ready_root("merge")
+  if not root then return end
 
   local current_result = vim.system(
     { "git", "-C", root, "branch", "--show-current" },
@@ -605,12 +575,8 @@ function M.cherry_pick(commit)
     return
   end
 
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return
-  end
-  if not repository_ready(root, "cherry-pick") then return end
+  local root = ready_root("cherry-pick")
+  if not root then return end
 
   run_git_in_terminal(root, "cherry-pick", { "cherry-pick", "--", commit }, {
     env = { GIT_EDITOR = vim.fn.shellescape(vim.v.progpath) },
@@ -621,12 +587,8 @@ function M.cherry_pick(commit)
 end
 
 function M.can_checkout()
-  local root = current_root()
-  if not root then
-    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
-    return false
-  end
-  return repository_ready(root, "checkout")
+  local root = require_root()
+  return root ~= nil and repository_ready(root, "checkout")
 end
 
 function M.status()
