@@ -47,11 +47,12 @@ local function render_progress()
   table.sort(keys)
   for _, key in ipairs(keys) do
     local group = progress_groups[key]
-    local message = group.title
-    if group.message and not group.message:match("^%d+%%") then
-      message = message .. ": " .. group.message
+    local message = type(group.title) == "string" and group.title or ""
+    local detail = type(group.message) == "string" and group.message or nil
+    if detail and not detail:match("^%d+%%") then
+      message = message .. ": " .. detail
     end
-    if group.percentage then
+    if type(group.percentage) == "number" then
       message = string.format("%d%% %s", group.percentage, message)
     end
     parts[#parts + 1] = message
@@ -117,15 +118,15 @@ function M.setup()
     group = group,
     callback = function(ev)
       local value = ev.data.params.value
-      if type(value) ~= "table" or not value.kind then return end
+      if type(value) ~= "table" or type(value.kind) ~= "string" then return end
       local key = ev.data.client_id .. ":" .. tostring(ev.data.params.token)
       if value.kind == "end" then
         progress_groups[key] = nil
       else
         local entry = progress_groups[key] or {}
-        entry.title = value.title or entry.title or ""
-        entry.message = value.message or entry.message
-        entry.percentage = value.percentage or entry.percentage
+        if type(value.title) == "string" then entry.title = value.title end
+        if type(value.message) == "string" then entry.message = value.message end
+        if type(value.percentage) == "number" then entry.percentage = value.percentage end
         progress_groups[key] = entry
       end
       render_progress()
