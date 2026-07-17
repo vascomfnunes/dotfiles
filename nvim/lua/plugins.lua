@@ -110,6 +110,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- Core has no automatic signature help yet, so open the floating window
+-- whenever a server-declared trigger character is typed in insert mode.
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
+  callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    local provider = client.server_capabilities.signatureHelpProvider
+    if not provider then return end
+
+    local triggers = {}
+    for _, character in ipairs(provider.triggerCharacters or {}) do triggers[character] = true end
+    for _, character in ipairs(provider.retriggerCharacters or {}) do triggers[character] = true end
+    if vim.tbl_isempty(triggers) then return end
+
+    local signature_group = vim.api.nvim_create_augroup("DotfilesSignatureHelp" .. ev.buf, { clear = true })
+    vim.api.nvim_create_autocmd("InsertCharPre", {
+      group = signature_group,
+      buffer = ev.buf,
+      callback = function()
+        if triggers[vim.v.char] then
+          -- InsertCharPre fires before the character lands in the buffer;
+          -- defer so the server sees the trigger character in the request.
+          vim.schedule(function()
+            vim.lsp.buf.signature_help({ silent = true, focusable = false, max_height = 12 })
+          end)
+        end
+      end,
+    })
+  end,
+})
+
 -- ruby-lsp currently behaves better with full semantic token delta disabled.
 local ruby_caps = vim.lsp.protocol.make_client_capabilities()
 local full = vim.tbl_get(ruby_caps, "textDocument", "semanticTokens", "requests", "full")
