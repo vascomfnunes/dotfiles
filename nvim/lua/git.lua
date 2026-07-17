@@ -8,6 +8,8 @@ local timeout = 60 * 1000
 local operations = {}
 local checking = {}
 local checking_dirty = {}
+local tracking_refresh_requested = {}
+local dirty_refresh_requested = {}
 local tracking = {}
 local branches = {}
 local dirty = {}
@@ -37,9 +39,12 @@ local function redraw_status()
   vim.cmd.redrawstatus()
 end
 
-local function update_tracking(root)
+local function update_tracking(root, force)
   if not root then return end
-  if checking[root] then return end
+  if checking[root] then
+    if force then tracking_refresh_requested[root] = true end
+    return
+  end
 
   checking[root] = true
   vim.system(
@@ -51,6 +56,11 @@ local function update_tracking(root)
     },
     vim.schedule_wrap(function(result)
       checking[root] = nil
+      if tracking_refresh_requested[root] then
+        tracking_refresh_requested[root] = nil
+        update_tracking(root, false)
+        return
+      end
 
       local branch, status = "", ""
       if result.code == 0 then branch, status = parsers.head(result.stdout or "") end
@@ -63,16 +73,24 @@ local function update_tracking(root)
   )
 end
 
-local function update_dirty(root)
+local function update_dirty(root, force)
   if not root then return end
-  if checking_dirty[root] then return end
+  if checking_dirty[root] then
+    if force then dirty_refresh_requested[root] = true end
+    return
+  end
 
   checking_dirty[root] = true
   vim.system(
-    { "git", "-C", root, "status", "--porcelain", "--untracked-files=normal" },
+    { "git", "-C", root, "--no-optional-locks", "status", "--porcelain", "--untracked-files=normal" },
     { text = true, timeout = timeout },
     vim.schedule_wrap(function(result)
       checking_dirty[root] = nil
+      if dirty_refresh_requested[root] then
+        dirty_refresh_requested[root] = nil
+        update_dirty(root, false)
+        return
+      end
 
       local is_dirty = result.code == 0 and result.stdout ~= ""
       if dirty[root] ~= is_dirty then
@@ -90,8 +108,8 @@ local function update_status(root, force)
     return
   end
   last_status_check[root] = now
-  update_tracking(root)
-  update_dirty(root)
+  update_tracking(root, force)
+  update_dirty(root, force)
 end
 
 local function git_error(result)
@@ -574,6 +592,10 @@ end
 function M.branch()
   local root = current_root()
   return root and branches[root] or ""
+end
+
+function M.refresh()
+  update_status(current_root(), true)
 end
 
 function M.setup()

@@ -76,9 +76,19 @@ function M.setup(fzf)
   end, { desc = "Merge branch" })
   map("n", "<leader>gn", "<cmd>GitBranchNew<CR>", { desc = "Create new branch" })
   map("n", "<leader>gC", function()
-    if not require("git").can_checkout() then return end
+    local git = require("git")
+    if not git.can_checkout() then return end
     vim.g.dotfiles_lazy.fzf()
-    require("fzf-lua").git_branches({ prompt = "Checkout branch> " })
+    local actions = require("fzf-lua.actions")
+    require("fzf-lua").git_branches({
+      prompt = "Checkout branch> ",
+      actions = {
+        ["enter"] = function(selected, opts)
+          actions.git_switch(selected, opts)
+          git.refresh()
+        end,
+      },
+    })
   end, { desc = "Checkout branch" })
   map("n", "<leader>gs", fzf("git_status"), { desc = "Status / changed files" })
 

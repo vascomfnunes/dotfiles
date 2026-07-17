@@ -49,3 +49,24 @@ vim.lsp.buf_request_all = buf_request_all
 assert(vim.api.nvim_win_is_valid(picker_win), "definition picker did not open")
 assert(vim.api.nvim_get_current_win() == picker_win, "definition picker did not retain focus")
 assert(vim.api.nvim_get_current_win() ~= source_win)
+
+local checkout
+for _, mapping in ipairs(vim.api.nvim_get_keymap("n")) do
+  if mapping.desc == "Checkout branch" then checkout = mapping.callback end
+end
+assert(type(checkout) == "function", "checkout mapping was not found")
+
+local picker_opts
+package.loaded["fzf-lua"].git_branches = function(opts) picker_opts = opts end
+local calls = {}
+package.loaded["fzf-lua.actions"] = {
+  git_switch = function() table.insert(calls, "switch") end,
+}
+local git = require("git")
+git.can_checkout = function() return true end
+git.refresh = function() table.insert(calls, "refresh") end
+
+checkout()
+assert(type(picker_opts.actions.enter) == "function", "checkout action was not configured")
+picker_opts.actions.enter({ "main" }, {})
+assert(vim.deep_equal(calls, { "switch", "refresh" }), "status did not refresh after branch checkout")
