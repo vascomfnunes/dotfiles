@@ -16,8 +16,11 @@ vim.g.loaded_zipPlugin = 1
 require("options")
 require("keymaps")
 require("plugins")
+require("lsp").setup()
+require("tags").setup()
 require("git").setup()
 require("sessions").setup()
+require("project").setup()
 
 -- Theme
 
@@ -32,29 +35,3 @@ require("catppuccin").setup({
 })
 vim.cmd("colorscheme catppuccin")
 require("completion").setup()
-
--- Project root detection
-
--- Keep the working directory local to the current window and cache each
--- buffer's resolved root so normal buffer movement stays cheap.
-local project_root_group = vim.api.nvim_create_augroup("DotfilesProjectRoot", { clear = true })
-vim.api.nvim_create_autocmd("BufEnter", {
-  group = project_root_group,
-  callback = function()
-    if vim.bo.buftype ~= "" then return end
-    local buf = vim.api.nvim_get_current_buf()
-    local path = vim.api.nvim_buf_get_name(buf)
-    if path == "" then return end
-    local cached_path = vim.b[buf].project_root_path
-    local root = vim.b[buf].project_root
-    if cached_path == path then
-      if root then vim.cmd.lcd(vim.fn.fnameescape(root)) end
-      return
-    end
-
-    root = require("project").root(path)
-    vim.b[buf].project_root_path = path
-    vim.b[buf].project_root = root
-    if root then vim.cmd.lcd(vim.fn.fnameescape(root)) end
-  end,
-})

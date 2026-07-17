@@ -2,7 +2,10 @@ local root = assert(arg[1], "dotfiles root is required")
 package.path = root .. "/nvim/lua/?.lua;" .. package.path
 
 local picker_win
-vim.g.dotfiles_lazy = { fzf = function() end }
+-- Loader no-ops: keymaps must work without installing or loading plugins.
+package.loaded["lazyload"] = setmetatable({}, {
+  __index = function() return function() end end,
+})
 package.loaded["fzf-lua"] = {
   lsp_definitions = function()
     picker_win = vim.api.nvim_open_win(vim.api.nvim_create_buf(false, true), true, {

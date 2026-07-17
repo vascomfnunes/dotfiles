@@ -1,6 +1,7 @@
 local map = vim.keymap.set
 local opts = { silent = true }
 local uv = vim.uv
+local lazy = require("lazyload")
 
 -- Leader key
 vim.g.mapleader = " "
@@ -18,7 +19,7 @@ map("n", "<M-l>", function() require("splits").resize("right") end, opts)
 -- Core editing
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
 map("n", "<leader>e", function()
-  vim.g.dotfiles_lazy.mini_files()
+  lazy.mini_files()
   -- Unnamed or deleted-file buffers have no path mini.files can open.
   local path = vim.api.nvim_buf_get_name(0)
   if path == "" or not uv.fs_stat(path) then path = nil end
@@ -109,7 +110,7 @@ map("n", "<leader><S-Tab>", "gT", { desc = "Prev tab" })
 
 -- Navigation (Flash)
 map({ "n", "x", "o" }, "s", function()
-  vim.g.dotfiles_lazy.flash()
+  lazy.flash()
   require("flash").jump()
 end, { desc = "Flash" })
 
@@ -117,7 +118,7 @@ end, { desc = "Flash" })
 -- Each picker loads fzf-lua on first use.
 local function fzf(command, fzf_opts)
   return function()
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua")[command](fzf_opts)
   end
 end
@@ -170,7 +171,7 @@ local function definition_or_tag()
     for _, res in pairs(results) do
       local r = res.result
       if r and (r.uri or not vim.tbl_isempty(r)) then
-        vim.g.dotfiles_lazy.fzf()
+        lazy.fzf()
         require("fzf-lua").lsp_definitions({ jump1 = true })
         return
       end
@@ -181,7 +182,6 @@ end
 map("n", "gd", definition_or_tag, { desc = "Go to definition" })
 map("n", "grr", fzf("lsp_references"), { desc = "References" })
 map("n", "gri", fzf("lsp_implementations", { jump1 = true }), { desc = "Implementations" })
-map("n", "K", function() vim.lsp.buf.hover() end, { desc = "Hover docs" })
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename symbol" })
 map("n", "<leader>cf", function()
@@ -205,7 +205,7 @@ local function rails_find_files(cwd, prompt_title)
     vim.notify(("Missing directory: %s"):format(cwd), vim.log.levels.WARN)
     return
   end
-  vim.g.dotfiles_lazy.fzf()
+  lazy.fzf()
   require("fzf-lua").files({ cwd = cwd, prompt = prompt_title .. "> " })
 end
 
@@ -216,23 +216,23 @@ map("n", "<leader>rs", function() rails_find_files("spec", "Specs") end, { desc 
 
 -- Testing
 map("n", "<leader>tr", function()
-  vim.g.dotfiles_lazy.neotest()
+  lazy.neotest()
   require("neotest").run.run()
 end, { desc = "Run nearest" })
 map("n", "<leader>tf", function()
-  vim.g.dotfiles_lazy.neotest()
+  lazy.neotest()
   require("neotest").run.run(vim.fn.expand("%"))
 end, { desc = "Run file" })
 map("n", "<leader>tt", function()
-  vim.g.dotfiles_lazy.neotest()
+  lazy.neotest()
   require("neotest").summary.toggle()
 end, { desc = "Toggle summary" })
 map("n", "<leader>tl", function()
-  vim.g.dotfiles_lazy.neotest()
+  lazy.neotest()
   require("neotest").run.run_last()
 end, { desc = "Run last" })
 map("n", "<leader>to", function()
-  vim.g.dotfiles_lazy.neotest()
+  lazy.neotest()
   require("neotest").output.open({ enter = true })
 end, { desc = "Show output" })
 
@@ -241,7 +241,7 @@ end, { desc = "Show output" })
 local function agentic(fn, ...)
   local args = { ... }
   return function()
-    vim.g.dotfiles_lazy.agentic()
+    lazy.agentic()
     require("agentic")[fn](unpack(args))
   end
 end
@@ -267,7 +267,7 @@ map("n", "<leader>cx", function()
 end, { desc = "Diagnostics" })
 map("n", "<leader>co", fzf("lsp_document_symbols"), { desc = "Document outline" })
 map("n", "<leader>fS", function()
-  vim.g.dotfiles_lazy.grug_far()
+  lazy.grug_far()
   require("grug-far").open()
 end, { desc = "Search & Replace" })
 

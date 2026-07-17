@@ -1,5 +1,6 @@
 local M = {}
 local map = vim.keymap.set
+local lazy = require("lazyload")
 local selected_git_branch = require("git.parsers").selected_branch
 local selected_git_commit = require("git.parsers").selected_commit
 
@@ -44,7 +45,7 @@ end
 
 local function gitsigns_action(action)
   return function()
-    vim.g.dotfiles_lazy.gitsigns()
+    lazy.gitsigns()
     require("gitsigns")[action]()
   end
 end
@@ -60,7 +61,7 @@ function M.setup(fzf)
   map("n", "<leader>ga", "<cmd>GitAmend<CR>", { desc = "Amend commit" })
   map("n", "<leader>gA", "<cmd>GitAmendNow<CR>", { desc = "Amend commit with current date" })
   map("n", "<leader>gx", function()
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua").git_branches({
       prompt = "Cherry-pick branch> ",
       remotes = "all",
@@ -97,7 +98,7 @@ function M.setup(fzf)
     })
   end, { desc = "Cherry-pick commit" })
   map("n", "<leader>gm", function()
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua").git_branches({
       prompt = "Merge branch> ",
       actions = {
@@ -116,7 +117,7 @@ function M.setup(fzf)
   map("n", "<leader>gC", function()
     local git = require("git")
     if not git.can_checkout() then return end
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     local actions = require("fzf-lua.actions")
     require("fzf-lua").git_branches({
       prompt = "Checkout branch> ",
@@ -140,7 +141,7 @@ function M.setup(fzf)
   end, { desc = "Copy commit" })
 
   map("n", "<leader>gb", function()
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua").git_branches({
       prompt = "Compare branch> ",
       actions = {
@@ -150,7 +151,7 @@ function M.setup(fzf)
             vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
             return
           end
-          vim.g.dotfiles_lazy.codediff()
+          lazy.codediff()
           vim.cmd("CodeDiff " .. vim.fn.fnameescape(branch .. "..."))
         end,
       },
@@ -158,7 +159,7 @@ function M.setup(fzf)
   end, { desc = "Compare branch" })
   map("n", "<leader>gF", function()
     if not current_git_file() then return end
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua").git_branches({
       prompt = "Compare file branch> ",
       actions = {
@@ -168,25 +169,25 @@ function M.setup(fzf)
             vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
             return
           end
-          vim.g.dotfiles_lazy.codediff()
+          lazy.codediff()
           vim.cmd("CodeDiff file " .. vim.fn.fnameescape(branch))
         end,
       },
     })
   end, { desc = "Compare file with branch" })
   map("n", "<leader>gd", function()
-    vim.g.dotfiles_lazy.codediff()
+    lazy.codediff()
     vim.cmd.CodeDiff()
   end, { desc = "Diff project" })
   map("n", "<leader>gh", function()
     local _, file = current_git_file()
     if not file then return end
-    vim.g.dotfiles_lazy.codediff()
+    lazy.codediff()
     vim.cmd("CodeDiff history " .. vim.fn.fnameescape(file))
   end, { desc = "File history" })
   map("n", "<leader>gL", function()
     if not require("git").can_checkout() then return end
-    vim.g.dotfiles_lazy.fzf()
+    lazy.fzf()
     require("fzf-lua").git_reflog()
   end, { desc = "Reflog" })
 
