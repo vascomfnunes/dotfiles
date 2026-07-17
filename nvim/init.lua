@@ -17,6 +17,7 @@ require("options")
 require("keymaps")
 require("plugins")
 require("git").setup()
+require("sessions").setup()
 
 -- Theme
 

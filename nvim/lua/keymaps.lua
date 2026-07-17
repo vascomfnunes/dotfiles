@@ -78,6 +78,31 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
+-- Jump back to the last cursor position when reopening a file. Skip commit
+-- messages: starting at the top is the point there.
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = editing_group,
+  callback = function(ev)
+    if vim.bo[ev.buf].buftype ~= "" then return end
+    local name = vim.api.nvim_buf_get_name(ev.buf)
+    if name:match("COMMIT_EDITMSG$") or name:match("MERGE_MSG$") then return end
+    local mark = vim.api.nvim_buf_get_mark(ev.buf, '"')
+    if mark[1] > 0 and mark[1] <= vim.api.nvim_buf_line_count(ev.buf) then
+      pcall(vim.api.nvim_win_set_cursor, 0, mark)
+    end
+  end,
+})
+
+-- Pinned files
+map("n", "<leader>m", function() require("pins").toggle() end, { desc = "Pin/unpin file" })
+map("n", "<leader>M", function() require("pins").pick() end, { desc = "Pinned files" })
+for index = 1, 4 do
+  map("n", "<leader>" .. index, function() require("pins").jump(index) end, { desc = "Pin #" .. index })
+end
+
+-- Sessions
+map("n", "<leader>sr", "<cmd>SessionRestore<CR>", { desc = "Restore session" })
+
 -- Tab navigation (<Tab>=<C-i> in terminals, so use leader to preserve jumplist)
 map("n", "<leader><Tab>", "gt", { desc = "Next tab" })
 map("n", "<leader><S-Tab>", "gT", { desc = "Prev tab" })

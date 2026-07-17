@@ -17,6 +17,19 @@ opt.expandtab = true
 opt.shiftwidth = 2
 opt.tabstop = 2
 
+-- Guide character on each leading indent level; keep tabs invisible.
+opt.list = true
+opt.listchars = { tab = "  ", trail = "·", leadmultispace = "▏ " }
+
+-- Folds
+
+-- Open everything on load; folds are opt-in via zc/zM.
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldlevelstart = 99
+-- Empty foldtext keeps the first line syntax-highlighted.
+opt.foldtext = ""
+
 -- Search
 
 opt.ignorecase = true
@@ -56,3 +69,7 @@ opt.undofile = true
 opt.undodir = undodir
 
 opt.confirm = true
+
+-- Sessions
+
+opt.sessionoptions = { "buffers", "curdir", "tabpages", "winsize", "help", "folds" }

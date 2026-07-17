@@ -141,6 +141,41 @@ vim.api.nvim_create_autocmd("LspAttach", {
   end,
 })
 
+-- Highlight other occurrences of the symbol under the cursor while idle
+-- (LspReferenceText/Read/Write groups; 'updatetime' controls the delay).
+vim.api.nvim_create_autocmd("LspAttach", {
+  group = lsp_group,
+  callback = function(ev)
+    local client = assert(vim.lsp.get_client_by_id(ev.data.client_id))
+    if not client:supports_method("textDocument/documentHighlight") then return end
+
+    local highlight_group = vim.api.nvim_create_augroup("DotfilesDocumentHighlight" .. ev.buf, { clear = true })
+    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+      group = highlight_group,
+      buffer = ev.buf,
+      callback = function() vim.lsp.buf.document_highlight() end,
+    })
+    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI" }, {
+      group = highlight_group,
+      buffer = ev.buf,
+      callback = function() vim.lsp.buf.clear_references() end,
+    })
+    vim.api.nvim_create_autocmd("LspDetach", {
+      group = highlight_group,
+      buffer = ev.buf,
+      callback = function(detach_ev)
+        -- Keep the autocmds while any remaining client still provides
+        -- document highlights.
+        for _, remaining in ipairs(vim.lsp.get_clients({ bufnr = ev.buf, method = "textDocument/documentHighlight" })) do
+          if remaining.id ~= detach_ev.data.client_id then return end
+        end
+        vim.lsp.buf.clear_references()
+        vim.api.nvim_del_augroup_by_id(highlight_group)
+      end,
+    })
+  end,
+})
+
 -- ruby-lsp currently behaves better with full semantic token delta disabled.
 local ruby_caps = vim.lsp.protocol.make_client_capabilities()
 local full = vim.tbl_get(ruby_caps, "textDocument", "semanticTokens", "requests", "full")
