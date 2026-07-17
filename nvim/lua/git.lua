@@ -618,6 +618,7 @@ function M.setup()
     callback = function()
       focused = true
       update_status(current_root(), true)
+      fetch_current_repo(false, false)
     end,
   })
   vim.api.nvim_create_autocmd("BufEnter", {
@@ -625,6 +626,7 @@ function M.setup()
     callback = function()
       if vim.bo.buftype ~= "" then return end
       update_status(current_root(), false)
+      fetch_current_repo(false, false)
     end,
   })
   vim.api.nvim_create_autocmd("BufWritePost", {
@@ -674,6 +676,7 @@ function M.setup()
 
   vim.defer_fn(function()
     update_status(current_root(), false)
+    fetch_current_repo(false, false)
   end, 1000)
 
   vim.api.nvim_create_autocmd("VimLeavePre", {
