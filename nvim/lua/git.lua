@@ -437,6 +437,36 @@ local function stash_current_repo()
   })
 end
 
+local function stage_all_current_repo()
+  local root = current_root()
+  if not root then
+    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
+    return
+  end
+  if not repository_ready(root, "staging all changes", true) then return end
+
+  run_git_command(root, "stage all", { "add", "--all" }, {
+    title = "Git stage",
+    success_message = "Staged all changes",
+    checktime = false,
+  })
+end
+
+local function unstage_all_current_repo()
+  local root = current_root()
+  if not root then
+    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
+    return
+  end
+  if not repository_ready(root, "unstaging all changes", true) then return end
+
+  run_git_command(root, "unstage all", { "reset", "--mixed", "--quiet" }, {
+    title = "Git unstage",
+    success_message = "Unstaged all changes",
+    checktime = false,
+  })
+end
+
 local function continue_git_operation()
   local root = current_root()
   if not root then
@@ -569,6 +599,27 @@ function M.merge(branch)
   })
 end
 
+function M.cherry_pick(commit)
+  if type(commit) ~= "string" or not commit:match("^%x+$") then
+    vim.notify("No commit selected", vim.log.levels.WARN, { title = "Git cherry-pick" })
+    return
+  end
+
+  local root = current_root()
+  if not root then
+    vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN)
+    return
+  end
+  if not repository_ready(root, "cherry-pick") then return end
+
+  run_git_in_terminal(root, "cherry-pick", { "cherry-pick", "--", commit }, {
+    env = { GIT_EDITOR = vim.fn.shellescape(vim.v.progpath) },
+    title = "Git cherry-pick",
+    success_message = "Cherry-picked " .. commit,
+    failure_message = "Git cherry-pick stopped; see the terminal for details",
+  })
+end
+
 function M.can_checkout()
   local root = current_root()
   if not root then
@@ -657,6 +708,12 @@ function M.setup()
   })
   vim.api.nvim_create_user_command("GitStash", stash_current_repo, {
     desc = "Create a named stash", force = true,
+  })
+  vim.api.nvim_create_user_command("GitStageAll", stage_all_current_repo, {
+    desc = "Stage all changes", force = true,
+  })
+  vim.api.nvim_create_user_command("GitUnstageAll", unstage_all_current_repo, {
+    desc = "Unstage all changes without modifying the working tree", force = true,
   })
   vim.api.nvim_create_user_command("GitContinue", continue_git_operation, {
     desc = "Continue the active Git operation", force = true,

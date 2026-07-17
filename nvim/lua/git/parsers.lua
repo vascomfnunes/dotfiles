@@ -24,4 +24,10 @@ function M.selected_branch(selected)
   return line:match("^%s*[%*+]?%s*[(]?([^%s)]+)")
 end
 
+function M.selected_commit(selected)
+  if not selected[1] then return nil end
+  local line = selected[1]:gsub("\27%[[0-9;]*m", "")
+  return line:match("^%s*(%x+)")
+end
+
 return M

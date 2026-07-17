@@ -1,6 +1,7 @@
 local M = {}
 local map = vim.keymap.set
 local selected_git_branch = require("git.parsers").selected_branch
+local selected_git_commit = require("git.parsers").selected_commit
 
 local function current_git_file()
   local file = vim.api.nvim_buf_get_name(0)
@@ -58,6 +59,43 @@ function M.setup(fzf)
   map("n", "<leader>gQ", "<cmd>GitAbort<CR>", { desc = "Abort Git operation" })
   map("n", "<leader>ga", "<cmd>GitAmend<CR>", { desc = "Amend commit" })
   map("n", "<leader>gA", "<cmd>GitAmendNow<CR>", { desc = "Amend commit with current date" })
+  map("n", "<leader>gx", function()
+    vim.g.dotfiles_lazy.fzf()
+    require("fzf-lua").git_branches({
+      prompt = "Cherry-pick branch> ",
+      remotes = "all",
+      actions = {
+        ["enter"] = function(selected)
+          local branch = selected_git_branch(selected)
+          if not branch then
+            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
+            return
+          end
+
+          local command = "git log --no-merges --color=always "
+            .. "--format='%C(yellow)%h%Creset %Cgreen(%cr)%Creset %s %C(blue)<%an>%Creset' "
+            .. vim.fn.shellescape(branch) .. " --not HEAD"
+          require("fzf-lua").git_commits({
+            cmd = command,
+            prompt = "Cherry-pick from " .. branch .. "> ",
+            actions = {
+              ["enter"] = function(commit_selection)
+                local commit = selected_git_commit(commit_selection)
+                if not commit then
+                  vim.notify(
+                    "Unable to parse commit: " .. tostring(commit_selection[1]),
+                    vim.log.levels.ERROR
+                  )
+                  return
+                end
+                require("git").cherry_pick(commit)
+              end,
+            },
+          })
+        end,
+      },
+    })
+  end, { desc = "Cherry-pick commit" })
   map("n", "<leader>gm", function()
     vim.g.dotfiles_lazy.fzf()
     require("fzf-lua").git_branches({
@@ -91,6 +129,8 @@ function M.setup(fzf)
     })
   end, { desc = "Checkout branch" })
   map("n", "<leader>gs", fzf("git_status"), { desc = "Status / changed files" })
+  map("n", "<leader>gS", "<cmd>GitStageAll<CR>", { desc = "Stage all changes" })
+  map("n", "<leader>gU", "<cmd>GitUnstageAll<CR>", { desc = "Unstage all changes" })
 
   map("n", "<leader>gyb", function()
     copy_git_output({ "git", "branch", "--show-current" }, "Copied branch")

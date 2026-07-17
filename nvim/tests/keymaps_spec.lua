@@ -14,6 +14,7 @@ package.loaded["fzf-lua"] = {
       style = "minimal",
     })
   end,
+  git_commits = function() end,
 }
 
 local get_clients = vim.lsp.get_clients
@@ -70,3 +71,30 @@ checkout()
 assert(type(picker_opts.actions.enter) == "function", "checkout action was not configured")
 picker_opts.actions.enter({ "main" }, {})
 assert(vim.deep_equal(calls, { "switch", "refresh" }), "status did not refresh after branch checkout")
+
+local cherry_pick
+local stage_all
+local unstage_all
+for _, mapping in ipairs(vim.api.nvim_get_keymap("n")) do
+  if mapping.desc == "Cherry-pick commit" then cherry_pick = mapping.callback end
+  if mapping.desc == "Stage all changes" then stage_all = mapping end
+  if mapping.desc == "Unstage all changes" then unstage_all = mapping end
+end
+assert(type(cherry_pick) == "function", "cherry-pick mapping was not found")
+assert(stage_all and stage_all.lhs == " gS", "stage-all mapping was not found")
+assert(unstage_all and unstage_all.lhs == " gU", "unstage-all mapping was not found")
+
+local branch_opts
+local commit_opts
+local cherry_picked
+package.loaded["fzf-lua"].git_branches = function(opts) branch_opts = opts end
+package.loaded["fzf-lua"].git_commits = function(opts) commit_opts = opts end
+git.cherry_pick = function(commit) cherry_picked = commit end
+
+cherry_pick()
+assert(branch_opts.remotes == "all", "cherry-pick branch picker did not include remote branches")
+branch_opts.actions.enter({ "  feature" })
+assert(commit_opts.cmd:match("feature"), "commit picker did not use the selected branch")
+assert(commit_opts.cmd:match("%-%-not HEAD"), "commit picker did not exclude commits already in HEAD")
+commit_opts.actions.enter({ "abc1234 two days ago A useful change <Author>" })
+assert(cherry_picked == "abc1234", "selected commit was not cherry-picked")

@@ -23,6 +23,9 @@ eq(parsers.selected_branch({ "* main" }), "main")
 eq(parsers.selected_branch({ "  remotes/origin/topic" }), "remotes/origin/topic")
 eq(parsers.selected_branch({ "\27[31m+ worktree-branch\27[0m" }), "worktree-branch")
 eq(parsers.selected_branch({}), nil)
+eq(parsers.selected_commit({ "abc1234 two days ago A useful change <Author>" }), "abc1234")
+eq(parsers.selected_commit({ "\27[33mdeadbeef\27[0m yesterday Fix bug" }), "deadbeef")
+eq(parsers.selected_commit({}), nil)
 
 local detect_operation = require("git.operation").detect
 local function detect(...)
