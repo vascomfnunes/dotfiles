@@ -114,7 +114,7 @@ The standard workspace also provides two tool popups in the active pane's
 working directory:
 
 - `prefix + y`: Yazi file manager, including Ghostty image previews through
-  tmux.
+  tmux and automatically using Catppuccin Latte or Mocha.
 - `prefix + b`: btop process and resource monitor, automatically using
   Catppuccin Latte or Mocha to match the current macOS appearance.
 
@@ -126,6 +126,17 @@ Run `y` directly from Zsh when you want the shell to follow Yazi's final
 directory after it exits.
 
 ## Maintenance
+
+### Checking Configuration
+
+Run the repository checks before committing configuration changes:
+
+```bash
+./check.sh
+```
+
+This validates POSIX shell and Zsh syntax, runs ShellCheck, and checks the diff
+for whitespace errors.
 
 ### Commit Style
 

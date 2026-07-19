@@ -51,7 +51,12 @@ fi
 
 # Fail before installing packages or replacing other configuration if a
 # directory managed as a symlink would be overwritten.
-for path in "$HOME/.config/nvim" "$HOME/.config/pyradio" "$HOME/.config/tmux/themes"; do
+for path in \
+  "$HOME/.config/nvim" \
+  "$HOME/.config/pyradio" \
+  "$HOME/.config/tmux/themes" \
+  "$HOME/.config/yazi"
+do
   if [ -e "$path" ] && [ ! -L "$path" ]; then
     echo "Existing non-symlink config found at $path" >&2
     echo "Move it aside before re-running install.sh." >&2
@@ -130,6 +135,7 @@ ln -sf "$DOTFILES_DIR/git/gitignore" "$HOME/.config/git/ignore"
 # Directory symlinks use -n so an existing link is replaced instead of the
 # new link being created inside the directory it points to.
 ln -sfn "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+ln -sfn "$DOTFILES_DIR/yazi" "$HOME/.config/yazi"
 ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_latte.theme" "$HOME/.config/btop/themes/catppuccin_latte.theme"
 ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_mocha.theme" "$HOME/.config/btop/themes/catppuccin_mocha.theme"
@@ -155,6 +161,11 @@ ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-bat
 ln -sf "$DOTFILES_DIR/tmux/scripts/btop-themed.sh" "$HOME/.local/bin/btop-themed"
 ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
 ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
+
+# Flavor sources are pinned in package.toml; Yazi deploys their generated
+# files into the ignored flavors directory.
+echo "🎨 Installing Yazi flavors..."
+ya pkg install
 
 # gpg-agent.conf points pinentry-program at this stable path, so it works
 # regardless of where Homebrew installs pinentry-mac.
