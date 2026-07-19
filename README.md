@@ -102,11 +102,13 @@ For example:
 ```sh
 TMUX_WORKSPACE_SESSION="Session Name"
 TMUX_WORKSPACE_PROJECT="$HOME/repos/project"
+TMUX_WORKSPACE_RADIO_WIDTH="15%"
 ```
 
 Without those tmux settings, the workspace uses the current user name for its
-session and the home directory for its Neovim window. If the configured project
-directory does not exist, it falls back to the home directory.
+session, the home directory for its Neovim window, and 15% of the window for the
+radio column. If the configured project directory does not exist, it falls back
+to the home directory.
 
 ## Maintenance
 
