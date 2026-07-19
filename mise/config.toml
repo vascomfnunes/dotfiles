@@ -1,4 +1,6 @@
 [settings]
+# Respect project .ruby-version/.nvmrc/.python-version files.
+idiomatic_version_file_enable_tools = ["ruby", "node", "python"]
 
 [settings.ruby]
 # Prefer prebuilt Ruby installs where available.
@@ -6,7 +8,7 @@ compile = false
 
 [tools]
 # Core runtimes available in every shell through `mise activate`.
-ruby = "3.3.9"
+ruby = "3.3.11"
 "gem:ruby-lsp" = "0.26.10"
 "gem:ripper-tags" = "1.0.2"
 "gem:htmlbeautifier" = "1.4.3"
