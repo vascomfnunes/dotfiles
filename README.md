@@ -15,18 +15,25 @@ kept under version control here.
 - macOS
 - Git and an internet connection
 - Permission to install Homebrew packages and applications
-- Neovim 0.12 or newer for the built-in [`vim.pack`](https://neovim.io/doc/user/pack/)
-  plugin manager used by this configuration
 
-Homebrew is installed automatically when it is not already available.
+Homebrew is installed automatically when it is not already available. The
+Neovim configuration targets Neovim 0.12 or newer, which provides the built-in
+[`vim.pack`](https://neovim.io/doc/user/pack/) plugin manager; the Brewfile
+installs a suitable version.
 
 ## What the Installer Changes
 
 Before running the installer, be aware that it:
 
 - Installs the base Homebrew bundle and either the `personal` or `work` bundle.
+- For the `personal` profile, taps and trusts the third-party
+  `vascomfnunes/audio` Homebrew tap.
 - Downloads and installs PyRadio and Zinit when they are missing.
+- Installs the Mise-managed runtimes (Ruby, Node.js, and Python) via
+  `mise install`.
 - Replaces managed configuration files with symlinks into this repository.
+- Creates empty local stub files (`~/.zshrc.local`, `~/.gitconfig.local`,
+  `~/.tmux-workspace.local`, and `~/.hushlogin`) when they are missing.
 - Creates a launchd agent that reloads the tmux theme when macOS appearance
   changes.
 - Runs `brew autoremove` and `brew cleanup`.
@@ -61,6 +68,9 @@ cd ~/dotfiles
 # Also upgrade installed Homebrew packages and applications
 ./install.sh personal --upgrade-brew
 ./install.sh work --upgrade-brew
+
+# Show usage
+./install.sh --help
 ```
 
 Some macOS preference changes require a logout or restart to take effect.
