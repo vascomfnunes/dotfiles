@@ -11,23 +11,13 @@ local function current_git_file()
     return nil
   end
 
-  local result = vim.system(
-    { "git", "rev-parse", "--show-toplevel" },
-    { cwd = vim.fn.fnamemodify(file, ":h"), text = true }
-  ):wait()
-  if result.code ~= 0 then
+  local root = vim.fs.root(file, ".git")
+  if not root then
     vim.notify("Current buffer is not inside a git repository", vim.log.levels.WARN)
     return nil
   end
 
-  local root = vim.trim(result.stdout)
-  local relative = vim.fs.relpath(root, file)
-  if not relative then
-    vim.notify("Current file is outside the git repository", vim.log.levels.WARN)
-    return nil
-  end
-
-  return relative, file
+  return vim.fs.relpath(root, file), file
 end
 
 local function copy_git_output(args, label)
@@ -50,6 +40,27 @@ local function gitsigns_action(action)
   end
 end
 
+-- Open an fzf branch picker and hand the parsed selection to `on_branch`.
+local function pick_branch(opts, on_branch)
+  return function()
+    lazy.fzf()
+    require("fzf-lua").git_branches({
+      prompt = opts.prompt,
+      remotes = opts.remotes,
+      actions = {
+        ["enter"] = function(selected)
+          local branch = selected_git_branch(selected)
+          if not branch then
+            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
+            return
+          end
+          on_branch(branch)
+        end,
+      },
+    })
+  end
+end
+
 function M.setup(fzf)
   map("n", "<leader>gc", "<cmd>GitCommit<CR>", { desc = "Commit staged changes" })
   map("n", "<leader>gp", "<cmd>GitPull<CR>", { desc = "Pull (fast-forward only)" })
@@ -60,59 +71,31 @@ function M.setup(fzf)
   map("n", "<leader>gQ", "<cmd>GitAbort<CR>", { desc = "Abort Git operation" })
   map("n", "<leader>ga", "<cmd>GitAmend<CR>", { desc = "Amend commit" })
   map("n", "<leader>gA", "<cmd>GitAmendNow<CR>", { desc = "Amend commit with current date" })
-  map("n", "<leader>gx", function()
-    lazy.fzf()
-    require("fzf-lua").git_branches({
-      prompt = "Cherry-pick branch> ",
-      remotes = "all",
+  map("n", "<leader>gx", pick_branch({ prompt = "Cherry-pick branch> ", remotes = "all" }, function(branch)
+    local command = "git log --no-merges --color=always "
+      .. "--format='%C(yellow)%h%Creset %Cgreen(%cr)%Creset %s %C(blue)<%an>%Creset' "
+      .. vim.fn.shellescape(branch) .. " --not HEAD"
+    require("fzf-lua").git_commits({
+      cmd = command,
+      prompt = "Cherry-pick from " .. branch .. "> ",
       actions = {
-        ["enter"] = function(selected)
-          local branch = selected_git_branch(selected)
-          if not branch then
-            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
+        ["enter"] = function(commit_selection)
+          local commit = selected_git_commit(commit_selection)
+          if not commit then
+            vim.notify(
+              "Unable to parse commit: " .. tostring(commit_selection[1]),
+              vim.log.levels.ERROR
+            )
             return
           end
-
-          local command = "git log --no-merges --color=always "
-            .. "--format='%C(yellow)%h%Creset %Cgreen(%cr)%Creset %s %C(blue)<%an>%Creset' "
-            .. vim.fn.shellescape(branch) .. " --not HEAD"
-          require("fzf-lua").git_commits({
-            cmd = command,
-            prompt = "Cherry-pick from " .. branch .. "> ",
-            actions = {
-              ["enter"] = function(commit_selection)
-                local commit = selected_git_commit(commit_selection)
-                if not commit then
-                  vim.notify(
-                    "Unable to parse commit: " .. tostring(commit_selection[1]),
-                    vim.log.levels.ERROR
-                  )
-                  return
-                end
-                require("git").cherry_pick(commit)
-              end,
-            },
-          })
+          require("git").cherry_pick(commit)
         end,
       },
     })
-  end, { desc = "Cherry-pick commit" })
-  map("n", "<leader>gm", function()
-    lazy.fzf()
-    require("fzf-lua").git_branches({
-      prompt = "Merge branch> ",
-      actions = {
-        ["enter"] = function(selected)
-          local branch = selected_git_branch(selected)
-          if not branch then
-            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
-            return
-          end
-          require("git").merge(branch)
-        end,
-      },
-    })
-  end, { desc = "Merge branch" })
+  end), { desc = "Cherry-pick commit" })
+  map("n", "<leader>gm", pick_branch({ prompt = "Merge branch> " }, function(branch)
+    require("git").merge(branch)
+  end), { desc = "Merge branch" })
   map("n", "<leader>gn", "<cmd>GitBranchNew<CR>", { desc = "Create new branch" })
   map("n", "<leader>gC", function()
     local git = require("git")
@@ -140,40 +123,17 @@ function M.setup(fzf)
     copy_git_output({ "git", "rev-parse", "--short", "HEAD" }, "Copied commit")
   end, { desc = "Copy commit" })
 
-  map("n", "<leader>gb", function()
-    lazy.fzf()
-    require("fzf-lua").git_branches({
-      prompt = "Compare branch> ",
-      actions = {
-        ["enter"] = function(selected)
-          local branch = selected_git_branch(selected)
-          if not branch then
-            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
-            return
-          end
-          lazy.codediff()
-          vim.cmd("CodeDiff " .. vim.fn.fnameescape(branch .. "..."))
-        end,
-      },
-    })
-  end, { desc = "Compare branch" })
+  map("n", "<leader>gb", pick_branch({ prompt = "Compare branch> " }, function(branch)
+    lazy.codediff()
+    vim.cmd("CodeDiff " .. vim.fn.fnameescape(branch .. "..."))
+  end), { desc = "Compare branch" })
+  local pick_file_branch = pick_branch({ prompt = "Compare file branch> " }, function(branch)
+    lazy.codediff()
+    vim.cmd("CodeDiff file " .. vim.fn.fnameescape(branch))
+  end)
   map("n", "<leader>gF", function()
     if not current_git_file() then return end
-    lazy.fzf()
-    require("fzf-lua").git_branches({
-      prompt = "Compare file branch> ",
-      actions = {
-        ["enter"] = function(selected)
-          local branch = selected_git_branch(selected)
-          if not branch then
-            vim.notify("Unable to parse branch: " .. tostring(selected[1]), vim.log.levels.ERROR)
-            return
-          end
-          lazy.codediff()
-          vim.cmd("CodeDiff file " .. vim.fn.fnameescape(branch))
-        end,
-      },
-    })
+    pick_file_branch()
   end, { desc = "Compare file with branch" })
   map("n", "<leader>gd", function()
     lazy.codediff()

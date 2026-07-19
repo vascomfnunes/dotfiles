@@ -1,21 +1,12 @@
 local M = {}
 local detect_git_operation = require("git.operation").detect
-local parsers = require("git.parsers")
+local status = require("git.status")
 
 local interval = 5 * 60 * 1000
-local status_interval = 10 * 1000
 local timeout = 60 * 1000
 local operations = {}
-local checking = {}
-local checking_dirty = {}
-local tracking_refresh_requested = {}
-local dirty_refresh_requested = {}
-local tracking = {}
-local branches = {}
-local dirty = {}
 local fetch_failed = {}
 local last_attempt = {}
-local last_status_check = {}
 local focused = true
 local timer
 
@@ -47,82 +38,19 @@ local function redraw_status()
   vim.cmd.redrawstatus()
 end
 
-local function update_tracking(root, force)
-  if not root then return end
-  if checking[root] then
-    if force then tracking_refresh_requested[root] = true end
-    return
-  end
-
-  checking[root] = true
-  vim.system(
-    { "git", "-C", root, "for-each-ref", "--format=%(HEAD) %(refname:short) %(upstream:track)", "refs/heads" },
-    {
-      env = { LC_ALL = "C" },
-      text = true,
-      timeout = timeout,
-    },
-    vim.schedule_wrap(function(result)
-      checking[root] = nil
-      if tracking_refresh_requested[root] then
-        tracking_refresh_requested[root] = nil
-        update_tracking(root, false)
-        return
-      end
-
-      local branch, status = "", ""
-      if result.code == 0 then branch, status = parsers.head(result.stdout or "") end
-      if branches[root] ~= branch or tracking[root] ~= status then
-        branches[root] = branch
-        tracking[root] = status
-        redraw_status()
-      end
-    end)
-  )
-end
-
-local function update_dirty(root, force)
-  if not root then return end
-  if checking_dirty[root] then
-    if force then dirty_refresh_requested[root] = true end
-    return
-  end
-
-  checking_dirty[root] = true
-  vim.system(
-    { "git", "-C", root, "--no-optional-locks", "status", "--porcelain", "--untracked-files=normal" },
-    { text = true, timeout = timeout },
-    vim.schedule_wrap(function(result)
-      checking_dirty[root] = nil
-      if dirty_refresh_requested[root] then
-        dirty_refresh_requested[root] = nil
-        update_dirty(root, false)
-        return
-      end
-
-      local is_dirty = result.code == 0 and result.stdout ~= ""
-      if dirty[root] ~= is_dirty then
-        dirty[root] = is_dirty
-        redraw_status()
-      end
-    end)
-  )
-end
-
-local function update_status(root, force)
-  if not root then return end
-  local now = vim.uv.now()
-  if not force and last_status_check[root] and now - last_status_check[root] < status_interval then
-    return
-  end
-  last_status_check[root] = now
-  update_tracking(root, force)
-  update_dirty(root, force)
-end
-
 local function git_error(result)
   local message = vim.trim(result.stderr or "")
   return message ~= "" and message or "Git command failed"
+end
+
+-- Current branch name, or nil on detached HEAD.
+local function current_branch(root)
+  local result = vim.system(
+    { "git", "-C", root, "branch", "--show-current" },
+    { text = true, timeout = timeout }
+  ):wait()
+  local branch = vim.trim(result.stdout or "")
+  return (result.code == 0 and branch ~= "") and branch or nil
 end
 
 local function git_directory(root)
@@ -198,7 +126,7 @@ local function fetch(root, notify)
     vim.schedule_wrap(function(result)
       operations[root] = nil
       fetch_failed[root] = result.code ~= 0
-      update_status(root, true)
+      status.update(root, true)
       redraw_status()
 
       if notify then
@@ -213,11 +141,8 @@ local function fetch(root, notify)
 end
 
 local function fetch_current_repo(force, notify)
-  local root = current_root()
-  if not root then
-    if notify then vim.notify("Current buffer is not in a Git repository", vim.log.levels.WARN) end
-    return
-  end
+  local root = notify and require_root() or current_root()
+  if not root then return end
 
   local last = last_attempt[root]
   if force or not last or vim.uv.now() - last >= interval then
@@ -225,123 +150,6 @@ local function fetch_current_repo(force, notify)
   elseif notify then
     vim.notify("Remote updates were fetched recently", vim.log.levels.INFO)
   end
-end
-
-local function pull_current_repo()
-  local root = ready_root("pull")
-  if not root then return end
-
-  operations[root] = "pull"
-  last_attempt[root] = vim.uv.now()
-  vim.system(
-    { "git", "-C", root, "pull", "--ff-only" },
-    {
-      env = { GIT_TERMINAL_PROMPT = "0" },
-      text = true,
-      timeout = timeout,
-    },
-    vim.schedule_wrap(function(result)
-      operations[root] = nil
-      if result.code == 0 then
-        fetch_failed[root] = false
-        vim.cmd.checktime()
-        vim.notify(vim.trim(result.stdout), vim.log.levels.INFO, { title = "Git pull" })
-      else
-        vim.notify(git_error(result), vim.log.levels.ERROR, { title = "Git pull" })
-      end
-      update_status(root, true)
-      redraw_status()
-    end)
-  )
-end
-
-local function commit_current_repo()
-  local root = ready_root("commit")
-  if not root then return end
-
-  local title = vim.trim(vim.fn.input("Commit title: "))
-  if title == "" then return end
-
-  -- An empty message produces a title-only commit.
-  local message = vim.trim(vim.fn.input("Commit message: "))
-
-  local args = { "git", "-C", root, "commit", "-m", title }
-  if message ~= "" then vim.list_extend(args, { "-m", message }) end
-
-  operations[root] = "commit"
-  vim.system(
-    args,
-    { text = true, timeout = timeout },
-    vim.schedule_wrap(function(result)
-      operations[root] = nil
-      if result.code == 0 then
-        vim.notify(vim.trim(result.stdout), vim.log.levels.INFO, { title = "Git commit" })
-      else
-        vim.notify(git_error(result), vim.log.levels.ERROR, { title = "Git commit" })
-      end
-      update_status(root, true)
-      redraw_status()
-    end)
-  )
-end
-
-local function push_current_repo()
-  local root = ready_root("push")
-  if not root then return end
-
-  local branch_result = vim.system(
-    { "git", "-C", root, "branch", "--show-current" },
-    { text = true, timeout = timeout }
-  ):wait()
-  local branch = vim.trim(branch_result.stdout or "")
-  if branch_result.code ~= 0 or branch == "" then
-    vim.notify("Cannot push from a detached HEAD", vim.log.levels.ERROR, { title = "Git push" })
-    return
-  end
-
-  local upstream_result = vim.system(
-    { "git", "-C", root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}" },
-    { text = true, timeout = timeout }
-  ):wait()
-  local set_upstream = upstream_result.code ~= 0 or vim.trim(upstream_result.stdout or "") == ""
-  local push_args = { "git", "-C", root, "push" }
-  if set_upstream then table.insert(push_args, "--set-upstream") end
-  vim.list_extend(push_args, { "origin", "HEAD" })
-
-  local push_command = set_upstream and "git push --set-upstream origin HEAD" or "git push origin HEAD"
-  local prompt = ("Push %s to origin?\n\n%s"):format(branch, push_command)
-  if set_upstream then
-    prompt = ("Push %s to origin and set its upstream?\n\n%s"):format(branch, push_command)
-  end
-
-  local choice = vim.fn.confirm(
-    prompt,
-    "&Push\n&Cancel",
-    2
-  )
-  if choice ~= 1 then return end
-
-  operations[root] = "push"
-  vim.system(
-    push_args,
-    {
-      env = { GIT_TERMINAL_PROMPT = "0" },
-      text = true,
-      timeout = timeout,
-    },
-    vim.schedule_wrap(function(result)
-      operations[root] = nil
-      if result.code == 0 then
-        local message = vim.trim(result.stderr or "")
-        if message == "" then message = "Pushed " .. branch .. " to origin" end
-        vim.notify(message, vim.log.levels.INFO, { title = "Git push" })
-      else
-        vim.notify(git_error(result), vim.log.levels.ERROR, { title = "Git push" })
-      end
-      update_status(root, true)
-      redraw_status()
-    end)
-  )
 end
 
 local function run_git_in_terminal(root, operation, args, options)
@@ -365,7 +173,7 @@ local function run_git_in_terminal(root, operation, args, options)
         else
           vim.notify(options.failure_message, vim.log.levels.ERROR, { title = options.title })
         end
-        update_status(root, true)
+        status.update(root, true)
         redraw_status()
       end)
     end,
@@ -394,6 +202,7 @@ local function run_git_command(root, operation, args, options)
       operations[root] = nil
       if result.code == 0 then
         if options.checktime ~= false then vim.cmd.checktime() end
+        if options.on_success then options.on_success() end
         local message = vim.trim((result.stdout or "") .. "\n" .. (result.stderr or ""))
         vim.notify(message ~= "" and message or options.success_message, vim.log.levels.INFO, {
           title = options.title,
@@ -401,10 +210,73 @@ local function run_git_command(root, operation, args, options)
       else
         vim.notify(git_error(result), vim.log.levels.ERROR, { title = options.title })
       end
-      update_status(root, true)
+      status.update(root, true)
       redraw_status()
     end)
   )
+end
+
+local function pull_current_repo()
+  local root = ready_root("pull")
+  if not root then return end
+
+  last_attempt[root] = vim.uv.now()
+  run_git_command(root, "pull", { "pull", "--ff-only" }, {
+    title = "Git pull",
+    success_message = "Already up to date",
+    on_success = function() fetch_failed[root] = false end,
+  })
+end
+
+local function commit_current_repo()
+  local root = ready_root("commit")
+  if not root then return end
+
+  local title = vim.trim(vim.fn.input("Commit title: "))
+  if title == "" then return end
+
+  -- An empty message produces a title-only commit.
+  local message = vim.trim(vim.fn.input("Commit message: "))
+
+  local args = { "commit", "-m", title }
+  if message ~= "" then vim.list_extend(args, { "-m", message }) end
+
+  run_git_command(root, "commit", args, {
+    title = "Git commit",
+    success_message = "Committed staged changes",
+    checktime = false,
+  })
+end
+
+local function push_current_repo()
+  local root = ready_root("push")
+  if not root then return end
+
+  local branch = current_branch(root)
+  if not branch then
+    vim.notify("Cannot push from a detached HEAD", vim.log.levels.ERROR, { title = "Git push" })
+    return
+  end
+
+  local upstream_result = vim.system(
+    { "git", "-C", root, "rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{upstream}" },
+    { text = true, timeout = timeout }
+  ):wait()
+  local set_upstream = upstream_result.code ~= 0 or vim.trim(upstream_result.stdout or "") == ""
+  local push_args = { "push" }
+  if set_upstream then table.insert(push_args, "--set-upstream") end
+  vim.list_extend(push_args, { "origin", "HEAD" })
+
+  local prompt = set_upstream
+    and ("Push %s to origin and set its upstream?\n\ngit push --set-upstream origin HEAD"):format(branch)
+    or ("Push %s to origin?\n\ngit push origin HEAD"):format(branch)
+  if vim.fn.confirm(prompt, "&Push\n&Cancel", 2) ~= 1 then return end
+
+  run_git_command(root, "push", push_args, {
+    title = "Git push",
+    success_message = "Pushed " .. branch .. " to origin",
+    checktime = false,
+  })
 end
 
 local function create_branch_current_repo()
@@ -455,19 +327,27 @@ local function unstage_all_current_repo()
   })
 end
 
-local function continue_git_operation()
+-- Root and detected in-progress operation for :GitContinue/:GitAbort, or nil
+-- (after notifying) when there is nothing to act on.
+local function active_operation(verb, gerund)
   local root = require_root()
-  if not root then return end
+  if not root then return nil end
 
   local directory = git_directory(root)
   local operation = git_operation(directory)
   if not operation then
-    vim.notify("No rebase, merge, cherry-pick, revert, or am operation to continue", vim.log.levels.INFO, {
-      title = "Git continue",
+    vim.notify("No rebase, merge, cherry-pick, revert, or am operation to " .. verb, vim.log.levels.INFO, {
+      title = "Git " .. verb,
     })
-    return
+    return nil
   end
-  if not repository_ready(root, "continuing " .. operation.name, true, directory) then return end
+  if not repository_ready(root, gerund .. " " .. operation.name, true, directory) then return nil end
+  return root, operation
+end
+
+local function continue_git_operation()
+  local root, operation = active_operation("continue", "continuing")
+  if not root then return end
 
   run_git_in_terminal(root, operation.name .. " continue", operation.continue_args, {
     env = { GIT_EDITOR = vim.fn.shellescape(vim.v.progpath) },
@@ -478,18 +358,8 @@ local function continue_git_operation()
 end
 
 local function abort_git_operation()
-  local root = require_root()
+  local root, operation = active_operation("abort", "aborting")
   if not root then return end
-
-  local directory = git_directory(root)
-  local operation = git_operation(directory)
-  if not operation then
-    vim.notify("No rebase, merge, cherry-pick, revert, or am operation to abort", vim.log.levels.INFO, {
-      title = "Git abort",
-    })
-    return
-  end
-  if not repository_ready(root, "aborting " .. operation.name, true, directory) then return end
 
   local choice = vim.fn.confirm(
     ("Abort the current Git %s operation?\n\nThis discards its in-progress changes."):format(operation.name),
@@ -547,16 +417,12 @@ function M.merge(branch)
   local root = ready_root("merge")
   if not root then return end
 
-  local current_result = vim.system(
-    { "git", "-C", root, "branch", "--show-current" },
-    { text = true, timeout = timeout }
-  ):wait()
-  local current_branch = vim.trim(current_result.stdout or "")
-  if current_result.code ~= 0 or current_branch == "" then
+  local target = current_branch(root)
+  if not target then
     vim.notify("Cannot merge into a detached HEAD", vim.log.levels.ERROR, { title = "Git merge" })
     return
   end
-  if branch == current_branch then
+  if branch == target then
     vim.notify(branch .. " is already the current branch", vim.log.levels.WARN, { title = "Git merge" })
     return
   end
@@ -564,7 +430,7 @@ function M.merge(branch)
   run_git_in_terminal(root, "merge", { "merge", "--", branch }, {
     env = { GIT_EDITOR = vim.fn.shellescape(vim.v.progpath) },
     title = "Git merge",
-    success_message = "Merged " .. branch .. " into " .. current_branch,
+    success_message = "Merged " .. branch .. " into " .. target,
     failure_message = "Git merge stopped; see the terminal for details",
   })
 end
@@ -596,19 +462,20 @@ function M.status()
   if not root then return "" end
 
   local parts = {}
-  if tracking[root] and tracking[root] ~= "" then table.insert(parts, tracking[root]) end
-  if dirty[root] or vim.bo.modified then table.insert(parts, "●") end
+  local tracking = status.tracking(root)
+  if tracking ~= "" then table.insert(parts, tracking) end
+  if status.dirty(root) or vim.bo.modified then table.insert(parts, "●") end
   if fetch_failed[root] then table.insert(parts, "!") end
   return table.concat(parts, " ")
 end
 
 function M.branch()
   local root = current_root()
-  return root and branches[root] or ""
+  return root and status.branch(root) or ""
 end
 
 function M.refresh()
-  update_status(current_root(), true)
+  status.update(current_root(), true)
 end
 
 function M.setup()
@@ -630,7 +497,7 @@ function M.setup()
     group = group,
     callback = function()
       focused = true
-      update_status(current_root(), true)
+      status.update(current_root(), true)
       fetch_current_repo(false, false)
     end,
   })
@@ -638,14 +505,14 @@ function M.setup()
     group = group,
     callback = function()
       if vim.bo.buftype ~= "" then return end
-      update_status(current_root(), false)
+      status.update(current_root(), false)
       fetch_current_repo(false, false)
     end,
   })
   vim.api.nvim_create_autocmd("BufWritePost", {
     group = group,
     callback = function()
-      update_status(current_root(), true)
+      status.update(current_root(), true)
     end,
   })
   vim.api.nvim_create_autocmd("BufModifiedSet", {
@@ -694,7 +561,7 @@ function M.setup()
   })
 
   vim.defer_fn(function()
-    update_status(current_root(), false)
+    status.update(current_root(), false)
     fetch_current_repo(false, false)
   end, 1000)
 

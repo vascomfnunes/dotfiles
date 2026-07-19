@@ -47,16 +47,24 @@ local function parse_conventional_selectors(text, classes)
   end
 end
 
-function M.parse(text)
-  local classes = {}
-  local ok, parser = pcall(vim.treesitter.get_string_parser, text, "css")
-  if ok then
+-- Visit every treesitter class_name node in `text`; false when the CSS
+-- parser is unavailable, so callers can fall back to pattern matching.
+local function each_class_node(text, callback)
+  return pcall(function()
+    local parser = vim.treesitter.get_string_parser(text, "css")
     class_query = class_query or vim.treesitter.query.parse("css", "(class_selector (class_name) @class)")
     local tree = parser:parse()[1]
     for _, node in class_query:iter_captures(tree:root(), text, 0, -1) do
-      classes[vim.treesitter.get_node_text(node, text)] = true
+      callback(node)
     end
-  end
+  end)
+end
+
+function M.parse(text)
+  local classes = {}
+  local ok = each_class_node(text, function(node)
+    classes[vim.treesitter.get_node_text(node, text)] = true
+  end)
   -- Keep conventional CSS and indented Sass working before the parser is
   -- installed, and when the CSS parser cannot understand the input.
   if not ok or next(classes) == nil then parse_conventional_selectors(text, classes) end
@@ -165,22 +173,15 @@ end
 
 function M.definition_ranges(text, name)
   local lines = vim.split(text, "\n", { plain = true })
-  local ok, ranges = pcall(function()
-    local parser = vim.treesitter.get_string_parser(text, "css")
-    class_query = class_query or vim.treesitter.query.parse("css", "(class_selector (class_name) @class)")
-    local tree = parser:parse()[1]
-    local result = {}
-
-    for _, node in class_query:iter_captures(tree:root(), text, 0, -1) do
-      if vim.treesitter.get_node_text(node, text) == name then
-        local start_row, start_col, end_row, end_col = node:range()
-        result[#result + 1] = {
-          start = { line = start_row, character = utf16_col(lines[start_row + 1], start_col) },
-          ["end"] = { line = end_row, character = utf16_col(lines[end_row + 1], end_col) },
-        }
-      end
+  local ranges = {}
+  local ok = each_class_node(text, function(node)
+    if vim.treesitter.get_node_text(node, text) == name then
+      local start_row, start_col, end_row, end_col = node:range()
+      ranges[#ranges + 1] = {
+        start = { line = start_row, character = utf16_col(lines[start_row + 1], start_col) },
+        ["end"] = { line = end_row, character = utf16_col(lines[end_row + 1], end_col) },
+      }
     end
-    return result
   end)
   if ok and #ranges > 0 then return ranges end
 
