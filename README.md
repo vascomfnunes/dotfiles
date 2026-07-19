@@ -102,11 +102,11 @@ For example:
 ```sh
 TMUX_WORKSPACE_SESSION="Session Name"
 TMUX_WORKSPACE_PROJECT="$HOME/repos/project"
-TMUX_WORKSPACE_RADIO_WIDTH="15%"
+TMUX_WORKSPACE_RADIO_WIDTH="20%"
 ```
 
 Without those tmux settings, the workspace uses the current user name for its
-session, the home directory for its Neovim window, and 15% of the window for the
+session, the home directory for its Neovim window, and 20% of the window for the
 radio column. If the configured project directory does not exist, it falls back
 to the home directory.
 
@@ -135,8 +135,8 @@ Run the repository checks before committing configuration changes:
 ./check.sh
 ```
 
-This validates POSIX shell and Zsh syntax, runs ShellCheck, and checks the diff
-for whitespace errors.
+This validates POSIX shell and Zsh syntax, runs ShellCheck and the Neovim test
+suite, and checks staged and unstaged changes for whitespace errors.
 
 ### Commit Style
 
