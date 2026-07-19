@@ -2,6 +2,11 @@
 
 set -eu
 
+if [ "$(uname -s)" != "Darwin" ]; then
+  echo "This script targets macOS only (launchd, defaults)." >&2
+  exit 1
+fi
+
 PROFILE="personal"
 UPGRADE_BREW=0
 DOTFILES_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
@@ -13,6 +18,10 @@ cd "$DOTFILES_DIR"
 
 ##### Arguments
 
+usage() {
+  echo "Usage: $0 [personal|work] [--upgrade-brew]"
+}
+
 for arg in "$@"; do
   case "$arg" in
     --upgrade-brew)
@@ -21,9 +30,13 @@ for arg in "$@"; do
     personal|work)
       PROFILE="$arg"
       ;;
+    -h|--help)
+      usage
+      exit 0
+      ;;
     *)
       echo "Unknown argument: $arg" >&2
-      echo "Usage: $0 [personal|work] [--upgrade-brew]" >&2
+      usage >&2
       exit 1
       ;;
   esac
@@ -68,10 +81,10 @@ fi
 
 ##### PyRadio
 
-echo "📻 Installing pyradio..."
 # The pyradio package on PyPI is an obsolete 2013 release. Use the maintained
 # project's installer, which installs the current release through pipx.
 if ! command -v pyradio >/dev/null 2>&1; then
+  echo "📻 Installing pyradio..."
   pyradio_tmp="$(mktemp -d)"
   trap 'rm -rf "$pyradio_tmp"' EXIT HUP INT TERM
   curl -fsSL \
@@ -93,19 +106,16 @@ fi
 ##### Directories
 
 echo "📂 Creating directories..."
-mkdir -p "$HOME/.config"
-mkdir -p "$HOME/.config/ghostty"
-mkdir -p "$HOME/.config/tmux"
-mkdir -p "$HOME/.config/git"
-mkdir -p "$HOME/.config/zsh"
-mkdir -p "$HOME/.config/mise"
-mkdir -p "$HOME/.local/bin"
-mkdir -p "$HOME/.gnupg"
-mkdir -p "$HOME/.ssh"
-mkdir -p "$HOME/.ssh/sockets"
-chmod 700 "$HOME/.gnupg"
-chmod 700 "$HOME/.ssh"
-chmod 700 "$HOME/.ssh/sockets"
+mkdir -p \
+  "$HOME/.config/ghostty" \
+  "$HOME/.config/tmux" \
+  "$HOME/.config/git" \
+  "$HOME/.config/zsh" \
+  "$HOME/.config/mise" \
+  "$HOME/.local/bin" \
+  "$HOME/.gnupg" \
+  "$HOME/.ssh/sockets"
+chmod 700 "$HOME/.gnupg" "$HOME/.ssh" "$HOME/.ssh/sockets"
 
 
 ##### Symlinks
@@ -116,12 +126,12 @@ ln -sf "$DOTFILES_DIR/zsh/zshrc" "$HOME/.config/zsh/.zshrc"
 ln -sf "$DOTFILES_DIR/git/gitconfig" "$HOME/.config/git/config"
 ln -sf "$DOTFILES_DIR/git/gitignore" "$HOME/.config/git/ignore"
 
-rm -f "$HOME/.config/nvim"
-ln -sf "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
+# Directory symlinks use -n so an existing link is replaced instead of the
+# new link being created inside the directory it points to.
+ln -sfn "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
-rm -f "$HOME/.config/tmux/themes"
-ln -sf "$DOTFILES_DIR/tmux/themes" "$HOME/.config/tmux/themes"
+ln -sfn "$DOTFILES_DIR/tmux/themes" "$HOME/.config/tmux/themes"
 ln -sf "$DOTFILES_DIR/gpg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
 ln -sf "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
 ln -sf "$DOTFILES_DIR/mise/config.toml" "$HOME/.config/mise/config.toml"
@@ -129,8 +139,7 @@ ln -sf "$DOTFILES_DIR/mise/config.toml" "$HOME/.config/mise/config.toml"
 # PyRadio's config dir is symlinked as a whole: pyradio saves playlists by
 # writing a temp file and renaming it over stations.csv, which would replace
 # a per-file symlink with a regular file.
-rm -f "$HOME/.config/pyradio"
-ln -sf "$DOTFILES_DIR/pyradio" "$HOME/.config/pyradio"
+ln -sfn "$DOTFILES_DIR/pyradio" "$HOME/.config/pyradio"
 ln -sf "$DOTFILES_DIR/bin/serve" "$HOME/.local/bin/serve"
 ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-weather-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
@@ -138,6 +147,8 @@ ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-bat
 ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
 ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
 
+# gpg-agent.conf points pinentry-program at this stable path, so it works
+# regardless of where Homebrew installs pinentry-mac.
 if command -v pinentry-mac >/dev/null 2>&1; then
   ln -sf "$(command -v pinentry-mac)" "$HOME/.local/bin/pinentry-mac"
 fi
@@ -176,21 +187,9 @@ launchctl bootstrap "gui/$(id -u)" "$TMUX_THEME_PLIST"
 ##### Local config stubs
 
 echo "📝 Setting up local config files..."
-if [ ! -f "$HOME/.zshrc.local" ]; then
-  : > "$HOME/.zshrc.local"
-fi
-
-if [ ! -f "$HOME/.gitconfig.local" ]; then
-  : > "$HOME/.gitconfig.local"
-fi
-
-if [ ! -f "$HOME/.hushlogin" ]; then
-  : > "$HOME/.hushlogin"
-fi
-
-if [ ! -f "$HOME/.tmux-workspace.local" ]; then
-  : > "$HOME/.tmux-workspace.local"
-fi
+for stub in .zshrc.local .gitconfig.local .hushlogin .tmux-workspace.local; do
+  [ -f "$HOME/$stub" ] || : > "$HOME/$stub"
+done
 
 
 ##### Shell plugin manager
@@ -211,10 +210,11 @@ if command -v gpgconf >/dev/null 2>&1; then
 fi
 
 if command -v mise >/dev/null 2>&1; then
+  export MISE_TRUSTED_CONFIG_PATHS="$DOTFILES_DIR/mise/config.toml"
   # Trust the config file to avoid the security prompt
-  MISE_TRUSTED_CONFIG_PATHS="$DOTFILES_DIR/mise/config.toml" mise trust "$DOTFILES_DIR/mise/config.toml"
+  mise trust "$DOTFILES_DIR/mise/config.toml"
   echo "💎 Installing Mise runtimes and developer tools..."
-  MISE_TRUSTED_CONFIG_PATHS="$DOTFILES_DIR/mise/config.toml" mise install --yes
+  mise install --yes
 fi
 
 
@@ -255,10 +255,10 @@ defaults write com.apple.Siri VoiceTriggerUserEnabled -bool false
 # Dock > Size:
 defaults write com.apple.dock tilesize -int 36
 
-# Dock > Magnification
+# Dock > Magnification (size)
 defaults write com.apple.dock largesize -int 54
 
-# Dock > Magnification
+# Dock > Magnification (enabled)
 defaults write com.apple.dock magnification -bool true
 
 # Dock > Minimize windows using: Scale effect
@@ -291,7 +291,7 @@ defaults write NSGlobalDomain InitialKeyRepeat -int 10
 # Keyboard navigation
 defaults write -globalDomain AppleKeyboardUIMode -int 2
 
-# Txt Input > Show Input menu in menu bar
+# Txt Input > Don't show Input menu in menu bar
 defaults write com.apple.TextInputMenu visible -bool false
 
 # Txt Input > Correct spelling automatically
@@ -307,7 +307,7 @@ defaults write com.apple.AppleMultitouchTrackpad Clicking -bool true
 # Show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
 
-# Show warning before changing an extension
+# Don't warn before changing a file extension
 defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
 # Finder > View > As List
