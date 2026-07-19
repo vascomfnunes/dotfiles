@@ -1,0 +1,13 @@
+# Catppuccin Mocha for PyRadio
+
+Stations            #CDD6F4 #1E1E2E
+Active Station      #A6E3A1
+Status Bar          #1E1E2E #A6E3A1
+Normal Cursor       #CDD6F4 #313244
+Active Cursor       #1E1E2E #B4BEFE
+Edit Cursor         #1E1E2E #F5E0DC
+Extra Func          #CBA6F7
+PyRadio URL         #CBA6F7
+Color Factor        0.06
+Messages Border     #CBA6F7
+transparency        2

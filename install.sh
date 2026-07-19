@@ -108,6 +108,7 @@ fi
 echo "📂 Creating directories..."
 mkdir -p \
   "$HOME/.config/ghostty" \
+  "$HOME/.config/btop/themes" \
   "$HOME/.config/tmux" \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
@@ -130,6 +131,8 @@ ln -sf "$DOTFILES_DIR/git/gitignore" "$HOME/.config/git/ignore"
 # new link being created inside the directory it points to.
 ln -sfn "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
 ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
+ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_latte.theme" "$HOME/.config/btop/themes/catppuccin_latte.theme"
+ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_mocha.theme" "$HOME/.config/btop/themes/catppuccin_mocha.theme"
 ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
 ln -sfn "$DOTFILES_DIR/tmux/themes" "$HOME/.config/tmux/themes"
 ln -sf "$DOTFILES_DIR/gpg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
@@ -140,11 +143,16 @@ ln -sf "$DOTFILES_DIR/mise/config.toml" "$HOME/.config/mise/config.toml"
 # writing a temp file and renaming it over stations.csv, which would replace
 # a per-file symlink with a regular file.
 ln -sfn "$DOTFILES_DIR/pyradio" "$HOME/.config/pyradio"
+# PyRadio watches this generated theme and repaints when the appearance agent
+# swaps its contents. Keep mutable state in ~/.cache rather than the repository.
+ln -sf "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
+  "$DOTFILES_DIR/pyradio/themes/catppuccin-auto.pyradio-theme"
 ln -sf "$DOTFILES_DIR/bin/serve" "$HOME/.local/bin/serve"
 ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-weather-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-art.sh" "$HOME/.local/bin/tmux-pyradio-art"
 ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-battery-status"
+ln -sf "$DOTFILES_DIR/tmux/scripts/btop-themed.sh" "$HOME/.local/bin/btop-themed"
 ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
 ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
 
@@ -183,6 +191,9 @@ cat > "$TMUX_THEME_PLIST" <<EOF
 EOF
 launchctl bootout "gui/$(id -u)/com.vascomfnunes.tmux-theme-reload" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$TMUX_THEME_PLIST"
+# Populate the watched PyRadio theme immediately instead of waiting for the
+# next macOS preferences change.
+"$HOME/.local/bin/tmux-theme-reload"
 
 
 ##### Local config stubs

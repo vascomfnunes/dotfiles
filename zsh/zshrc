@@ -145,6 +145,13 @@ if command -v yazi >/dev/null 2>&1; then
   }
 fi
 
+# Keep btop on the same Catppuccin Latte/Mocha flavor as macOS and tmux.
+if [[ -x "$HOME/.local/bin/btop-themed" ]]; then
+  btop() {
+    "$HOME/.local/bin/btop-themed" "$@"
+  }
+fi
+
 
 ##### Completion
 

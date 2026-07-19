@@ -1,0 +1,13 @@
+# Catppuccin Latte for PyRadio
+
+Stations            #4C4F69 #EFF1F5
+Active Station      #40A02B
+Status Bar          #EFF1F5 #40A02B
+Normal Cursor       #4C4F69 #CCD0DA
+Active Cursor       #EFF1F5 #7287FD
+Edit Cursor         #EFF1F5 #DC8A78
+Extra Func          #8839EF
+PyRadio URL         #8839EF
+Color Factor        0.03
+Messages Border     #8839EF
+transparency        2

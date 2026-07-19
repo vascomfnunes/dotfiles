@@ -115,7 +115,12 @@ working directory:
 
 - `prefix + y`: Yazi file manager, including Ghostty image previews through
   tmux.
-- `prefix + b`: btop process and resource monitor.
+- `prefix + b`: btop process and resource monitor, automatically using
+  Catppuccin Latte or Mocha to match the current macOS appearance.
+
+PyRadio follows the same appearance setting while it is running: its watched
+`catppuccin-auto` theme is regenerated as Latte or Mocha by the appearance
+agent, and PyRadio repaints without interrupting playback.
 
 Run `y` directly from Zsh when you want the shell to follow Yazi's final
 directory after it exits.
