@@ -49,7 +49,8 @@ render() {
   title=$1
   cols=$(tput cols)
   rows=$(tput lines)
-  art_rows=$((rows - 3))
+  # Leave a blank line between the art and the title row.
+  art_rows=$((rows - 4))
 
   clear
   art=$(art_for "$title" || true)
@@ -62,11 +63,19 @@ render() {
     printf '%s' "$text"
   fi
 
-  # Track text centered on the bottom row, truncated to the pane width.
+  # Track text centered on the bottom row, truncated to the pane width and
+  # tinted like the status bar's "now playing" segment (theme's @radio_fg).
   text="♪ $title"
   [ ${#text} -gt "$cols" ] && text="${text:0:cols}"
   tput cup $((rows - 2)) $(((cols - ${#text}) / 2))
-  printf '%s' "$text"
+  color=$(tmux show -gqv @radio_fg 2>/dev/null || true)
+  case $color in
+    '#'??????)
+      printf '\033[38;2;%d;%d;%dm%s\033[0m' \
+        $((16#${color:1:2})) $((16#${color:3:2})) $((16#${color:5:2})) "$text"
+      ;;
+    *) printf '%s' "$text" ;;
+  esac
 }
 
 # Redraw on resize (also fires on client reattach, which wipes the image).
