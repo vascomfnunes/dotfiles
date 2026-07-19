@@ -1,12 +1,10 @@
 [init]
 	defaultBranch = main
-	templateDir = ~/.git_template
 
 [core]
 	; editor = /Applications/RubyMine.app/Contents/MacOS/rubymine --wait
 	editor = nvim
 	autocrlf = input
-	excludesFile = ~/.gitignore_global
 
 
 ##### Sync behavior
