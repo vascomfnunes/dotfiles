@@ -11,7 +11,10 @@ set -eu
 
 poll_interval="${PYRADIO_ART_POLL:-5}"
 cache_dir="${TMPDIR:-/tmp}/tmux-pyradio-art"
+fallback_art="${PYRADIO_ART_FALLBACK:-$HOME/.config/pyradio/assets/generic-cover.png}"
 mkdir -p "$cache_dir"
+render_output="$cache_dir/render.$$"
+trap 'rm -f "$render_output"' EXIT
 
 # The OS already purges stale temp files, but trim anything older than a week
 # ourselves so the cache stays small even on long-uptime machines.
@@ -45,18 +48,47 @@ art_for() {
   [ -s "$cache_file" ] && printf '%s' "$cache_file"
 }
 
+# Delete only the image created by this process. Kitty's capital-I deletion
+# also releases its stored image data; the tmux form doubles the inner escapes
+# so allow-passthrough can forward the command to the outer terminal.
+kitty_image_id=''
+clear_kitty_art() {
+  [ -n "$kitty_image_id" ] || return 0
+
+  if [ -n "${TMUX:-}" ]; then
+    printf '\033Ptmux;\033\033_Ga=d,d=I,i=%s,q=2\033\033\x5c\033\x5c' \
+      "$kitty_image_id"
+  else
+    printf '\033_Ga=d,d=I,i=%s,q=2\033\x5c' "$kitty_image_id"
+  fi
+  kitty_image_id=''
+}
+
 render() {
   title=$1
   cols=$(tput cols)
   rows=$(tput lines)
   # Leave a blank line between the art and the title row.
   art_rows=$((rows - 4))
+  art_cols=$cols
+  [ "$art_cols" -gt 40 ] && art_cols=40
+  [ "$art_rows" -gt 19 ] && art_rows=19
+  [ "$art_cols" -lt 1 ] && art_cols=1
+  [ "$art_rows" -lt 1 ] && art_rows=1
 
+  clear_kitty_art
   clear
   art=$(art_for "$title" || true)
+  if [ -z "$art" ] && [ -s "$fallback_art" ]; then
+    art=$fallback_art
+  fi
+
   if [ -n "$art" ]; then
     chafa --format kitty --passthrough tmux --align mid,mid \
-      --size "${cols}x${art_rows}" "$art"
+      --size "${art_cols}x${art_rows}" "$art" >"$render_output"
+    kitty_image_id=$(head -c 256 "$render_output" | tr ',' '\n' \
+      | sed -n 's/^i=\([0-9][0-9]*\).*/\1/p' | head -n 1)
+    cat "$render_output"
   else
     text='(no artwork)'
     tput cup $((rows / 2)) $(((cols - ${#text}) / 2))
@@ -87,6 +119,7 @@ while :; do
   case $title in
     '' | *'Player is stopped'* | *'Playback stopped'*)
       if [ "$shown" != stopped ]; then
+        clear_kitty_art
         clear
         text='pyradio is not playing'
         tput cup $(($(tput lines) / 2)) $((($(tput cols) - ${#text}) / 2))
