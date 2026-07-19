@@ -84,6 +84,32 @@ if [ "$UPGRADE_BREW" -eq 1 ]; then
 fi
 
 
+##### slk
+
+if [ "$PROFILE" = "work" ]; then
+  echo "💬 Installing slk..."
+  slk_version="$(
+    curl -fsSL https://api.github.com/repos/gammons/slk/releases/latest |
+      sed -n 's/.*"tag_name":[[:space:]]*"v\([^"]*\)".*/\1/p'
+  )"
+  if [ -z "$slk_version" ]; then
+    echo "Could not determine the latest slk version." >&2
+    exit 1
+  fi
+
+  slk_tmp="$(mktemp -d)"
+  trap 'rm -rf "$slk_tmp"' EXIT HUP INT TERM
+  curl -fsSL \
+    "https://github.com/gammons/slk/releases/latest/download/slk_${slk_version}_darwin_arm64.tar.gz" \
+    -o "$slk_tmp/slk.tar.gz"
+  tar -xzf "$slk_tmp/slk.tar.gz" -C "$slk_tmp"
+  sudo mkdir -p /usr/local/bin
+  sudo install -m 0755 "$slk_tmp/slk" /usr/local/bin/slk
+  rm -rf "$slk_tmp"
+  trap - EXIT HUP INT TERM
+fi
+
+
 ##### PyRadio
 
 # The pyradio package on PyPI is an obsolete 2013 release. Use the maintained
