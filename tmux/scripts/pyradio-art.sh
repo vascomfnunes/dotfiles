@@ -10,11 +10,20 @@
 set -eu
 
 poll_interval="${PYRADIO_ART_POLL:-5}"
+settle_interval="${PYRADIO_ART_SETTLE:-1}"
 cache_dir="${TMPDIR:-/tmp}/tmux-pyradio-art"
 fallback_art="${PYRADIO_ART_FALLBACK:-$HOME/.config/pyradio/assets/generic-cover.png}"
 mkdir -p "$cache_dir"
 render_output="$cache_dir/render.$$"
 trap 'rm -f "$render_output"' EXIT
+
+# Track changes continue while another tmux window is selected. Permit this
+# pane's Kitty uploads to reach the attached client even when the pane is not
+# visible; the default "on" setting only forwards passthrough from visible
+# panes. Scope the less restrictive setting to this pane instead of globally.
+if [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ]; then
+  tmux set-option -p -t "$TMUX_PANE" allow-passthrough all
+fi
 
 # The OS already purges stale temp files, but trim anything older than a week
 # ourselves so the cache stays small even on long-uptime machines.
@@ -26,6 +35,40 @@ current_title() {
   curl -sf --max-time 1 http://localhost:9998/title 2>/dev/null \
     | sed -n 's/^data: *//p' \
     | sed 's/<[^>]*>//g'
+}
+
+# The workspace is assembled before a client attaches, while tmux still uses
+# its small fallback size. Do not paint at that temporary geometry: Kitty
+# images are placed in terminal pixels and cannot be corrected by tmux when
+# the pane subsequently grows. Wait for an attached client and a stable pane
+# size before the first render. An attached client is not quite the same as a
+# ready client: tmux can still be painting its initial screen after this
+# returns. The main loop therefore schedules one extra paint shortly after the
+# first artwork frame as well.
+wait_for_stable_geometry() {
+  [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ] || return 0
+
+  while [ "$(tmux display-message -p -t "$TMUX_PANE" \
+    '#{session_attached}' 2>/dev/null || printf 1)" = 0 ]; do
+    read -rsn1 -t 0.1 key || true
+    case ${key:-} in q | $'\e') exit 0 ;; esac
+  done
+
+  previous_geometry=''
+  stable_samples=0
+  while [ "$stable_samples" -lt 2 ]; do
+    geometry=$(tmux display-message -p -t "$TMUX_PANE" \
+      '#{pane_width}x#{pane_height}' 2>/dev/null || true)
+    [ -n "$geometry" ] || return 0
+    if [ "$geometry" = "$previous_geometry" ]; then
+      stable_samples=$((stable_samples + 1))
+    else
+      previous_geometry=$geometry
+      stable_samples=0
+    fi
+    read -rsn1 -t 0.1 key || true
+    case ${key:-} in q | $'\e') exit 0 ;; esac
+  done
 }
 
 # Downloads cover art for the given "Artist - Title" string into the cache and
@@ -113,30 +156,47 @@ render() {
 # Redraw on resize (also fires on client reattach, which wipes the image).
 trap 'shown=""' WINCH
 
+wait_for_stable_geometry
+
 shown=''
+shown_geometry=''
+first_art_painted=0
 while :; do
+  next_poll_interval=$poll_interval
   title=$(current_title || true)
+  geometry="$(tput cols)x$(tput lines)"
   case $title in
     '' | *'Player is stopped'* | *'Playback stopped'*)
-      if [ "$shown" != stopped ]; then
+      if [ "$shown" != stopped ] || [ "$geometry" != "$shown_geometry" ]; then
         clear_kitty_art
         clear
         text='pyradio is not playing'
         tput cup $(($(tput lines) / 2)) $((($(tput cols) - ${#text}) / 2))
         printf '%s' "$text"
         shown=stopped
+        shown_geometry=$geometry
       fi
       ;;
     *)
-      if [ "$title" != "$shown" ]; then
+      if [ "$title" != "$shown" ] || [ "$geometry" != "$shown_geometry" ]; then
         render "$title"
         shown=$title
+        shown_geometry=$geometry
+        if [ "$first_art_painted" -eq 0 ]; then
+          # During client attachment tmux may accept passthrough output before
+          # the outer terminal is ready, then overwrite that image with its
+          # initial screen repaint. Retry once after the attach has settled;
+          # this is the same repaint that changing panes or resizing triggers.
+          first_art_painted=1
+          shown=''
+          next_poll_interval=$settle_interval
+        fi
       fi
       ;;
   esac
 
   # Poll for the next song, letting a keypress interrupt early.
   key=''
-  read -rsn1 -t "$poll_interval" key || true
+  read -rsn1 -t "$next_poll_interval" key || true
   case $key in q | $'\e') exit 0 ;; esac
 done
