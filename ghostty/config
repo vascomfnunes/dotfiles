@@ -1,9 +1,7 @@
 ##### Font and theme
 
-font-family = "JetBrainsMono Nerd Font"
 theme = "light:Catppuccin Latte,dark:Catppuccin Mocha"
 font-thicken = true
-font-thicken-strength = 1
 
 
 ##### Cursor and shell integration
@@ -12,6 +10,7 @@ cursor-style = block
 cursor-style-blink = true
 shell-integration-features = no-cursor
 confirm-close-surface = false
+mouse-hide-while-typing = true
 
 
 ##### Window appearance

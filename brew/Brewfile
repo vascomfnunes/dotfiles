@@ -30,7 +30,6 @@ brew "mpv"
 brew "neovim"
 brew "tmux"
 
-cask "font-jetbrains-mono-nerd-font"
 cask "ghostty"
 
 
