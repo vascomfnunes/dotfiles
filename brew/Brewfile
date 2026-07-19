@@ -12,6 +12,7 @@ brew "zoxide"
 ##### CLI utilities
 
 brew "bat"
+brew "btop"
 brew "fd"
 brew "fzf"
 brew "git"
@@ -21,6 +22,7 @@ brew "ripgrep"
 brew "tree-sitter-cli"
 brew "uv"
 brew "wget"
+brew "yazi"
 brew "yarn"
 
 

@@ -110,6 +110,16 @@ session, the home directory for its Neovim window, and 15% of the window for the
 radio column. If the configured project directory does not exist, it falls back
 to the home directory.
 
+The standard workspace also provides two tool popups in the active pane's
+working directory:
+
+- `prefix + y`: Yazi file manager, including Ghostty image previews through
+  tmux.
+- `prefix + b`: btop process and resource monitor.
+
+Run `y` directly from Zsh when you want the shell to follow Yazi's final
+directory after it exits.
+
 ## Maintenance
 
 ### Commit Style
@@ -180,11 +190,13 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Editor:** Neovim 0.12+ with native `vim.pack` package management and a
   committed plugin lockfile.
 - **Multiplexer:** tmux with seamless Neovim navigation, a restorable workspace,
-  PyRadio, weather and battery status, and automatic light/dark themes.
+  Yazi and btop popups, PyRadio, weather and battery status, and automatic
+  light/dark themes.
 - **Runtime management:** Mise with pinned Ruby, Node.js, and Python versions.
 - **Security:** GPG agent and SSH configuration, including SSH connection
   multiplexing.
-- **Utilities:** Highlights include bat, eza, fd, fzf, ripgrep, pipx, uv, wget,
-  and yarn. The Brewfiles are the source of truth for the complete package list.
+- **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
+  pipx, uv, wget, and yarn. The Brewfiles are the source of truth for the
+  complete package list.
 - **Scripts:** Utilities installed into `~/.local/bin`, including `serve` and
   the tmux status/workspace helpers.
