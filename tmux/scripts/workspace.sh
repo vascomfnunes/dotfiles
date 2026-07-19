@@ -50,13 +50,16 @@ if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
   exit 0
 fi
 
-# Window 1: a plain zsh shell on the left, PyRadio on the right (roughly 70/30).
+# Window 1: a plain zsh shell on the left (roughly 80/20); the right column
+# holds the radio cover art pane on top of PyRadio.
 session_id="$($tmux_bin new-session -d -P -F '#{session_id}' \
   -s "$session" -n zsh -c "$HOME")"
 
-"$tmux_bin" split-window -d -h -l '30%' \
+"$tmux_bin" split-window -d -h -l '21%' \
   -t "${session_id}:zsh.1" -c "$HOME"
 start_app "${session_id}:zsh.2" pyradio
+"$tmux_bin" split-window -d -vb -l 15 -t "${session_id}:zsh.2" \
+  "$HOME/.local/bin/tmux-pyradio-art"
 
 # Window 2: Neovim in the configured project directory.
 "$tmux_bin" new-window -d -t "${session_id}:" \
