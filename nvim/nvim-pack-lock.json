@@ -1,11 +1,11 @@
 {
   "plugins": {
     "agentic.nvim": {
-      "rev": "a37f19f1d7eda70267c73c65dd7c1c1d4f47c971",
+      "rev": "246feb4773923a10a6fedc40048657516bd05792",
       "src": "https://github.com/carlos-algms/agentic.nvim"
     },
     "catppuccin": {
-      "rev": "05e8787020dcfdb937bf2ff23855ea2415b4e072",
+      "rev": "058e83dc009e4dd62f30807054de9cc849699e27",
       "src": "https://github.com/catppuccin/nvim"
     },
     "codediff.nvim": {
@@ -69,7 +69,7 @@
       "src": "https://github.com/nvim-neotest/nvim-nio"
     },
     "nvim-treesitter": {
-      "rev": "4916d6592ede8c07973490d9322f187e07dfefac",
+      "rev": "24977147550d53589e53b874ec75e14e4fbc304e",
       "src": "https://github.com/nvim-treesitter/nvim-treesitter",
       "version": "'main'"
     },
