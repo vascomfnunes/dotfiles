@@ -15,7 +15,19 @@ cache_dir="${TMPDIR:-/tmp}/tmux-pyradio-art"
 fallback_art="${PYRADIO_ART_FALLBACK:-$HOME/.config/pyradio/assets/generic-cover.png}"
 mkdir -p "$cache_dir"
 render_output="$cache_dir/render.$$"
-trap 'rm -f "$render_output"' EXIT
+synchronized_output=0
+
+end_synchronized_output() {
+  [ "$synchronized_output" -eq 1 ] || return 0
+  printf '\033[?2026l'
+  synchronized_output=0
+}
+
+cleanup() {
+  end_synchronized_output
+  rm -f "$render_output"
+}
+trap cleanup EXIT
 
 # Track changes continue while another tmux window is selected. Permit this
 # pane's Kitty uploads to reach the attached client even when the pane is not
@@ -119,18 +131,33 @@ render() {
   [ "$art_cols" -lt 1 ] && art_cols=1
   [ "$art_rows" -lt 1 ] && art_rows=1
 
-  clear_kitty_art
-  clear
   art=$(art_for "$title" || true)
   if [ -z "$art" ] && [ -s "$fallback_art" ]; then
     art=$fallback_art
   fi
 
+  next_kitty_image_id=''
   if [ -n "$art" ]; then
     chafa --format kitty --passthrough tmux --align mid,mid \
       --size "${art_cols}x${art_rows}" "$art" >"$render_output"
-    kitty_image_id=$(head -c 256 "$render_output" | tr ',' '\n' \
+    next_kitty_image_id=$(head -c 256 "$render_output" | tr ',' '\n' \
       | sed -n 's/^i=\([0-9][0-9]*\).*/\1/p' | head -n 1)
+  fi
+
+  # Chafa's Kitty placeholders are multi-codepoint grapheme clusters. If tmux
+  # flushes them piecemeal, Ghostty can temporarily associate cells with the
+  # wrong image rows or columns even though tmux's final pane grid is correct.
+  # Synchronized output makes tmux publish the clear, image placement and
+  # title as one completed screen update.
+  if [ -n "${TMUX:-}" ]; then
+    printf '\033[?2026h'
+    synchronized_output=1
+  fi
+
+  clear_kitty_art
+  clear
+  if [ -n "$art" ]; then
+    kitty_image_id=$next_kitty_image_id
     cat "$render_output"
   else
     text='(no artwork)'
@@ -151,6 +178,8 @@ render() {
       ;;
     *) printf '%s' "$text" ;;
   esac
+
+  end_synchronized_output
 }
 
 # Redraw on resize (also fires on client reattach, which wipes the image).
