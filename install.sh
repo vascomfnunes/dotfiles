@@ -185,6 +185,7 @@ ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyr
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-art.sh" "$HOME/.local/bin/tmux-pyradio-art"
 ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-battery-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/btop-themed.sh" "$HOME/.local/bin/btop-themed"
+ln -sf "$DOTFILES_DIR/tmux/scripts/cheatsheet.sh" "$HOME/.local/bin/tmux-cheatsheet"
 ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
 ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
 

@@ -110,13 +110,15 @@ session, the home directory for its Neovim window, and 20% of the window for the
 radio column. If the configured project directory does not exist, it falls back
 to the home directory.
 
-The standard workspace also provides two tool popups in the active pane's
+The standard workspace also provides tool popups in the active pane's
 working directory:
 
 - `prefix + y`: Yazi file manager, including Ghostty image previews through
   tmux and automatically using Catppuccin Latte or Mocha.
 - `prefix + b`: btop process and resource monitor, automatically using
   Catppuccin Latte or Mocha to match the current macOS appearance.
+- `prefix + S`: searchable command and programming cheatsheets from cht.sh,
+  with topic previews and an optional query prompt.
 
 PyRadio follows the same appearance setting while it is running: its watched
 `catppuccin-auto` theme is regenerated as Latte or Mocha by the appearance
