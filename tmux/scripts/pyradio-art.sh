@@ -87,6 +87,13 @@ wait_for_stable_geometry() {
 # prints the file path. Prints nothing when the lookup finds no match.
 art_for() {
   title=$1
+
+  # PyRadio uses "Playing: ..." for stream status rather than track metadata.
+  # Do not search iTunes for it; returning no result selects the generic cover.
+  case $title in
+    Playing:*) return 0 ;;
+  esac
+
   cache_file="$cache_dir/$(printf '%s' "$title" | md5 -q).jpg"
 
   if [ ! -s "$cache_file" ]; then
