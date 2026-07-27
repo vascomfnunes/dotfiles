@@ -180,6 +180,7 @@ ln -sfn "$DOTFILES_DIR/pyradio" "$HOME/.config/pyradio"
 ln -sf "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
   "$DOTFILES_DIR/pyradio/themes/catppuccin-auto.pyradio-theme"
 ln -sf "$DOTFILES_DIR/bin/serve" "$HOME/.local/bin/serve"
+ln -sf "$DOTFILES_DIR/bin/rubymine-git-editor" "$HOME/.local/bin/rubymine-git-editor"
 ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-weather-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
 ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-art.sh" "$HOME/.local/bin/tmux-pyradio-art"

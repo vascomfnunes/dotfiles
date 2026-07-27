@@ -2,7 +2,7 @@
 	defaultBranch = main
 
 [core]
-	; editor = /Applications/RubyMine.app/Contents/MacOS/rubymine --wait
+	; editor = ~/.local/bin/rubymine-git-editor
 	editor = nvim
 	autocrlf = input
 
