@@ -16,6 +16,7 @@ cask "nordvpn"
 cask "affinity"
 cask "adobe-digital-editions"
 cask "calibre"
+cask "iina"
 
 
 ##### Audio hosts and managers
