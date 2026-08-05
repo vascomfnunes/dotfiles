@@ -7,6 +7,9 @@ tap "vascomfnunes/audio"
 
 brew "ninja"
 
+##### Github
+
+brew "gh"
 
 ##### General apps
 
