@@ -2,7 +2,6 @@
 
 tap "vascomfnunes/audio"
 
-
 ##### Build tools
 
 brew "ninja"
@@ -19,8 +18,6 @@ cask "nordvpn"
 cask "affinity"
 cask "adobe-digital-editions"
 cask "calibre"
-cask "iina"
-
 
 ##### Audio hosts and managers
 
@@ -31,14 +28,11 @@ cask "arturia-software-center"
 cask "ik-product-manager"
 cask "native-access"
 cask "ilok-license-manager"
-cask "steinberg-activation-manager"
-cask "wavelab"
 cask "korg-software-pass"
 cask "plugin-alliance-installation-manager"
 cask "roland-cloud-manager"
 cask "ssl-download-manager"
 cask "xln-online-installer"
-
 
 ##### Audio plugins
 

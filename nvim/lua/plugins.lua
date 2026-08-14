@@ -16,6 +16,7 @@ local treesitter_languages = {
   "lua", "vim", "vimdoc", "bash", "json",
   "html", "css", "javascript", "typescript",
   "ruby", "rbs", "yaml", "markdown", "markdown_inline",
+  "swift",
 }
 
 local treesitter = require("nvim-treesitter")
