@@ -125,6 +125,7 @@ end
 
 -- LSP
 map("n", "gd", function() require("tags").definition_or_tag() end, { desc = "Go to definition" })
+map("n", "<C-]>", function() require("tags").definition_or_tag() end, { desc = "Go to definition" })
 map("n", "grr", fzf("lsp_references"), { desc = "References" })
 map("n", "gri", fzf("lsp_implementations", { jump1 = true }), { desc = "Implementations" })
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code action" })

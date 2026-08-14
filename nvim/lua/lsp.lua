@@ -35,7 +35,9 @@ local function enable_signature_help(ev, client)
   for _, character in ipairs(provider.retriggerCharacters or {}) do triggers[character] = true end
   if vim.tbl_isempty(triggers) then return end
 
-  local group = vim.api.nvim_create_augroup("DotfilesSignatureHelp" .. ev.buf, { clear = true })
+  -- Keyed by client too: two clients on the same buffer both offering
+  -- signature help must not clobber each other's trigger characters.
+  local group = vim.api.nvim_create_augroup("DotfilesSignatureHelp" .. ev.buf .. ":" .. client.id, { clear = true })
   vim.api.nvim_create_autocmd("InsertCharPre", {
     group = group,
     buffer = ev.buf,
@@ -175,7 +177,7 @@ local servers = {
   },
   stimulus_ls = {
     cmd = { "stimulus-language-server", "--stdio" },
-    filetypes = { "html", "ruby", "eruby", "blade", "php", "javascript", "typescript" },
+    filetypes = { "html", "ruby", "eruby", "javascript", "typescript" },
     root_markers = { "Gemfile", ".git" },
   },
 }
