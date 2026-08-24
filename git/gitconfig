@@ -2,8 +2,8 @@
 	defaultBranch = main
 
 [core]
-	; editor = ~/.local/bin/rubymine-git-editor
-	editor = nvim
+	; editor = nvim
+	editor = ti --wait
 	autocrlf = input
 
 

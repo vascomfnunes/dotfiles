@@ -40,5 +40,7 @@ cask "ghostty"
 
 ##### Desktop apps
 
+tap "momenbasel/tap"
 cask "the-unarchiver"
 cask "ungoogled-chromium"
+cask "puremac"
