@@ -5,6 +5,7 @@ brew "pv"
 
 ##### Work apps
 
+cask "openvpn-connect"
 cask "docker-desktop"
 cask "firefox"
 cask "rubymine"
