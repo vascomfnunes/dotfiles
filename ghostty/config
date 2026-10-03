@@ -15,7 +15,7 @@ mouse-hide-while-typing = true
 
 ##### Window appearance
 
-background-opacity = 0.85
+background-opacity = 1
 background-blur = 20
 macos-icon = xray
 
