@@ -22,7 +22,6 @@ cask "calibre"
 ##### Audio hosts and managers
 
 cask "midi-monitor"
-cask "reaper"
 cask "bitwig-studio"
 cask "arturia-software-center"
 cask "ik-product-manager"
