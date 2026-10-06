@@ -112,25 +112,24 @@ fi
 
 ##### PyRadio
 
-# The pyradio package on PyPI is an obsolete 2013 release. Use the maintained
-# project's installer, which installs the current release through pipx.
-if ! command -v pyradio >/dev/null 2>&1; then
-  echo "📻 Installing pyradio..."
-  pyradio_tmp="$(mktemp -d)"
-  trap 'rm -rf "$pyradio_tmp"' EXIT HUP INT TERM
-  curl -fsSL \
-    https://raw.githubusercontent.com/coderholic/pyradio/master/pyradio/install.py \
-    -o "$pyradio_tmp/install.py"
-  python3 -m venv "$pyradio_tmp/venv"
-  "$pyradio_tmp/venv/bin/python" -m pip install --quiet requests rich
-  "$pyradio_tmp/venv/bin/python" "$pyradio_tmp/install.py" --isolate
-  rm -rf "$pyradio_tmp"
-  trap - EXIT HUP INT TERM
-fi
-# Ensure netifaces is available for pyradio's remote-control server, which is
-# used by the tmux status bar script.
-if ! pipx runpip pyradio show netifaces >/dev/null 2>&1; then
-  pipx inject pyradio netifaces
+# The pyradio package on PyPI is an obsolete 2013 release, so install the
+# maintained project from git instead. Upstream declares only rapidfuzz as a
+# dependency; the rest are imported at runtime, and netifaces backs the
+# remote-control server read by tmux/scripts/pyradio-status.sh. uv records the
+# --with dependencies in the tool receipt, so upgrades keep them.
+pyradio_python="$HOME/.local/share/uv/tools/pyradio/bin/python"
+if command -v uv >/dev/null 2>&1; then
+  if ! command -v pyradio >/dev/null 2>&1 ||
+    ! "$pyradio_python" -c "import netifaces" >/dev/null 2>&1; then
+    echo "📻 Installing pyradio..."
+    uv tool install --force git+https://github.com/coderholic/pyradio \
+      --with netifaces \
+      --with requests \
+      --with rich \
+      --with psutil \
+      --with dnspython \
+      --with python-dateutil
+  fi
 fi
 
 
