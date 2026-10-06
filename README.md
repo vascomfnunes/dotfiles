@@ -203,7 +203,7 @@ Review and commit lockfile changes after intentionally updating plugins.
 
 ## Components
 
-- **Shell:** Zsh with Zinit, Starship, Atuin, direnv, fzf, and zoxide.
+- **Shell:** Zsh with Zinit, Starship, Atuin, fzf, and zoxide.
 - **Terminal:** Ghostty with automatic Catppuccin light and dark themes.
 - **Editor:** Neovim 0.12+ with native `vim.pack` package management and a
   committed plugin lockfile.

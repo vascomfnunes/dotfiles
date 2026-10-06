@@ -3,7 +3,6 @@
 brew "gnupg"
 brew "pinentry-mac"
 brew "atuin"
-brew "direnv"
 brew "mise"
 brew "starship"
 brew "zoxide"

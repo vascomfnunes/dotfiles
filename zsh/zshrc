@@ -208,7 +208,6 @@ bindkey '^x^e' edit-command-line
 source_command_cache starship starship init zsh
 source_command_cache mise mise activate zsh
 source_command_cache zoxide zoxide init zsh
-source_command_cache direnv direnv hook zsh
 
 if [[ -t 0 ]]; then
   source_command_cache fzf fzf --zsh
