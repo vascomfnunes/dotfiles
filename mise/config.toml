@@ -1,6 +1,8 @@
 [settings]
 # Respect project .ruby-version/.nvmrc/.python-version files.
 idiomatic_version_file_enable_tools = ["ruby", "node", "python"]
+# Activate uv-managed virtualenvs on directory entry.
+python.uv_venv_auto = true
 
 [settings.ruby]
 # Prefer prebuilt Ruby installs where available.
@@ -8,11 +10,11 @@ compile = false
 
 [tools]
 # Core runtimes available in every shell through `mise activate`.
-ruby = "3.3.11"
+ruby = "3.3.12"
 "gem:ruby-lsp" = "0.26.10"
 "gem:ripper-tags" = "1.0.2"
 "gem:htmlbeautifier" = "1.4.3"
 "gem:erb-formatter" = "0.7.3"
-node = "22.22.3"
+node = "22.23.3"
 # Pinned to a patch version so fresh installs are reproducible.
-python = "3.13.14"
+python = "3.13.16"
