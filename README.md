@@ -214,7 +214,8 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Security:** GPG agent and SSH configuration, including SSH connection
   multiplexing.
 - **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
-  pipx, uv, wget, and yarn. The Brewfiles are the source of truth for the
-  complete package list.
+  uv, wget, and yarn. uv also installs user-level Python CLIs such as PyRadio
+  and aider. The Brewfiles are the source of truth for the complete package
+  list.
 - **Scripts:** Utilities installed into `~/.local/bin`, including `serve` and
   the tmux status/workspace helpers.
