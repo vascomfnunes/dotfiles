@@ -9,6 +9,7 @@ brew "gh"
 ##### General apps
 
 cask "codex"
+cask "chatgpt"
 cask "nordvpn"
 cask "adobe-digital-editions"
 cask "calibre"
