@@ -15,6 +15,6 @@ ruby = "3.3.12"
 "gem:ripper-tags" = "1.0.2"
 "gem:htmlbeautifier" = "1.4.3"
 "gem:erb-formatter" = "0.7.3"
-node = "22.23.3"
+node = "22.22.3"
 # Pinned to a patch version so fresh installs are reproducible.
 python = "3.13.16"
