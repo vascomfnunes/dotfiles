@@ -28,7 +28,7 @@ Before running the installer, be aware that it:
 - Installs the base Homebrew bundle and either the `personal` or `work` bundle.
 - For the `personal` profile, taps and trusts the third-party
   `vascomfnunes/audio` Homebrew tap.
-- Downloads and installs PyRadio and Zinit when they are missing.
+- Installs halpradio through Homebrew and downloads Zinit when it is missing.
 - Installs the Mise-managed runtimes (Ruby, Node.js, and Python) via
   `mise install`.
 - Replaces managed configuration files with symlinks into this repository.
@@ -108,9 +108,9 @@ TMUX_WORKSPACE_RADIO_WIDTH="20%"
 ```
 
 Without those tmux settings, the workspace uses the current user name for its
-session, the home directory for its Neovim window, and 20% of the window for the
-radio column. If the configured project directory does not exist, it falls back
-to the home directory.
+session, the home directory for all windows, and 20% of the window for the
+cover-art pane. If the configured project directory does not exist, it falls
+back to the home directory.
 
 The standard workspace also provides tool popups in the active pane's
 working directory:
@@ -148,9 +148,16 @@ and `settings.local.json` stay local and are intentionally not tracked.
 OpenCode plugins are installed through a generated shim because OpenCode does
 not load a symlinked plugin file as a plugin.
 
-PyRadio follows the same appearance setting while it is running: its watched
-`catppuccin-auto` theme is regenerated as Latte or Mocha by the appearance
-agent, and PyRadio repaints without interrupting playback.
+The first workspace window has halpradio and cover art side by side above a
+shell, occupying about 38% of the window height. The second and third windows are
+plain Zsh shells in the configured project directory.
+The radio pane runs halpradio with the Catppuccin theme and opens its Catalog
+station list. The initial list is tracked in `halpradio/stations.yaml`, linked
+to `~/Library/Application Support/halpradio/stations.yaml`; edits made through
+halpradio update that file. An existing independent halpradio station list is
+left untouched by the installer. The upper pane looks up artwork for the current
+track, and the tmux status bar displays the title. Press `7` to return to Custom
+stations, and use `prefix + m` for the artwork popup.
 
 Run `y` directly from Zsh when you want the shell to follow Yazi's final
 directory after it exits.
@@ -177,8 +184,9 @@ file, not in the global baseline.
 ## Shared Neovim Server
 
 `nvim-edit` opens files in a running Neovim server when one exists and falls
-back to a normal editor otherwise. The tmux workspace starts the server with
-`nvim --listen "$NVIM_SERVER"`; `NVIM_SERVER` is exported from `~/.zshenv`.
+back to a normal editor otherwise. The tmux workspace no longer starts a Neovim
+server; launch one yourself with `nvim --listen "$NVIM_SERVER"` when you want
+the handoff. `NVIM_SERVER` is exported from `~/.zshenv`.
 
 - `v <file>` hands the file to the running Neovim and returns immediately.
 - `$EDITOR`, `$VISUAL`, and Git's `core.editor` use `nvim-edit`, which blocks
@@ -301,7 +309,7 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Editor:** Neovim 0.12+ with native `vim.pack` package management, a
   committed plugin lockfile, and a shared `--listen` server for editor handoff.
 - **Multiplexer:** tmux with seamless Neovim navigation, a restorable workspace,
-  Yazi and btop popups, PyRadio, weather and battery status, and automatic
+  Yazi and btop popups, halpradio, weather and battery status, and automatic
   light/dark themes.
 - **Agents:** OpenCode, Codex, and Claude Code with shared `AGENTS.md`
   instructions, tmux window markers, and an fzf pane dashboard.
@@ -310,8 +318,7 @@ Review and commit lockfile changes after intentionally updating plugins.
   general hosts, while GitHub connections are direct because GitHub caps the
   sessions carried by one multiplexed connection.
 - **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
-  uv, wget, and yarn. uv installs PyRadio and can also manage other
-  user-level Python CLIs such as aider. The Brewfiles are the source of truth
+  uv, wget, and yarn. uv can manage user-level Python CLIs such as aider. The Brewfiles are the source of truth
   for the complete package list.
 - **Scripts:** Utilities installed into `~/.local/bin`, including `serve`,
   `git-commit-ai`, `nvim-edit`, `agent-hook`, and the tmux status/workspace

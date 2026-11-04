@@ -110,29 +110,6 @@ if [ "$PROFILE" = "work" ]; then
 fi
 
 
-##### PyRadio
-
-# The pyradio package on PyPI is an obsolete 2013 release, so install the
-# maintained project from git instead. Upstream declares only rapidfuzz as a
-# dependency; the rest are imported at runtime, and netifaces backs the
-# remote-control server read by tmux/scripts/pyradio-status.sh. uv records the
-# --with dependencies in the tool receipt, so upgrades keep them.
-pyradio_python="$HOME/.local/share/uv/tools/pyradio/bin/python"
-if command -v uv >/dev/null 2>&1; then
-  if ! command -v pyradio >/dev/null 2>&1 ||
-    ! "$pyradio_python" -c "import netifaces" >/dev/null 2>&1; then
-    echo "📻 Installing pyradio..."
-    uv tool install --force git+https://github.com/coderholic/pyradio \
-      --with netifaces \
-      --with requests \
-      --with rich \
-      --with psutil \
-      --with dnspython \
-      --with python-dateutil
-  fi
-fi
-
-
 ##### Directories
 
 echo "📂 Creating directories..."
@@ -144,6 +121,7 @@ mkdir -p \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
   "$HOME/.config/mise" \
+  "$HOME/Library/Application Support/halpradio" \
   "$HOME/.local/bin" \
   "$HOME/.claude" \
   "$HOME/.codex" \
@@ -214,18 +192,36 @@ dotlink tmux/themes .config/tmux/themes
 # stations.csv, which would replace a per-file symlink with a regular file.
 dotlink pyradio .config/pyradio
 
+# halpradio writes this file in place when stations are edited. Preserve an
+# existing independent station list rather than replacing it on installation.
+halpradio_stations="$HOME/Library/Application Support/halpradio/stations.yaml"
+if [ ! -e "$halpradio_stations" ] && [ ! -L "$halpradio_stations" ]; then
+  ln -s "$DOTFILES_DIR/halpradio/stations.yaml" "$halpradio_stations"
+else
+  echo "Keeping existing halpradio station list: $halpradio_stations"
+fi
+
 # PyRadio watches this generated theme and repaints when the appearance agent
 # swaps its contents. Keep mutable state in ~/.cache rather than the repository.
 ln -sfn "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
   "$DOTFILES_DIR/pyradio/themes/catppuccin-auto.pyradio-theme"
+
+# Drop helper links left behind by the old player-specific names. Only remove
+# links whose target is already gone, so unrelated user links are preserved.
+for legacy in tmux-pyradio-status tmux-pyradio-art; do
+  legacy_link="$HOME/.local/bin/$legacy"
+  if [ -L "$legacy_link" ] && [ ! -e "$legacy_link" ]; then
+    rm -f "$legacy_link"
+  fi
+done
 
 dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
 dotlink bin/nvim-edit .local/bin/nvim-edit
 dotlink bin/agent-hook .local/bin/agent-hook
 dotlink tmux/scripts/weather-status.sh .local/bin/tmux-weather-status
-dotlink tmux/scripts/pyradio-status.sh .local/bin/tmux-pyradio-status
-dotlink tmux/scripts/pyradio-art.sh .local/bin/tmux-pyradio-art
+dotlink tmux/scripts/radio-status.sh .local/bin/tmux-radio-status
+dotlink tmux/scripts/radio-art.sh .local/bin/tmux-radio-art
 dotlink tmux/scripts/battery-status.sh .local/bin/tmux-battery-status
 dotlink tmux/scripts/btop-themed.sh .local/bin/btop-themed
 dotlink tmux/scripts/cheatsheet.sh .local/bin/tmux-cheatsheet

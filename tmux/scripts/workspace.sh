@@ -8,7 +8,6 @@ set -eu
 session="${USER:-main}"
 project="$HOME"
 radio_width="20%"
-radio_art_height=20
 workspace_config="$HOME/.tmux-workspace.local"
 
 if [ -r "$workspace_config" ]; then
@@ -21,8 +20,6 @@ fi
 session="${TMUX_WORKSPACE_SESSION:-$session}"
 project="${TMUX_WORKSPACE_PROJECT:-$project}"
 radio_width="${TMUX_WORKSPACE_RADIO_WIDTH:-$radio_width}"
-radio_art_height="${TMUX_WORKSPACE_RADIO_ART_HEIGHT:-$radio_art_height}"
-nvim_server="${NVIM_SERVER:-${TMPDIR:-/tmp}/nvim-${USER:-$(id -u)}.sock}"
 
 if [ ! -d "$project" ]; then
   echo "Configured tmux workspace project does not exist: $project" >&2
@@ -57,43 +54,41 @@ set_radio_geometry() {
   # attached, tmux distributes the added rows and columns across the layout.
   # Reapply the intended dimensions after every window resize.
   "$tmux_bin" resize-pane -t "$target" -x "$radio_width" || return 1
-  "$tmux_bin" resize-pane -t "$target" -y "$radio_art_height" || return 1
+  "$tmux_bin" resize-pane -t "$target" -y '38%' || return 1
   "$tmux_bin" set-hook -w -t "$target" window-resized \
-    "resize-pane -t '$target' -x '$radio_width' ; resize-pane -t '$target' -y '$radio_art_height'"
+    "resize-pane -t '$target' -x '$radio_width' ; resize-pane -t '$target' -y '38%'"
 }
 
 if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
-  # Also apply configuration changes to an already-running workspace.
-  set_radio_geometry "=$session:zsh.2" 2>/dev/null || true
+  # Preserve the panes and layout of an already-running workspace.
   attach_session
   exit 0
 fi
 
-# Window 1: a plain zsh shell on the left; the narrow right column holds the
-# radio cover art pane on top of PyRadio.
-session_id="$($tmux_bin new-session -d -P -F '#{session_id}' \
+# Window 1: radio and artwork above a zsh shell.
+session_info="$($tmux_bin new-session -d -P -F '#{session_id} #{window_id} #{pane_id}' \
   -s "$session" -n zsh -c "$HOME")"
+session_id="${session_info%% *}"
+first_window="${session_info#* }"
+first_window="${first_window%% *}"
+shell_pane="${session_info##* }"
 
-radio_pane="$($tmux_bin split-window -d -h -l "$radio_width" -P \
+radio_pane="$($tmux_bin split-window -d -vb -l '38%' -P \
   -F '#{pane_id}' -t "${session_id}:zsh.1" -c "$HOME")"
-start_app "$radio_pane" pyradio
-art_pane="$($tmux_bin split-window -d -vb -l "$radio_art_height" -P \
-  -F '#{pane_id}' -t "$radio_pane" "$HOME/.local/bin/tmux-pyradio-art")"
+start_app "$radio_pane" 'halpradio --backend mpv --theme catppuccin --discord=false --notifications=false --auto-identify=false'
+# Switch to the Catalog tab once the application owns the pane.
+"$tmux_bin" run-shell -b "for i in 1 2 3 4 5 6 7 8 9 10; do [ \"\$(tmux display-message -p -t '$radio_pane' '#{pane_current_command}')\" = halpradio ] && { tmux send-keys -t '$radio_pane' 2; break; }; sleep 1; done"
+art_pane="$($tmux_bin split-window -d -h -l "$radio_width" -P \
+  -F '#{pane_id}' -t "$radio_pane" "$HOME/.local/bin/tmux-radio-art")"
 set_radio_geometry "$art_pane"
 
-# Window 2: Neovim in the configured project directory. Start it as the shared
-# server so other panes can hand files to it. If a server is already running,
-# start a normal editor instead of failing on a busy socket.
-"$tmux_bin" new-window -d -t "${session_id}:" \
-  -n nvim -c "$project"
-if nvim --server "$nvim_server" --remote-expr '1' >/dev/null 2>&1; then
-  start_app "${session_id}:nvim.1" nvim
-else
-  start_app "${session_id}:nvim.1" "nvim --listen '$nvim_server'"
-fi
+# Windows 2 and 3: plain zsh shells in the configured project directory.
+for _ in 2 3; do
+  "$tmux_bin" new-window -d -t "${session_id}:" -n zsh -c "$project"
+done
 
 # Match the currently selected window and pane.
-"$tmux_bin" select-window -t "${session_id}:zsh"
-"$tmux_bin" select-pane -t "${session_id}:zsh.1"
+"$tmux_bin" select-window -t "$first_window"
+"$tmux_bin" select-pane -t "$shell_pane"
 
 attach_session

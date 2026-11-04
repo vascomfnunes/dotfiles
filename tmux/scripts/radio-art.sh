@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shows cover art for the song currently playing in pyradio.
+# Shows cover art for the song currently playing in halpradio.
 # Runs inside a tmux popup or a regular pane (see the bindings in tmux.conf).
 #
 # Radio streams only carry an "Artist - Title" text tag, never images, so the
@@ -9,10 +9,10 @@
 
 set -eu
 
-poll_interval="${PYRADIO_ART_POLL:-5}"
-settle_interval="${PYRADIO_ART_SETTLE:-1}"
-cache_dir="${TMPDIR:-/tmp}/tmux-pyradio-art"
-fallback_art="${PYRADIO_ART_FALLBACK:-$HOME/.config/pyradio/assets/generic-cover.png}"
+poll_interval="${RADIO_ART_POLL:-5}"
+settle_interval="${RADIO_ART_SETTLE:-1}"
+cache_dir="${TMPDIR:-/tmp}/tmux-radio-art"
+fallback_art="${RADIO_ART_FALLBACK:-$HOME/.config/halpradio/assets/generic-cover.png}"
 mkdir -p "$cache_dir"
 render_output="$cache_dir/render.$$"
 synchronized_output=0
@@ -42,10 +42,7 @@ fi
 find "$cache_dir" -type f -mtime +7 -delete 2>/dev/null || true
 
 current_title() {
-  # PyRadio exposes the title as a server-sent-events payload; strip the field
-  # prefix and any HTML tags.
-  curl -sf --max-time 1 http://localhost:9998/title 2>/dev/null \
-    | sed -n '/^data: */{s/^data: *//; s/<[^>]*>//g; p;}'
+  "$HOME/.local/bin/tmux-radio-status" --title
 }
 
 # The workspace is assembled before a client attaches, while tmux still uses
@@ -87,7 +84,7 @@ wait_for_stable_geometry() {
 art_for() {
   title=$1
 
-  # PyRadio uses "Playing: ..." for stream status rather than track metadata.
+  # The status helper uses "Playing: ..." when track metadata is unavailable.
   # Do not search iTunes for it; returning no result selects the generic cover.
   case $title in
     Playing:*) return 0 ;;
@@ -205,7 +202,7 @@ while :; do
       if [ "$shown" != stopped ] || [ "$geometry" != "$shown_geometry" ]; then
         clear_kitty_art
         clear
-        text='pyradio is not playing'
+        text='halpradio is not playing'
         tput cup $(($(tput lines) / 2)) $((($(tput cols) - ${#text}) / 2))
         printf '%s' "$text"
         shown=stopped

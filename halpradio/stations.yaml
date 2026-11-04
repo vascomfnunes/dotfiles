@@ -1,0 +1,499 @@
+# halpradio local station catalog.
+#
+# Stations are grouped by listening mood; halpradio keeps this order in the
+# Catalog view. IDs that match a bundled station override it, so shared
+# SomaFM and Radio Paradise entries reuse the upstream catalog IDs instead of
+# appearing twice.
+#
+# genre is a " / " separated list, country is ISO 3166-1 alpha-2,
+# broadcast is FM, DAB, FM/DAB, or Online, and activities map to the app's
+# activity filters (programming, cleaning, reading, thinking, relaxing, news).
+
+stations:
+  # ---------------------------------------------------------------------------
+  # Ambient & Downtempo
+  # ---------------------------------------------------------------------------
+
+  - id: echoes-bluemars
+    name: "Echoes of Bluemars"
+    url: "http://streams.echoesofbluemars.org:8000/bluemars"
+    genre: "Ambient / Space Music"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "http://echoesofbluemars.org"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: echoes-cryosleep
+    name: "Echoes of Bluemars (Cryosleep)"
+    url: "http://streams.echoesofbluemars.org:8000/cryosleep"
+    genre: "Ambient / Dark Ambient"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "http://echoesofbluemars.org"
+    activities: ["thinking", "relaxing"]
+
+  - id: echoes-voices-from-within
+    name: "Echoes of Bluemars (Voices from Within)"
+    url: "http://streams.echoesofbluemars.org:8000/voicesfromwithin"
+    genre: "Ambient / Space Music"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "http://echoesofbluemars.org"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: soma-deepspaceone
+    name: "SomaFM: Deep Space One"
+    url: "https://ice1.somafm.com/deepspaceone-128-mp3"
+    genre: "Ambient / Space Music"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["thinking", "relaxing"]
+
+  - id: soma-dronezone
+    name: "SomaFM: Drone Zone"
+    url: "https://ice1.somafm.com/dronezone-128-mp3"
+    genre: "Ambient / Drone"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: soma-groovesalad
+    name: "SomaFM: Groove Salad"
+    url: "https://ice1.somafm.com/groovesalad-128-mp3"
+    genre: "Ambient / Chillout / Downtempo"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "thinking", "relaxing"]
+
+  - id: soma-gsclassic
+    name: "SomaFM: Groove Salad Classic"
+    url: "https://ice1.somafm.com/gsclassic-128-mp3"
+    genre: "Ambient / Chillout / Downtempo"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 160
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "thinking", "relaxing"]
+
+  - id: soma-lush
+    name: "SomaFM: Lush"
+    url: "https://ice1.somafm.com/lush-128-aac"
+    genre: "Ambient / Vocal / Chillout"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://somafm.com"
+    activities: ["reading", "relaxing"]
+
+  - id: soma-mission-control
+    name: "SomaFM: Mission Control"
+    url: "https://ice1.somafm.com/missioncontrol-128-mp3"
+    genre: "Space Ambient / NASA Comms"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "thinking"]
+
+  - id: soma-n5md
+    name: "SomaFM: n5MD Radio"
+    url: "https://ice1.somafm.com/n5md-128-mp3"
+    genre: "Ambient / Modern Composition / Experimental"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: soma-synphaera
+    name: "SomaFM: Synphaera Radio"
+    url: "https://ice1.somafm.com/synphaera-128-mp3"
+    genre: "Space Music / Ambient / Electronic"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "thinking", "relaxing"]
+
+  # ---------------------------------------------------------------------------
+  # Electronic & Beats
+  # ---------------------------------------------------------------------------
+
+  - id: slay-radio
+    name: "SLAY Radio"
+    url: "http://relay1.slayradio.org:8000/"
+    genre: "Chiptune / Demoscene / Remixes"
+    country: "SE"
+    city: "Gothenburg"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://www.slayradio.org"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-cliqhop
+    name: "SomaFM: Cliqhop IDM"
+    url: "https://ice1.somafm.com/cliqhop-128-mp3"
+    genre: "IDM / Glitch / Electronic"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "thinking"]
+
+  - id: soma-dubstep
+    name: "SomaFM: Dub Step Beyond"
+    url: "https://ice1.somafm.com/dubstep-128-mp3"
+    genre: "Dubstep / Electronic / Bass"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-poptron
+    name: "SomaFM: PopTron"
+    url: "https://ice1.somafm.com/poptron-128-mp3"
+    genre: "Pop / Electropop / Indie Dance"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-thetrip
+    name: "SomaFM: The Trip"
+    url: "https://ice1.somafm.com/thetrip-128-mp3"
+    genre: "Progressive House / Trance"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-vaporwaves
+    name: "SomaFM: Vaporwaves"
+    url: "https://ice1.somafm.com/vaporwaves-128-mp3"
+    genre: "Vaporwave / Synthwave"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "relaxing"]
+
+  # ---------------------------------------------------------------------------
+  # Classical
+  # ---------------------------------------------------------------------------
+
+  - id: classic-fm
+    name: "Classic FM UK"
+    url: "https://media-ssl.musicradio.com/ClassicFMMP3"
+    genre: "Classical"
+    country: "GB"
+    city: "London"
+    broadcast: "FM/DAB"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://www.classicfm.com"
+    activities: ["reading", "thinking"]
+
+  - id: rtp-antena-2
+    name: "RTP Antena 2"
+    url: "https://streaming-live.rtp.pt/liveradio/antena280a/playlist.m3u8"
+    genre: "Classical / Jazz / Arts"
+    country: "PT"
+    city: "Lisbon"
+    broadcast: "FM/DAB"
+    bitrate: 256
+    codec: "AAC"
+    homepage: "https://www.rtp.pt/antena2"
+    activities: ["reading", "thinking"]
+
+  # ---------------------------------------------------------------------------
+  # Jazz & Lounge
+  # ---------------------------------------------------------------------------
+
+  - id: radio-marginal
+    name: "Rádio Marginal"
+    url: "https://centova.radio.com.pt/proxy/499?mp=/stream"
+    genre: "Adult Contemporary / Jazz / Eclectic"
+    country: "PT"
+    city: "Cascais"
+    broadcast: "FM"
+    frequency: "98.1 FM"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://marginal.fm"
+    activities: ["reading", "relaxing"]
+
+  - id: soma-illstreet
+    name: "SomaFM: Illinois Street Lounge"
+    url: "https://ice1.somafm.com/illstreet-128-mp3"
+    genre: "Lounge / Exotica / Easy Listening"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["cleaning", "relaxing"]
+
+  - id: soma-secret-agent
+    name: "SomaFM: Secret Agent"
+    url: "https://ice1.somafm.com/secretagent-128-mp3"
+    genre: "Lounge / Downtempo / Spy"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["thinking", "relaxing"]
+
+  - id: soma-sonicuniverse
+    name: "SomaFM: Sonic Universe"
+    url: "https://ice1.somafm.com/sonicuniverse-128-mp3"
+    genre: "Jazz / Avant-Garde / Fusion"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: jazzgroove
+    name: "The Jazz Groove"
+    url: "https://east-mp3-128.streamthejazzgroove.com/stream"
+    genre: "Jazz / Smooth Jazz"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://jazzgroove.org"
+    activities: ["reading", "thinking", "relaxing"]
+
+  # ---------------------------------------------------------------------------
+  # Rock, Pop & Alternative
+  # ---------------------------------------------------------------------------
+
+  - id: bagel-radio
+    name: "BAGeL Radio"
+    url: "https://ais-sa3.cdnstream1.com/2606_128.aac"
+    genre: "Alternative / Indie"
+    country: "US"
+    city: "San Francisco"
+    state: "CA"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://bagelradio.com"
+    activities: ["programming", "cleaning"]
+
+  - id: radio-paradise-eclectic
+    name: "Radio Paradise (Eclectic Mix)"
+    url: "https://stream.radioparadise.com/eclectic-128"
+    genre: "Eclectic / Rock / World"
+    country: "US"
+    city: "Paradise"
+    state: "CA"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://radioparadise.com"
+    activities: ["reading", "relaxing"]
+
+  - id: radio-paradise
+    name: "Radio Paradise (Main Mix)"
+    url: "https://stream.radioparadise.com/aac-128"
+    genre: "Eclectic / Rock / World"
+    country: "US"
+    city: "Paradise"
+    state: "CA"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://radioparadise.com"
+    activities: ["cleaning", "reading", "relaxing"]
+
+  - id: radio-paradise-mellow
+    name: "Radio Paradise (Mellow Mix)"
+    url: "https://stream.radioparadise.com/mellow-128"
+    genre: "Mellow / Chillout / Eclectic"
+    country: "US"
+    city: "Paradise"
+    state: "CA"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://radioparadise.com"
+    activities: ["reading", "thinking", "relaxing"]
+
+  - id: radio-paradise-rock
+    name: "Radio Paradise (Rock Mix)"
+    url: "https://stream.radioparadise.com/rock-128"
+    genre: "Rock / Alternative / Eclectic"
+    country: "US"
+    city: "Paradise"
+    state: "CA"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://radioparadise.com"
+    activities: ["cleaning", "programming"]
+
+  - id: radio-radar
+    name: "Rádio Radar"
+    url: "https://proic1.evspt.com/radar_aac"
+    genre: "Alternative / Indie / Rock"
+    country: "PT"
+    city: "Lisbon"
+    broadcast: "FM"
+    frequency: "97.8 FM"
+    bitrate: 192
+    codec: "AAC"
+    homepage: "https://radarlisboa.fm"
+    activities: ["programming", "cleaning"]
+
+  - id: rtp-antena-3
+    name: "RTP Antena 3"
+    url: "https://streaming-live.rtp.pt/liveradio/antena380a/playlist.m3u8"
+    genre: "Alternative / Indie / Electronic"
+    country: "PT"
+    city: "Lisbon"
+    broadcast: "FM/DAB"
+    bitrate: 192
+    codec: "AAC"
+    homepage: "https://www.rtp.pt/antena3"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-covers
+    name: "SomaFM: Covers"
+    url: "https://ice1.somafm.com/covers-128-mp3"
+    genre: "Covers / Eclectic / Rock"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["cleaning", "relaxing"]
+
+  - id: soma-digitalis
+    name: "SomaFM: Digitalis"
+    url: "https://ice1.somafm.com/digitalis-128-mp3"
+    genre: "Indie Rock / Alternative / Digital"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-indiepop
+    name: "SomaFM: Indie Pop Rocks!"
+    url: "https://ice1.somafm.com/indiepop-128-aac"
+    genre: "Indie Pop / Indie Rock"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "AAC"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  - id: soma-metal
+    name: "SomaFM: Metal Detector"
+    url: "https://ice1.somafm.com/metal-128-mp3"
+    genre: "Metal / Hard Rock"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["programming", "cleaning"]
+
+  # ---------------------------------------------------------------------------
+  # Folk, Roots & World
+  # ---------------------------------------------------------------------------
+
+  - id: soma-bootliquor
+    name: "SomaFM: Boot Liquor"
+    url: "https://ice1.somafm.com/bootliquor-128-mp3"
+    genre: "Americana / Country / Roots"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["cleaning", "relaxing"]
+
+  - id: soma-folkfwd
+    name: "SomaFM: Folk Forward"
+    url: "https://ice1.somafm.com/folkfwd-128-mp3"
+    genre: "Folk / Americana / Indie Folk"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "relaxing"]
+
+  - id: soma-thistle
+    name: "SomaFM: ThistleRadio"
+    url: "https://ice1.somafm.com/thistle-128-mp3"
+    genre: "Celtic / Folk / World"
+    country: "US"
+    broadcast: "Online"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://somafm.com"
+    activities: ["reading", "relaxing"]
+
+  # ---------------------------------------------------------------------------
+  # News & Talk
+  # ---------------------------------------------------------------------------
+
+  - id: rtp-antena-1
+    name: "RTP Antena 1"
+    url: "https://streaming-live.rtp.pt/liveradio/antena180a/playlist.m3u8"
+    genre: "News / Talk / Culture"
+    country: "PT"
+    city: "Lisbon"
+    broadcast: "FM/DAB"
+    bitrate: 192
+    codec: "AAC"
+    homepage: "https://www.rtp.pt/antena1"
+    activities: ["news", "thinking"]
+
+  - id: tsf-radio-noticias
+    name: "TSF Rádio Notícias"
+    url: "https://directo.tsf.pt/tsfdirecto.mp3"
+    genre: "News / Talk / Sports"
+    country: "PT"
+    city: "Lisbon"
+    broadcast: "FM"
+    bitrate: 128
+    codec: "MP3"
+    homepage: "https://www.tsf.pt"
+    activities: ["news"]

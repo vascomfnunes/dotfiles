@@ -28,7 +28,10 @@ if jq -e 'has("autoMode")' claude/settings.json >/dev/null; then
 fi
 
 echo "Running ShellCheck..."
-shellcheck install.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/agent-hook tmux/scripts/*.sh
+shellcheck install.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/agent-hook tmux/scripts/*.sh tmux/tests/*.sh
+
+echo "Checking radio status integration..."
+sh tmux/tests/radio-status.sh
 
 echo "Running Neovim tests..."
 nvim_test_tmp=$(mktemp -d)
