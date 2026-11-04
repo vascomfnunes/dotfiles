@@ -239,8 +239,9 @@ Review and commit lockfile changes after intentionally updating plugins.
   Yazi and btop popups, PyRadio, weather and battery status, and automatic
   light/dark themes.
 - **Runtime management:** Mise with pinned Ruby, Node.js, and Python versions.
-- **Security:** GPG agent and SSH configuration, including SSH connection
-  multiplexing.
+- **Security:** GPG agent and SSH configuration. Multiplexing is used for
+  general hosts, while GitHub connections are direct because GitHub caps the
+  sessions carried by one multiplexed connection.
 - **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
   uv, wget, and yarn. uv installs PyRadio and can also manage other
   user-level Python CLIs such as aider. The Brewfiles are the source of truth
