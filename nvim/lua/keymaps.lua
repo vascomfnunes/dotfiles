@@ -2,6 +2,7 @@ local map = vim.keymap.set
 local opts = { silent = true }
 local uv = vim.uv
 local lazy = require("lazyload")
+local M = {}
 
 -- Leader key
 vim.g.mapleader = " "
@@ -25,6 +26,65 @@ map("n", "<leader>e", function()
   if path == "" or not uv.fs_stat(path) then path = nil end
   require("mini.files").open(path, true)
 end, { desc = "Explorer" })
+
+-- Copy file/line references in a format coding agents can resolve directly.
+function M.file_path(bufnr)
+  local name = vim.api.nvim_buf_get_name(bufnr or 0)
+  if name == "" then return nil end
+  return vim.fn.fnamemodify(name, ":p")
+end
+
+function M.location(path, first, last)
+  if last == nil or last == first then return ("%s:%d"):format(path, first) end
+  return ("%s:%d-%d"):format(path, first, last)
+end
+
+local function copy_reference(first, last)
+  local path = M.file_path()
+  if not path then
+    vim.notify("Current buffer is not a file", vim.log.levels.WARN)
+    return
+  end
+
+  local reference = M.location(path, first, last)
+  vim.fn.setreg("+", reference)
+  vim.notify("Copied: " .. reference, vim.log.levels.INFO)
+end
+
+map("n", "<leader>al", function()
+  copy_reference(vim.fn.line("."))
+end, { desc = "Copy line reference" })
+
+map("x", "<leader>al", function()
+  local mode = vim.fn.mode()
+  local anchor = vim.fn.getpos("v")
+  local cursor = vim.fn.getpos(".")
+  local start_pos, end_pos = anchor, cursor
+  if anchor[2] > cursor[2] or (anchor[2] == cursor[2] and anchor[3] > cursor[3]) then
+    start_pos, end_pos = cursor, anchor
+  end
+
+  -- Leave visual mode, then drop the last line when a charwise selection stops
+  -- at the very start of it.
+  vim.cmd("normal! \27")
+  local first, last = start_pos[2], end_pos[2]
+  if mode == "v" and last > first and end_pos[3] == 1 then
+    last = last - 1
+  end
+
+  copy_reference(first, last)
+end, { desc = "Copy line range reference" })
+
+map("n", "<leader>af", function()
+  local path = M.file_path()
+  if not path then
+    vim.notify("Current buffer is not a file", vim.log.levels.WARN)
+    return
+  end
+
+  vim.fn.setreg("+", path)
+  vim.notify("Copied: " .. path, vim.log.levels.INFO)
+end, { desc = "Copy file path" })
 
 map("n", "<leader>ql", function()
   if vim.fn.getqflist({ winid = 0 }).winid ~= 0 then
@@ -182,26 +242,6 @@ map("n", "<leader>to", function()
   require("neotest").output.open({ enter = true })
 end, { desc = "Show output" })
 
--- AI (agentic.nvim)
--- Wrap agentic.nvim calls so the plugin only loads when an AI mapping is used.
-local function agentic(fn, ...)
-  local args = { ... }
-  return function()
-    lazy.agentic()
-    require("agentic")[fn](unpack(args))
-  end
-end
-
-map({ "n", "v" }, "<leader>aa", agentic("toggle"), { desc = "Toggle chat" })
-map({ "n", "v" }, "<leader>ac", agentic("add_selection_or_file_to_context"), { desc = "Add file/selection to context" })
-map("n", "<leader>ad", agentic("add_current_line_diagnostics"), { desc = "Add line diagnostics" })
-map("n", "<leader>aD", agentic("add_buffer_diagnostics"), { desc = "Add buffer diagnostics" })
-map("n", "<leader>an", agentic("new_session"), { desc = "New session" })
-map("n", "<leader>ar", agentic("restore_session"), { desc = "Restore session" })
-map("n", "<leader>as", agentic("stop_generation"), { desc = "Stop generation" })
-map("n", "<leader>ap", agentic("switch_provider"), { desc = "Switch provider" })
-map("n", "<leader>al", agentic("rotate_layout"), { desc = "Rotate layout" })
-
 -- UI
 map("n", "<leader>cx", function()
   local list = vim.fn.getqflist({ title = 0, winid = 0 })
@@ -228,3 +268,5 @@ vim.api.nvim_create_user_command("PackRestore", function()
 end, { desc = "Restore plugins from lockfile", force = true })
 map("n", "<leader>pu", "<cmd>PackUpdate<cr>", { desc = "Update plugins" })
 map("n", "<leader>ps", "<cmd>PackRestore<cr>", { desc = "Restore plugins from lockfile" })
+
+return M

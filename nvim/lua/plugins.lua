@@ -12,29 +12,32 @@ end
 
 -- Treesitter
 
-local treesitter_languages = {
+-- Parser names differ from filetypes (e.g. bash/sh, vimdoc/help), so keep
+-- them separate: parsers are installed once, filetypes start highlighting.
+local treesitter_parsers = {
   "lua", "vim", "vimdoc", "bash", "json",
-  "html", "css", "javascript", "typescript",
+  "html", "css", "javascript", "typescript", "tsx",
   "ruby", "rbs", "yaml", "markdown", "markdown_inline",
   "swift",
 }
 
+local treesitter_filetypes = {
+  "lua", "vim", "help", "sh", "json", "jsonc",
+  "html", "css", "javascript", "javascriptreact",
+  "typescript", "typescriptreact", "ruby", "rbs",
+  "yaml", "markdown", "swift",
+}
+
 local treesitter = require("nvim-treesitter")
-local treesitter_install_dir = vim.fn.stdpath("data") .. "/site"
-vim.fn.mkdir(treesitter_install_dir .. "/parser", "p")
-vim.fn.mkdir(treesitter_install_dir .. "/queries", "p")
-treesitter.setup({
-  install_dir = treesitter_install_dir,
-})
 
 vim.api.nvim_create_user_command("TreesitterInstallAll", function()
-  treesitter.install(treesitter_languages)
+  treesitter.install(treesitter_parsers)
 end, { desc = "Install configured Treesitter parsers", force = true })
 
 local treesitter_group = vim.api.nvim_create_augroup("DotfilesTreesitter", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = treesitter_group,
-  pattern = treesitter_languages,
+  pattern = treesitter_filetypes,
   callback = function(ev)
     local lang = vim.treesitter.language.get_lang(ev.match) or ev.match
     if #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".*", false) == 0 then
@@ -140,7 +143,7 @@ require("mini.surround").setup({})
 local lazy_group = vim.api.nvim_create_augroup("DotfilesLazyPlugins", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
   group = lazy_group,
-  pattern = treesitter_languages,
+  pattern = treesitter_filetypes,
   once = true,
   callback = lazy.treesitter_context,
 })
@@ -163,10 +166,20 @@ vim.api.nvim_create_autocmd("BufEnter", {
   end,
 })
 
-vim.defer_fn(function()
-  lazy.gitsigns()
-  lazy.git_conflict()
-end, 100)
+-- Load Git UI plugins on the first real file instead of every startup.
+local git_plugins_loaded = false
+vim.api.nvim_create_autocmd("BufEnter", {
+  group = lazy_group,
+  callback = function(ev)
+    if git_plugins_loaded or vim.bo[ev.buf].buftype ~= "" then return end
+    if vim.api.nvim_buf_get_name(ev.buf) == "" then return end
+    git_plugins_loaded = true
+    vim.defer_fn(function()
+      lazy.gitsigns()
+      lazy.git_conflict()
+    end, 100)
+  end,
+})
 
 -- Which-key groups
 

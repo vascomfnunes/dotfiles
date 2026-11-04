@@ -27,8 +27,6 @@ opt.listchars = { tab = "  ", trail = "·", leadmultispace = "▏ " }
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldlevelstart = 99
--- Empty foldtext keeps the first line syntax-highlighted.
-opt.foldtext = ""
 
 -- Search
 
@@ -59,7 +57,7 @@ opt.updatetime = 200
 
 -- Clipboard
 
-opt.clipboard = "unnamed,unnamedplus"
+opt.clipboard = "unnamedplus"
 
 -- Persistent undo
 
