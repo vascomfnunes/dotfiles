@@ -46,6 +46,7 @@ alias gs="git status"
 alias gp="git pull"
 alias gP="git push"
 alias gc="git commit"
+alias gg="git commit-ai"
 alias gl="git log"
 alias gd="git diff"
 

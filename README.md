@@ -149,8 +149,12 @@ Commit prefixes.
 - Use sentence case with no trailing period.
 - Keep the title at 50 characters when practical, with 72 as the hard limit.
 - Keep each commit focused on one coherent change.
-- Add a body only when the motivation, trade-offs, or important implementation
-  details are not clear from the title and diff. Wrap body text at 72 characters.
+- Add a body: open with a short paragraph on the problem and approach, then
+  list the notable changes as `- ` bullets. Wrap body text at 72 characters.
+- Markdown is allowed in the body (headings, nested lists, fenced code blocks)
+  when it improves clarity.
+- Use professional, direct language. Write the body like a concise pull request
+  description, including trade-offs or follow-up work when relevant.
 
 ### Drafting Commit Messages
 
@@ -165,11 +169,11 @@ git commit-ai --print    # print the draft and exit
 git commit-ai --all      # stage tracked changes first
 ```
 
-In Neovim, `:GitCommitAI` or `<leader>gG` fills the usual title and message
-prompts with a generated draft so both can be edited before committing.
-`<leader>gc` (`:GitCommit`) remains the manual path. Set `GIT_AI_ENGINE` to
-force an engine and `GIT_AI_EDITOR` to choose the editor used by the shell
-command's edit option.
+In Neovim, `:GitCommitAI` or `<leader>gG` opens the generated draft in a split
+so the full body can be edited in place. Press `:w` (or `:wq`) to commit and
+`q` to cancel. `<leader>gc` (`:GitCommit`) remains the manual path. Set
+`GIT_AI_ENGINE` to force an engine and `GIT_AI_EDITOR` to choose the editor
+used by the shell command's edit option.
 
 The helper never pushes and never bypasses Git hooks.
 

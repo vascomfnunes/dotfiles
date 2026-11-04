@@ -240,12 +240,12 @@ local function commit_staged(root, title, message)
 end
 
 -- Ask the installed git-commit-ai helper for a draft. The helper owns the
--- engine choice and prompt; Neovim only fills the usual title/message prompts.
+-- engine choice and prompt; Neovim only provides the editable buffer.
 local function generate_commit_message(root, callback)
   local script = vim.fn.exepath("git-commit-ai")
   if script == "" then
     vim.notify("git-commit-ai is not installed", vim.log.levels.WARN, { title = "Git commit" })
-    callback(nil, nil)
+    callback(nil)
     return
   end
 
@@ -260,15 +260,91 @@ local function generate_commit_message(root, callback)
         vim.notify(detail ~= "" and detail or "Could not generate a commit message", vim.log.levels.WARN, {
           title = "Git commit",
         })
-        callback(nil, nil)
+        callback(nil)
         return
       end
-
-      local subject, body = message:match("^([^\n]*)\n*(.*)$")
-      body = vim.trim((body or ""):gsub("%s*\n%s*", " "))
-      callback(vim.trim(subject or ""), body)
+      callback(message)
     end)
   )
+end
+
+-- Open the draft in a throwaway split. Writing the buffer runs the commit, so
+-- the full message can be edited in place; cancelling discards it.
+local function edit_commit_message(root, message)
+  local file = vim.fn.tempname()
+  vim.cmd("botright new")
+  local bufnr = vim.api.nvim_get_current_buf()
+
+  vim.api.nvim_buf_set_name(bufnr, file)
+  vim.bo[bufnr].buftype = "acwrite"
+  vim.bo[bufnr].filetype = "gitcommit"
+  vim.bo[bufnr].swapfile = false
+  vim.bo[bufnr].undofile = false
+  -- Markdown headings are valid message content, so use HTML comments for gc.
+  vim.bo[bufnr].commentstring = "<!-- %s -->"
+
+  local lines = vim.split(message, "\n", { plain = true })
+  table.insert(lines, "")
+  table.insert(lines, "# git-commit-ai: edit the message, then :w to commit.")
+  table.insert(lines, "# git-commit-ai: these help lines are removed. Press q to cancel.")
+  vim.api.nvim_buf_set_lines(bufnr, 0, -1, false, lines)
+  vim.bo[bufnr].modified = false
+
+  local group = vim.api.nvim_create_augroup("DotfilesCommitAI" .. bufnr, { clear = true })
+
+  vim.api.nvim_create_autocmd("BufWriteCmd", {
+    group = group,
+    buffer = bufnr,
+    callback = function()
+      local cleaned = {}
+      for _, line in ipairs(vim.api.nvim_buf_get_lines(bufnr, 0, -1, false)) do
+        if not line:match("^# git%-commit%-ai:") then cleaned[#cleaned + 1] = line end
+      end
+      while #cleaned > 0 and cleaned[#cleaned]:match("^%s*$") do
+        cleaned[#cleaned] = nil
+      end
+      if #cleaned == 0 then
+        vim.notify("Commit message is empty", vim.log.levels.WARN, { title = "Git commit" })
+        error("empty commit message")
+      end
+
+      vim.fn.writefile(cleaned, file)
+      local result = vim.system(
+        { "git", "-C", root, "commit", "--cleanup=whitespace", "--file", file },
+        { text = true }
+      ):wait()
+      if result.code ~= 0 then
+        local detail = vim.trim((result.stderr or "") .. "\n" .. (result.stdout or ""))
+        vim.notify(
+          (detail ~= "" and detail or "Git commit failed") .. "\nDraft kept at " .. file,
+          vim.log.levels.ERROR,
+          { title = "Git commit" }
+        )
+        error("git commit failed")
+      end
+
+      vim.fn.delete(file)
+      local detail = vim.trim(result.stdout or "")
+      vim.notify(detail ~= "" and detail or "Committed staged changes", vim.log.levels.INFO, {
+        title = "Git commit",
+      })
+      vim.schedule(function()
+        if vim.api.nvim_buf_is_valid(bufnr) then
+          vim.api.nvim_buf_delete(bufnr, { force = true })
+        end
+        status.update(root, true)
+        redraw_status()
+      end)
+    end,
+  })
+
+  vim.api.nvim_create_autocmd("BufWipeout", {
+    group = group,
+    buffer = bufnr,
+    callback = function() vim.api.nvim_del_augroup_by_id(group) end,
+  })
+
+  vim.keymap.set("n", "q", "<cmd>bdelete!<CR>", { buffer = bufnr, desc = "Cancel commit message" })
 end
 
 local function prompt_commit(root, subject, body)
@@ -289,8 +365,9 @@ end
 local function commit_with_ai_message()
   local root = ready_root("commit")
   if not root then return end
-  generate_commit_message(root, function(subject, body)
-    prompt_commit(root, subject, body)
+  generate_commit_message(root, function(message)
+    if not message then return prompt_commit(root) end
+    edit_commit_message(root, message)
   end)
 end
 

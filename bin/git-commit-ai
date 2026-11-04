@@ -84,11 +84,20 @@ Write a Git commit message for the staged changes below.
 Follow this repository's convention:
 - First line: imperative mood, sentence case, 50 characters or fewer (72 max),
   no prefix such as "feat:" or "fix:", and no trailing period.
-- Add a body only when it explains why the change is needed. Separate it from
-  the first line with one blank line and wrap it at 72 characters.
+- Body: always include one, separated from the first line by a blank line.
+  Write it like a concise pull request description:
+  - Open with one or two sentences explaining the problem and the approach.
+  - Follow with "- " bullet points for the notable changes, one per line,
+    wrapped at 72 characters.
+  - Add a bullet for trade-offs, migrations, or follow-up work when relevant.
+  - Markdown is allowed in the body (headings, nested lists, fenced code
+    blocks) when it makes the message clearer. Keep it concise.
+- Use professional, direct language. Avoid first person, filler, and marketing
+  tone.
 - Describe the change, not the files. Do not mention tests unless the diff only
   changes tests.
-- Output only the commit message. No preamble, Markdown fences, or quotes.
+- Output only the commit message. Do not add a preamble or wrap the whole
+  message in a code fence.
 EOF
   printf '\nStaged files:\n%s\n\nDiff:\n' "$summary"
   git diff --cached --no-color --no-ext-diff | head -c "$max_diff"
@@ -120,31 +129,36 @@ generate() {
 }
 
 sanitize() {
-  LC_ALL=C sed \
-    -e 's/\r$//' \
-    -e '/^[[:space:]]*```/d' \
-    -e 's/^[[:space:]]*//' \
-    -e 's/[[:space:]]*$//' |
+  LC_ALL=C sed -e 's/\r$//' -e 's/[[:space:]]*$//' |
     LC_ALL=C awk '
-      BEGIN { started = 0; blank = 0; count = 0 }
-      {
-        if ($0 == "") {
-          if (started) {
-            blank++
-            if (blank > 1) next
-          }
-        } else {
-          blank = 0
-        }
-        if ($0 != "") started = 1
-        if (started) line[++count] = $0
-      }
+      { line[++count] = $0 }
       END {
-        for (end = count; end > 0; end--) if (line[end] != "") break
-        for (i = 1; i <= end; i++) print line[i]
+        start = 1
+        while (start <= count && line[start] ~ /^[[:space:]]*$/) start++
+        end = count
+        while (end >= start && line[end] ~ /^[[:space:]]*$/) end--
+
+        # Drop a fence only when it wraps the entire message.
+        if (start <= end && line[start] ~ /^[[:space:]]*```/ && line[end] ~ /^[[:space:]]*```[[:space:]]*$/) {
+          start++
+          end--
+          while (start <= end && line[start] ~ /^[[:space:]]*$/) start++
+          while (end >= start && line[end] ~ /^[[:space:]]*$/) end--
+        }
+
+        blank = 0
+        for (i = start; i <= end; i++) {
+          if (line[i] ~ /^[[:space:]]*$/) {
+            if (blank++) continue
+          } else {
+            blank = 0
+          }
+          print line[i]
+        }
       }
     ' |
     LC_ALL=C sed \
+      -e '1s/^[[:space:]]*//' \
       -e '1s/^"\(.*\)"$/\1/' \
       -e '1s/^\(Commit message\|Message\|Subject\):[[:space:]]*//'
 }
@@ -181,7 +195,7 @@ while :; do
   IFS= read -r choice || exit 0
   case ${choice:-c} in
     c | C)
-      if git commit --cleanup=strip --file "$message_file"; then
+      if git commit --cleanup=whitespace --file "$message_file"; then
         exit 0
       fi
       printf 'Commit failed. Message kept at %s\n' "$message_file" >&2
