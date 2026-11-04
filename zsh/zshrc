@@ -55,6 +55,12 @@ alias c="clear"
 
 mkcd() { mkdir -p "$1" && cd "$1" }
 
+# Hand a file to the shared Neovim server without blocking. Without a running
+# server this starts one in the current pane.
+v() {
+  nvim-edit --no-wait "$@"
+}
+
 
 ##### Helper functions
 

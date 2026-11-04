@@ -139,11 +139,14 @@ echo "📂 Creating directories..."
 mkdir -p \
   "$HOME/.config/ghostty" \
   "$HOME/.config/btop/themes" \
+  "$HOME/.config/opencode/plugins" \
   "$HOME/.config/tmux" \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
   "$HOME/.config/mise" \
   "$HOME/.local/bin" \
+  "$HOME/.claude" \
+  "$HOME/.codex" \
   "$HOME/.gnupg" \
   "$HOME/.ssh/sockets"
 chmod 700 "$HOME/.gnupg" "$HOME/.ssh" "$HOME/.ssh/sockets"
@@ -157,8 +160,39 @@ dotlink() {
   ln -sfn "$DOTFILES_DIR/$1" "$HOME/$2"
 }
 
+# Merge a tracked JSON baseline into a live config. OpenCode, Codex, and
+# Claude Code rewrite their config files by renaming a temporary file over the
+# destination, which replaces a symlink. Keep those destinations as real files
+# and reapply the repository baseline on every install.
+merge_json() {
+  filter=$1
+  source_file="$DOTFILES_DIR/$2"
+  dest_file="$HOME/$3"
+
+  mkdir -p "$(dirname "$dest_file")"
+
+  if [ ! -f "$dest_file" ]; then
+    cp "$source_file" "$dest_file"
+    chmod 600 "$dest_file"
+    return 0
+  fi
+
+  tmp_file="${dest_file}.tmp.$$"
+  if jq -s "$filter" "$dest_file" "$source_file" > "$tmp_file"; then
+    chmod 600 "$tmp_file"
+    mv -f "$tmp_file" "$dest_file"
+  else
+    rm -f "$tmp_file"
+    echo "Could not merge $source_file into $dest_file" >&2
+    return 1
+  fi
+}
+
 echo "🔗 Creating symlinks..."
 dotlink zsh/zshenv .zshenv
+# ZDOTDIR is exported, so nested shells read $ZDOTDIR/.zshenv rather than
+# ~/.zshenv. Link both paths to keep the environment identical everywhere.
+dotlink zsh/zshenv .config/zsh/.zshenv
 dotlink zsh/zshrc .config/zsh/.zshrc
 dotlink starship.toml .config/starship.toml
 dotlink git/gitconfig .config/git/config
@@ -187,6 +221,8 @@ ln -sfn "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
 
 dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
+dotlink bin/nvim-edit .local/bin/nvim-edit
+dotlink bin/agent-hook .local/bin/agent-hook
 dotlink tmux/scripts/weather-status.sh .local/bin/tmux-weather-status
 dotlink tmux/scripts/pyradio-status.sh .local/bin/tmux-pyradio-status
 dotlink tmux/scripts/pyradio-art.sh .local/bin/tmux-pyradio-art
@@ -195,6 +231,54 @@ dotlink tmux/scripts/btop-themed.sh .local/bin/btop-themed
 dotlink tmux/scripts/cheatsheet.sh .local/bin/tmux-cheatsheet
 dotlink tmux/scripts/theme-reload.sh .local/bin/tmux-theme-reload
 dotlink tmux/scripts/workspace.sh .local/bin/tmux-workspace
+dotlink tmux/scripts/agent-status.sh .local/bin/agent-status
+dotlink tmux/scripts/agent-dashboard.sh .local/bin/tmux-agent-dashboard
+
+# Agent instructions: one shared baseline, linked where each tool reads it.
+# Claude Code may rewrite CLAUDE.md when adding memories, so keep that path a
+# real shim that imports the shared file instead of a symlink.
+dotlink agents/AGENTS.md .config/opencode/AGENTS.md
+dotlink agents/AGENTS.md .codex/AGENTS.md
+claude_memory="$HOME/.claude/CLAUDE.md"
+if [ -L "$claude_memory" ]; then
+  rm -f "$claude_memory"
+fi
+if ! grep -qxF '@../.config/opencode/AGENTS.md' "$claude_memory" 2>/dev/null; then
+  if [ -s "$claude_memory" ]; then
+    printf '\n@../.config/opencode/AGENTS.md\n' >> "$claude_memory"
+  else
+    printf '@../.config/opencode/AGENTS.md\n' > "$claude_memory"
+  fi
+fi
+
+# OpenCode does not load a symlinked plugin file as a plugin: it reports an
+# empty ID and never calls setup. Install a real shim that re-exports the
+# repository implementation; remove the old symlink name as well.
+rm -f "$HOME/.config/opencode/plugins/agent-status.js" \
+  "$HOME/.config/opencode/plugins/tmux-agent-status.js"
+printf 'export { default } from "%s/opencode/plugins/tmux-agent-status.js"\n' \
+  "$DOTFILES_DIR" > "$HOME/.config/opencode/plugins/tmux-agent-status.js"
+chmod 644 "$HOME/.config/opencode/plugins/tmux-agent-status.js"
+
+
+##### Mutable agent configuration
+
+# These files are rewritten by their applications, so merge the tracked
+# baseline instead of linking it. User-added keys survive; tracked keys and the
+# agent hooks are restored on every install.
+echo "🤖 Merging agent configuration..."
+# shellcheck disable=SC2016 # jq variables, not shell variables.
+merge_json \
+  '.[0] as $live | .[1] as $base | ($live * $base)' \
+  opencode/cli.json .config/opencode/cli.json
+# shellcheck disable=SC2016
+merge_json \
+  '.[0] as $live | .[1] as $base | ($live * $base) | .hooks = $base.hooks' \
+  codex/hooks.json .codex/hooks.json
+# shellcheck disable=SC2016
+merge_json \
+  '.[0] as $live | .[1] as $base | ($live * $base) | .hooks = $base.hooks' \
+  claude/settings.json .claude/settings.json
 
 # Flavor sources are pinned in package.toml; Yazi deploys their generated
 # files into the ignored flavors directory.

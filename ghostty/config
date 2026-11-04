@@ -12,6 +12,15 @@ confirm-close-surface = false
 mouse-hide-while-typing = true
 
 
+##### Notifications
+
+# Notify when a command that ran for at least 10 seconds finishes while the
+# surface is in the background. Commands inside tmux are covered separately by
+# the agent-status helper.
+notify-on-command-finish = unfocused
+notify-on-command-finish-after = 10s
+
+
 ##### Window appearance
 
 macos-icon = xray

@@ -2,8 +2,9 @@
 	defaultBranch = main
 
 [core]
-	; editor = nvim
-	editor = ti --wait
+	; Use the shared Neovim server when it is running; nvim-edit falls back to
+	; a blocking local editor, which is what Git requires.
+	editor = nvim-edit
 	autocrlf = input
 
 

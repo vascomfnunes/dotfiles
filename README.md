@@ -32,6 +32,8 @@ Before running the installer, be aware that it:
 - Installs the Mise-managed runtimes (Ruby, Node.js, and Python) via
   `mise install`.
 - Replaces managed configuration files with symlinks into this repository.
+- Merges tracked OpenCode, Codex, and Claude Code configuration into their live
+  JSON files (those applications rewrite their own configs).
 - Creates empty local stub files (`~/.zshrc.local`, `~/.gitconfig.local`,
   `~/.tmux-workspace.local`, and `~/.hushlogin`) when they are missing.
 - Creates a launchd agent that reloads the tmux theme when macOS appearance
@@ -119,6 +121,32 @@ working directory:
   Catppuccin Latte or Mocha to match the current macOS appearance.
 - `prefix + S`: searchable command and programming cheatsheets from cht.sh,
   with topic previews and an optional query prompt.
+- `prefix + A`: dashboard of panes running OpenCode, Codex, or Claude Code,
+  with a live preview of the selected pane; Enter jumps to it.
+
+Agent panes show a marker in the tmux window name: `●` while a session is
+working and `✓` when it finishes. OpenCode reports its own activity through a
+plugin, and Codex and Claude Code use their native `UserPromptSubmit`, `Stop`,
+and `SessionEnd` hooks. Launch them directly:
+
+```sh
+opencode
+codex
+claude
+```
+
+The agent helpers only update tmux window markers; they do not send macOS
+notifications. OpenCode's own attention notifications are configured separately
+in `cli.json`.
+
+The installer merges the tracked `opencode/cli.json`, `codex/hooks.json`, and
+`claude/settings.json` baselines into their live files instead of symlinking
+them. Those applications replace their configuration atomically, which would
+break a symlink; merging also removes stale hook entries and preserves keys
+that only exist in the live file. Claude's machine-specific `autoMode` context
+and `settings.local.json` stay local and are intentionally not tracked.
+OpenCode plugins are installed through a generated shim because OpenCode does
+not load a symlinked plugin file as a plugin.
 
 PyRadio follows the same appearance setting while it is running: its watched
 `catppuccin-auto` theme is regenerated as Latte or Mocha by the appearance
@@ -126,6 +154,40 @@ agent, and PyRadio repaints without interrupting playback.
 
 Run `y` directly from Zsh when you want the shell to follow Yazi's final
 directory after it exits.
+
+## Agent Instructions
+
+Agent instructions live in three layers:
+
+- `agents/AGENTS.md` is the global baseline. The installer links it to
+  `~/.config/opencode/AGENTS.md` and `~/.codex/AGENTS.md`; Claude Code reads it
+  through the `@` import in `~/.claude/CLAUDE.md`.
+- `AGENTS.md` in this repository describes the dotfiles architecture and
+  conventions. `CLAUDE.md` imports it for Claude Code.
+- `agents/templates/AGENTS.md` is a starting point for new projects:
+
+  ```sh
+  cp ~/dotfiles/agents/templates/AGENTS.md ./AGENTS.md
+  printf '@AGENTS.md\n' > ./CLAUDE.md   # Claude Code
+  ```
+
+Keep project-specific commands (install, test, lint, build) in the project
+file, not in the global baseline.
+
+## Shared Neovim Server
+
+`nvim-edit` opens files in a running Neovim server when one exists and falls
+back to a normal editor otherwise. The tmux workspace starts the server with
+`nvim --listen "$NVIM_SERVER"`; `NVIM_SERVER` is exported from `~/.zshenv`.
+
+- `v <file>` hands the file to the running Neovim and returns immediately.
+- `$EDITOR`, `$VISUAL`, and Git's `core.editor` use `nvim-edit`, which blocks
+  until the editor exits, as Git and other `$EDITOR` callers require.
+
+Neovim 0.12 does not implement `--remote-wait`, so `nvim-edit` uses a blocking
+local editor for `$EDITOR` calls and `--remote` only for explicit handoff.
+Agents that invoke an interactive editor are refused instead of hanging; see
+`agents/AGENTS.md`.
 
 ## Maintenance
 
@@ -137,8 +199,9 @@ Run the repository checks before committing configuration changes:
 ./check.sh
 ```
 
-This validates POSIX shell and Zsh syntax, runs ShellCheck and the Neovim test
-suite, and checks staged and unstaged changes for whitespace errors.
+This validates POSIX shell, Zsh, JavaScript, and JSON syntax, runs ShellCheck
+and the Neovim test suite, rejects private home paths in tracked agent configs,
+and checks staged and unstaged changes for whitespace errors.
 
 ### Commit Style
 
@@ -227,17 +290,21 @@ Review and commit lockfile changes after intentionally updating plugins.
 2. Add its destination directory and symlink to `install.sh`.
 3. If the destination is a directory managed as a whole, add it to the
    installer's preflight check so an existing directory is never removed.
-4. Run the installer and verify the resulting link before committing.
+4. If the application rewrites its config atomically, store the baseline and
+   add a `merge_json` call instead of a symlink.
+5. Run the installer and verify the resulting link before committing.
 
 ## Components
 
 - **Shell:** Zsh with Zinit, Starship, Atuin, fzf, and zoxide.
 - **Terminal:** Ghostty with automatic Catppuccin light and dark themes.
-- **Editor:** Neovim 0.12+ with native `vim.pack` package management and a
-  committed plugin lockfile.
+- **Editor:** Neovim 0.12+ with native `vim.pack` package management, a
+  committed plugin lockfile, and a shared `--listen` server for editor handoff.
 - **Multiplexer:** tmux with seamless Neovim navigation, a restorable workspace,
   Yazi and btop popups, PyRadio, weather and battery status, and automatic
   light/dark themes.
+- **Agents:** OpenCode, Codex, and Claude Code with shared `AGENTS.md`
+  instructions, tmux window markers, and an fzf pane dashboard.
 - **Runtime management:** Mise with pinned Ruby, Node.js, and Python versions.
 - **Security:** GPG agent and SSH configuration. Multiplexing is used for
   general hosts, while GitHub connections are direct because GitHub caps the
@@ -247,4 +314,5 @@ Review and commit lockfile changes after intentionally updating plugins.
   user-level Python CLIs such as aider. The Brewfiles are the source of truth
   for the complete package list.
 - **Scripts:** Utilities installed into `~/.local/bin`, including `serve`,
-  `git-commit-ai`, and the tmux status/workspace helpers.
+  `git-commit-ai`, `nvim-edit`, `agent-hook`, and the tmux status/workspace
+  helpers.

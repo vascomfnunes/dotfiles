@@ -22,6 +22,7 @@ session="${TMUX_WORKSPACE_SESSION:-$session}"
 project="${TMUX_WORKSPACE_PROJECT:-$project}"
 radio_width="${TMUX_WORKSPACE_RADIO_WIDTH:-$radio_width}"
 radio_art_height="${TMUX_WORKSPACE_RADIO_ART_HEIGHT:-$radio_art_height}"
+nvim_server="${NVIM_SERVER:-${TMPDIR:-/tmp}/nvim-${USER:-$(id -u)}.sock}"
 
 if [ ! -d "$project" ]; then
   echo "Configured tmux workspace project does not exist: $project" >&2
@@ -80,10 +81,16 @@ art_pane="$($tmux_bin split-window -d -vb -l "$radio_art_height" -P \
   -F '#{pane_id}' -t "$radio_pane" "$HOME/.local/bin/tmux-pyradio-art")"
 set_radio_geometry "$art_pane"
 
-# Window 2: Neovim in the configured project directory.
+# Window 2: Neovim in the configured project directory. Start it as the shared
+# server so other panes can hand files to it. If a server is already running,
+# start a normal editor instead of failing on a busy socket.
 "$tmux_bin" new-window -d -t "${session_id}:" \
   -n nvim -c "$project"
-start_app "${session_id}:nvim.1" nvim
+if nvim --server "$nvim_server" --remote-expr '1' >/dev/null 2>&1; then
+  start_app "${session_id}:nvim.1" nvim
+else
+  start_app "${session_id}:nvim.1" "nvim --listen '$nvim_server'"
+fi
 
 # Match the currently selected window and pane.
 "$tmux_bin" select-window -t "${session_id}:zsh"

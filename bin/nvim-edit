@@ -1,0 +1,77 @@
+#!/bin/sh
+
+# Open files in the shared Neovim server, or start one when none is running.
+#
+# Usage:
+#   nvim-edit [--no-wait] [file ...]
+#
+# Without --no-wait the command blocks until Neovim exits. That is what Git and
+# other $EDITOR callers expect. --no-wait hands the file to a running server and
+# returns immediately, for editor handoff from a shell or an agent.
+#
+# Environment:
+#   NVIM_SERVER                    socket used by the shared server
+#   NVIM_EDITOR_NO_SERVER=1        always start a local editor
+#   NVIM_EDITOR_NONINTERACTIVE=1   refuse to open an editor (agent/CI guard)
+
+set -eu
+
+no_wait=0
+if [ "${1:-}" = "--no-wait" ]; then
+  no_wait=1
+  shift
+fi
+
+socket="${NVIM_SERVER:-${TMPDIR:-/tmp}/nvim-${USER:-$(id -u)}.sock}"
+
+refuse() {
+  echo "nvim-edit: refusing to open an interactive editor" >&2
+  echo "Use 'git commit -m' or set GIT_EDITOR=true for non-interactive work." >&2
+  exit 1
+}
+
+# A remote call from inside Neovim deadlocks while the shell command holds the
+# server, so use a local editor there.
+if [ -n "${NVIM:-}" ] || [ "${NVIM_EDITOR_NO_SERVER:-0}" = 1 ]; then
+  exec nvim "$@"
+fi
+
+if [ "${NVIM_EDITOR_NONINTERACTIVE:-0}" = 1 ]; then
+  refuse
+fi
+
+# Walk up the process tree. An agent that runs `git commit` without -m would
+# otherwise wait forever for an editor it cannot use.
+pid=${PPID:-0}
+depth=0
+while [ "$pid" -gt 1 ] && [ "$depth" -lt 6 ]; do
+  case "$(ps -o comm= -p "$pid" 2>/dev/null || true)" in
+    *opencode* | *codex* | *claude* | *aider*) refuse ;;
+  esac
+  pid=$(ps -o ppid= -p "$pid" 2>/dev/null | tr -d ' ' || true)
+  case "$pid" in
+    '' | *[!0-9]*) break ;;
+  esac
+  depth=$((depth + 1))
+done
+
+# Without a terminal there is nobody to edit the file.
+if [ ! -t 0 ] || [ ! -t 1 ]; then
+  refuse
+fi
+
+if nvim --server "$socket" --remote-expr '1' >/dev/null 2>&1; then
+  if [ "$no_wait" -eq 1 ]; then
+    exec nvim --server "$socket" --remote "$@"
+  fi
+  # Neovim 0.12 does not implement --remote-wait, so block on a local editor
+  # rather than returning before Git has read the file.
+  exec nvim "$@"
+fi
+
+# Start the shared server so the next handoff has somewhere to go. A stale
+# socket file is replaced by --listen; a live one was handled above.
+if [ "$no_wait" -eq 1 ]; then
+  exec nvim --listen "$socket" "$@"
+fi
+exec nvim "$@"

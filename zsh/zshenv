@@ -1,16 +1,23 @@
 ##### XDG paths and editor
 
 export ZDOTDIR="$HOME/.config/zsh"
-export EDITOR="nvim"
-export VISUAL="nvim"
+export PATH="$HOME/.local/bin:$PATH"
+
+# One Neovim server per user. The tmux workspace starts it with --listen, and
+# `v` hands files to it without blocking. `nvim-edit` falls back to a normal
+# editor when no server is running.
+export NVIM_SERVER="${TMPDIR:-/tmp}/nvim-${USER:-$(id -u)}.sock"
+
+# Blocking by default because Git and other $EDITOR callers expect the editor
+# to return only after the file is closed.
+export EDITOR="nvim-edit"
+export VISUAL="nvim-edit"
 
 
 ##### Tool defaults
 
 export HOMEBREW_AUTO_UPDATE_SECS="86400"
 export BAT_THEME="ansi"
-
-export PATH="$HOME/.local/bin:$PATH"
 
 
 ##### Search and pager defaults
