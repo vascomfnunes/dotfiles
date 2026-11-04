@@ -86,20 +86,24 @@ if [ -z "$rows" ]; then
   exit 0
 fi
 
+# Follow the tmux theme. Overriding FZF_DEFAULT_OPTS also drops the shell's
+# `--height 40%`, so the picker fills the popup instead of leaving a gap.
+fzf_colors=$(tmux show-options -gv @fzf_colors 2>/dev/null || true)
+
 selection=$(
   printf '%s\n' "$rows" |
-    fzf \
-      --ansi \
-      --border \
-      --layout=reverse \
-      --delimiter="$tab" \
-      --with-nth=2.. \
-      --nth=2.. \
-      --prompt='Agent > ' \
-      --header='● running   ✓ finished   · unknown   enter: jump   ctrl-r: refresh' \
-      --preview='tmux capture-pane -ep -t {1} -S -80' \
-      --preview-window='right,60%,wrap' \
-      --bind="ctrl-r:reload('$0' --list)"
+    FZF_DEFAULT_OPTS="--color=${fzf_colors:-dark}" \
+      fzf \
+        --ansi \
+        --layout=reverse \
+        --delimiter="$tab" \
+        --with-nth=2.. \
+        --nth=2.. \
+        --prompt='Agent > ' \
+        --header='● running  ✓ finished  · unknown   ↵ jump   ^r reload' \
+        --preview='tmux capture-pane -ep -t {1} -S -80' \
+        --preview-window='down,80%,nowrap,border-top' \
+        --bind="ctrl-r:reload('$0' --list)"
 ) || exit 0
 
 [ -n "$selection" ] || exit 0

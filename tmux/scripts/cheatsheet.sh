@@ -35,15 +35,20 @@ if [ "$refresh_topics" = true ]; then
   fi
 fi
 
+# Follow the tmux theme. Overriding FZF_DEFAULT_OPTS also drops the shell's
+# `--height 40%`, so the picker fills the popup instead of leaving a gap.
+fzf_colors=$(tmux show-options -gv @fzf_colors 2>/dev/null || true)
+
 topic=$(
-  fzf \
-    --ansi \
-    --border \
-    --layout=reverse \
-    --prompt='Cheatsheet > ' \
-    --preview='curl --fail --silent --location --max-time 8 https://cht.sh/{} 2>/dev/null' \
-    --preview-window='right,60%,wrap' \
-    < "$topics_file"
+  FZF_DEFAULT_OPTS="--color=${fzf_colors:-dark}" \
+    fzf \
+      --ansi \
+      --border \
+      --layout=reverse \
+      --prompt='Cheatsheet > ' \
+      --preview='curl --fail --silent --location --max-time 8 https://cht.sh/{} 2>/dev/null' \
+      --preview-window='right,60%,wrap' \
+      < "$topics_file"
 ) || exit 0
 
 # Topics come from cht.sh, but keep the value safe before placing it in a URL
