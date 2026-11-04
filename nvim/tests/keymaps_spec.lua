@@ -111,6 +111,19 @@ end
 local ai_commit = mapping("n", "Commit with generated message")
 assert(ai_commit and ai_commit.lhs == " gG", "generated-message commit mapping was not found")
 
+local git_log = mapping("n", "Commit log")
+assert(git_log and git_log.lhs == " gl", "git log mapping was not found")
+local log_opened = false
+local log_opts
+package.loaded["fzf-lua"].git_commits = function(opts)
+  log_opened = true
+  log_opts = opts
+end
+git_log.callback()
+assert(log_opened, "git log mapping did not open the commit picker")
+assert(type(log_opts.actions.enter) == "function", "commit log enter action was not configured")
+assert(type(log_opts.actions["ctrl-o"]) == "function", "commit checkout action was not configured")
+
 assert(keymaps.location("/tmp/example.lua", 3) == "/tmp/example.lua:3", "line reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 7) == "/tmp/example.lua:3-7", "range reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 3) == "/tmp/example.lua:3", "single-line range was not collapsed")

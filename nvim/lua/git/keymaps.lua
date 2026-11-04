@@ -33,6 +33,34 @@ local function copy_git_output(args, label)
   vim.notify(label .. ": " .. output, vim.log.levels.INFO)
 end
 
+-- Open the selected commit in a scratch buffer. Enter in fzf-lua's commit
+-- picker checks the commit out by default, which is too easy to trigger when
+-- the intent is only to inspect history.
+local function show_commit(selected)
+  local commit = selected and selected[1] and selected[1]:match("^(%x+)")
+  if not commit then return end
+
+  local root = vim.fs.root(0, ".git") or vim.fn.getcwd()
+  local result = vim.system(
+    { "git", "-C", root, "show", "--stat", "--patch", "--no-color", "--no-ext-diff", commit },
+    { text = true }
+  ):wait()
+  if result.code ~= 0 then
+    vim.notify(vim.trim(result.stderr or "git show failed"), vim.log.levels.ERROR, { title = "Git log" })
+    return
+  end
+
+  vim.cmd("botright new")
+  local buffer = vim.api.nvim_get_current_buf()
+  vim.bo[buffer].buftype = "nofile"
+  vim.bo[buffer].bufhidden = "wipe"
+  vim.bo[buffer].swapfile = false
+  vim.bo[buffer].filetype = "git"
+  vim.api.nvim_buf_set_lines(buffer, 0, -1, false, vim.split(result.stdout, "\n", { plain = true }))
+  vim.bo[buffer].modifiable = false
+  vim.keymap.set("n", "q", "<cmd>close<CR>", { buffer = buffer, desc = "Close commit" })
+end
+
 local function gitsigns_action(action)
   return function()
     lazy.gitsigns()
@@ -114,6 +142,14 @@ function M.setup(fzf)
     })
   end, { desc = "Checkout branch" })
   map("n", "<leader>gs", fzf("git_status"), { desc = "Status / changed files" })
+  map("n", "<leader>gl", fzf("git_commits", {
+    actions = {
+      ["enter"] = function(selected) show_commit(selected) end,
+      ["ctrl-o"] = function(selected, opts)
+        require("fzf-lua.actions").git_checkout(selected, opts)
+      end,
+    },
+  }), { desc = "Commit log" })
   map("n", "<leader>gS", "<cmd>GitStageAll<CR>", { desc = "Stage all changes" })
   map("n", "<leader>gU", "<cmd>GitUnstageAll<CR>", { desc = "Unstage all changes" })
 
