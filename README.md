@@ -44,7 +44,7 @@ Before running the installer, be aware that it:
 
 Existing regular files at managed file paths, such as `~/.zshenv`, are replaced
 by symlinks. Existing non-symlink directories managed as a whole, such as the
-Neovim and PyRadio configuration directories, cause the installer to stop so
+Neovim and Yazi configuration directories, cause the installer to stop so
 that their contents are not overwritten. Back up local configuration before
 the first run.
 

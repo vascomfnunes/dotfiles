@@ -2,6 +2,8 @@
 
 theme = "light:Catppuccin Latte,dark:Catppuccin Mocha"
 font-thicken = true
+# Disable programming ligatures such as != and =>.
+font-feature = -calt
 
 
 ##### Cursor and shell integration

@@ -75,15 +75,6 @@ tmux() {
   fi
 }
 
-# pyradio forces TERM=xterm-256color under tmux and prints a warning;
-# pre-set it to keep startup quiet. On exit, reset the terminal palette
-# (OSC 104) since the theme redefines colors via init_color and
-# tmux-256color has no `oc` capability to restore them.
-pyradio() {
-  TERM=xterm-256color command pyradio "$@"
-  printf '\e]104\a'
-}
-
 dotupdate() {
   local profile="${1:-personal}"
   local dotfiles_dir="${${(%):-%x}:A:h:h}"

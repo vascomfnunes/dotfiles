@@ -53,7 +53,6 @@ fi
 # directory managed as a symlink would be overwritten.
 for path in \
   "$HOME/.config/nvim" \
-  "$HOME/.config/pyradio" \
   "$HOME/.config/tmux/themes" \
   "$HOME/.config/yazi"
 do
@@ -188,9 +187,6 @@ dotlink mise/mise.lock .config/mise/mise.lock
 dotlink nvim .config/nvim
 dotlink yazi .config/yazi
 dotlink tmux/themes .config/tmux/themes
-# PyRadio saves playlists by writing a temp file and renaming it over
-# stations.csv, which would replace a per-file symlink with a regular file.
-dotlink pyradio .config/pyradio
 
 # halpradio writes this file in place when stations are edited. Preserve an
 # existing independent station list rather than replacing it on installation.
@@ -200,20 +196,6 @@ if [ ! -e "$halpradio_stations" ] && [ ! -L "$halpradio_stations" ]; then
 else
   echo "Keeping existing halpradio station list: $halpradio_stations"
 fi
-
-# PyRadio watches this generated theme and repaints when the appearance agent
-# swaps its contents. Keep mutable state in ~/.cache rather than the repository.
-ln -sfn "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
-  "$DOTFILES_DIR/pyradio/themes/catppuccin-auto.pyradio-theme"
-
-# Drop helper links left behind by the old player-specific names. Only remove
-# links whose target is already gone, so unrelated user links are preserved.
-for legacy in tmux-pyradio-status tmux-pyradio-art; do
-  legacy_link="$HOME/.local/bin/$legacy"
-  if [ -L "$legacy_link" ] && [ ! -e "$legacy_link" ]; then
-    rm -f "$legacy_link"
-  fi
-done
 
 dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
@@ -316,8 +298,7 @@ cat > "$TMUX_THEME_PLIST" <<EOF
 EOF
 launchctl bootout "gui/$(id -u)/com.vascomfnunes.tmux-theme-reload" 2>/dev/null || true
 launchctl bootstrap "gui/$(id -u)" "$TMUX_THEME_PLIST"
-# Populate the watched PyRadio theme immediately instead of waiting for the
-# next macOS preferences change.
+# Apply the current appearance immediately.
 "$HOME/.local/bin/tmux-theme-reload"
 
 
