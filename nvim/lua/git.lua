@@ -250,10 +250,27 @@ local function generate_commit_message(root, callback)
   end
 
   vim.notify("Generating commit message…", vim.log.levels.INFO, { title = "Git commit" })
+
+  local started = vim.uv.now()
+  local timer = vim.uv.new_timer()
+  local finished = false
+  local function stop_progress()
+    finished = true
+    timer:stop()
+    timer:close()
+    vim.api.nvim_echo({ { "" } }, false, {})
+  end
+  timer:start(0, 1000, vim.schedule_wrap(function()
+    if finished then return end
+    local seconds = math.floor((vim.uv.now() - started) / 1000)
+    vim.api.nvim_echo({ { ("Generating commit message… %ds"):format(seconds) } }, false, {})
+  end))
+
   vim.system(
     { script, "--print" },
-    { cwd = root, text = true, timeout = 120000 },
+    { cwd = root, text = true, timeout = 60000 },
     vim.schedule_wrap(function(result)
+      stop_progress()
       local message = vim.trim(result.stdout or "")
       if result.code ~= 0 or message == "" then
         local detail = vim.trim(result.stderr or "")

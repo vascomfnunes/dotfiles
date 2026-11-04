@@ -160,7 +160,9 @@ Commit prefixes.
 
 `git commit-ai` drafts a message from the staged diff using the first installed
 engine among `opencode`, `codex`, and `claude`, then shows it before anything is
-committed. Review, edit, regenerate, or discard the draft:
+committed. The `opencode` engine uses `opencode-go/deepseek-v4.1-flash` by
+default; set `GIT_AI_MODEL` to choose another model. Review, edit, regenerate,
+or discard the draft:
 
 ```bash
 git add -p
@@ -172,8 +174,9 @@ git commit-ai --all      # stage tracked changes first
 In Neovim, `:GitCommitAI` or `<leader>gG` opens the generated draft in a split
 so the full body can be edited in place. Press `:w` (or `:wq`) to commit and
 `q` to cancel. `<leader>gc` (`:GitCommit`) remains the manual path. Set
-`GIT_AI_ENGINE` to force an engine and `GIT_AI_EDITOR` to choose the editor
-used by the shell command's edit option.
+`GIT_AI_ENGINE` to force an engine, `GIT_AI_MODEL` to choose a different
+opencode model, and `GIT_AI_EDITOR` to choose the editor used by the shell
+command's edit option.
 
 The helper never pushes and never bypasses Git hooks.
 
