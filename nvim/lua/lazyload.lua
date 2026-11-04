@@ -147,7 +147,6 @@ end
 lazy.treesitter_context = plugin_loader("nvim-treesitter-context", "treesitter-context", { max_lines = 3 })
 lazy.grug_far = plugin_loader("grug-far.nvim", "grug-far", { transient = true })
 lazy.render_markdown = plugin_loader("render-markdown.nvim", "render-markdown", { latex = { enabled = false } })
-lazy.agentic = plugin_loader("agentic.nvim", "agentic", { provider = "codex-acp" })
 
 function lazy.neotest()
   setup_once("neotest", function()

@@ -16,6 +16,12 @@ function M.root(path)
   return vim.fs.root(path, { ".git", "Gemfile", "package.json" }) or existing_ancestor(path)
 end
 
+local function change_directory(root)
+  if root and vim.fn.getcwd(0) ~= root then
+    vim.cmd.lcd(vim.fn.fnameescape(root))
+  end
+end
+
 -- Keep the working directory local to the current window and cache each
 -- buffer's resolved root so normal buffer movement stays cheap.
 function M.setup()
@@ -30,14 +36,14 @@ function M.setup()
       local cached_path = vim.b[buf].project_root_path
       local root = vim.b[buf].project_root
       if cached_path == path then
-        if root then vim.cmd.lcd(vim.fn.fnameescape(root)) end
+        change_directory(root)
         return
       end
 
       root = M.root(path)
       vim.b[buf].project_root_path = path
       vim.b[buf].project_root = root
-      if root then vim.cmd.lcd(vim.fn.fnameescape(root)) end
+      change_directory(root)
     end,
   })
 end

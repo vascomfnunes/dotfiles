@@ -560,11 +560,6 @@ function M.setup()
     desc = "Interactively rebase a number of recent commits", force = true,
   })
 
-  vim.defer_fn(function()
-    status.update(current_root(), false)
-    fetch_current_repo(false, false)
-  end, 1000)
-
   vim.api.nvim_create_autocmd("VimLeavePre", {
     group = group,
     once = true,

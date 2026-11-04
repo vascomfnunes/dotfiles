@@ -21,9 +21,3 @@ cask "native-access"
 cask "korg-software-pass"
 cask "roland-cloud-manager"
 cask "xln-online-installer"
-
-##### Audio plugins
-
-cask "valhalla-supermassive"
-cask "blackhole"
-cask "paulxstretch"

@@ -32,8 +32,10 @@ brew "chafa"
 brew "mpv"
 brew "neovim"
 brew "tmux"
-
 cask "ghostty"
+
+#### Agents
+brew "opencode"
 
 
 ##### Desktop apps

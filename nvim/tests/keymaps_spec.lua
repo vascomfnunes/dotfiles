@@ -36,7 +36,7 @@ vim.lsp.buf_request_all = function(_, _, _, callback)
   })
 end
 
-require("keymaps")
+local keymaps = require("keymaps")
 
 local gd
 for _, mapping in ipairs(vim.api.nvim_get_keymap("n")) do
@@ -101,3 +101,51 @@ assert(commit_opts.cmd:match("feature"), "commit picker did not use the selected
 assert(commit_opts.cmd:match("%-%-not HEAD"), "commit picker did not exclude commits already in HEAD")
 commit_opts.actions.enter({ "abc1234 two days ago A useful change <Author>" })
 assert(cherry_picked == "abc1234", "selected commit was not cherry-picked")
+
+local function mapping(mode, desc)
+  for _, item in ipairs(vim.api.nvim_get_keymap(mode)) do
+    if item.desc == desc then return item end
+  end
+end
+
+assert(keymaps.location("/tmp/example.lua", 3) == "/tmp/example.lua:3", "line reference format is wrong")
+assert(keymaps.location("/tmp/example.lua", 3, 7) == "/tmp/example.lua:3-7", "range reference format is wrong")
+assert(keymaps.location("/tmp/example.lua", 3, 3) == "/tmp/example.lua:3", "single-line range was not collapsed")
+
+local copied
+local setreg = vim.fn.setreg
+vim.fn.setreg = function(register, text)
+  assert(register == "+", "reference was not copied to the clipboard register")
+  copied = text
+end
+
+local path = vim.fn.tempname() .. ".lua"
+vim.fn.writefile({ "one", "two", "three" }, path)
+vim.cmd.edit(vim.fn.fnameescape(path))
+local absolute = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":p")
+
+local copy_line = mapping("n", "Copy line reference")
+assert(copy_line and copy_line.lhs == " al" and copy_line.callback, "copy-line mapping was not found")
+vim.api.nvim_win_set_cursor(0, { 2, 0 })
+copy_line.callback()
+assert(copied == absolute .. ":2", "current line reference was not copied")
+
+local copy_file = mapping("n", "Copy file path")
+assert(copy_file and copy_file.lhs == " af" and copy_file.callback, "copy-file-path mapping was not found")
+copy_file.callback()
+assert(copied == absolute, "absolute file path was not copied")
+
+local copy_range = mapping("x", "Copy line range reference")
+assert(copy_range and copy_range.lhs == " al" and copy_range.callback, "copy-range mapping was not found")
+
+vim.api.nvim_win_set_cursor(0, { 1, 0 })
+vim.cmd("normal! Vj")
+copy_range.callback()
+assert(copied == absolute .. ":1-2", "visual line range reference was not copied")
+
+vim.api.nvim_win_set_cursor(0, { 1, 0 })
+vim.cmd("normal! vjj")
+copy_range.callback()
+assert(copied == absolute .. ":1-2", "charwise selection included the line after the selection")
+
+vim.fn.setreg = setreg
