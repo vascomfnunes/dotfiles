@@ -9,7 +9,8 @@ export GPG_TTY=$TTY
 # compdump) out of the config directory.
 ZSH_STATE_DIR="${XDG_STATE_HOME:-$HOME/.local/state}/zsh"
 ZSH_CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/zsh"
-mkdir -p "$ZSH_STATE_DIR" "$ZSH_CACHE_DIR"
+[[ -d "$ZSH_STATE_DIR" ]] || mkdir -p "$ZSH_STATE_DIR"
+[[ -d "$ZSH_CACHE_DIR" ]] || mkdir -p "$ZSH_CACHE_DIR"
 
 
 ##### History
@@ -121,6 +122,7 @@ if command -v eza >/dev/null 2>&1; then
   alias ls="eza"
   alias ll="eza -l --icons --git"
   alias la="eza -la --icons --git"
+  zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 fi
 
 if command -v bat >/dev/null 2>&1; then
@@ -177,7 +179,6 @@ unset zcompdump
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}'
 # Disable the built-in menu so fzf-tab can take over selection.
 zstyle ':completion:*' menu no
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'eza -1 --color=always $realpath'
 
 
 ##### Zinit plugins

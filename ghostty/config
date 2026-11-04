@@ -6,7 +6,6 @@ font-thicken = true
 
 ##### Cursor and shell integration
 
-cursor-style = block
 cursor-style-blink = true
 shell-integration-features = no-cursor
 confirm-close-surface = false
@@ -15,8 +14,6 @@ mouse-hide-while-typing = true
 
 ##### Window appearance
 
-background-opacity = 1
-background-blur = 20
 macos-icon = xray
 
 

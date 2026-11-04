@@ -11,10 +11,10 @@ cache_dir="${TMPDIR:-/tmp}/tmux-weather"
 cache_key=$(printf '%s' "$location" | tr -c 'A-Za-z0-9' '_')
 cache_file="${cache_dir}/${cache_key}.txt"
 
-mkdir -p "$cache_dir"
+[ -d "$cache_dir" ] || mkdir -p "$cache_dir"
 
 mtime() {
-  stat -f %m "$1" 2>/dev/null || stat -c %Y "$1" 2>/dev/null || printf 0
+  stat -f %m "$1" 2>/dev/null || printf 0
 }
 
 now=$(date +%s)

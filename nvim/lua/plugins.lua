@@ -186,9 +186,9 @@ vim.api.nvim_create_autocmd("BufEnter", {
 local wk = require("which-key")
 wk.setup({ preset = "classic", delay = 200 })
 wk.add({
-  { "<leader>a", group = "AI", mode = { "n", "v" } },
+  { "<leader>a", group = "Copy reference", mode = { "n", "v" } },
   { "<leader>g", group = "Git", mode = { "n", "v" } },
-  { "<leader>gy", group = "Copy", mode = { "n", "v" } },
+  { "<leader>gy", group = "Copy Git info", mode = { "n", "v" } },
   { "<leader>c", group = "Code/Diagnostics", mode = { "n", "v" } },
   { "<leader>f", group = "Find/Search", mode = { "n", "v" } },
   { "<leader>p", group = "Packages", mode = { "n", "v" } },

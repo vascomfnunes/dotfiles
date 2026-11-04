@@ -228,16 +228,7 @@ local function pull_current_repo()
   })
 end
 
-local function commit_current_repo()
-  local root = ready_root("commit")
-  if not root then return end
-
-  local title = vim.trim(vim.fn.input("Commit title: "))
-  if title == "" then return end
-
-  -- An empty message produces a title-only commit.
-  local message = vim.trim(vim.fn.input("Commit message: "))
-
+local function commit_staged(root, title, message)
   local args = { "commit", "-m", title }
   if message ~= "" then vim.list_extend(args, { "-m", message }) end
 
@@ -246,6 +237,61 @@ local function commit_current_repo()
     success_message = "Committed staged changes",
     checktime = false,
   })
+end
+
+-- Ask the installed git-commit-ai helper for a draft. The helper owns the
+-- engine choice and prompt; Neovim only fills the usual title/message prompts.
+local function generate_commit_message(root, callback)
+  local script = vim.fn.exepath("git-commit-ai")
+  if script == "" then
+    vim.notify("git-commit-ai is not installed", vim.log.levels.WARN, { title = "Git commit" })
+    callback(nil, nil)
+    return
+  end
+
+  vim.notify("Generating commit message…", vim.log.levels.INFO, { title = "Git commit" })
+  vim.system(
+    { script, "--print" },
+    { cwd = root, text = true, timeout = 120000 },
+    vim.schedule_wrap(function(result)
+      local message = vim.trim(result.stdout or "")
+      if result.code ~= 0 or message == "" then
+        local detail = vim.trim(result.stderr or "")
+        vim.notify(detail ~= "" and detail or "Could not generate a commit message", vim.log.levels.WARN, {
+          title = "Git commit",
+        })
+        callback(nil, nil)
+        return
+      end
+
+      local subject, body = message:match("^([^\n]*)\n*(.*)$")
+      body = vim.trim((body or ""):gsub("%s*\n%s*", " "))
+      callback(vim.trim(subject or ""), body)
+    end)
+  )
+end
+
+local function prompt_commit(root, subject, body)
+  local title = vim.trim(vim.fn.input("Commit title: ", subject or ""))
+  if title == "" then return end
+
+  -- An empty message produces a title-only commit.
+  local message = vim.trim(vim.fn.input("Commit message: ", body or ""))
+  commit_staged(root, title, message)
+end
+
+local function commit_current_repo()
+  local root = ready_root("commit")
+  if not root then return end
+  prompt_commit(root)
+end
+
+local function commit_with_ai_message()
+  local root = ready_root("commit")
+  if not root then return end
+  generate_commit_message(root, function(subject, body)
+    prompt_commit(root, subject, body)
+  end)
 end
 
 local function push_current_repo()
@@ -528,6 +574,9 @@ function M.setup()
   })
   vim.api.nvim_create_user_command("GitCommit", commit_current_repo, {
     desc = "Commit staged changes with a title and optional message", force = true,
+  })
+  vim.api.nvim_create_user_command("GitCommitAI", commit_with_ai_message, {
+    desc = "Commit staged changes using a generated message", force = true,
   })
   vim.api.nvim_create_user_command("GitPush", push_current_repo, {
     desc = "Push HEAD to origin after confirmation", force = true,

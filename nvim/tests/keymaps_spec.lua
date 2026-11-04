@@ -108,6 +108,9 @@ local function mapping(mode, desc)
   end
 end
 
+local ai_commit = mapping("n", "Commit with generated message")
+assert(ai_commit and ai_commit.lhs == " gG", "generated-message commit mapping was not found")
+
 assert(keymaps.location("/tmp/example.lua", 3) == "/tmp/example.lua:3", "line reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 7) == "/tmp/example.lua:3-7", "range reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 3) == "/tmp/example.lua:3", "single-line range was not collapsed")

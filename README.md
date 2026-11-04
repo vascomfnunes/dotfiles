@@ -152,6 +152,27 @@ Commit prefixes.
 - Add a body only when the motivation, trade-offs, or important implementation
   details are not clear from the title and diff. Wrap body text at 72 characters.
 
+### Drafting Commit Messages
+
+`git commit-ai` drafts a message from the staged diff using the first installed
+engine among `opencode`, `codex`, and `claude`, then shows it before anything is
+committed. Review, edit, regenerate, or discard the draft:
+
+```bash
+git add -p
+git commit-ai            # review, edit, or commit the draft
+git commit-ai --print    # print the draft and exit
+git commit-ai --all      # stage tracked changes first
+```
+
+In Neovim, `:GitCommitAI` or `<leader>gG` fills the usual title and message
+prompts with a generated draft so both can be edited before committing.
+`<leader>gc` (`:GitCommit`) remains the manual path. Set `GIT_AI_ENGINE` to
+force an engine and `GIT_AI_EDITOR` to choose the editor used by the shell
+command's edit option.
+
+The helper never pushes and never bypasses Git hooks.
+
 ### Updating Configurations
 
 Edit a managed path directly, such as `nvim ~/.config/zsh/.zshrc`, then review
@@ -214,8 +235,8 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Security:** GPG agent and SSH configuration, including SSH connection
   multiplexing.
 - **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
-  uv, wget, and yarn. uv also installs user-level Python CLIs such as PyRadio
-  and aider. The Brewfiles are the source of truth for the complete package
-  list.
-- **Scripts:** Utilities installed into `~/.local/bin`, including `serve` and
-  the tmux status/workspace helpers.
+  uv, wget, and yarn. uv installs PyRadio and can also manage other
+  user-level Python CLIs such as aider. The Brewfiles are the source of truth
+  for the complete package list.
+- **Scripts:** Utilities installed into `~/.local/bin`, including `serve`,
+  `git-commit-ai`, and the tmux status/workspace helpers.

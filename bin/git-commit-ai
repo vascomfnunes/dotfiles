@@ -1,0 +1,205 @@
+#!/bin/sh
+# Draft a commit message from the staged diff and review it before committing.
+#
+# Usage:
+#   git commit-ai            review, edit, or commit the generated message
+#   git commit-ai --print    print the generated message and exit
+#   git commit-ai --all      stage tracked changes first
+#
+# Environment:
+#   GIT_AI_ENGINE    opencode, codex, or claude (default: first one installed)
+#   GIT_AI_MAX_DIFF  maximum diff bytes sent to the engine (default: 60000)
+#   GIT_AI_EDITOR    editor used by the edit option (default: $EDITOR)
+
+set -eu
+
+print_only=0
+stage_all=0
+
+usage() {
+  sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+}
+
+for arg in "$@"; do
+  case $arg in
+    --print) print_only=1 ;;
+    --all | -a) stage_all=1 ;;
+    -h | --help) usage; exit 0 ;;
+    *)
+      printf 'Unknown argument: %s\n' "$arg" >&2
+      usage >&2
+      exit 1
+      ;;
+  esac
+done
+
+die() {
+  printf '%s\n' "$*" >&2
+  exit 1
+}
+
+command -v git >/dev/null 2>&1 || die "git is not installed"
+git rev-parse --is-inside-work-tree >/dev/null 2>&1 || die "Not inside a Git repository"
+
+engine=${GIT_AI_ENGINE:-}
+if [ -z "$engine" ]; then
+  for candidate in opencode codex claude; do
+    if command -v "$candidate" >/dev/null 2>&1; then
+      engine=$candidate
+      break
+    fi
+  done
+fi
+[ -n "$engine" ] || die "No AI CLI found (install opencode, codex, or claude)"
+command -v "$engine" >/dev/null 2>&1 || die "AI engine not found: $engine"
+if [ "$engine" = opencode ]; then
+  command -v jq >/dev/null 2>&1 || die "jq is required by the opencode engine"
+fi
+
+tmp_dir=$(mktemp -d "${TMPDIR:-/tmp}/git-commit-ai.XXXXXX")
+prompt_file="$tmp_dir/prompt"
+raw_file="$tmp_dir/raw"
+message_file="$tmp_dir/message"
+engine_file="$tmp_dir/engine"
+error_file="$tmp_dir/error"
+
+cleanup() {
+  rm -rf "$tmp_dir"
+}
+trap cleanup EXIT HUP INT TERM
+
+if [ "$stage_all" -eq 1 ]; then
+  git add --update
+fi
+
+summary=$(git diff --cached --no-color --no-ext-diff --stat)
+[ -n "$summary" ] || die "No staged changes. Stage files with git add first."
+
+max_diff=${GIT_AI_MAX_DIFF:-60000}
+
+{
+  cat <<'EOF'
+Write a Git commit message for the staged changes below.
+
+Follow this repository's convention:
+- First line: imperative mood, sentence case, 50 characters or fewer (72 max),
+  no prefix such as "feat:" or "fix:", and no trailing period.
+- Add a body only when it explains why the change is needed. Separate it from
+  the first line with one blank line and wrap it at 72 characters.
+- Describe the change, not the files. Do not mention tests unless the diff only
+  changes tests.
+- Output only the commit message. No preamble, Markdown fences, or quotes.
+EOF
+  printf '\nStaged files:\n%s\n\nDiff:\n' "$summary"
+  git diff --cached --no-color --no-ext-diff | head -c "$max_diff"
+} > "$prompt_file"
+
+generate() {
+  case $engine in
+    opencode)
+      opencode run --agent plan --format json < "$prompt_file" > "$engine_file"
+      engine_error=$(jq -r 'select(.type == "error") | .error.message' < "$engine_file")
+      if [ -n "$engine_error" ]; then
+        printf '%s\n' "$engine_error" >&2
+        return 1
+      fi
+      jq -r 'select(.type == "text") | .part.text' < "$engine_file"
+      ;;
+    codex)
+      codex exec --skip-git-repo-check --sandbox read-only \
+        --output-last-message "$engine_file" < "$prompt_file" > /dev/null
+      cat "$engine_file"
+      ;;
+    claude)
+      claude -p < "$prompt_file"
+      ;;
+    *)
+      die "Unsupported engine: $engine"
+      ;;
+  esac
+}
+
+sanitize() {
+  LC_ALL=C sed \
+    -e 's/\r$//' \
+    -e '/^[[:space:]]*```/d' \
+    -e 's/^[[:space:]]*//' \
+    -e 's/[[:space:]]*$//' |
+    LC_ALL=C awk '
+      BEGIN { started = 0; blank = 0; count = 0 }
+      {
+        if ($0 == "") {
+          if (started) {
+            blank++
+            if (blank > 1) next
+          }
+        } else {
+          blank = 0
+        }
+        if ($0 != "") started = 1
+        if (started) line[++count] = $0
+      }
+      END {
+        for (end = count; end > 0; end--) if (line[end] != "") break
+        for (i = 1; i <= end; i++) print line[i]
+      }
+    ' |
+    LC_ALL=C sed \
+      -e '1s/^"\(.*\)"$/\1/' \
+      -e '1s/^\(Commit message\|Message\|Subject\):[[:space:]]*//'
+}
+
+regenerate() {
+  if ! generate > "$raw_file" 2> "$error_file"; then
+    detail=$(cat "$error_file" 2>/dev/null || true)
+    printf 'AI generation failed%s\n' "${detail:+: $detail}" >&2
+    return 1
+  fi
+
+  sanitize < "$raw_file" > "$message_file"
+  [ -s "$message_file" ] || {
+    printf 'The AI returned an empty commit message.\n' >&2
+    return 1
+  }
+}
+
+regenerate || exit 1
+
+if [ "$print_only" -eq 1 ]; then
+  cat "$message_file"
+  exit 0
+fi
+
+while :; do
+  printf '\n'
+  printf '%s\n' '----------------------------------------'
+  cat "$message_file"
+  printf '%s\n' '----------------------------------------'
+  printf '[c]ommit  [e]dit  [r]egenerate  [q]uit: '
+
+  choice=''
+  IFS= read -r choice || exit 0
+  case ${choice:-c} in
+    c | C)
+      if git commit --cleanup=strip --file "$message_file"; then
+        exit 0
+      fi
+      printf 'Commit failed. Message kept at %s\n' "$message_file" >&2
+      trap - EXIT HUP INT TERM
+      exit 1
+      ;;
+    e | E)
+      editor=${GIT_AI_EDITOR:-${EDITOR:-vi}}
+      "$editor" "$message_file" || exit 1
+      ;;
+    r | R)
+      regenerate || exit 1
+      ;;
+    q | Q)
+      exit 0
+      ;;
+    *)
+      printf 'Unknown choice: %s\n' "$choice" >&2
+      ;;
+  esac
+done

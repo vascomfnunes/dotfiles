@@ -6,8 +6,7 @@
 # PyRadio exposes the title as a server-sent-events payload; strip the field
 # prefix and any HTML tags before handing the text to tmux.
 title=$(curl -sf --max-time 1 http://localhost:9998/title 2>/dev/null \
-  | sed -n 's/^data: *//p' \
-  | sed 's/<[^>]*>//g')
+  | sed -n '/^data: */{s/^data: *//; s/<[^>]*>//g; p;}')
 
 case $title in
   '' | *'Player is stopped'* | *'Playback stopped'*) exit 0 ;;

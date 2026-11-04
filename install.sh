@@ -151,43 +151,50 @@ chmod 700 "$HOME/.gnupg" "$HOME/.ssh" "$HOME/.ssh/sockets"
 
 ##### Symlinks
 
+# -n replaces an existing directory link instead of creating the new link
+# inside the directory it points to.
+dotlink() {
+  ln -sfn "$DOTFILES_DIR/$1" "$HOME/$2"
+}
+
 echo "🔗 Creating symlinks..."
-ln -sf "$DOTFILES_DIR/zsh/zshenv" "$HOME/.zshenv"
-ln -sf "$DOTFILES_DIR/zsh/zshrc" "$HOME/.config/zsh/.zshrc"
-ln -sf "$DOTFILES_DIR/git/gitconfig" "$HOME/.config/git/config"
-ln -sf "$DOTFILES_DIR/git/gitignore" "$HOME/.config/git/ignore"
+dotlink zsh/zshenv .zshenv
+dotlink zsh/zshrc .config/zsh/.zshrc
+dotlink starship.toml .config/starship.toml
+dotlink git/gitconfig .config/git/config
+dotlink git/gitignore .config/git/ignore
+dotlink ghostty/config .config/ghostty/config
+dotlink btop/themes/catppuccin_latte.theme .config/btop/themes/catppuccin_latte.theme
+dotlink btop/themes/catppuccin_mocha.theme .config/btop/themes/catppuccin_mocha.theme
+dotlink tmux/tmux.conf .config/tmux/tmux.conf
+dotlink gpg/gpg-agent.conf .gnupg/gpg-agent.conf
+dotlink ssh/config .ssh/config
+dotlink mise/config.toml .config/mise/config.toml
+dotlink mise/mise.lock .config/mise/mise.lock
 
-# Directory symlinks use -n so an existing link is replaced instead of the
-# new link being created inside the directory it points to.
-ln -sfn "$DOTFILES_DIR/nvim" "$HOME/.config/nvim"
-ln -sfn "$DOTFILES_DIR/yazi" "$HOME/.config/yazi"
-ln -sf "$DOTFILES_DIR/ghostty/config" "$HOME/.config/ghostty/config"
-ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_latte.theme" "$HOME/.config/btop/themes/catppuccin_latte.theme"
-ln -sf "$DOTFILES_DIR/btop/themes/catppuccin_mocha.theme" "$HOME/.config/btop/themes/catppuccin_mocha.theme"
-ln -sf "$DOTFILES_DIR/tmux/tmux.conf" "$HOME/.config/tmux/tmux.conf"
-ln -sfn "$DOTFILES_DIR/tmux/themes" "$HOME/.config/tmux/themes"
-ln -sf "$DOTFILES_DIR/gpg/gpg-agent.conf" "$HOME/.gnupg/gpg-agent.conf"
-ln -sf "$DOTFILES_DIR/ssh/config" "$HOME/.ssh/config"
-ln -sf "$DOTFILES_DIR/mise/config.toml" "$HOME/.config/mise/config.toml"
+# Directories managed as a whole.
+dotlink nvim .config/nvim
+dotlink yazi .config/yazi
+dotlink tmux/themes .config/tmux/themes
+# PyRadio saves playlists by writing a temp file and renaming it over
+# stations.csv, which would replace a per-file symlink with a regular file.
+dotlink pyradio .config/pyradio
 
-# PyRadio's config dir is symlinked as a whole: pyradio saves playlists by
-# writing a temp file and renaming it over stations.csv, which would replace
-# a per-file symlink with a regular file.
-ln -sfn "$DOTFILES_DIR/pyradio" "$HOME/.config/pyradio"
 # PyRadio watches this generated theme and repaints when the appearance agent
 # swaps its contents. Keep mutable state in ~/.cache rather than the repository.
-ln -sf "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
+ln -sfn "$HOME/.cache/pyradio-catppuccin-auto.pyradio-theme" \
   "$DOTFILES_DIR/pyradio/themes/catppuccin-auto.pyradio-theme"
-ln -sf "$DOTFILES_DIR/bin/serve" "$HOME/.local/bin/serve"
-ln -sf "$DOTFILES_DIR/bin/rubymine-git-editor" "$HOME/.local/bin/rubymine-git-editor"
-ln -sf "$DOTFILES_DIR/tmux/scripts/weather-status.sh" "$HOME/.local/bin/tmux-weather-status"
-ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-status.sh" "$HOME/.local/bin/tmux-pyradio-status"
-ln -sf "$DOTFILES_DIR/tmux/scripts/pyradio-art.sh" "$HOME/.local/bin/tmux-pyradio-art"
-ln -sf "$DOTFILES_DIR/tmux/scripts/battery-status.sh" "$HOME/.local/bin/tmux-battery-status"
-ln -sf "$DOTFILES_DIR/tmux/scripts/btop-themed.sh" "$HOME/.local/bin/btop-themed"
-ln -sf "$DOTFILES_DIR/tmux/scripts/cheatsheet.sh" "$HOME/.local/bin/tmux-cheatsheet"
-ln -sf "$DOTFILES_DIR/tmux/scripts/theme-reload.sh" "$HOME/.local/bin/tmux-theme-reload"
-ln -sf "$DOTFILES_DIR/tmux/scripts/workspace.sh" "$HOME/.local/bin/tmux-workspace"
+
+dotlink bin/serve .local/bin/serve
+dotlink bin/git-commit-ai .local/bin/git-commit-ai
+dotlink tmux/scripts/weather-status.sh .local/bin/tmux-weather-status
+dotlink tmux/scripts/pyradio-status.sh .local/bin/tmux-pyradio-status
+dotlink tmux/scripts/pyradio-art.sh .local/bin/tmux-pyradio-art
+dotlink tmux/scripts/battery-status.sh .local/bin/tmux-battery-status
+dotlink tmux/scripts/btop-themed.sh .local/bin/btop-themed
+dotlink tmux/scripts/cheatsheet.sh .local/bin/tmux-cheatsheet
+dotlink tmux/scripts/theme-reload.sh .local/bin/tmux-theme-reload
+dotlink tmux/scripts/workspace.sh .local/bin/tmux-workspace
 
 # Flavor sources are pinned in package.toml; Yazi deploys their generated
 # files into the ignored flavors directory.

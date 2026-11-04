@@ -31,13 +31,13 @@
 	tool = codediff
 
 [difftool "codediff"]
-	cmd = nvim \"$LOCAL\" \"$REMOTE\" -c \"lua vim.g.dotfiles_lazy.codediff()\" +\"CodeDiff file $LOCAL $REMOTE\"
+	cmd = nvim \"$LOCAL\" \"$REMOTE\" -c \"lua require('lazyload').codediff()\" +\"CodeDiff file $LOCAL $REMOTE\"
 
 [mergetool]
 	keepBackup = false
 
 [mergetool "codediff"]
-	cmd = nvim \"$MERGED\" -c \"lua vim.g.dotfiles_lazy.codediff()\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
+	cmd = nvim \"$MERGED\" -c \"lua require('lazyload').codediff()\" -c \"CodeDiff merge \\\"$MERGED\\\"\"
 	trustExitCode = true
 
 [rerere]

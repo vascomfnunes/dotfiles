@@ -63,6 +63,7 @@ end
 
 function M.setup(fzf)
   map("n", "<leader>gc", "<cmd>GitCommit<CR>", { desc = "Commit staged changes" })
+  map("n", "<leader>gG", "<cmd>GitCommitAI<CR>", { desc = "Commit with generated message" })
   map("n", "<leader>gp", "<cmd>GitPull<CR>", { desc = "Pull (fast-forward only)" })
   map("n", "<leader>gP", "<cmd>GitPush<CR>", { desc = "Push HEAD to origin" })
   map("n", "<leader>gf", "<cmd>GitFetch<CR>", { desc = "Fetch remote updates" })

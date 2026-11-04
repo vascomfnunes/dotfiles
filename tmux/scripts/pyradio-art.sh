@@ -45,8 +45,7 @@ current_title() {
   # PyRadio exposes the title as a server-sent-events payload; strip the field
   # prefix and any HTML tags.
   curl -sf --max-time 1 http://localhost:9998/title 2>/dev/null \
-    | sed -n 's/^data: *//p' \
-    | sed 's/<[^>]*>//g'
+    | sed -n '/^data: */{s/^data: *//; s/<[^>]*>//g; p;}'
 }
 
 # The workspace is assembled before a client attaches, while tmux still uses
