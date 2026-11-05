@@ -15,7 +15,7 @@ cat > "$test_tmp/bin/tar" <<'EOF'
 dest=$4
 case "$dest" in
   */caveman)
-    for name in caveman caveman-commit caveman-compress caveman-help caveman-review caveman-stats cavecrew; do
+    for name in caveman caveman-compress caveman-help caveman-review caveman-stats cavecrew; do
       mkdir -p "$dest/skills/$name"
       printf 'test\n' > "$dest/skills/$name/SKILL.md"
     done
@@ -24,11 +24,29 @@ case "$dest" in
     mkdir -p "$dest/skills/web-design-guidelines"
     printf 'test\n' > "$dest/skills/web-design-guidelines/SKILL.md"
     ;;
+  */find-skills) paths='skills/find-skills' ;;
+  */superpowers) paths='skills/systematic-debugging skills/writing-plans skills/executing-plans skills/requesting-code-review skills/receiving-code-review' ;;
+  */issue) paths='dist/codex/plugins/use-git/skills/create-issue' ;;
+  */rea) paths='.agents/skills/reverse-engineer-anything' ;;
+  */agent-scripts) paths='skills/project-structure skills/instruments-profiling skills/swiftui-performance-audit' ;;
+  */swiftui) paths='swiftui-pro' ;;
+  */swift-concurrency) paths='swift-concurrency-pro' ;;
+  */swift-testing) paths='swift-testing-pro' ;;
 esac
+for path in ${paths:-}; do
+  mkdir -p "$dest/$path"
+  printf 'test\n' > "$dest/$path/SKILL.md"
+done
 EOF
 chmod +x "$test_tmp/bin/curl" "$test_tmp/bin/tar"
 HOME="$test_tmp/home" PATH="$test_tmp/bin:$PATH" sh "$root/agents/install-skills.sh"
 HOME="$test_tmp/home" PATH="$test_tmp/bin:$PATH" sh "$root/agents/install-skills.sh"
 test "$(cat "$test_tmp/home/.agents/skills/caveman/SKILL.md")" = keep
 test -f "$test_tmp/home/.agents/skills/caveman-review/SKILL.md"
+test ! -e "$test_tmp/home/.agents/skills/caveman-commit"
 test -f "$test_tmp/home/.agents/skills/web-design-guidelines/SKILL.md"
+for name in find-skills systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review \
+  create-issue reverse-engineer-anything project-structure instruments-profiling swiftui-performance-audit \
+  swiftui-pro swift-concurrency-pro swift-testing-pro; do
+  test -f "$test_tmp/home/.agents/skills/$name/SKILL.md"
+done

@@ -34,7 +34,7 @@ Before running the installer, be aware that it:
   `mise install`.
 - Installs the OpenCode Quota and Context7 plugins globally using
   `opencode plugin add`. Context7 documentation queries use a hosted service.
-- Installs pinned Caveman and Vercel Web Design Guidelines skills into
+- Installs pinned global agent skills into
   `~/.agents/skills`, preserving existing skills with the same names.
 - Replaces managed configuration files with symlinks into this repository.
 - Merges tracked OpenCode configuration into its live JSON file (OpenCode
@@ -181,6 +181,12 @@ Agent instructions live in three layers:
 
 Keep project-specific commands (install, test, lint, build) in the project
 file, not in the global baseline.
+
+The installer adds debugging, planning, code-review, issue creation, skill
+discovery, reverse engineering, project structure, and Swift development skills
+alongside Caveman and Vercel Web Design Guidelines. The reverse-engineering
+skill provides instructions only; its REA MCP server and analysis tools require
+separate setup. Existing skills are preserved rather than updated.
 
 The installer adds the Caveman skills without installing Caveman's proxy and
 adds Web Design Guidelines for UI reviews. The latter fetches the latest
