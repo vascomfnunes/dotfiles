@@ -9,6 +9,7 @@ cat > "$tmp/tmux" <<'MOCK'
 case $1 in
   has-session) [ "$2" = -t ] && [ "$3" = "=dotfiles-radio-$USER" ] ;;
   set-option) [ "$2" = -t ] && [ "$3" = "dotfiles-radio-$USER" ] && [ "$4" = status ] && [ "$5" = off ] ;;
+  set-hook) [ "$2" = -t ] && [ "$3" = "dotfiles-radio-$USER" ] && [ "$4" = client-attached ] && [ "$5" = "run-shell 'test -z \"#{@radio_art_pane}\" || tmux -S #{q:socket_path} send-keys -t #{q:@radio_art_pane} C-r'" ] ;;
   attach-session) [ "$2" = -t ] && [ "$3" = "=dotfiles-radio-$USER" ] && [ -z "${TMUX:-}" ] ;;
   *) exit 1 ;;
 esac

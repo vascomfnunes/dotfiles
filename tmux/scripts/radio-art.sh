@@ -52,6 +52,9 @@ trap cleanup EXIT
 # panes. Scope the less restrictive setting to this pane instead of globally.
 if [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ]; then
   tmux set-option -p -t "$TMUX_PANE" allow-passthrough all
+  if [ "$nested_radio" -eq 1 ]; then
+    tmux set-option -t "$TMUX_PANE" @radio_art_pane "$TMUX_PANE"
+  fi
 fi
 
 # The OS already purges stale temp files, but trim anything older than a week
@@ -208,8 +211,13 @@ render() {
   end_synchronized_output
 }
 
-# Redraw on resize (also fires on client reattach, which wipes the image).
-trap 'shown=""' WINCH
+# The nested popup has an explicit attachment notification. Its geometry is
+# checked below, so a WINCH on reattach must not trigger an early repaint.
+if [ "$nested_radio" -eq 1 ]; then
+  trap ':' WINCH
+else
+  trap 'shown=""' WINCH
+fi
 
 wait_for_stable_geometry
 
@@ -219,18 +227,36 @@ settled_title=''
 artwork_pending=0
 last_art_attempt=0
 was_attached=0
+[ "$nested_radio" -eq 0 ] || was_attached=1
+reattach_pending=0
 while :; do
   next_poll_interval=$poll_interval
   if [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ]; then
     attached=$(tmux display-message -p -t "$TMUX_PANE" '#{session_attached}' 2>/dev/null || printf 0)
     if [ "$attached" != 0 ] && [ "$was_attached" = 0 ]; then
-      shown=''
-      settled_title=''
+      if [ "$nested_radio" -eq 1 ]; then
+        reattach_pending=1
+      else
+        shown=''
+        settled_title=''
+      fi
     fi
     was_attached=$attached
   fi
+  if [ "$reattach_pending" -eq 1 ]; then
+    # Coalesce attachment notifications and wait until the popup is quiet
+    # before uploading one frame, rather than painting intermediate frames.
+    while read -rsn1 -t "$settle_interval" key; do
+      case $key in q | $'\e') exit 0 ;; esac
+    done
+    shown=''
+  fi
   title=$(current_title || true)
   geometry="$(tput cols)x$(tput lines)"
+  if [ "$reattach_pending" -eq 1 ]; then
+    settled_title=$title
+    reattach_pending=0
+  fi
   case $title in
     '' | *'Player is stopped'* | *'Playback stopped'*)
       if [ "$shown" != stopped ] || [ "$geometry" != "$shown_geometry" ]; then
@@ -268,5 +294,8 @@ while :; do
   # Poll for the next song, letting a keypress interrupt early.
   key=''
   read -rsn1 -t "$next_poll_interval" key || true
-  case $key in q | $'\e') exit 0 ;; esac
+  case $key in
+    q | $'\e') exit 0 ;;
+    $'\022') reattach_pending=1 ;;
+  esac
 done

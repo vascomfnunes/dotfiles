@@ -21,6 +21,10 @@ if [ "${1:-}" = --radio ]; then
     "$tmux_bin" select-pane -t "$radio_pane"
   fi
   "$tmux_bin" set-option -t "$radio_session" status off
+  # Polling session_attached can miss a quick popup close and reopen. Notify
+  # the artwork pane on every attachment, even when its geometry is unchanged.
+  "$tmux_bin" set-hook -t "$radio_session" client-attached \
+    "run-shell 'test -z \"#{@radio_art_pane}\" || tmux -S #{q:socket_path} send-keys -t #{q:@radio_art_pane} C-r'"
   unset TMUX
   exec "$tmux_bin" attach-session -t "=$radio_session"
 fi

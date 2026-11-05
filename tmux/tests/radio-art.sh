@@ -84,3 +84,23 @@ ART_TEST_DIR="$tmp" HOME="$tmp/home" PATH="$tmp/bin:$PATH" \
   bash "$root/tmux/scripts/radio-art.sh" </dev/null > "$tmp/retry-output" 2>/dev/null || :
 [ "$(cat "$tmp/searches")" -ge 3 ]
 [ -s "$tmp/renders" ]
+
+# A popup can detach and reattach between polls while the title stays the same.
+# An attachment notification must trigger one repaint after settling.
+cat > "$tmp/home/.local/bin/tmux-radio-status" <<'MOCK'
+#!/bin/sh
+count=0
+[ ! -f "$ART_TEST_DIR/reattach-polls" ] || count=$(cat "$ART_TEST_DIR/reattach-polls")
+count=$((count + 1))
+printf '%s\n' "$count" > "$ART_TEST_DIR/reattach-polls"
+[ "$count" -le 5 ] || kill -TERM "$PPID"
+printf '%s\n' 'Playing: Same track'
+MOCK
+chmod +x "$tmp/home/.local/bin/tmux-radio-status"
+rm -f "$tmp/renders"
+# Three geometry samples, two initial polls, then repeated attachment events.
+printf 'xxxxx\022\022\022' > "$tmp/keys"
+ART_TEST_DIR="$tmp" HOME="$tmp/home" PATH="$tmp/bin:$PATH" \
+  TMPDIR="$tmp/cache" RADIO_ART_FALLBACK="$tmp/fallback" TMUX=test TMUX_PANE=%1 \
+  bash "$root/tmux/scripts/radio-art.sh" < "$tmp/keys" > "$tmp/reattach-output" 2>/dev/null || :
+[ "$(wc -l < "$tmp/renders" | tr -d ' ')" = 3 ]
