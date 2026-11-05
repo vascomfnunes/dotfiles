@@ -151,6 +151,9 @@ not load a symlinked plugin file as a plugin.
 The first workspace window is a Zsh shell in the home directory. The second
 starts Neovim and the third starts OpenCode in the configured project directory.
 Existing sessions are reattached without changing their windows.
+On macOS, when Ghostty starts a new workspace and no tmux server is running,
+the workspace starts through launchd so quitting Ghostty does not terminate
+the server. Existing servers are not restarted or moved.
 Use `prefix + p` to open or hide the radio and cover art popup. Playback
 continues while it is hidden; open it again to return to the same session.
 The radio pane uses fzf to search the stations in `radio/stations.tsv` and mpv

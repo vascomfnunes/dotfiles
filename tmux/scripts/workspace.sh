@@ -62,9 +62,36 @@ if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
   exit 0
 fi
 
+# A server started as part of Ghostty's macOS launchd job can be terminated
+# when Ghostty quits, even after tmux has daemonized. Start the first session
+# in its own launchd job; an already-running server must be left alone.
+if [ "${TERM_PROGRAM:-}" = ghostty ] && [ "$(uname -s)" = Darwin ] &&
+   ! "$tmux_bin" list-sessions >/dev/null 2>&1; then
+  job="dotfiles.tmux-workspace.$$.${USER:-user}"
+  if ! launchctl submit -l "$job" -- /usr/bin/env \
+    "HOME=$HOME" "USER=${USER:-}" "PATH=$PATH" "SHELL=${SHELL:-/bin/zsh}" \
+    "TMUX_TMPDIR=${TMUX_TMPDIR:-/tmp}" \
+    "$tmux_bin" new-session -d -s "$session" -n zsh -c "$HOME"; then
+    echo "Unable to start tmux workspace through launchd" >&2
+    exit 1
+  fi
+  attempts=0
+  while ! "$tmux_bin" has-session -t "=$session" 2>/dev/null; do
+    attempts=$((attempts + 1))
+    if [ "$attempts" -ge 50 ]; then
+      echo "Timed out waiting for the tmux workspace to start" >&2
+      launchctl remove "$job" >/dev/null 2>&1 || :
+      exit 1
+    fi
+    sleep 0.1
+  done
+  launchctl remove "$job" >/dev/null 2>&1 || :
+  session_info="$($tmux_bin display-message -p -t "=$session" '#{session_id} #{window_id} #{pane_id}')"
+else
 # Window 1: a zsh shell in the home directory.
-session_info="$($tmux_bin new-session -d -P -F '#{session_id} #{window_id} #{pane_id}' \
-  -s "$session" -n zsh -c "$HOME")"
+  session_info="$($tmux_bin new-session -d -P -F '#{session_id} #{window_id} #{pane_id}' \
+    -s "$session" -n zsh -c "$HOME")"
+fi
 session_id="${session_info%% *}"
 first_window="${session_info#* }"
 first_window="${first_window%% *}"
