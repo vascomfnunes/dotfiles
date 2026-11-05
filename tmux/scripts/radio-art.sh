@@ -11,6 +11,7 @@ set -eu
 
 poll_interval="${RADIO_ART_POLL:-5}"
 settle_interval="${RADIO_ART_SETTLE:-1}"
+retry_interval="${RADIO_ART_RETRY:-30}"
 cache_dir="${TMPDIR:-/tmp}/tmux-radio-art"
 fallback_art="${RADIO_ART_FALLBACK:-}"
 mkdir -p "$cache_dir"
@@ -151,6 +152,12 @@ render() {
   [ "$art_rows" -lt 1 ] && art_rows=1
 
   art=$(art_for "$title" || true)
+  artwork_pending=0
+  case $title in
+    Playing:*) ;;
+    *) [ -n "$art" ] || artwork_pending=1 ;;
+  esac
+  last_art_attempt=$SECONDS
   if [ -z "$art" ] && [ -s "$fallback_art" ]; then
     art=$fallback_art
   fi
@@ -209,6 +216,8 @@ wait_for_stable_geometry
 shown=''
 shown_geometry=''
 settled_title=''
+artwork_pending=0
+last_art_attempt=0
 was_attached=0
 while :; do
   next_poll_interval=$poll_interval
@@ -236,6 +245,11 @@ while :; do
       fi
       ;;
     *)
+      if [ "$title" = "$shown" ] && [ "$artwork_pending" -eq 1 ] && \
+        [ $((SECONDS - last_art_attempt)) -ge "$retry_interval" ]; then
+        last_art_attempt=$SECONDS
+        if [ -n "$(art_for "$title" || true)" ]; then shown=''; fi
+      fi
       if [ "$title" != "$shown" ] || [ "$geometry" != "$shown_geometry" ]; then
         render "$title"
         shown=$title

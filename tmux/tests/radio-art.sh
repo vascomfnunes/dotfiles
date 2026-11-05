@@ -46,3 +46,41 @@ ART_TEST_DIR="$tmp" HOME="$tmp/home" PATH="$tmp/bin:$PATH" \
 [ "$(wc -l < "$tmp/renders" | tr -d ' ')" = 4 ]
 grep -F 'Playing: First' "$tmp/output" >/dev/null
 grep -F 'Playing: Second' "$tmp/output" >/dev/null
+
+# A transient search failure must not leave one track without art indefinitely.
+cat > "$tmp/home/.local/bin/tmux-radio-status" <<'MOCK'
+#!/bin/sh
+count=0
+[ ! -f "$ART_TEST_DIR/polls" ] || count=$(cat "$ART_TEST_DIR/polls")
+count=$((count + 1))
+printf '%s\n' "$count" > "$ART_TEST_DIR/polls"
+[ "$count" -le 4 ] || kill -TERM "$PPID"
+printf '%s\n' 'Artist - Song'
+MOCK
+cat > "$tmp/bin/curl" <<'MOCK'
+#!/bin/sh
+case "$*" in
+  *itunes.apple.com*)
+    count=0
+    [ ! -f "$ART_TEST_DIR/searches" ] || count=$(cat "$ART_TEST_DIR/searches")
+    count=$((count + 1))
+    printf '%s\n' "$count" > "$ART_TEST_DIR/searches"
+    [ "$count" -gt 2 ] || exit 1
+    printf '%s\n' '{"results":[{"artworkUrl100":"https://example.test/100x100.jpg"}]}'
+    ;;
+  *)
+    while [ "$#" -gt 0 ]; do
+      if [ "$1" = -o ]; then printf 'art' > "$2"; exit 0; fi
+      shift
+    done
+    exit 1
+    ;;
+esac
+MOCK
+chmod +x "$tmp/bin/curl" "$tmp/home/.local/bin/tmux-radio-status"
+rm -f "$tmp/renders"
+ART_TEST_DIR="$tmp" HOME="$tmp/home" PATH="$tmp/bin:$PATH" \
+  TMPDIR="$tmp/cache" RADIO_ART_RETRY=0 TMUX=test TMUX_PANE=%1 \
+  bash "$root/tmux/scripts/radio-art.sh" </dev/null > "$tmp/retry-output" 2>/dev/null || :
+[ "$(cat "$tmp/searches")" -ge 3 ]
+[ -s "$tmp/renders" ]
