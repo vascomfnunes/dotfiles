@@ -5,6 +5,7 @@ set -eu
 # Pin source revisions; do not replace skills already managed by the user.
 caveman_rev=2e068f735253cce28256744804785f01887d9646
 vercel_rev=1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62
+apple_design_rev=ff4ebddf0488598723a82bfdce1afb04de0b1c44
 find_skills_rev=cabe07254cddf16a3a650253f0ba03d543d8a86e
 superpowers_rev=22f0b463e7a5e579904dd6211a520321035526f7
 issue_rev=302c0d91a77097f1ae66e39bd996253e4bbb17d8
@@ -54,6 +55,9 @@ download_source() {
 
 download_source vercel-labs/skills "$find_skills_rev" find-skills
 install_skill find-skills "$skills_tmp/find-skills/skills/find-skills"
+
+download_source dickwu/apple-design-skill "$apple_design_rev" apple-design
+install_skill apple-design "$skills_tmp/apple-design"
 
 download_source obra/superpowers "$superpowers_rev" superpowers
 for name in systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review; do

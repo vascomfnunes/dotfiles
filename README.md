@@ -184,7 +184,8 @@ file, not in the global baseline.
 
 The installer adds debugging, planning, code-review, issue creation, skill
 discovery, reverse engineering, project structure, and Swift development skills
-alongside Caveman and Vercel Web Design Guidelines. The reverse-engineering
+alongside Caveman, Vercel Web Design Guidelines, and Apple Design for
+Apple Human Interface Guidelines reviews. The reverse-engineering
 skill provides instructions only; its REA MCP server and analysis tools require
 separate setup. Existing skills are preserved rather than updated.
 

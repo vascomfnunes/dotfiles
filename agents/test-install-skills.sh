@@ -25,6 +25,11 @@ case "$dest" in
     printf 'test\n' > "$dest/skills/web-design-guidelines/SKILL.md"
     ;;
   */find-skills) paths='skills/find-skills' ;;
+  */apple-design)
+    paths='.'
+    mkdir -p "$dest/references"
+    printf 'reference\n' > "$dest/references/example.md"
+    ;;
   */superpowers) paths='skills/systematic-debugging skills/writing-plans skills/executing-plans skills/requesting-code-review skills/receiving-code-review' ;;
   */issue) paths='dist/codex/plugins/use-git/skills/create-issue' ;;
   */rea) paths='.agents/skills/reverse-engineer-anything' ;;
@@ -45,7 +50,8 @@ test "$(cat "$test_tmp/home/.agents/skills/caveman/SKILL.md")" = keep
 test -f "$test_tmp/home/.agents/skills/caveman-review/SKILL.md"
 test ! -e "$test_tmp/home/.agents/skills/caveman-commit"
 test -f "$test_tmp/home/.agents/skills/web-design-guidelines/SKILL.md"
-for name in find-skills systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review \
+test -f "$test_tmp/home/.agents/skills/apple-design/references/example.md"
+for name in find-skills apple-design systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review \
   create-issue reverse-engineer-anything project-structure instruments-profiling swiftui-performance-audit \
   swiftui-pro swift-concurrency-pro swift-testing-pro; do
   test -f "$test_tmp/home/.agents/skills/$name/SKILL.md"
