@@ -105,13 +105,10 @@ For example:
 ```sh
 TMUX_WORKSPACE_SESSION="Session Name"
 TMUX_WORKSPACE_PROJECT="$HOME/repos/project"
-TMUX_WORKSPACE_RADIO_WIDTH="20%"
-TMUX_WORKSPACE_RADIO_ART_HEIGHT="15"
 ```
 
 Without those tmux settings, the workspace uses the current user name for its
-session, the home directory for all windows, a radio column 20% of the window
-wide, and a cover-art pane 20 rows high. If the configured project directory
+session and the home directory for all windows. If the configured project directory
 does not exist, it falls back to the home directory.
 
 The standard workspace also provides tool popups in the active pane's
@@ -150,14 +147,16 @@ and `settings.local.json` stay local and are intentionally not tracked.
 OpenCode plugins are installed through a generated shim because OpenCode does
 not load a symlinked plugin file as a plugin.
 
-The first workspace window has a large Zsh shell on the left and a narrow column
-with cover art above the radio selector on the right. The second and third
-windows are plain Zsh shells in the configured project directory.
+The first workspace window is a Zsh shell in the home directory. The second
+starts Neovim and the third starts OpenCode in the configured project directory.
+Existing sessions are reattached without changing their windows.
+Use `prefix + p` to open or hide the radio and cover art popup. Playback
+continues while it is hidden; open it again to return to the same session.
 The radio pane uses fzf to search the stations in `radio/stations.tsv` and mpv
 to play them. Edit that file to add stations, one name and URL per line,
 separated by a tab. Use the arrow keys or Ctrl-N/P to navigate, Enter to play a
 station, Ctrl-S to stop playback, and Ctrl-X to close the selector and stop
-playback. Run `tmux-radio-player` to reopen it.
+playback and end the radio session. Use `prefix + p` to start it again.
 The artwork pane looks up the current track, and the tmux status bar displays
 the title when the stream provides it. Use `prefix + m` for the artwork popup.
 
@@ -185,10 +184,17 @@ file, not in the global baseline.
 
 ## Shared Neovim Server
 
+In Neovim, `<leader>e` opens the mini.files explorer. Navigate with `h` and
+`l`, then press `gp` on a directory to select it as the project.
+The selected directory stays active when switching file buffers and becomes the
+global directory used for sessions and pins. The selection lasts until you
+choose another project or restart Neovim.
+Existing buffers and LSP clients are not closed or restarted.
+
 `nvim-edit` opens files in a running Neovim server when one exists and falls
-back to a normal editor otherwise. The tmux workspace no longer starts a Neovim
-server; launch one yourself with `nvim --listen "$NVIM_SERVER"` when you want
-the handoff. `NVIM_SERVER` is exported from `~/.zshenv`.
+back to a normal editor otherwise. The tmux workspace starts a shared Neovim
+server if one is not already running; otherwise it starts a normal editor.
+`NVIM_SERVER` is exported from `~/.zshenv`.
 
 - `v <file>` hands the file to the running Neovim and returns immediately.
 - `$EDITOR`, `$VISUAL`, and Git's `core.editor` use `nvim-edit`, which blocks

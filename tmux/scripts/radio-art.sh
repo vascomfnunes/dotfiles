@@ -16,6 +16,22 @@ fallback_art="${RADIO_ART_FALLBACK:-}"
 mkdir -p "$cache_dir"
 render_output="$cache_dir/render.$$"
 synchronized_output=0
+# The radio popup attaches a tmux client inside the outer tmux client. Kitty
+# passthrough needs one wrapper for each server it crosses.
+nested_radio=0
+if [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ]; then
+  case $(tmux display-message -p -t "$TMUX_PANE" '#{session_name}') in
+    dotfiles-radio-*) nested_radio=1 ;;
+  esac
+fi
+
+outer_passthrough() {
+  if [ "$nested_radio" -eq 1 ]; then
+    perl -0777 -pe 's/(\ePtmux;(?:\e\e|[^\e])*\e\\)/"\ePtmux;" . ($1 =~ s\/\e\/\e\e\/gr) . "\e\\"/ge'
+  else
+    cat
+  fi
+}
 
 end_synchronized_output() {
   [ "$synchronized_output" -eq 1 ] || return 0
@@ -58,7 +74,7 @@ wait_for_stable_geometry() {
 
   while [ "$(tmux display-message -p -t "$TMUX_PANE" \
     '#{session_attached}' 2>/dev/null || printf 1)" = 0 ]; do
-    read -rsn1 -t 0.1 key || true
+    read -rsn1 -t 1 key || true
     case ${key:-} in q | $'\e') exit 0 ;; esac
   done
 
@@ -74,7 +90,7 @@ wait_for_stable_geometry() {
       previous_geometry=$geometry
       stable_samples=0
     fi
-    read -rsn1 -t 0.1 key || true
+    read -rsn1 -t 1 key || true
     case ${key:-} in q | $'\e') exit 0 ;; esac
   done
 }
@@ -115,7 +131,7 @@ clear_kitty_art() {
 
   if [ -n "${TMUX:-}" ]; then
     printf '\033Ptmux;\033\033_Ga=d,d=I,i=%s,q=2\033\033\x5c\033\x5c' \
-      "$kitty_image_id"
+      "$kitty_image_id" | outer_passthrough
   else
     printf '\033_Ga=d,d=I,i=%s,q=2\033\x5c' "$kitty_image_id"
   fi
@@ -161,7 +177,7 @@ render() {
   clear
   if [ -n "$art" ]; then
     kitty_image_id=$next_kitty_image_id
-    cat "$render_output"
+    outer_passthrough < "$render_output"
   else
     text='(no artwork)'
     tput cup $((rows / 2)) $(((cols - ${#text}) / 2))
@@ -192,9 +208,18 @@ wait_for_stable_geometry
 
 shown=''
 shown_geometry=''
-first_art_painted=0
+settled_title=''
+was_attached=0
 while :; do
   next_poll_interval=$poll_interval
+  if [ -n "${TMUX:-}" ] && [ -n "${TMUX_PANE:-}" ]; then
+    attached=$(tmux display-message -p -t "$TMUX_PANE" '#{session_attached}' 2>/dev/null || printf 0)
+    if [ "$attached" != 0 ] && [ "$was_attached" = 0 ]; then
+      shown=''
+      settled_title=''
+    fi
+    was_attached=$attached
+  fi
   title=$(current_title || true)
   geometry="$(tput cols)x$(tput lines)"
   case $title in
@@ -207,6 +232,7 @@ while :; do
         printf '%s' "$text"
         shown=stopped
         shown_geometry=$geometry
+        settled_title=''
       fi
       ;;
     *)
@@ -214,12 +240,10 @@ while :; do
         render "$title"
         shown=$title
         shown_geometry=$geometry
-        if [ "$first_art_painted" -eq 0 ]; then
-          # During client attachment tmux may accept passthrough output before
-          # the outer terminal is ready, then overwrite that image with its
-          # initial screen repaint. Retry once after the attach has settled;
-          # this is the same repaint that changing panes or resizing triggers.
-          first_art_painted=1
+        if [ "$settled_title" != "$title" ]; then
+          # The outer client can repaint after receiving an image, especially
+          # during popup attachment. Retry each changed track after it settles.
+          settled_title=$title
           shown=''
           next_poll_interval=$settle_interval
         fi

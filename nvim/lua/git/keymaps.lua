@@ -17,7 +17,7 @@ local function current_git_file()
     return nil
   end
 
-  return vim.fs.relpath(root, file), file
+  return file
 end
 
 local function copy_git_output(args, label)
@@ -177,7 +177,7 @@ function M.setup(fzf)
     vim.cmd.CodeDiff()
   end, { desc = "Diff project" })
   map("n", "<leader>gh", function()
-    local _, file = current_git_file()
+    local file = current_git_file()
     if not file then return end
     lazy.codediff()
     vim.cmd("CodeDiff history " .. vim.fn.fnameescape(file))

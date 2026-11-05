@@ -7,9 +7,23 @@ set -eu
 
 session="${USER:-main}"
 project="$HOME"
-radio_width="20%"
-radio_art_height=15
 workspace_config="$HOME/.tmux-workspace.local"
+
+if [ "${1:-}" = --radio ]; then
+  tmux_bin="$(command -v tmux)"
+  radio_session="dotfiles-radio-${USER:-main}"
+  if ! "$tmux_bin" has-session -t "=$radio_session" 2>/dev/null; then
+    radio_pane=$("$tmux_bin" new-session -d -P -F '#{pane_id}' -s "$radio_session" -n radio \
+      "$HOME/.local/bin/tmux-radio-player; tmux kill-session -t '=$radio_session'"
+    )
+    "$tmux_bin" split-window -d -vb -l 15 -t "=$radio_session:radio" \
+      "$HOME/.local/bin/tmux-radio-art"
+    "$tmux_bin" select-pane -t "$radio_pane"
+  fi
+  "$tmux_bin" set-option -t "$radio_session" status off
+  unset TMUX
+  exec "$tmux_bin" attach-session -t "=$radio_session"
+fi
 
 if [ -r "$workspace_config" ]; then
   # This file is intentionally local so machine- or work-specific paths do not
@@ -20,8 +34,7 @@ fi
 
 session="${TMUX_WORKSPACE_SESSION:-$session}"
 project="${TMUX_WORKSPACE_PROJECT:-$project}"
-radio_width="${TMUX_WORKSPACE_RADIO_WIDTH:-$radio_width}"
-radio_art_height="${TMUX_WORKSPACE_RADIO_ART_HEIGHT:-$radio_art_height}"
+nvim_server="${NVIM_SERVER:-${TMPDIR:-/tmp}/nvim-${USER:-$(id -u)}.sock}"
 
 if [ ! -d "$project" ]; then
   echo "Configured tmux workspace project does not exist: $project" >&2
@@ -39,35 +52,13 @@ attach_session() {
   fi
 }
 
-start_app() {
-  target="$1"
-  app="$2"
-
-  # Start applications through an interactive shell so aliases, functions,
-  # mise, and the rest of the normal zsh environment are available.
-  "$tmux_bin" send-keys -t "$target" -l "$app"
-  "$tmux_bin" send-keys -t "$target" Enter
-}
-
-set_radio_geometry() {
-  target="$1"
-
-  # A detached session starts at tmux's fallback size. When a real client is
-  # attached, tmux distributes the added rows and columns across the layout.
-  # Reapply the intended dimensions after every window resize.
-  "$tmux_bin" resize-pane -t "$target" -x "$radio_width" || return 1
-  "$tmux_bin" resize-pane -t "$target" -y "$radio_art_height" || return 1
-  "$tmux_bin" set-hook -w -t "$target" window-resized \
-    "resize-pane -t '$target' -x '$radio_width' ; resize-pane -t '$target' -y '$radio_art_height'"
-}
-
 if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
   # Preserve the panes and layout of an already-running workspace.
   attach_session
   exit 0
 fi
 
-# Window 1: a zsh shell on the left, artwork above the radio on the right.
+# Window 1: a zsh shell in the home directory.
 session_info="$($tmux_bin new-session -d -P -F '#{session_id} #{window_id} #{pane_id}' \
   -s "$session" -n zsh -c "$HOME")"
 session_id="${session_info%% *}"
@@ -75,17 +66,19 @@ first_window="${session_info#* }"
 first_window="${first_window%% *}"
 shell_pane="${session_info##* }"
 
-radio_pane="$($tmux_bin split-window -d -h -l "$radio_width" -P \
-  -F '#{pane_id}' -t "${session_id}:zsh.1" -c "$HOME")"
-start_app "$radio_pane" 'tmux-radio-player'
-art_pane="$($tmux_bin split-window -d -vb -l "$radio_art_height" -P \
-  -F '#{pane_id}' -t "$radio_pane" "$HOME/.local/bin/tmux-radio-art")"
-set_radio_geometry "$art_pane"
+# Start the applications in interactive shells so the normal environment is loaded.
+"$tmux_bin" new-window -d -t "${session_id}:" -n nvim -c "$project"
+if nvim --server "$nvim_server" --remote-expr '1' >/dev/null 2>&1; then
+  "$tmux_bin" send-keys -t "${session_id}:nvim" -l nvim
+else
+  quoted_server=$(printf '%s' "$nvim_server" | sed "s/'/'\\\\''/g")
+  "$tmux_bin" send-keys -t "${session_id}:nvim" -l "nvim --listen '$quoted_server'"
+fi
+"$tmux_bin" send-keys -t "${session_id}:nvim" Enter
 
-# Windows 2 and 3: plain zsh shells in the configured project directory.
-for _ in 2 3; do
-  "$tmux_bin" new-window -d -t "${session_id}:" -n zsh -c "$project"
-done
+"$tmux_bin" new-window -d -t "${session_id}:" -n opencode -c "$project"
+"$tmux_bin" send-keys -t "${session_id}:opencode" -l opencode
+"$tmux_bin" send-keys -t "${session_id}:opencode" Enter
 
 # Match the currently selected window and pane.
 "$tmux_bin" select-window -t "$first_window"

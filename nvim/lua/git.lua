@@ -364,12 +364,12 @@ local function edit_commit_message(root, message)
   vim.keymap.set("n", "q", "<cmd>bdelete!<CR>", { buffer = bufnr, desc = "Cancel commit message" })
 end
 
-local function prompt_commit(root, subject, body)
-  local title = vim.trim(vim.fn.input("Commit title: ", subject or ""))
+local function prompt_commit(root)
+  local title = vim.trim(vim.fn.input("Commit title: "))
   if title == "" then return end
 
   -- An empty message produces a title-only commit.
-  local message = vim.trim(vim.fn.input("Commit message: ", body or ""))
+  local message = vim.trim(vim.fn.input("Commit message: "))
   commit_staged(root, title, message)
 end
 
