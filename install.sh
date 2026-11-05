@@ -124,8 +124,6 @@ mkdir -p \
   "$HOME/.config/mise" \
   "$HOME/.config/radio" \
   "$HOME/.local/bin" \
-  "$HOME/.claude" \
-  "$HOME/.codex" \
   "$HOME/.gnupg" \
   "$HOME/.ssh/sockets"
 chmod 700 "$HOME/.gnupg" "$HOME/.ssh" "$HOME/.ssh/sockets"
@@ -139,8 +137,8 @@ dotlink() {
   ln -sfn "$DOTFILES_DIR/$1" "$HOME/$2"
 }
 
-# Merge a tracked JSON baseline into a live config. OpenCode, Codex, and
-# Claude Code rewrite their config files by renaming a temporary file over the
+# Merge a tracked JSON baseline into a live config. OpenCode rewrites its
+# config files by renaming a temporary file over the
 # destination, which replaces a symlink. Keep those destinations as real files
 # and reapply the repository baseline on every install.
 merge_json() {
@@ -207,22 +205,8 @@ dotlink tmux/scripts/workspace.sh .local/bin/tmux-workspace
 dotlink tmux/scripts/agent-status.sh .local/bin/agent-status
 dotlink tmux/scripts/agent-dashboard.sh .local/bin/tmux-agent-dashboard
 
-# Agent instructions: one shared baseline, linked where each tool reads it.
-# Claude Code may rewrite CLAUDE.md when adding memories, so keep that path a
-# real shim that imports the shared file instead of a symlink.
+# OpenCode's shared agent instructions.
 dotlink agents/AGENTS.md .config/opencode/AGENTS.md
-dotlink agents/AGENTS.md .codex/AGENTS.md
-claude_memory="$HOME/.claude/CLAUDE.md"
-if [ -L "$claude_memory" ]; then
-  rm -f "$claude_memory"
-fi
-if ! grep -qxF '@../.config/opencode/AGENTS.md' "$claude_memory" 2>/dev/null; then
-  if [ -s "$claude_memory" ]; then
-    printf '\n@../.config/opencode/AGENTS.md\n' >> "$claude_memory"
-  else
-    printf '@../.config/opencode/AGENTS.md\n' > "$claude_memory"
-  fi
-fi
 
 # OpenCode does not load a symlinked plugin file as a plugin: it reports an
 # empty ID and never calls setup. Install a real shim that re-exports the
@@ -237,21 +221,13 @@ chmod 644 "$HOME/.config/opencode/plugins/tmux-agent-status.js"
 ##### Mutable agent configuration
 
 # These files are rewritten by their applications, so merge the tracked
-# baseline instead of linking it. User-added keys survive; tracked keys and the
-# agent hooks are restored on every install.
+# baseline instead of linking it. User-added keys survive; tracked keys are
+# restored on every install.
 echo "🤖 Merging agent configuration..."
 # shellcheck disable=SC2016 # jq variables, not shell variables.
 merge_json \
   '.[0] as $live | .[1] as $base | ($live * $base)' \
   opencode/cli.json .config/opencode/cli.json
-# shellcheck disable=SC2016
-merge_json \
-  '.[0] as $live | .[1] as $base | ($live * $base) | .hooks = $base.hooks' \
-  codex/hooks.json .codex/hooks.json
-# shellcheck disable=SC2016
-merge_json \
-  '.[0] as $live | .[1] as $base | ($live * $base) | .hooks = $base.hooks' \
-  claude/settings.json .claude/settings.json
 
 # Flavor sources are pinned in package.toml; Yazi deploys their generated
 # files into the ignored flavors directory.
@@ -329,6 +305,13 @@ if command -v mise >/dev/null 2>&1; then
   echo "💎 Installing Mise runtimes and developer tools..."
   mise install --yes
 fi
+
+echo "🧩 Installing OpenCode Quota plugin..."
+opencode plugin add @slkiser/opencode-quota
+echo "🧩 Installing Context7 plugin..."
+opencode plugin add @upstash/context7-opencode
+echo "🪨 Installing global agent skills..."
+sh "$DOTFILES_DIR/agents/install-skills.sh"
 
 
 ##### Cleanup

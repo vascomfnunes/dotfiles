@@ -32,9 +32,13 @@ Before running the installer, be aware that it:
 - Downloads Zinit when it is missing.
 - Installs the Mise-managed runtimes (Ruby, Node.js, and Python) via
   `mise install`.
+- Installs the OpenCode Quota and Context7 plugins globally using
+  `opencode plugin add`. Context7 documentation queries use a hosted service.
+- Installs pinned Caveman and Vercel Web Design Guidelines skills into
+  `~/.agents/skills`, preserving existing skills with the same names.
 - Replaces managed configuration files with symlinks into this repository.
-- Merges tracked OpenCode, Codex, and Claude Code configuration into their live
-  JSON files (those applications rewrite their own configs).
+- Merges tracked OpenCode configuration into its live JSON file (OpenCode
+  rewrites its own config).
 - Creates empty local stub files (`~/.zshrc.local`, `~/.gitconfig.local`,
   `~/.tmux-workspace.local`, and `~/.hushlogin`) when they are missing.
 - Creates a launchd agent that reloads the tmux theme when macOS appearance
@@ -123,27 +127,24 @@ working directory:
 - `prefix + A`: dashboard of panes running OpenCode, Codex, or Claude Code,
   with a live preview of the selected pane; Enter jumps to it.
 
-Agent panes show a marker in the tmux window name: `●` while a session is
-working and `✓` when it finishes. OpenCode reports its own activity through a
-plugin, and Codex and Claude Code use their native `UserPromptSubmit`, `Stop`,
-and `SessionEnd` hooks. Launch them directly:
+OpenCode panes show a marker in the tmux window name: `●` while a session is
+working and `✓` when it finishes. OpenCode reports its activity through a
+plugin. Launch it directly:
 
 ```sh
 opencode
-codex
-claude
 ```
 
 The agent helpers only update tmux window markers; they do not send macOS
 notifications. OpenCode's own attention notifications are configured separately
 in `cli.json`.
 
-The installer merges the tracked `opencode/cli.json`, `codex/hooks.json`, and
-`claude/settings.json` baselines into their live files instead of symlinking
-them. Those applications replace their configuration atomically, which would
-break a symlink; merging also removes stale hook entries and preserves keys
-that only exist in the live file. Claude's machine-specific `autoMode` context
-and `settings.local.json` stay local and are intentionally not tracked.
+The installer merges the tracked `opencode/cli.json` baseline into its live
+file instead of symlinking it. OpenCode replaces its configuration atomically,
+which would break a symlink; merging preserves keys that only exist in the
+live file. Existing standalone Codex and Claude Code configuration is left
+untouched. The dashboard and commit helper retain compatibility with those
+tools if installed separately.
 OpenCode plugins are installed through a generated shim because OpenCode does
 not load a symlinked plugin file as a plugin.
 
@@ -168,8 +169,7 @@ directory after it exits.
 Agent instructions live in three layers:
 
 - `agents/AGENTS.md` is the global baseline. The installer links it to
-  `~/.config/opencode/AGENTS.md` and `~/.codex/AGENTS.md`; Claude Code reads it
-  through the `@` import in `~/.claude/CLAUDE.md`.
+  `~/.config/opencode/AGENTS.md`.
 - `AGENTS.md` in this repository describes the dotfiles architecture and
   conventions. `CLAUDE.md` imports it for Claude Code.
 - `agents/templates/AGENTS.md` is a starting point for new projects:
@@ -181,6 +181,11 @@ Agent instructions live in three layers:
 
 Keep project-specific commands (install, test, lint, build) in the project
 file, not in the global baseline.
+
+The installer adds the Caveman skills without installing Caveman's proxy and
+adds Web Design Guidelines for UI reviews. The latter fetches the latest
+guidelines when used. Existing skills are not updated or overwritten; update
+the pinned revisions in `agents/install-skills.sh` for new installations.
 
 ## Shared Neovim Server
 
@@ -319,8 +324,8 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Multiplexer:** tmux with seamless Neovim navigation, a restorable workspace,
   Yazi and btop popups, an fzf/mpv radio, weather and battery status, and automatic
   light/dark themes.
-- **Agents:** OpenCode, Codex, and Claude Code with shared `AGENTS.md`
-  instructions, tmux window markers, and an fzf pane dashboard.
+- **Agents:** OpenCode with shared `AGENTS.md` instructions, tmux window
+  markers, and an fzf pane dashboard.
 - **Runtime management:** Mise with pinned Ruby, Node.js, and Python versions.
 - **Security:** GPG agent and SSH configuration. Multiplexing is used for
   general hosts, while GitHub and Bitbucket connections are direct to avoid

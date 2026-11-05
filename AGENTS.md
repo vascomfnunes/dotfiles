@@ -29,7 +29,7 @@ Do not commit machine-specific overrides such as `~/.zshrc.local`,
 - `agents/` — global agent instructions and the project template.
 - `bin/` and `tmux/scripts/` — POSIX `sh` helpers symlinked to
   `~/.local/bin`.
-- `opencode/`, `codex/`, `claude/` — JSON baselines merged into live configs.
+- `opencode/` — OpenCode configuration and plugins.
 
 ## Conventions
 
