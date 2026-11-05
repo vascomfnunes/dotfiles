@@ -1,11 +1,11 @@
 ##### Host-specific overrides
 
-# GitHub caps the number of sessions carried by one multiplexed connection.
+# Git hosting services can cap sessions carried by one multiplexed connection.
 # Git operations that share a master can exhaust it and fail with
 # "mux_client_request_session: session request failed: Session open refused by
 # peer". The cap is server-side and cannot be raised from the client, so use a
-# dedicated connection for GitHub instead.
-Host github.com
+# dedicated connection for these hosts instead.
+Host github.com bitbucket.org
   ControlMaster no
   ControlPath none
 

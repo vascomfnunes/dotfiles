@@ -26,6 +26,7 @@ installs a suitable version.
 Before running the installer, be aware that it:
 
 - Installs the base Homebrew bundle and either the `personal` or `work` bundle.
+- Taps `halpworld/tap` and trusts its `halpradio` formula for both profiles.
 - For the `personal` profile, taps and trusts the third-party
   `vascomfnunes/audio` Homebrew tap.
 - Downloads Zinit when it is missing.
@@ -316,8 +317,8 @@ Review and commit lockfile changes after intentionally updating plugins.
   instructions, tmux window markers, and an fzf pane dashboard.
 - **Runtime management:** Mise with pinned Ruby, Node.js, and Python versions.
 - **Security:** GPG agent and SSH configuration. Multiplexing is used for
-  general hosts, while GitHub connections are direct because GitHub caps the
-  sessions carried by one multiplexed connection.
+  general hosts, while GitHub and Bitbucket connections are direct to avoid
+  session limits on multiplexed connections.
 - **Utilities:** Highlights include bat, btop, eza, fd, fzf, ripgrep, Yazi,
   uv, wget, and yarn. uv can manage user-level Python CLIs such as aider. The Brewfiles are the source of truth
   for the complete package list.
