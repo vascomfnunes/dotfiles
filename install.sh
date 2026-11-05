@@ -72,6 +72,8 @@ fi
 
 echo "📦 Installing Homebrew dependencies..."
 brew update
+brew tap halpworld/tap
+brew trust --formula halpworld/tap/halpradio
 if [ "$PROFILE" = "personal" ]; then
   brew tap vascomfnunes/audio
   brew trust vascomfnunes/audio

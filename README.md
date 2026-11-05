@@ -26,6 +26,7 @@ installs a suitable version.
 Before running the installer, be aware that it:
 
 - Installs the base Homebrew bundle and either the `personal` or `work` bundle.
+- Taps `halpworld/tap` and trusts its `halpradio` formula for both profiles.
 - For the `personal` profile, taps and trusts the third-party
   `vascomfnunes/audio` Homebrew tap.
 - Installs halpradio through Homebrew and downloads Zinit when it is missing.
