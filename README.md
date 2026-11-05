@@ -28,7 +28,7 @@ Before running the installer, be aware that it:
 - Installs the base Homebrew bundle and either the `personal` or `work` bundle.
 - For the `personal` profile, taps and trusts the third-party
   `vascomfnunes/audio` Homebrew tap.
-- Installs halpradio through Homebrew and downloads Zinit when it is missing.
+- Downloads Zinit when it is missing.
 - Installs the Mise-managed runtimes (Ruby, Node.js, and Python) via
   `mise install`.
 - Replaces managed configuration files with symlinks into this repository.
@@ -105,12 +105,13 @@ For example:
 TMUX_WORKSPACE_SESSION="Session Name"
 TMUX_WORKSPACE_PROJECT="$HOME/repos/project"
 TMUX_WORKSPACE_RADIO_WIDTH="20%"
+TMUX_WORKSPACE_RADIO_ART_HEIGHT="15"
 ```
 
 Without those tmux settings, the workspace uses the current user name for its
-session, the home directory for all windows, and 20% of the window for the
-cover-art pane. If the configured project directory does not exist, it falls
-back to the home directory.
+session, the home directory for all windows, a radio column 20% of the window
+wide, and a cover-art pane 20 rows high. If the configured project directory
+does not exist, it falls back to the home directory.
 
 The standard workspace also provides tool popups in the active pane's
 working directory:
@@ -148,16 +149,16 @@ and `settings.local.json` stay local and are intentionally not tracked.
 OpenCode plugins are installed through a generated shim because OpenCode does
 not load a symlinked plugin file as a plugin.
 
-The first workspace window has halpradio and cover art side by side above a
-shell, occupying about 38% of the window height. The second and third windows are
-plain Zsh shells in the configured project directory.
-The radio pane runs halpradio with the Catppuccin theme and opens its Catalog
-station list. The initial list is tracked in `halpradio/stations.yaml`, linked
-to `~/Library/Application Support/halpradio/stations.yaml`; edits made through
-halpradio update that file. An existing independent halpradio station list is
-left untouched by the installer. The upper pane looks up artwork for the current
-track, and the tmux status bar displays the title. Press `7` to return to Custom
-stations, and use `prefix + m` for the artwork popup.
+The first workspace window has a large Zsh shell on the left and a narrow column
+with cover art above the radio selector on the right. The second and third
+windows are plain Zsh shells in the configured project directory.
+The radio pane uses fzf to search the stations in `radio/stations.tsv` and mpv
+to play them. Edit that file to add stations, one name and URL per line,
+separated by a tab. Use the arrow keys or Ctrl-N/P to navigate, Enter to play a
+station, Ctrl-S to stop playback, and Ctrl-X to close the selector and stop
+playback. Run `tmux-radio-player` to reopen it.
+The artwork pane looks up the current track, and the tmux status bar displays
+the title when the stream provides it. Use `prefix + m` for the artwork popup.
 
 Run `y` directly from Zsh when you want the shell to follow Yazi's final
 directory after it exits.
@@ -309,7 +310,7 @@ Review and commit lockfile changes after intentionally updating plugins.
 - **Editor:** Neovim 0.12+ with native `vim.pack` package management, a
   committed plugin lockfile, and a shared `--listen` server for editor handoff.
 - **Multiplexer:** tmux with seamless Neovim navigation, a restorable workspace,
-  Yazi and btop popups, halpradio, weather and battery status, and automatic
+  Yazi and btop popups, an fzf/mpv radio, weather and battery status, and automatic
   light/dark themes.
 - **Agents:** OpenCode, Codex, and Claude Code with shared `AGENTS.md`
   instructions, tmux window markers, and an fzf pane dashboard.

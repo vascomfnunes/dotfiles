@@ -32,6 +32,7 @@ shellcheck install.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/agent-hook t
 
 echo "Checking radio status integration..."
 sh tmux/tests/radio-status.sh
+sh tmux/tests/radio-player.sh
 
 echo "Running Neovim tests..."
 nvim_test_tmp=$(mktemp -d)

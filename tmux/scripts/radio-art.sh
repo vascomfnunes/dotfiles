@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Shows cover art for the song currently playing in halpradio.
+# Shows cover art for the song currently playing in mpv.
 # Runs inside a tmux popup or a regular pane (see the bindings in tmux.conf).
 #
 # Radio streams only carry an "Artist - Title" text tag, never images, so the
@@ -12,7 +12,7 @@ set -eu
 poll_interval="${RADIO_ART_POLL:-5}"
 settle_interval="${RADIO_ART_SETTLE:-1}"
 cache_dir="${TMPDIR:-/tmp}/tmux-radio-art"
-fallback_art="${RADIO_ART_FALLBACK:-$HOME/.config/halpradio/assets/generic-cover.png}"
+fallback_art="${RADIO_ART_FALLBACK:-}"
 mkdir -p "$cache_dir"
 render_output="$cache_dir/render.$$"
 synchronized_output=0
@@ -85,7 +85,7 @@ art_for() {
   title=$1
 
   # The status helper uses "Playing: ..." when track metadata is unavailable.
-  # Do not search iTunes for it; returning no result selects the generic cover.
+  # Do not search iTunes for it; returning no result selects the fallback.
   case $title in
     Playing:*) return 0 ;;
   esac
@@ -202,7 +202,7 @@ while :; do
       if [ "$shown" != stopped ] || [ "$geometry" != "$shown_geometry" ]; then
         clear_kitty_art
         clear
-        text='halpradio is not playing'
+        text='Radio is not playing'
         tput cup $(($(tput lines) / 2)) $((($(tput cols) - ${#text}) / 2))
         printf '%s' "$text"
         shown=stopped

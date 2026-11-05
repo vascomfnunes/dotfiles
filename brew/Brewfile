@@ -29,7 +29,6 @@ brew "yarn"
 ##### Editors and terminal
 
 brew "chafa"
-brew "halpworld/tap/halpradio"
 brew "mpv"
 brew "neovim"
 brew "tmux"

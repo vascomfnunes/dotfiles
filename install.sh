@@ -120,7 +120,7 @@ mkdir -p \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
   "$HOME/.config/mise" \
-  "$HOME/Library/Application Support/halpradio" \
+  "$HOME/.config/radio" \
   "$HOME/.local/bin" \
   "$HOME/.claude" \
   "$HOME/.codex" \
@@ -182,20 +182,12 @@ dotlink gpg/gpg-agent.conf .gnupg/gpg-agent.conf
 dotlink ssh/config .ssh/config
 dotlink mise/config.toml .config/mise/config.toml
 dotlink mise/mise.lock .config/mise/mise.lock
+dotlink radio/stations.tsv .config/radio/stations.tsv
 
 # Directories managed as a whole.
 dotlink nvim .config/nvim
 dotlink yazi .config/yazi
 dotlink tmux/themes .config/tmux/themes
-
-# halpradio writes this file in place when stations are edited. Preserve an
-# existing independent station list rather than replacing it on installation.
-halpradio_stations="$HOME/Library/Application Support/halpradio/stations.yaml"
-if [ ! -e "$halpradio_stations" ] && [ ! -L "$halpradio_stations" ]; then
-  ln -s "$DOTFILES_DIR/halpradio/stations.yaml" "$halpradio_stations"
-else
-  echo "Keeping existing halpradio station list: $halpradio_stations"
-fi
 
 dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
@@ -203,6 +195,7 @@ dotlink bin/nvim-edit .local/bin/nvim-edit
 dotlink bin/agent-hook .local/bin/agent-hook
 dotlink tmux/scripts/weather-status.sh .local/bin/tmux-weather-status
 dotlink tmux/scripts/radio-status.sh .local/bin/tmux-radio-status
+dotlink tmux/scripts/radio-player.sh .local/bin/tmux-radio-player
 dotlink tmux/scripts/radio-art.sh .local/bin/tmux-radio-art
 dotlink tmux/scripts/battery-status.sh .local/bin/tmux-battery-status
 dotlink tmux/scripts/btop-themed.sh .local/bin/btop-themed

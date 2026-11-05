@@ -1,20 +1,24 @@
 #!/bin/sh
 # The same unformatted track text feeds the cover-art pane and status bar.
-# halpradio returns a stopped snapshot when no player is running.
-title=$(halpradio current --json 2>/dev/null | jq -r '
-  if .status == "playing" or .status == "buffering" then
-    if (.track // "") != "" then .track
-    elif (.artist // "") != "" and (.title // "") != "" then .artist + " - " + .title
-    elif (.title // "") != "" and .title != .station_name then .title
-    elif (.station_name // "") != "" then "Playing: " + .station_name
-    else empty end
-  else empty end
+state_dir="${RADIO_STATE_DIR:-/tmp/tmux-radio-$(id -u)}"
+[ -r "$state_dir/station" ] || exit 0
+station=$(cat "$state_dir/station")
+response=$(printf '%s\n' '{"command":["get_property","metadata"]}' | \
+  nc -U -w 1 "$state_dir/mpv.sock" 2>/dev/null) || exit 0
+
+title=$(printf '%s\n' "$response" | jq -r --arg station "$station" '
+  select(.error == "success" or .error == "property unavailable") | .data // {} |
+  (.["icy-title"] // .["ICY-TITLE"] // .StreamTitle // .streamtitle //
+    (if (.artist // "") != "" and (.title // "") != "" then
+      .artist + " - " + .title
+    else .title // "" end)) as $track |
+  if $track == "" or $track == $station then "Playing: " + $station
+  else $track end
 ' 2>/dev/null) || exit 0
 
 [ -n "$title" ] || exit 0
 if [ "${1:-}" = --title ]; then
   printf '%s\n' "$title"
 else
-  # A hash in stream metadata must not be interpreted as a tmux format.
   printf '♪ %.60s  ' "$title" | sed 's/#/##/g'
 fi

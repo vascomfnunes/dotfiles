@@ -8,6 +8,7 @@ set -eu
 session="${USER:-main}"
 project="$HOME"
 radio_width="20%"
+radio_art_height=15
 workspace_config="$HOME/.tmux-workspace.local"
 
 if [ -r "$workspace_config" ]; then
@@ -20,6 +21,7 @@ fi
 session="${TMUX_WORKSPACE_SESSION:-$session}"
 project="${TMUX_WORKSPACE_PROJECT:-$project}"
 radio_width="${TMUX_WORKSPACE_RADIO_WIDTH:-$radio_width}"
+radio_art_height="${TMUX_WORKSPACE_RADIO_ART_HEIGHT:-$radio_art_height}"
 
 if [ ! -d "$project" ]; then
   echo "Configured tmux workspace project does not exist: $project" >&2
@@ -54,9 +56,9 @@ set_radio_geometry() {
   # attached, tmux distributes the added rows and columns across the layout.
   # Reapply the intended dimensions after every window resize.
   "$tmux_bin" resize-pane -t "$target" -x "$radio_width" || return 1
-  "$tmux_bin" resize-pane -t "$target" -y '38%' || return 1
+  "$tmux_bin" resize-pane -t "$target" -y "$radio_art_height" || return 1
   "$tmux_bin" set-hook -w -t "$target" window-resized \
-    "resize-pane -t '$target' -x '$radio_width' ; resize-pane -t '$target' -y '38%'"
+    "resize-pane -t '$target' -x '$radio_width' ; resize-pane -t '$target' -y '$radio_art_height'"
 }
 
 if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
@@ -65,7 +67,7 @@ if "$tmux_bin" has-session -t "=$session" 2>/dev/null; then
   exit 0
 fi
 
-# Window 1: radio and artwork above a zsh shell.
+# Window 1: a zsh shell on the left, artwork above the radio on the right.
 session_info="$($tmux_bin new-session -d -P -F '#{session_id} #{window_id} #{pane_id}' \
   -s "$session" -n zsh -c "$HOME")"
 session_id="${session_info%% *}"
@@ -73,12 +75,10 @@ first_window="${session_info#* }"
 first_window="${first_window%% *}"
 shell_pane="${session_info##* }"
 
-radio_pane="$($tmux_bin split-window -d -vb -l '38%' -P \
+radio_pane="$($tmux_bin split-window -d -h -l "$radio_width" -P \
   -F '#{pane_id}' -t "${session_id}:zsh.1" -c "$HOME")"
-start_app "$radio_pane" 'halpradio --backend mpv --theme catppuccin --discord=false --notifications=false --auto-identify=false'
-# Switch to the Catalog tab once the application owns the pane.
-"$tmux_bin" run-shell -b "for i in 1 2 3 4 5 6 7 8 9 10; do [ \"\$(tmux display-message -p -t '$radio_pane' '#{pane_current_command}')\" = halpradio ] && { tmux send-keys -t '$radio_pane' 2; break; }; sleep 1; done"
-art_pane="$($tmux_bin split-window -d -h -l "$radio_width" -P \
+start_app "$radio_pane" 'tmux-radio-player'
+art_pane="$($tmux_bin split-window -d -vb -l "$radio_art_height" -P \
   -F '#{pane_id}' -t "$radio_pane" "$HOME/.local/bin/tmux-radio-art")"
 set_radio_geometry "$art_pane"
 
