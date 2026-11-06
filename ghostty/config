@@ -28,6 +28,8 @@ macos-icon = xray
 window-padding-x = 8
 window-padding-y = 6
 window-padding-balance = true
+# Restore windows, tabs, and splits when Ghostty restarts.
+window-save-state = always
 
 
 ##### Splits
