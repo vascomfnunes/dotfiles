@@ -14,22 +14,21 @@ Run the repository checks:
 ./check.sh
 ```
 
-This validates POSIX shell, Zsh, JavaScript, and JSON syntax, runs ShellCheck
-and the Neovim test suite, rejects private home paths in tracked agent configs,
-and checks staged and unstaged changes for whitespace errors.
+This validates POSIX shell, Zsh, and JSON syntax, runs ShellCheck and the
+Neovim test suite, rejects private home paths in tracked agent configs, and
+checks staged and unstaged changes for whitespace errors.
 
 Do not commit machine-specific overrides such as `~/.zshrc.local`,
-`~/.gitconfig.local`, `~/.tmux-workspace.local`, or secrets.
+`~/.gitconfig.local`, or secrets.
 
 ## Layout
 
 - `install.sh` — installer, profile selection, symlinks, and `merge_json`.
-- `zsh/`, `tmux/`, `nvim/`, `ghostty/`, `git/`, `mise/`, `brew/` — managed
+- `zsh/`, `nvim/`, `ghostty/`, `git/`, `mise/`, `brew/` — managed
   configuration.
 - `agents/` — global agent instructions and the project template.
-- `bin/` and `tmux/scripts/` — POSIX `sh` helpers symlinked to
-  `~/.local/bin`.
-- `opencode/` — OpenCode configuration and plugins.
+- `bin/` — POSIX `sh` helpers symlinked to `~/.local/bin`.
+- `opencode/` — OpenCode configuration.
 
 ## Conventions
 
@@ -37,7 +36,6 @@ Do not commit machine-specific overrides such as `~/.zshrc.local`,
 - Neovim uses 0.12's native `vim.pack`; do not introduce a plugin manager.
   Lazy-load through `nvim/lua/lazyload.lua` and record revisions in
   `nvim/nvim-pack-lock.json`. Never edit the lockfile by hand.
-- tmux configuration is a single `tmux/tmux.conf` plus `tmux/scripts/`.
 - Agent configuration must use `$HOME`, never absolute home-directory paths.
 - Use `dotlink` for static files and `merge_json` for files that an
   application rewrites atomically.

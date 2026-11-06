@@ -28,10 +28,8 @@ brew "yarn"
 
 ##### Editors and terminal
 
-brew "chafa"
 brew "mpv"
 brew "neovim"
-brew "tmux"
 cask "ghostty"
 
 #### Agents

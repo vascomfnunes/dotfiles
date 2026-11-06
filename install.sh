@@ -53,7 +53,6 @@ fi
 # directory managed as a symlink would be overwritten.
 for path in \
   "$HOME/.config/nvim" \
-  "$HOME/.config/tmux/themes" \
   "$HOME/.config/yazi"
 do
   if [ -e "$path" ] && [ ! -L "$path" ]; then
@@ -72,8 +71,6 @@ fi
 
 echo "📦 Installing Homebrew dependencies..."
 brew update
-brew tap halpworld/tap
-brew trust --formula halpworld/tap/halpradio
 if [ "$PROFILE" = "personal" ]; then
   brew tap vascomfnunes/audio
   brew trust vascomfnunes/audio
@@ -117,16 +114,40 @@ echo "📂 Creating directories..."
 mkdir -p \
   "$HOME/.config/ghostty" \
   "$HOME/.config/btop/themes" \
-  "$HOME/.config/opencode/plugins" \
-  "$HOME/.config/tmux" \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
   "$HOME/.config/mise" \
-  "$HOME/.config/radio" \
   "$HOME/.local/bin" \
   "$HOME/.gnupg" \
   "$HOME/.ssh/sockets"
 chmod 700 "$HOME/.gnupg" "$HOME/.ssh" "$HOME/.ssh/sockets"
+
+
+##### Removed integrations
+
+# Clean up paths that older versions of this repository managed for tmux,
+# radio, and tmux agent markers.
+echo "🧹 Removing former tmux integration..."
+launchctl bootout "gui/$(id -u)/com.vascomfnunes.tmux-theme-reload" 2>/dev/null || true
+rm -f "$HOME/Library/LaunchAgents/com.vascomfnunes.tmux-theme-reload.plist"
+rm -f \
+  "$HOME/.config/tmux/tmux.conf" \
+  "$HOME/.config/tmux/themes" \
+  "$HOME/.config/radio/stations.tsv" \
+  "$HOME/.config/opencode/plugins/agent-status.js" \
+  "$HOME/.config/opencode/plugins/tmux-agent-status.js" \
+  "$HOME/.local/bin/agent-hook" \
+  "$HOME/.local/bin/agent-status" \
+  "$HOME/.local/bin/tmux-agent-dashboard" \
+  "$HOME/.local/bin/tmux-battery-status" \
+  "$HOME/.local/bin/tmux-cheatsheet" \
+  "$HOME/.local/bin/tmux-radio-art" \
+  "$HOME/.local/bin/tmux-radio-player" \
+  "$HOME/.local/bin/tmux-radio-status" \
+  "$HOME/.local/bin/tmux-theme-reload" \
+  "$HOME/.local/bin/tmux-weather-status" \
+  "$HOME/.local/bin/tmux-workspace"
+rmdir "$HOME/.config/tmux" "$HOME/.config/radio" "$HOME/.config/opencode/plugins" 2>/dev/null || true
 
 
 ##### Symlinks
@@ -177,45 +198,22 @@ dotlink git/gitignore .config/git/ignore
 dotlink ghostty/config .config/ghostty/config
 dotlink btop/themes/catppuccin_latte.theme .config/btop/themes/catppuccin_latte.theme
 dotlink btop/themes/catppuccin_mocha.theme .config/btop/themes/catppuccin_mocha.theme
-dotlink tmux/tmux.conf .config/tmux/tmux.conf
 dotlink gpg/gpg-agent.conf .gnupg/gpg-agent.conf
 dotlink ssh/config .ssh/config
 dotlink mise/config.toml .config/mise/config.toml
 dotlink mise/mise.lock .config/mise/mise.lock
-dotlink radio/stations.tsv .config/radio/stations.tsv
 
 # Directories managed as a whole.
 dotlink nvim .config/nvim
 dotlink yazi .config/yazi
-dotlink tmux/themes .config/tmux/themes
 
 dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
 dotlink bin/nvim-edit .local/bin/nvim-edit
-dotlink bin/agent-hook .local/bin/agent-hook
-dotlink tmux/scripts/weather-status.sh .local/bin/tmux-weather-status
-dotlink tmux/scripts/radio-status.sh .local/bin/tmux-radio-status
-dotlink tmux/scripts/radio-player.sh .local/bin/tmux-radio-player
-dotlink tmux/scripts/radio-art.sh .local/bin/tmux-radio-art
-dotlink tmux/scripts/battery-status.sh .local/bin/tmux-battery-status
-dotlink tmux/scripts/btop-themed.sh .local/bin/btop-themed
-dotlink tmux/scripts/cheatsheet.sh .local/bin/tmux-cheatsheet
-dotlink tmux/scripts/theme-reload.sh .local/bin/tmux-theme-reload
-dotlink tmux/scripts/workspace.sh .local/bin/tmux-workspace
-dotlink tmux/scripts/agent-status.sh .local/bin/agent-status
-dotlink tmux/scripts/agent-dashboard.sh .local/bin/tmux-agent-dashboard
+dotlink bin/btop-themed .local/bin/btop-themed
 
 # OpenCode's shared agent instructions.
 dotlink agents/AGENTS.md .config/opencode/AGENTS.md
-
-# OpenCode does not load a symlinked plugin file as a plugin: it reports an
-# empty ID and never calls setup. Install a real shim that re-exports the
-# repository implementation; remove the old symlink name as well.
-rm -f "$HOME/.config/opencode/plugins/agent-status.js" \
-  "$HOME/.config/opencode/plugins/tmux-agent-status.js"
-printf 'export { default } from "%s/opencode/plugins/tmux-agent-status.js"\n' \
-  "$DOTFILES_DIR" > "$HOME/.config/opencode/plugins/tmux-agent-status.js"
-chmod 644 "$HOME/.config/opencode/plugins/tmux-agent-status.js"
 
 
 ##### Mutable agent configuration
@@ -241,42 +239,10 @@ if command -v pinentry-mac >/dev/null 2>&1; then
 fi
 
 
-##### tmux theme launchd agent
-
-# Reload tmux's config when the macOS appearance changes so the Catppuccin
-# variant in tmux.conf follows Light/Dark mode. The plist is generated here
-# rather than symlinked because launchd is unreliable with symlinked plists.
-echo "🌗 Installing tmux theme reload agent..."
-mkdir -p "$HOME/Library/LaunchAgents"
-TMUX_THEME_PLIST="$HOME/Library/LaunchAgents/com.vascomfnunes.tmux-theme-reload.plist"
-cat > "$TMUX_THEME_PLIST" <<EOF
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-  <key>Label</key>
-  <string>com.vascomfnunes.tmux-theme-reload</string>
-  <key>ProgramArguments</key>
-  <array>
-    <string>$HOME/.local/bin/tmux-theme-reload</string>
-  </array>
-  <key>WatchPaths</key>
-  <array>
-    <string>$HOME/Library/Preferences/.GlobalPreferences.plist</string>
-  </array>
-</dict>
-</plist>
-EOF
-launchctl bootout "gui/$(id -u)/com.vascomfnunes.tmux-theme-reload" 2>/dev/null || true
-launchctl bootstrap "gui/$(id -u)" "$TMUX_THEME_PLIST"
-# Apply the current appearance immediately.
-"$HOME/.local/bin/tmux-theme-reload"
-
-
 ##### Local config stubs
 
 echo "📝 Setting up local config files..."
-for stub in .zshrc.local .gitconfig.local .hushlogin .tmux-workspace.local; do
+for stub in .zshrc.local .gitconfig.local .hushlogin; do
   [ -f "$HOME/$stub" ] || : > "$HOME/$stub"
 done
 

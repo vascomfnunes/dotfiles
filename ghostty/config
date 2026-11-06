@@ -17,8 +17,7 @@ mouse-hide-while-typing = true
 ##### Notifications
 
 # Notify when a command that ran for at least 10 seconds finishes while the
-# surface is in the background. Commands inside tmux are covered separately by
-# the agent-status helper.
+# surface is in the background.
 notify-on-command-finish = unfocused
 notify-on-command-finish-after = 10s
 
@@ -26,12 +25,64 @@ notify-on-command-finish-after = 10s
 ##### Window appearance
 
 macos-icon = xray
+window-padding-x = 8
+window-padding-y = 6
+window-padding-balance = true
+
+
+##### Splits
+
+# Keep the focused split clear without making the others too dark.
+unfocused-split-opacity = 0.85
+# Move the zoomed state with focus instead of unzooming on navigation.
+split-preserve-zoom = navigation
 
 
 ##### Key bindings
 
-# Send Option+hjkl as Alt (Esc-prefixed) for tmux/nvim pane resizing
-keybind = alt+h=esc:h
-keybind = alt+j=esc:j
-keybind = alt+k=esc:k
-keybind = alt+l=esc:l
+# Ctrl+A is the terminal leader. Press Ctrl+A twice to send a literal Ctrl+A
+# to the running program.
+keybind = ctrl+a>ctrl+a=text:\x01
+keybind = ctrl+a>c=new_tab
+keybind = ctrl+a>v=new_split:right
+keybind = ctrl+a>s=new_split:down
+keybind = ctrl+a>x=close_surface
+keybind = ctrl+a>w=close_tab
+keybind = ctrl+a>z=toggle_split_zoom
+keybind = ctrl+a>==equalize_splits
+keybind = ctrl+a>t=prompt_tab_title
+keybind = ctrl+a>h=previous_tab
+keybind = ctrl+a>l=next_tab
+keybind = ctrl+a>1=goto_tab:1
+keybind = ctrl+a>2=goto_tab:2
+keybind = ctrl+a>3=goto_tab:3
+keybind = ctrl+a>4=goto_tab:4
+keybind = ctrl+a>5=goto_tab:5
+keybind = ctrl+a>6=goto_tab:6
+keybind = ctrl+a>7=goto_tab:7
+keybind = ctrl+a>8=goto_tab:8
+keybind = ctrl+a>9=goto_tab:9
+
+# Outside Neovim, Ghostty handles Ctrl/Option+hjkl itself.
+keybind = performable:ctrl+h=goto_split:left
+keybind = performable:ctrl+j=goto_split:down
+keybind = performable:ctrl+k=goto_split:up
+keybind = performable:ctrl+l=goto_split:right
+keybind = performable:alt+h=resize_split:left,30
+keybind = performable:alt+j=resize_split:down,30
+keybind = performable:alt+k=resize_split:up,30
+keybind = performable:alt+l=resize_split:right,30
+
+# smart-splits.nvim claims this key table while Neovim is running. The table
+# name must match the backend's `key_table` option, which defaults to `nvim`.
+# The table gives Neovim first refusal; Ghostty handles the same keys only
+# after Neovim reaches the edge of its own layout.
+keybind = nvim/
+keybind = nvim/ctrl+h=text:\x08
+keybind = nvim/ctrl+j=text:\x0a
+keybind = nvim/ctrl+k=text:\x0b
+keybind = nvim/ctrl+l=text:\x0c
+keybind = nvim/alt+h=esc:h
+keybind = nvim/alt+j=esc:j
+keybind = nvim/alt+k=esc:k
+keybind = nvim/alt+l=esc:l

@@ -74,6 +74,8 @@ local eager_plugins = {
   { src = "https://github.com/nvim-mini/mini.surround" },
   { src = "https://github.com/jlcrochet/vim-rbs" },
   { src = "https://github.com/folke/which-key.nvim" },
+  { src = "https://github.com/smart-splits-nvim/smart-splits.nvim", version = vim.version.range("3") },
+  { src = "https://github.com/smart-splits-nvim/backend-ghostty" },
 }
 
 -- Existing eager packages use packadd! during init: their Lua modules are

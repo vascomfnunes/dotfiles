@@ -64,17 +64,6 @@ v() {
 
 ##### Helper functions
 
-# A bare `tmux` restores the standard workspace after a reboot, or reattaches
-# it when the tmux server is still alive. Explicit commands such as `tmux ls`
-# continue to call tmux directly.
-tmux() {
-  if (( $# == 0 )) && [[ -x "$HOME/.local/bin/tmux-workspace" ]]; then
-    "$HOME/.local/bin/tmux-workspace"
-  else
-    command tmux "$@"
-  fi
-}
-
 dotupdate() {
   local profile="${1:-personal}"
   local dotfiles_dir="${${(%):-%x}:A:h:h}"
@@ -127,9 +116,7 @@ if command -v bat >/dev/null 2>&1; then
   alias cat="bat --paging=never"
 fi
 
-# Launch Yazi and follow its final directory when it exits. The tmux popup
-# binding is intentionally separate because a popup cannot change the parent
-# pane's shell directory.
+# Launch Yazi and follow its final directory when it exits.
 if command -v yazi >/dev/null 2>&1; then
   y() {
     local cwd_file cwd
@@ -145,7 +132,7 @@ if command -v yazi >/dev/null 2>&1; then
   }
 fi
 
-# Keep btop on the same Catppuccin Latte/Mocha flavor as macOS and tmux.
+# Keep btop on the Catppuccin Latte/Mocha flavor matching the macOS appearance.
 if [[ -x "$HOME/.local/bin/btop-themed" ]]; then
   btop() {
     "$HOME/.local/bin/btop-themed" "$@"

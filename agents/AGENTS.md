@@ -9,7 +9,7 @@ These instructions apply to every repository on this machine. A project-level
   POSIX `sh`.
 - Runtimes are managed by Mise (`ruby`, `node`, `python`). Run `mise install`
   after cloning a project and prefer `mise exec --` over global installs.
-- Terminal: Ghostty with tmux. Editor: Neovim 0.12 or newer.
+- Terminal: Ghostty. Editor: Neovim 0.12 or newer.
 - Prefer `rg` and `fd` for search. `bat`, `eza`, `jq`, and `tree-sitter` are
   available; use `ast-grep` when it is installed.
 

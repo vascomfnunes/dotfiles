@@ -90,6 +90,13 @@ vim.api.nvim_create_user_command("ToolsSync", sync_editor_tools, {
 
 -- Always-on plugin setup
 
+require("smart-splits-backend-ghostty").setup({ transport = "persistent" })
+require("smart-splits").setup({
+  mux = { backend = "smart-splits-backend-ghostty", warn_if_unusable = false },
+  move = { at_edge = "stop" },
+  resize = { amount = 3 },
+})
+
 require("css_classes").setup()
 
 local conform_util = require("conform.util")

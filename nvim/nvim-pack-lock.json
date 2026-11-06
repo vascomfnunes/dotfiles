@@ -1,5 +1,9 @@
 {
   "plugins": {
+    "backend-ghostty": {
+      "rev": "6943639810ada83a52cc412bc3f28d19ace39a32",
+      "src": "https://github.com/smart-splits-nvim/backend-ghostty"
+    },
     "catppuccin": {
       "rev": "edefef779ab08ce1a4a404713e3012b0d202bd35",
       "src": "https://github.com/catppuccin/nvim"
@@ -80,6 +84,11 @@
     "render-markdown.nvim": {
       "rev": "8e8795368391036643b622875a6da6a51bcd33f4",
       "src": "https://github.com/MeanderingProgrammer/render-markdown.nvim"
+    },
+    "smart-splits.nvim": {
+      "rev": "5fd4fe53c2df2009e689f61511e3c474a9eccbaf",
+      "src": "https://github.com/smart-splits-nvim/smart-splits.nvim",
+      "version": "3.0.0 - 4.0.0"
     },
     "vim-rbs": {
       "rev": "9a151b1eeb712021c824788c54a5c1e67df8c669",

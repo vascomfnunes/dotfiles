@@ -6,13 +6,10 @@ DOTFILES_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 cd "$DOTFILES_DIR"
 
 echo "Checking POSIX shell syntax..."
-sh -n install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/agent-hook tmux/scripts/*.sh
+sh -n install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed
 
 echo "Checking Zsh syntax..."
 zsh -n zsh/zshrc zsh/zshenv
-
-echo "Checking JavaScript syntax..."
-node --check opencode/plugins/tmux-agent-status.js
 
 echo "Checking JSON..."
 jq empty opencode/cli.json
@@ -24,17 +21,10 @@ if grep -R -n '/Users/' opencode; then
 fi
 
 echo "Running ShellCheck..."
-shellcheck install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/agent-hook tmux/scripts/*.sh tmux/tests/*.sh
+shellcheck install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed
 
 echo "Checking agent skill installation..."
 sh agents/test-install-skills.sh
-
-echo "Checking radio status integration..."
-sh tmux/tests/radio-status.sh
-sh tmux/tests/radio-player.sh
-sh tmux/tests/radio-art.sh
-sh tmux/tests/radio-workspace.sh
-sh tmux/tests/workspace.sh
 
 echo "Running Neovim tests..."
 nvim_test_tmp=$(mktemp -d)

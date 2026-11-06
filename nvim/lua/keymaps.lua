@@ -7,15 +7,19 @@ local M = {}
 -- Leader key
 vim.g.mapleader = " "
 
--- Seamless window movement/resizing across Neovim and tmux.
-map("n", "<C-h>", function() require("splits").move("left") end, opts)
-map("n", "<C-j>", function() require("splits").move("down") end, opts)
-map("n", "<C-k>", function() require("splits").move("up") end, opts)
-map("n", "<C-l>", function() require("splits").move("right") end, opts)
-map("n", "<M-h>", function() require("splits").resize("left") end, opts)
-map("n", "<M-j>", function() require("splits").resize("down") end, opts)
-map("n", "<M-k>", function() require("splits").resize("up") end, opts)
-map("n", "<M-l>", function() require("splits").resize("right") end, opts)
+-- Seamless window movement/resizing across Neovim and the active backend.
+local function split_action(name)
+  return function() require("smart-splits")[name]() end
+end
+
+map("n", "<C-h>", split_action("move_cursor_left"), opts)
+map("n", "<C-j>", split_action("move_cursor_down"), opts)
+map("n", "<C-k>", split_action("move_cursor_up"), opts)
+map("n", "<C-l>", split_action("move_cursor_right"), opts)
+map("n", "<M-h>", split_action("resize_left"), opts)
+map("n", "<M-j>", split_action("resize_down"), opts)
+map("n", "<M-k>", split_action("resize_up"), opts)
+map("n", "<M-l>", split_action("resize_right"), opts)
 
 -- Core editing
 map("n", "<leader>w", "<cmd>w<CR>", { desc = "Save" })
