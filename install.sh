@@ -276,6 +276,8 @@ echo "🧩 Installing OpenCode Quota plugin..."
 opencode plugin add @slkiser/opencode-quota
 echo "🧩 Installing Context7 plugin..."
 opencode plugin add @upstash/context7-opencode
+echo "☕ Installing keep-awake plugin..."
+opencode plugin add @bayu06/opencode-keep-awake
 echo "🪨 Installing global agent skills..."
 sh "$DOTFILES_DIR/agents/install-skills.sh"
 
