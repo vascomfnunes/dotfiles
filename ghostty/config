@@ -88,3 +88,15 @@ keybind = nvim/alt+h=esc:h
 keybind = nvim/alt+j=esc:j
 keybind = nvim/alt+k=esc:k
 keybind = nvim/alt+l=esc:l
+
+
+##### Quick terminal
+
+# Dropdown terminal that slides in from the top of the screen (the default
+# position). `global:` makes the key work from any application, which needs
+# Ghostty granted macOS Accessibility permission.
+keybind = global:cmd+backquote=toggle_quick_terminal
+
+# Height on the primary axis; the width stays maximized. Percentages scale
+# with the display, unlike a fixed pixel height.
+quick-terminal-size = 40%
