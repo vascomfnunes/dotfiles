@@ -2,9 +2,12 @@
 	defaultBranch = main
 
 [core]
-	; Use the shared Neovim server when it is running; nvim-edit falls back to
-	; a blocking local editor, which is what Git requires.
-	editor = nvim-edit
+	; Treeish (`ti`) is the commit-message editor. `-w` keeps the process in
+	; the foreground, which is what Git requires.
+	editor = ti -w
+	; Previously used the shared Neovim server when it is running; nvim-edit
+	; falls back to a blocking local editor, which is what Git requires.
+	; editor = nvim-edit
 	autocrlf = input
 
 
