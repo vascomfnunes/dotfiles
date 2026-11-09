@@ -47,6 +47,8 @@ Keep machine-specific settings in these untracked files:
 
 OpenCode rewrites its config atomically, so `install.sh` merges
 `opencode/cli.json` into `~/.config/opencode/cli.json` instead of linking it.
+Subagent definitions in `opencode/agents/` are linked individually into
+`~/.config/opencode/agents/`, which OpenCode reloads as soon as a file changes.
 
 ## Updating
 
@@ -79,7 +81,8 @@ whitespace errors. Commit style and repository conventions are in `AGENTS.md`.
 - **Terminal:** Ghostty with Catppuccin themes and a `Ctrl+A` leader.
 - **Editor:** Neovim 0.12+ with `vim.pack`, a plugin lockfile, and a shared
   server. `v` hands files to it; `nvim-edit` blocks for `$EDITOR` callers.
-- **Agents:** OpenCode configuration, shared `AGENTS.md`, and pinned skills.
+- **Agents:** OpenCode configuration, shared `AGENTS.md`, cavecrew subagents,
+  and pinned skills.
 - **Runtimes:** Mise with pinned Ruby, Node.js, and Python versions.
 - **Security:** GPG agent and SSH config with keychain integration.
 - **Utilities:** The Brewfiles are the package source of truth. Shell helpers

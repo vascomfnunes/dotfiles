@@ -215,6 +215,13 @@ dotlink bin/btop-themed .local/bin/btop-themed
 # OpenCode's shared agent instructions.
 dotlink agents/AGENTS.md .config/opencode/AGENTS.md
 
+# OpenCode subagent definitions. The directory is left in place so agents
+# defined outside this repository still load alongside these.
+mkdir -p "$HOME/.config/opencode/agents"
+dotlink opencode/agents/cavecrew-investigator.md .config/opencode/agents/cavecrew-investigator.md
+dotlink opencode/agents/cavecrew-builder.md .config/opencode/agents/cavecrew-builder.md
+dotlink opencode/agents/cavecrew-reviewer.md .config/opencode/agents/cavecrew-reviewer.md
+
 
 ##### Mutable agent configuration
 

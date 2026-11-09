@@ -20,6 +20,15 @@ if grep -R -n '/Users/' opencode; then
   exit 1
 fi
 
+echo "Checking OpenCode agent links..."
+for agent in opencode/agents/*.md; do
+  name=${agent#opencode/agents/}
+  if ! grep -F "dotlink $agent .config/opencode/agents/$name" install.sh >/dev/null; then
+    echo "Missing dotlink for $agent in install.sh." >&2
+    exit 1
+  fi
+done
+
 echo "Running ShellCheck..."
 shellcheck install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed
 
