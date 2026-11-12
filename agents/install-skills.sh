@@ -3,6 +3,9 @@
 set -eu
 
 # Pin source revisions; do not replace skills already managed by the user.
+# Skills from skills-hub.ai pin the published version and its content hash.
+refactor_version=1.0.0
+refactor_hash=718bfd8d8a6b18d4894e23e98f1924d8cf3a09d3e67ca37bd7be0ba6c11847cf
 caveman_rev=2e068f735253cce28256744804785f01887d9646
 vercel_rev=1a2c79d4e6c4a2283dc2c614b6538cbe1ed5ca62
 apple_design_rev=ff4ebddf0488598723a82bfdce1afb04de0b1c44
@@ -19,17 +22,57 @@ mkdir -p "$skills_dir"
 skills_tmp=$(mktemp -d)
 trap 'rm -rf "$skills_tmp"' EXIT HUP INT TERM
 
+skill_installed() {
+  for dir in "$HOME/.agents/skills" "$HOME/.config/opencode/skills" "$HOME/.claude/skills"; do
+    if [ -e "$dir/$1" ] || [ -L "$dir/$1" ] || [ -e "$dir/$1.md" ]; then
+      return 0
+    fi
+  done
+  return 1
+}
+
 install_skill() {
   name=$1
   source=$2
-  for dir in "$HOME/.agents/skills" "$HOME/.config/opencode/skills" "$HOME/.claude/skills"; do
-    if [ -e "$dir/$name" ] || [ -L "$dir/$name" ] || [ -e "$dir/$name.md" ]; then
-      echo "Keeping existing skill: $name"
-      return
-    fi
-  done
+  if skill_installed "$name"; then
+    echo "Keeping existing skill: $name"
+    return
+  fi
   [ -f "$source/SKILL.md" ] || { echo "Missing skill: $source" >&2; return 1; }
   cp -R "$source" "$skills_dir/$name"
+}
+
+# Rebuild the SKILL.md the skills-hub CLI would write, but pin the content
+# hash so a changed payload is refused instead of installed.
+install_hub_skill() {
+  name=$1
+  version=$2
+  expected_hash=$3
+  if skill_installed "$name"; then
+    echo "Keeping existing skill: $name"
+    return
+  fi
+  payload="$skills_tmp/$name.json"
+  detail="$skills_tmp/$name-detail.json"
+  curl -fsSL "https://api.skills-hub.ai/api/v1/skills/$name" -o "$detail"
+  curl -fsSL "https://api.skills-hub.ai/api/v1/skills/$name/versions/$version" -o "$payload"
+  actual_hash=$(jq -j '.instructions' "$payload" | shasum -a 256 | awk '{print $1}')
+  if [ "$actual_hash" != "$expected_hash" ]; then
+    echo "Checksum mismatch for skill: $name" >&2
+    return 1
+  fi
+  skill_tmp="$skills_tmp/$name"
+  mkdir -p "$skill_tmp"
+  {
+    jq -r --arg version "$version" \
+      '"---\nname: " + (.name | @json) + "\ndescription: " + (.description | @json) +
+       "\nversion: " + ($version | @json) + "\ncategory: " + (.category.slug | @json) + "\n---"' \
+      "$detail"
+    printf '\n'
+    jq -j '.instructions' "$payload"
+    printf '\n'
+  } > "$skill_tmp/SKILL.md"
+  cp -R "$skill_tmp" "$skills_dir/$name"
 }
 
 curl -fsSL "https://codeload.github.com/JuliusBrussee/caveman/tar.gz/$caveman_rev" -o "$skills_tmp/caveman.tar.gz"
@@ -58,6 +101,8 @@ install_skill find-skills "$skills_tmp/find-skills/skills/find-skills"
 
 download_source dickwu/apple-design-skill "$apple_design_rev" apple-design
 install_skill apple-design "$skills_tmp/apple-design"
+
+install_hub_skill refactor "$refactor_version" "$refactor_hash"
 
 download_source obra/superpowers "$superpowers_rev" superpowers
 for name in systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review; do

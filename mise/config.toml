@@ -17,4 +17,4 @@ ruby = "3.3.12"
 "gem:erb-formatter" = "0.7.3"
 node = "22.22.3"
 # Pinned to a patch version so fresh installs are reproducible.
-python = "3.13.16"
+python = "3.15"
