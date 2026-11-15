@@ -77,8 +77,7 @@ whitespace errors. Commit style and repository conventions are in `AGENTS.md`.
 
 ## Components
 
-- **Shell:** Zsh with Zinit, Starship, Atuin, fzf, zoxide, and Lig terminal
-  autocomplete.
+- **Shell:** Zsh with Zinit, Starship, Atuin, fzf, and zoxide.
 - **Terminal:** Ghostty with Catppuccin themes and a `Ctrl+A` leader.
 - **Editor:** Neovim 0.12+ with `vim.pack`, a plugin lockfile, and a shared
   server. `v` hands files to it; `nvim-edit` blocks for `$EDITOR` callers.

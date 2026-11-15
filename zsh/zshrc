@@ -1,8 +1,3 @@
-# Lig starts before the rest of the shell setup and finishes after it, so it
-# can provide its terminal popup without taking ownership of this config file.
-if (( $+commands[lig] )); then
-  eval "$(lig init zsh pre)"
-fi
 ##### GPG
 
 export GPG_TTY=$TTY
@@ -214,7 +209,4 @@ fi
 # Atuin is sourced last so its key bindings can override earlier widgets.
 if [[ -t 0 ]]; then
   source_command_cache atuin atuin init zsh
-fi
-if (( $+commands[lig] )); then
-  eval "$(lig init zsh post)"
 fi
