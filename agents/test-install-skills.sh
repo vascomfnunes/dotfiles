@@ -50,6 +50,16 @@ case "$dest" in
   */swiftui) paths='swiftui-pro' ;;
   */swift-concurrency) paths='swift-concurrency-pro' ;;
   */swift-testing) paths='swift-testing-pro' ;;
+  */mattpocock)
+    for name in ask-matt code-review codebase-design diagnosing-bugs domain-modeling grill-with-docs implement implement-spec improve-codebase-architecture pr prototype research retro setup-matt-pocock-skills tdd to-spec to-tickets triage wayfinder wizard; do
+      mkdir -p "$dest/skills/engineering/$name"
+      printf 'test\n' > "$dest/skills/engineering/$name/SKILL.md"
+    done
+    for name in grill-me grilling handoff teach to-questionnaire wait-what writing-for-agents; do
+      mkdir -p "$dest/skills/productivity/$name"
+      printf 'test\n' > "$dest/skills/productivity/$name/SKILL.md"
+    done
+    ;;
 esac
 for path in ${paths:-}; do
   mkdir -p "$dest/$path"
@@ -81,6 +91,8 @@ grep -F 'description: "Test refactor skill."' "$test_tmp/home/.agents/skills/ref
 grep -F 'Test refactor instructions.' "$test_tmp/home/.agents/skills/refactor/SKILL.md" >/dev/null
 for name in find-skills apple-design refactor systematic-debugging writing-plans executing-plans requesting-code-review receiving-code-review \
   create-issue reverse-engineer-anything project-structure instruments-profiling swiftui-performance-audit \
-  swiftui-pro swift-concurrency-pro swift-testing-pro; do
+  swiftui-pro swift-concurrency-pro swift-testing-pro \
+  ask-matt code-review codebase-design diagnosing-bugs domain-modeling grill-with-docs implement implement-spec improve-codebase-architecture pr prototype research retro setup-matt-pocock-skills tdd to-spec to-tickets triage wayfinder wizard \
+  grill-me grilling handoff teach to-questionnaire wait-what writing-for-agents; do
   test -f "$test_tmp/home/.agents/skills/$name/SKILL.md"
 done

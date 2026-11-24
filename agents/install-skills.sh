@@ -17,6 +17,7 @@ agent_scripts_rev=d210c0a77c8f9ae5e1d939b13238a75e87cdb69a
 swiftui_rev=f2920b63995263f57b3e198674e89a602efba6d2
 swift_concurrency_rev=bee3f69ba17142da148d3c5406f148ed62592b69
 swift_testing_rev=2d6bba14a3c8bf3694f218b92fffe617c41ae43e
+mattpocock_rev=abeeaf95660ba9e8b7c753eb38f441ca707a8823
 skills_dir="$HOME/.agents/skills"
 mkdir -p "$skills_dir"
 skills_tmp=$(mktemp -d)
@@ -124,3 +125,11 @@ download_source twostraws/Swift-Concurrency-Agent-Skill "$swift_concurrency_rev"
 install_skill swift-concurrency-pro "$skills_tmp/swift-concurrency/swift-concurrency-pro"
 download_source twostraws/swift-testing-agent-skill "$swift_testing_rev" swift-testing
 install_skill swift-testing-pro "$skills_tmp/swift-testing/swift-testing-pro"
+
+download_source mattpocock/skills "$mattpocock_rev" mattpocock
+for name in ask-matt code-review codebase-design diagnosing-bugs domain-modeling grill-with-docs implement implement-spec improve-codebase-architecture pr prototype research retro setup-matt-pocock-skills tdd to-spec to-tickets triage wayfinder wizard; do
+  install_skill "$name" "$skills_tmp/mattpocock/skills/engineering/$name"
+done
+for name in grill-me grilling handoff teach to-questionnaire wait-what writing-for-agents; do
+  install_skill "$name" "$skills_tmp/mattpocock/skills/productivity/$name"
+done
