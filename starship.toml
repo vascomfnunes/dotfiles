@@ -3,3 +3,8 @@ command_timeout = 1000
 # /usr/bin/swift is an xcrun shim, slow to start
 [swift]
 disabled = true
+
+[git_status]
+ahead = "⇡${count}"
+behind = "⇣${count}"
+diverged = "⇕⇡${ahead_count}⇣${behind_count}"
