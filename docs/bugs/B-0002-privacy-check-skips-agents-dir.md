@@ -1,15 +1,15 @@
 ---
 id: B-0002
 title: Privacy check skips tracked agent files under agents/
-status: open
+status: fixed
 severity: P3
 area: install-and-checks
 found: 2026-11-25 @ 3472aa2
 method: code reading
 reachability: internal
-commit: —
-test: —
-manual_check: —
+commit: f7173fd
+test: none — no correct seam
+manual_check: none
 ---
 
 ## Problem
@@ -29,11 +29,13 @@ Add an absolute path such as `/Users/alice/foo` to `agents/AGENTS.md`,
 paths in tracked agent configuration under `agents/`.
 
 ## Fix
-—
+Updated `check.sh:18` to pass both `agents` and `opencode` to
+`grep -R -n '/Users/'` (`f7173fd`).
 
 ## Test
-Add a regression check verifying that a `/Users/` match under `agents/` causes
-the privacy check in `check.sh` to fail non-zero.
+`none — no correct seam`: `check.sh` is the top-level check runner without an
+isolated test harness for its own assertions. Verified with `./check.sh` and
+`shellcheck check.sh`.
 
 ## Manual check
 none
