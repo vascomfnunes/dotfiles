@@ -39,7 +39,7 @@ A filled row reads `| install | install.sh | 2026-01-01 @ abc1234 | [audited] |`
 | agents-and-opencode | `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` | 2026-11-25 @ 0ecde80 | [audited] |
 | git-ssh-gpg | `git/gitconfig`, `git/gitignore`, `ssh/config`, `gpg/gpg-agent.conf` | 2026-11-25 @ 7003897 | [audited] |
 | nvim-core | `nvim/init.lua`, `nvim/lua/options.lua`, `nvim/lua/keymaps.lua`, `nvim/lua/lazyload.lua`, `nvim/lua/packs.lua`, `nvim/lua/plugins.lua`, `nvim/lua/pins.lua`, `nvim/lua/statusline.lua`, `nvim/lua/sessions.lua`, `nvim/tests/keymaps_spec.lua`, `nvim/tests/statusline_spec.lua` | 2026-11-25 @ 8dc3982 | [audited] |
-| nvim-lang-and-project | `nvim/lua/lsp.lua`, `nvim/lua/completion.lua`, `nvim/lua/css_classes.lua`, `nvim/lua/tags.lua`, `nvim/lua/project.lua`, `nvim/tests/css_classes_spec.lua`, `nvim/tests/lsp_spec.lua`, `nvim/tests/project_spec.lua`, `nvim/tests/tags_spec.lua` | 2026-11-25 @ ab80aa3 | [audited] |
+| nvim-lang-and-project | `nvim/lua/lsp.lua`, `nvim/lua/completion.lua`, `nvim/lua/css_classes.lua`, `nvim/lua/tags.lua`, `nvim/lua/project.lua`, `nvim/tests/css_classes_spec.lua`, `nvim/tests/lsp_spec.lua`, `nvim/tests/project_spec.lua`, `nvim/tests/tags_spec.lua` | 2026-11-25 @ b57921b | [audited] |
 | nvim-git | `nvim/lua/git.lua`, `nvim/lua/git/*.lua`, `nvim/tests/git_parsers_spec.lua` | 2026-11-25 @ c162be0 | [audited] |
 
 ## Boundaries

@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ b57921b
+
+- **Paths examined** — Re-read `nvim/lua/tags.lua` and `nvim/lua/lsp.lua` after `B-0006` (`c62431d`) and `B-0007` (`c0423e3`), plus unchanged `completion.lua`, `css_classes.lua`, `project.lua`, and all 4 specs (`css_classes_spec.lua`, `lsp_spec.lua`, `project_spec.lua`, `tags_spec.lua`).
+- **Invariants checked** — Confirmed `generate_gem_tags` rejects concurrent runs while `vim.g.gemtags_running` is set (`tags.lua:90-93`); confirmed `enable_signature_help` deletes `DotfilesSignatureHelp<buf>:<client>` on matching `LspDetach` (`lsp.lua:54-62`); re-verified `completion.lua`, `css_classes.lua`, and `project.lua`.
+- **Risks investigated** — Applied: logic correctness, async ordering/cancellation/staleness, ownership/lifetime/cleanup, error handling, data integrity, trust boundaries, filesystem operations, missing regression coverage, documented contracts vs behaviour. Not applicable: confinement/isolation, resource limits, serialization, user-intent/undo, performance/scaling, cross-area contracts.
+- **Defects** — none (previously registered `B-0006` and `B-0007` verified fixed with regression tests).
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (`css_classes_spec.lua`, `lsp_spec.lua`, `project_spec.lua`, `tags_spec.lua` passed in `./check.sh` at `0f7346c` with no subsequent changes).
+
 ## 2026-11-25 @ ab80aa3
 
 - **Paths examined** — `nvim/lua/lsp.lua`, `nvim/lua/completion.lua`, `nvim/lua/css_classes.lua`, `nvim/lua/tags.lua`, `nvim/lua/project.lua`, `nvim/tests/css_classes_spec.lua`, `nvim/tests/project_spec.lua`, `nvim/tests/tags_spec.lua`. Traced sinks: `LspAttach` handlers (`enable_completion`, `enable_signature_help`, `enable_document_highlight`), `vim.lsp.rpc.start` (`ruby_lsp`), `completion.lua` deferred documentation popup styling, `css_classes.lua` filesystem walk and in-process LSP server, `tags.lua` `git rev-parse`, `with_file` `vim.bo.tags` mutation, `definition_or_tag` async LSP + `tjump` fallback, `generate_gem_tags` 3-stage `vim.system` pipeline and `sh -c` `awk`/`mv` sanitize, and `project.lua` `lcd`/`cd` and `MiniFilesBufferCreate` keymap.
