@@ -1,16 +1,16 @@
 ---
 id: P-0001
 title: Synchronous mise hook-env subprocess on every Zsh startup
-status: planned
+status: optimized
 severity: P2
 hot_path: zsh-startup
 found: 2026-11-25 @ 0e4a670
 method: profiled
 baseline: 13.24 ms in _mise_hook · 16.31 ms total mise section · 12.55 ms standalone mise hook-env (isolated zsh -i -c exit, warm cache)
 target: <= 40 ms warm zsh -i -c exit median (>= 12 ms reduction) · <= 1 ms sync mise startup
-commit: —
-result: —
-manual_check: —
+commit: 9db5a93
+result: 57.66 ms -> 40.59 ms (-17.07 ms / -29.6%) · _mise_hook 13.60 ms -> 0.00 ms · ran (isolated warm zsh -i -c exit PTY 5 runs + zprof)
+manual_check: pending — open a fresh Ghostty tab, confirm which ruby resolves to direct mise install path after prompt load, and confirm cd into a uv project activates the venv
 ---
 
 ## Bottleneck
@@ -75,10 +75,23 @@ new terminal tab or split.
 - **ADR:** none (localized, easily reversible shell config change).
 
 ## Result
-—
+Commit `9db5a93` prepends `${XDG_DATA_HOME:-$HOME/.local/share}/mise/shims` to
+`PATH` in `zsh/zshenv` when not already present and defers
+`source_command_cache mise mise activate zsh` in `zsh/zshrc` via Zinit Turbo
+(`wait lucid as"null" nocd id-as"mise" for zdharma-continuum/null`) with a
+synchronous fallback when Zinit is unavailable. On the same isolated warm
+`zsh -i -c exit` PTY 5-run harness + `zprof` (using a lightweight `zinit.zsh`
+stub in the sandboxed `$HOME`), median startup dropped from `57.66 ms`
+(`56.74–60.10 ms`) to `40.59 ms` (`39.60–41.50 ms`, `-17.07 ms` / `-29.6%`),
+and synchronous `_mise_hook` dropped from `13.60 ms` (`32.38%` of `zprof`) to
+`0.00 ms`. `./check.sh` passed along with isolated functional checks verifying
+pre-activation shim resolution, nested `PATH` precedence, and the no-Zinit
+fallback.
 
 ## Attempts
 none
 
 ## Manual check
-—
+Open a fresh Ghostty tab, confirm `which ruby` resolves to the direct `mise`
+install path after prompt load, and confirm `cd` into a `uv` project activates
+the virtual environment.
