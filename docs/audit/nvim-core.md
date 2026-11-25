@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ 8dc3982
+
+- **Paths examined** — Re-checked `nvim/init.lua`, `nvim/lua/{options,keymaps,lazyload,packs,plugins,pins,statusline,sessions}.lua`, `nvim/tests/statusline_spec.lua` (unchanged since `fa5bc4b`), and updated `nvim/tests/keymaps_spec.lua` (`1b77a9d`).
+- **Invariants checked** — Native `vim.pack` and `lazyload.lua` loaders, `sessions.lua` escaping and empty-session guard, `pins.lua` persistence, `statusline.lua` `%` escaping and `LspDetach` cleanup, `keymaps.lua` reference copying and `BufReadPost` guard.
+- **Risks investigated** — Applied: logic correctness, async ordering/staleness, ownership/lifetime/cleanup, error handling, data integrity, filesystem operations, plugin lifecycle, missing regression coverage, documented contracts vs behaviour. Not applicable: concurrency/races, confinement/isolation, resource limits, user-intent/undo, performance/scaling, cross-area contracts.
+- **Defects** — none.
+- **Excluded** — `nvim/nvim-pack-lock.json` (generated lockfile).
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (`keymaps_spec.lua` and `statusline_spec.lua` passed in `./check.sh` at `0f7346c` with no subsequent changes).
+
 ## 2026-11-25 @ fa5bc4b
 
 - **Paths examined** — `nvim/init.lua`, `nvim/lua/options.lua`, `nvim/lua/keymaps.lua`, `nvim/lua/lazyload.lua`, `nvim/lua/packs.lua`, `nvim/lua/plugins.lua`, `nvim/lua/pins.lua`, `nvim/lua/statusline.lua`, `nvim/lua/sessions.lua`, `nvim/tests/keymaps_spec.lua`, `nvim/tests/statusline_spec.lua`. Traced sinks: `vim.pack.add` / `packadd` (`packs.lua`), `setup_once` and `GitConflictDetected`/`Resolved` diagnostic toggling (`lazyload.lua`), `vim.system` (`ToolsSync`), `treesitter.install():await` (`plugins.lua:44`), `io.open(..., "w")` (`pins.lua:21`), `mksession!`/`source` (`sessions.lua:28,37`), clipboard `setreg` and `BufReadPost` cursor restore (`keymaps.lua`), and `LspProgress`/`LspDetach` statusline rendering (`statusline.lua`).
