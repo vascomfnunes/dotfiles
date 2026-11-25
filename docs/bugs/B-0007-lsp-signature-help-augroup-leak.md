@@ -1,15 +1,15 @@
 ---
 id: B-0007
 title: Signature help autocmd leaks on LspDetach
-status: open
+status: fixed
 severity: P3
 area: nvim-lang-and-project
 found: 2026-11-25 @ ab80aa3
 method: code reading
 reachability: internal
-commit: —
-test: —
-manual_check: —
+commit: c0423e3
+test: signature help LspDetach cleanup (nvim/tests/lsp_spec.lua) · ran focused (nvim --headless -u NONE -l nvim/tests/lsp_spec.lua "$PWD", passed)
+manual_check: none
 ---
 
 ## Problem
@@ -30,12 +30,14 @@ remains active on the buffer, firing extra `vim.lsp.buf.signature_help`
 requests on every trigger character for the lifetime of the buffer.
 
 ## Fix
-—
+Registered a buffer-local `LspDetach` autocmd inside `enable_signature_help`
+(`nvim/lua/lsp.lua:54-61`) that deletes `DotfilesSignatureHelp<buf>:<client>`
+when `detach_ev.data.client_id == client.id` (`c0423e3`).
 
 ## Test
-Add a test that triggers `LspAttach` then `LspDetach` for a mock client with
-`signatureHelpProvider` and asserts the `DotfilesSignatureHelp<buf>:<id>`
-augroup no longer has any `InsertCharPre` autocmds.
+Added `nvim/tests/lsp_spec.lua`; failed before the fix (`signature help
+augroup leaked after LspDetach`) and passed after
+(`nvim --headless -u NONE -l nvim/tests/lsp_spec.lua "$PWD"`).
 
 ## Manual check
 none
