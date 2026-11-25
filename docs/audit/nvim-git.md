@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ 24fa965
+
+- **Paths examined** — Re-read `nvim/lua/git/keymaps.lua` after `B-0008` (`1b77a9d`), plus unchanged `nvim/lua/git.lua`, `nvim/lua/git/{operation,parsers,status}.lua`, and `nvim/tests/git_parsers_spec.lua`.
+- **Invariants checked** — Confirmed `show_commit` (`nvim/lua/git/keymaps.lua:40`) parses commit hashes via `git.parsers.selected_commit`; re-verified `operations[root]` + `index.lock` gating, `git/status.lua` single-flight coalescing, and `edit_commit_message` temp draft cleanup.
+- **Risks investigated** — Applied: logic correctness, async ordering/cancellation/staleness, ownership/lifetime/cleanup, error handling, data integrity, trust boundaries, filesystem operations, missing regression coverage, documented contracts vs behaviour. Not applicable: confinement/isolation, resource limits, serialization, extension lifecycle, user-intent/undo, performance/scaling, cross-area contracts.
+- **Defects** — none (previously registered `B-0008` verified fixed with regression test).
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (`git_parsers_spec.lua` and `keymaps_spec.lua` passed in `./check.sh` at `0f7346c` with no subsequent changes).
+
 ## 2026-11-25 @ c162be0
 
 - **Paths examined** — `nvim/lua/git.lua`, `nvim/lua/git/keymaps.lua`, `nvim/lua/git/operation.lua`, `nvim/lua/git/parsers.lua`, `nvim/lua/git/status.lua`, `nvim/tests/git_parsers_spec.lua`. Traced sinks: `vim.system` git commands (`fetch`, `pull`, `commit`, `push`, `switch`, `stash`, `add`, `reset`, `abort`, `show`, `for-each-ref`, `status`), `vim.fn.jobstart` terminal commands (`continue`, `amend`, `rebase -i`, `merge`, `cherry-pick`), `git-commit-ai --print` + `edit_commit_message` temp file write/delete (`BufWriteCmd`), `VimLeavePre` timer cleanup, `fzf-lua` pickers and `CodeDiff` command invocations.
