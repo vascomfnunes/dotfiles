@@ -10,7 +10,8 @@ font-feature = -calt
 
 cursor-style-blink = true
 shell-integration-features = no-cursor
-confirm-close-surface = false
+# Always confirm before closing a surface or quitting, even when idle.
+confirm-close-surface = always
 mouse-hide-while-typing = true
 
 
