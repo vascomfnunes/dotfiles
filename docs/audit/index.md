@@ -36,7 +36,7 @@ A filled row reads `| install | install.sh | 2026-01-01 @ abc1234 | [audited] |`
 | install-and-checks | `install.sh`, `check.sh`, `brew/Brewfile`, `brew/Brewfile.*`, `mise/config.toml` | 2026-11-25 @ d0c1976 | [audited] |
 | shell-and-terminal | `zsh/zshenv`, `zsh/zshrc`, `starship.toml`, `ghostty/config`, `yazi/package.toml`, `yazi/theme.toml` | 2026-11-25 @ 783ff5c | [audited] |
 | bin-helpers | `bin/btop-themed`, `bin/git-commit-ai`, `bin/nvim-edit`, `bin/serve` | 2026-11-25 @ c5570f8 | [audited] |
-| agents-and-opencode | `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` | 2026-11-25 @ 8fef5c8 | [audited] |
+| agents-and-opencode | `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` | 2026-11-25 @ 0ecde80 | [audited] |
 | git-ssh-gpg | `git/gitconfig`, `git/gitignore`, `ssh/config`, `gpg/gpg-agent.conf` | 2026-11-25 @ abf3914 | [audited] |
 | nvim-core | `nvim/init.lua`, `nvim/lua/options.lua`, `nvim/lua/keymaps.lua`, `nvim/lua/lazyload.lua`, `nvim/lua/packs.lua`, `nvim/lua/plugins.lua`, `nvim/lua/pins.lua`, `nvim/lua/statusline.lua`, `nvim/lua/sessions.lua`, `nvim/tests/keymaps_spec.lua`, `nvim/tests/statusline_spec.lua` | 2026-11-25 @ fa5bc4b | [audited] |
 | nvim-lang-and-project | `nvim/lua/lsp.lua`, `nvim/lua/completion.lua`, `nvim/lua/css_classes.lua`, `nvim/lua/tags.lua`, `nvim/lua/project.lua`, `nvim/tests/css_classes_spec.lua`, `nvim/tests/lsp_spec.lua`, `nvim/tests/project_spec.lua`, `nvim/tests/tags_spec.lua` | 2026-11-25 @ ab80aa3 | [audited] |

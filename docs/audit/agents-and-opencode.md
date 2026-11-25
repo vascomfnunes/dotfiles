@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ 0ecde80
+
+- **Paths examined** — Re-checked `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` (unchanged since `8fef5c8`).
+- **Invariants checked** — Pinned GitHub SHAs, SHA-256 verification before install in `install_hub_skill`, existing-skill preservation across all 3 skill roots, temp dir `trap` cleanup, valid JSON, no `/Users/` paths, subagent permission blocks.
+- **Risks investigated** — Applied: logic correctness, ownership/lifetime/cleanup, error handling, data integrity, trust boundaries, filesystem operations, documented contracts vs behaviour. Not applicable: concurrency/races, confinement/isolation, resource limits, serialization, extension lifecycle, user-intent/undo, performance/scaling, cross-area contracts.
+- **Defects** — none.
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (`sh agents/test-install-skills.sh`, `shellcheck`, `jq empty` passed at `0f7346c` with no subsequent changes).
+
 ## 2026-11-25 @ 8fef5c8
 
 - **Paths examined** — `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/cavecrew-builder.md`, `opencode/agents/cavecrew-investigator.md`, `opencode/agents/cavecrew-reviewer.md`. Traced sinks: `skill_installed`, `install_skill` (`cp -R`), `install_hub_skill` (`curl`, `jq`, `shasum`, frontmatter generation), `download_source` (`curl`, `tar -xzf`), `mktemp -d`/`trap` cleanup, and OpenCode agent permission blocks.
