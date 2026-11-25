@@ -193,7 +193,13 @@ bindkey '^x^e' edit-command-line
 ##### Shell integrations
 
 source_command_cache starship starship init zsh
-source_command_cache mise mise activate zsh
+if (( $+functions[zinit] )); then
+  zinit wait lucid as"null" nocd id-as"mise" \
+    atload'source_command_cache mise mise activate zsh' \
+    for zdharma-continuum/null
+else
+  source_command_cache mise mise activate zsh
+fi
 source_command_cache zoxide zoxide init zsh
 
 if [[ -t 0 ]]; then
