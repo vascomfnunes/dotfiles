@@ -124,6 +124,17 @@ assert(log_opened, "git log mapping did not open the commit picker")
 assert(type(log_opts.actions.enter) == "function", "commit log enter action was not configured")
 assert(type(log_opts.actions["ctrl-o"]) == "function", "commit checkout action was not configured")
 
+local shown_cmd
+local orig_system = vim.system
+vim.system = function(cmd)
+  shown_cmd = cmd
+  return { wait = function() return { code = 0, stdout = "commit deadbeef\n", stderr = "" } end }
+end
+log_opts.actions.enter({ "\27[33mdeadbeef\27[0m yesterday Fix bug" })
+vim.system = orig_system
+assert(shown_cmd and shown_cmd[#shown_cmd] == "deadbeef", "commit log enter did not parse ANSI-colored commit")
+vim.cmd.close()
+
 assert(keymaps.location("/tmp/example.lua", 3) == "/tmp/example.lua:3", "line reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 7) == "/tmp/example.lua:3-7", "range reference format is wrong")
 assert(keymaps.location("/tmp/example.lua", 3, 3) == "/tmp/example.lua:3", "single-line range was not collapsed")

@@ -37,7 +37,7 @@ end
 -- picker checks the commit out by default, which is too easy to trigger when
 -- the intent is only to inspect history.
 local function show_commit(selected)
-  local commit = selected and selected[1] and selected[1]:match("^(%x+)")
+  local commit = selected and selected_git_commit(selected)
   if not commit then return end
 
   local root = vim.fs.root(0, ".git") or vim.fn.getcwd()
