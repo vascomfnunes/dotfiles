@@ -87,6 +87,10 @@ end
 -- back to tags for definitions ruby-lsp can't resolve. Resolve the Git tags
 -- path through Git itself so linked worktrees are supported.
 local function generate_gem_tags()
+  if vim.g.gemtags_running then
+    vim.notify("GemTags is already running", vim.log.levels.WARN)
+    return
+  end
   local root = vim.fs.root(0, "Gemfile")
   if not root then
     vim.notify("No Gemfile found", vim.log.levels.WARN)
