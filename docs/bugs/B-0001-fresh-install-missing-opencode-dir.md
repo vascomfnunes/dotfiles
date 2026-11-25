@@ -1,15 +1,15 @@
 ---
 id: B-0001
 title: Fresh install aborts linking OpenCode AGENTS.md before creating directory
-status: open
+status: fixed
 severity: P1
 area: install-and-checks
 found: 2026-11-25 @ 3472aa2
 method: code reading
 reachability: ui
-commit: —
-test: —
-manual_check: —
+commit: 8fbd460
+test: none — no correct seam
+manual_check: none
 ---
 
 ## Problem
@@ -31,13 +31,13 @@ subagents, merging `opencode/cli.json`, installing Yazi flavors, cloning Zinit,
 installing Mise runtimes and agent skills, or applying macOS defaults.
 
 ## Fix
-—
+Moved creation of `$HOME/.config/opencode/agents` into the main `Directories`
+`mkdir -p` block (`install.sh:120`) before the symlink phase runs (`8fbd460`).
 
 ## Test
-Verify in an isolated temporary `$HOME` that every `dotlink` destination parent
-directory is created before its `dotlink` call (or move `mkdir -p
-"$HOME/.config/opencode/agents"` above `install.sh:216` and test with a missing
-`$HOME/.config/opencode`).
+`none — no correct seam`: `install.sh` runs top-to-bottom with Homebrew and
+macOS `defaults` side effects and has no isolated symlink-phase test seam.
+Verified syntax and ShellCheck with `./check.sh`.
 
 ## Manual check
 none
