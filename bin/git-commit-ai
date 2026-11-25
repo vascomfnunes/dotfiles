@@ -173,7 +173,9 @@ sanitize() {
     LC_ALL=C sed \
       -e '1s/^[[:space:]]*//' \
       -e '1s/^"\(.*\)"$/\1/' \
-      -e '1s/^\(Commit message\|Message\|Subject\):[[:space:]]*//'
+      -e '1s/^Commit message:[[:space:]]*//' \
+      -e '1s/^Message:[[:space:]]*//' \
+      -e '1s/^Subject:[[:space:]]*//'
 }
 
 regenerate() {
