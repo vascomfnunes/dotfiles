@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ d0c1976
+
+- **Paths examined** — Re-read `install.sh` and `check.sh` after `B-0001` (`8fbd460`) and `B-0002` (`f7173fd`), plus unchanged `brew/Brewfile*` and `mise/config.toml`.
+- **Invariants checked** — Confirmed `$HOME/.config/opencode/agents` is created at `install.sh:120` before `dotlink agents/AGENTS.md .config/opencode/AGENTS.md` at `install.sh:217`; confirmed `check.sh:18` scans both `agents` and `opencode` for `/Users/`; re-verified preflight, `merge_json`, `trap` cleanup, and local config stubs.
+- **Risks investigated** — Applied: logic correctness, error handling, data integrity, filesystem operations, trust boundaries, documented contracts vs behaviour. Not applicable: confinement/isolation, resource limits, extension lifecycle, user-intent/undo, performance/scaling, cross-area contracts (checked in `install-path-contract`).
+- **Defects** — none (previously registered `B-0001` and `B-0002` verified fixed).
+- **Excluded** — `mise/mise.lock` (generated lockfile); runtime execution of `./install.sh` (restricted by repo rules).
+- **Uncertainty** — none.
+- **Tests** — Read `check.sh`; `none run` in this step (full `./check.sh` passed at `0f7346c` with no subsequent code changes).
+
 ## 2026-11-25 @ 3472aa2
 
 - **Paths examined** — `install.sh`, `check.sh`, `brew/Brewfile`, `brew/Brewfile.personal`, `brew/Brewfile.work`, `mise/config.toml` (plus `mise/mise.lock` and `opencode/cli.json` read across the boundary to verify `mise` Python pinning and `merge_json` behavior). Traced sinks: argument parsing, preflight checks, Homebrew/slk downloads and installs, `mkdir`/`chmod`, `rm`/`rmdir`/`launchctl` cleanup, `dotlink`, `merge_json`, `ya pkg install`, `pinentry-mac` link, local config stubs, Zinit clone, `gpgconf`/`mise`/`opencode` invocations, macOS `defaults`/`killall`, and all `check.sh` validations.

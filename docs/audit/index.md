@@ -33,7 +33,7 @@ A filled row reads `| install | install.sh | 2026-01-01 @ abc1234 | [audited] |`
 
 | Area | Owns | Last audit | State |
 | --- | --- | --- | --- |
-| install-and-checks | `install.sh`, `check.sh`, `brew/Brewfile`, `brew/Brewfile.*`, `mise/config.toml` | 2026-11-25 @ 3472aa2 | [audited] |
+| install-and-checks | `install.sh`, `check.sh`, `brew/Brewfile`, `brew/Brewfile.*`, `mise/config.toml` | 2026-11-25 @ d0c1976 | [audited] |
 | shell-and-terminal | `zsh/zshenv`, `zsh/zshrc`, `starship.toml`, `ghostty/config`, `yazi/package.toml`, `yazi/theme.toml` | 2026-11-25 @ 18f0fab | [audited] |
 | bin-helpers | `bin/btop-themed`, `bin/git-commit-ai`, `bin/nvim-edit`, `bin/serve` | 2026-11-25 @ 82e9c9e | [audited] |
 | agents-and-opencode | `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` | 2026-11-25 @ 8fef5c8 | [audited] |
