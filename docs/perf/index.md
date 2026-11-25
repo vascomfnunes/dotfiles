@@ -29,7 +29,7 @@ as you found them.
 
 | Hot path | Entry point | Budget | Last profile | State |
 | --- | --- | --- | --- | --- |
-| zsh-startup | `zsh/zshenv` | none | — | — |
+| zsh-startup | `zsh/zshenv` | none | 2026-11-25 @ 0e4a670 | [partial: zinit.zsh and live HISTFILE not measured in sandbox] |
 | nvim-startup | `nvim/init.lua` | none | — | — |
 | nvim-statusline | `nvim/lua/statusline.lua` | none | — | — |
 | nvim-completion | `nvim/lua/completion.lua` | none | — | — |
