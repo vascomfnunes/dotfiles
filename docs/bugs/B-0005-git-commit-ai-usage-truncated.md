@@ -1,15 +1,15 @@
 ---
 id: B-0005
 title: git-commit-ai --help truncates GIT_AI_MAX_DIFF and GIT_AI_EDITOR
-status: open
+status: fixed
 severity: P3
 area: bin-helpers
 found: 2026-11-25 @ 82e9c9e
 method: code reading
 reachability: ui
-commit: —
-test: —
-manual_check: —
+commit: 96dd316
+test: none — no bin/ behavioral test suite
+manual_check: none
 ---
 
 ## Problem
@@ -26,11 +26,13 @@ Run `bin/git-commit-ai --help`.
 Users checking `--help` never see `GIT_AI_MAX_DIFF` or `GIT_AI_EDITOR`.
 
 ## Fix
-—
+Extended `sed -n '2,12p'` to `sed -n '2,14p'` in `bin/git-commit-ai:22`
+(`96dd316`).
 
 ## Test
-Run `sh bin/git-commit-ai --help` and assert the output includes
-`GIT_AI_MAX_DIFF` and `GIT_AI_EDITOR`.
+`none — no bin/ behavioral test suite`: verified `sh bin/git-commit-ai --help`
+prints both `GIT_AI_MAX_DIFF` and `GIT_AI_EDITOR`, plus `shellcheck
+bin/git-commit-ai`.
 
 ## Manual check
 none
