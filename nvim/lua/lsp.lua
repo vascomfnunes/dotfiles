@@ -51,6 +51,15 @@ local function enable_signature_help(ev, client)
       end
     end,
   })
+  vim.api.nvim_create_autocmd("LspDetach", {
+    group = group,
+    buffer = ev.buf,
+    callback = function(detach_ev)
+      if detach_ev.data.client_id == client.id then
+        vim.api.nvim_del_augroup_by_id(group)
+      end
+    end,
+  })
 end
 
 -- Highlight other occurrences of the symbol under the cursor while idle
