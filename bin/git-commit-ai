@@ -19,7 +19,7 @@ print_only=0
 stage_all=0
 
 usage() {
-  sed -n '2,12p' "$0" | sed 's/^# \{0,1\}//'
+  sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
 }
 
 for arg in "$@"; do
