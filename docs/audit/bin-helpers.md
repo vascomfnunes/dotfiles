@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ c5570f8
+
+- **Paths examined** — Re-read `bin/git-commit-ai` after `B-0004` (`4fb76fb`) and `B-0005` (`96dd316`), plus unchanged `bin/btop-themed`, `bin/nvim-edit`, `bin/serve`.
+- **Invariants checked** — Confirmed `usage()` (`bin/git-commit-ai:22`) prints lines 2–14 including `GIT_AI_MAX_DIFF` and `GIT_AI_EDITOR`; confirmed `sanitize()` (`bin/git-commit-ai:173-178`) uses portable POSIX `sed` expressions without GNU `\|` alternation; re-verified `btop-themed` atomic replace, `nvim-edit` non-interactive/nested guards, and `serve`.
+- **Risks investigated** — Applied: logic correctness, error handling, ownership/lifetime/cleanup, data integrity, trust boundaries, filesystem operations, documented contracts vs behaviour. Not applicable: confinement/isolation, serialization, extension lifecycle, user-intent/undo, performance/scaling, cross-area contracts (checked in `nvim-server-contract`).
+- **Defects** — none (previously registered `B-0004` and `B-0005` verified fixed).
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (`sh -n`, `shellcheck`, BSD `sed` prefix check, and `--help` check passed at `96dd316` with no subsequent changes).
+
 ## 2026-11-25 @ 82e9c9e
 
 - **Paths examined** — `bin/btop-themed`, `bin/git-commit-ai`, `bin/nvim-edit`, `bin/serve`. Traced sinks: `btop-themed` config generation, `defaults read`, `awk` rewrite, `mktemp`/`mv -f`/`trap`, `exec btop`; `git-commit-ai` arg parsing, `usage()`, `git add --update`, `mktemp -d`/`trap`, prompt construction, `opencode`/`codex`/`claude` execution, `jq` parsing, `sanitize()` `sed`/`awk` pipeline, `git commit --file`; `nvim-edit` `--no-wait` parsing, `NVIM_SERVER` socket resolution, process-tree ancestor walk (`ps`), TTY guard, `nvim --server ... --remote-expr` / `--remote` / `--listen`; `serve` port default and `python3 -m http.server`.
