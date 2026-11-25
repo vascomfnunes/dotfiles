@@ -15,7 +15,7 @@ echo "Checking JSON..."
 jq empty opencode/cli.json
 
 echo "Checking agent config privacy..."
-if grep -R -n '/Users/' opencode; then
+if grep -R -n '/Users/' agents opencode; then
   echo "Absolute home paths must not be tracked; use \$HOME instead." >&2
   exit 1
 fi
