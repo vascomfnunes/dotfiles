@@ -1,15 +1,15 @@
 ---
 id: B-0003
 title: MANPAGER is unset in login shells because zshenv checks bat before PATH includes Homebrew
-status: open
+status: fixed
 severity: P3
 area: shell-and-terminal
 found: 2026-11-25 @ 18f0fab
 method: reproduced
 reachability: ui
-commit: —
-test: —
-manual_check: —
+commit: 181e63e
+test: none — no Zsh behavioral test suite
+manual_check: none
 ---
 
 ## Problem
@@ -32,12 +32,14 @@ login shells (it only works in nested shells that inherit an already-populated
 `PATH`).
 
 ## Fix
-—
+Moved the `bat`-guarded `MANPAGER` export from `zsh/zshenv:28-32` into the
+existing `if command -v bat` block in `zsh/zshrc:115-118`, which runs after
+`/etc/zprofile` adds Homebrew to `PATH` (`181e63e`).
 
 ## Test
-Run a fresh login shell with `env -i HOME="$tmp" PATH="/usr/bin:/bin:/usr/sbin:/sbin" zsh -lc ...`
-with `zsh/zshenv` and `zsh/zshrc` linked and assert `MANPAGER` is set when
-`bat` is available in `/opt/homebrew/bin`.
+`none — no Zsh behavioral test suite`: reproduced and verified before/after
+with `env -i HOME="$tmp" ... PATH="/usr/bin:/bin:/usr/sbin:/sbin" zsh -lic`
+and `zsh -n zsh/zshrc zsh/zshenv`.
 
 ## Manual check
 none
