@@ -35,7 +35,7 @@ A filled row reads `| install | install.sh | 2026-01-01 @ abc1234 | [audited] |`
 | --- | --- | --- | --- |
 | install-and-checks | `install.sh`, `check.sh`, `brew/Brewfile`, `brew/Brewfile.*`, `mise/config.toml` | 2026-11-25 @ 3472aa2 | [audited] |
 | shell-and-terminal | `zsh/zshenv`, `zsh/zshrc`, `starship.toml`, `ghostty/config`, `yazi/package.toml`, `yazi/theme.toml` | 2026-11-25 @ 18f0fab | [audited] |
-| bin-helpers | `bin/btop-themed`, `bin/git-commit-ai`, `bin/nvim-edit`, `bin/serve` | — | — |
+| bin-helpers | `bin/btop-themed`, `bin/git-commit-ai`, `bin/nvim-edit`, `bin/serve` | 2026-11-25 @ 82e9c9e | [audited] |
 | agents-and-opencode | `agents/install-skills.sh`, `agents/test-install-skills.sh`, `agents/AGENTS.md`, `agents/templates/AGENTS.md`, `opencode/cli.json`, `opencode/agents/*.md` | — | — |
 | git-ssh-gpg | `git/gitconfig`, `git/gitignore`, `ssh/config`, `gpg/gpg-agent.conf` | — | — |
 | nvim-core | `nvim/init.lua`, `nvim/lua/options.lua`, `nvim/lua/keymaps.lua`, `nvim/lua/lazyload.lua`, `nvim/lua/packs.lua`, `nvim/lua/plugins.lua`, `nvim/lua/pins.lua`, `nvim/lua/statusline.lua`, `nvim/lua/sessions.lua`, `nvim/tests/keymaps_spec.lua`, `nvim/tests/statusline_spec.lua` | — | — |
