@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ 3d750ba
+
+- **Paths examined** — Re-checked cross-area install/path contract across `install.sh`, `check.sh`, `zsh/{zshenv,zshrc}`, `git/gitconfig`, `ssh/config`, `gpg/gpg-agent.conf`, `agents/install-skills.sh`, `opencode/{cli.json,agents/*.md}`, and `bin/btop-themed` (unchanged since `0f7346c`).
+- **Invariants checked** — All `dotlink` parent directories created before linking (`install.sh:114-124`), `ZDOTDIR`/`ZINIT_HOME` parity, SSH socket dir permissions (`700`), `pinentry-mac` link, `btop` theme/wrapper paths, OpenCode `AGENTS.md`/`agents/*.md`/`cli.json` paths, and `check.sh` privacy/link checks.
+- **Risks investigated** — Applied: cross-area contracts, logic correctness, filesystem permissions, documented contracts vs behaviour. Not applicable: concurrency/races, async/cancellation, confinement/isolation, resource limits, serialization, extension lifecycle, user-intent/undo, performance/scaling.
+- **Defects** — none.
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step (full `./check.sh` passed at `0f7346c` with no subsequent code changes).
+
 ## 2026-11-25 @ 0f7346c
 
 - **Paths examined** — Cross-checked `install.sh`, `check.sh`, `zsh/zshenv`, `zsh/zshrc`, `git/gitconfig`, `ssh/config`, `gpg/gpg-agent.conf`, `agents/install-skills.sh`, `opencode/cli.json`, `opencode/agents/*.md`, `bin/btop-themed`. Traced contract points: `ZDOTDIR` and Zinit paths, `~/.zshrc.local`/`~/.gitconfig.local` stubs, `~/.ssh/sockets` permissions and `ControlPath`, `~/.local/bin/pinentry-mac` link and `gpg-agent.conf`, `btop` themes and wrapper, OpenCode `AGENTS.md`/`agents/*.md`/`cli.json` paths, `mise` config/lock paths, and whole-directory preflight for `nvim`/`yazi`.
