@@ -6,6 +6,16 @@ Method and cell grades: [index](index.md). Newest record first.
 
 none
 
+## 2026-11-25 @ f5c387b
+
+- **Paths examined** — Re-checked cross-area server contract across `zsh/zshenv`, `zsh/zshrc`, `bin/nvim-edit`, `git/gitconfig`, `agents/AGENTS.md`, `nvim/init.lua`, `nvim/lua/sessions.lua` (unchanged since `ee8aa43`).
+- **Invariants checked** — `NVIM_SERVER` socket formula parity, blocking `$EDITOR`/`core.editor` vs non-blocking `v()`/`--no-wait`, nested `NVIM` guard, agent/non-TTY refusal, and global-cwd session keying.
+- **Risks investigated** — Applied: cross-area contracts, logic correctness, concurrency/races, error handling, documented contracts vs behaviour. Not applicable: confinement/isolation, resource limits, serialization, extension lifecycle, user-intent/undo, performance/scaling.
+- **Defects** — none.
+- **Excluded** — none.
+- **Uncertainty** — none.
+- **Tests** — `none run` in this step.
+
 ## 2026-11-25 @ ee8aa43
 
 - **Paths examined** — Cross-checked `zsh/zshenv`, `zsh/zshrc`, `bin/nvim-edit`, `git/gitconfig`, `agents/AGENTS.md`, `nvim/init.lua`, `nvim/lua/sessions.lua`. Traced contract points: `NVIM_SERVER` socket formula, `EDITOR`/`VISUAL`/`core.editor` blocking contract, `v()` -> `nvim-edit --no-wait` handoff, `NVIM` nested deadlock guard, agent/non-TTY refusal, and shared server `--listen`/`--remote` lifecycle.

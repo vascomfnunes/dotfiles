@@ -48,7 +48,7 @@ Areas two others depend on and neither owns; audited after both sides.
 
 | Boundary | Joins | Last audit | State |
 | --- | --- | --- | --- |
-| nvim-server-contract | `shell-and-terminal`, `bin-helpers`, `nvim-core` | 2026-11-25 @ ee8aa43 | [audited] |
+| nvim-server-contract | `shell-and-terminal`, `bin-helpers`, `nvim-core` | 2026-11-25 @ f5c387b | [audited] |
 | install-path-contract | `install-and-checks`, `agents-and-opencode`, `git-ssh-gpg`, `shell-and-terminal` | 2026-11-25 @ 0f7346c | [audited] |
 
 ## Exclusions
