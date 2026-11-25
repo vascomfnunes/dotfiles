@@ -1,15 +1,15 @@
 ---
 id: B-0006
 title: Concurrent :GemTags runs race on tag_file and tag_file.tmp
-status: open
+status: fixed
 severity: P2
 area: nvim-lang-and-project
 found: 2026-11-25 @ ab80aa3
 method: code reading
 reachability: ui
-commit: —
-test: —
-manual_check: —
+commit: c62431d
+test: concurrent :GemTags guard (nvim/tests/tags_spec.lua) · ran focused (nvim --headless -u NONE -l nvim/tests/tags_spec.lua "$PWD", passed)
+manual_check: none
 ---
 
 ## Problem
@@ -29,12 +29,14 @@ and the first run to finish clears `vim.g.gemtags_running = nil` while the
 second run is still executing.
 
 ## Fix
-—
+Added an early guard at the top of `generate_gem_tags()` (`nvim/lua/tags.lua:90-93`)
+that notifies and returns when `vim.g.gemtags_running` is already set
+(`c62431d`).
 
 ## Test
-Add a regression test in `nvim/tests/tags_spec.lua` that invokes `:GemTags`
-twice while the first `vim.system` call is pending and asserts that the second
-invocation is rejected without spawning a second `vim.system` job.
+Added concurrent `:GemTags` regression test in `nvim/tests/tags_spec.lua`;
+failed before the fix (`concurrent :GemTags spawned a second job`) and passed
+after (`nvim --headless -u NONE -l nvim/tests/tags_spec.lua "$PWD"`).
 
 ## Manual check
 none
