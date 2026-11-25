@@ -1,15 +1,15 @@
 ---
 id: B-0004
 title: Commit message prefix stripping fails on macOS BSD sed
-status: open
+status: fixed
 severity: P2
 area: bin-helpers
 found: 2026-11-25 @ 82e9c9e
 method: reproduced
 reachability: ui
-commit: —
-test: —
-manual_check: —
+commit: 4fb76fb
+test: none — no bin/ behavioral test suite
+manual_check: none
 ---
 
 ## Problem
@@ -31,12 +31,14 @@ Generated commit messages that include a `Commit message:`, `Message:`, or
 `Subject:` preamble retain that prefix in the subject line.
 
 ## Fix
-—
+Replaced the GNU BRE alternation `-e` in `bin/git-commit-ai:176` with three
+portable POSIX `sed` `-e` expressions for `Commit message:`, `Message:`, and
+`Subject:` (`4fb76fb`).
 
 ## Test
-Pipe `Commit message: Fix bug`, `Message: Fix bug`, and `Subject: Fix bug`
-through the `sanitize` `sed` pipeline with macOS `/usr/bin/sed` and assert each
-produces `Fix bug`.
+`none — no bin/ behavioral test suite`: verified all three prefixes strip to
+`Fix bug` with macOS `/usr/bin/sed`, plus `sh -n bin/git-commit-ai` and
+`shellcheck bin/git-commit-ai`.
 
 ## Manual check
 none
