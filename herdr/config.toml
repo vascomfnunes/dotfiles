@@ -8,6 +8,18 @@ auto_switch = true
 dark_name = "catppuccin"
 light_name = "catppuccin-latte"
 
+# Darker active (accent) and inactive (surface/overlay) pane borders in dark mode.
+# Herdr shares these palette tokens with other chrome (active highlights, dividers,
+# scrollbar tracks) because it has no dedicated pane-border color keys.
+[theme.custom.dark]
+accent = "#585b70"   # Catppuccin Mocha surface2
+surface1 = "#313244" # Catppuccin Mocha surface0
+surface0 = "#262738"
+overlay0 = "#45475a" # Catppuccin Mocha surface1
+
+[ui]
+pane_borders = "always"
+
 [keys]
 # Ctrl+A is the terminal leader (matching the former Ghostty configuration).
 prefix = "ctrl+a"
