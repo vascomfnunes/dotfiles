@@ -21,7 +21,7 @@
       "src": "https://github.com/folke/flash.nvim"
     },
     "fzf-lua": {
-      "rev": "a8312697c30b4d3b110fa3dc56e3699107aed9a0",
+      "rev": "a3b5e6bebcc604d0286fffa1c4eb05b066a2a198",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "git-conflict.nvim": {
@@ -29,7 +29,7 @@
       "src": "https://github.com/akinsho/git-conflict.nvim"
     },
     "gitsigns.nvim": {
-      "rev": "c0862d382a35b7b45757d8d151a6a634c09bf3ce",
+      "rev": "166c03131e6a3528f692dd89f37668d991f17baa",
       "src": "https://github.com/lewis6991/gitsigns.nvim"
     },
     "grug-far.nvim": {
