@@ -30,6 +30,7 @@ brew "yarn"
 
 brew "mpv"
 brew "neovim"
+brew "herdr"
 cask "ghostty"
 
 #### Agents
