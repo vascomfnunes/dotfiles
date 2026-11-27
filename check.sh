@@ -6,7 +6,7 @@ DOTFILES_DIR="$(CDPATH='' cd -- "$(dirname -- "$0")" && pwd)"
 cd "$DOTFILES_DIR"
 
 echo "Checking POSIX shell syntax..."
-sh -n install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed
+sh -n install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed bin/herdr-nvim-bridge
 
 echo "Checking Zsh syntax..."
 zsh -n zsh/zshrc zsh/zshenv
@@ -30,7 +30,12 @@ for agent in opencode/agents/*.md; do
 done
 
 echo "Running ShellCheck..."
-shellcheck install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed
+shellcheck install.sh agents/*.sh bin/serve bin/git-commit-ai bin/nvim-edit bin/btop-themed bin/herdr-nvim-bridge
+
+if command -v herdr >/dev/null 2>&1; then
+  echo "Checking Herdr config..."
+  HERDR_CONFIG_PATH="$DOTFILES_DIR/herdr/config.toml" herdr config check >/dev/null
+fi
 
 echo "Checking agent skill installation..."
 sh agents/test-install-skills.sh

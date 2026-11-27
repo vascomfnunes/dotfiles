@@ -1,0 +1,123 @@
+#!/bin/sh
+
+# Bridge Herdr keybindings with Neovim when Neovim owns the active pane.
+#
+# Usage:
+#   herdr-nvim-bridge nav    left|down|up|right
+#   herdr-nvim-bridge resize left|down|up|right
+#   herdr-nvim-bridge split  right|down
+#
+# Neovim writes its PID and RPC server socket into:
+#   ${XDG_CACHE_HOME:-$HOME/.cache}/herdr/nvim-panes/<pane-id>
+# When that process is alive, navigation and resize keys are forwarded to the
+# pane PTY so Neovim handles them first (and delegates back to Herdr at layout
+# edges), and splits are created inside Neovim over its RPC socket. Otherwise,
+# the action runs directly on the Herdr pane.
+
+set -eu
+
+export PATH="/opt/homebrew/bin:/usr/local/bin:$HOME/.local/bin:$PATH"
+
+if [ "$#" -ne 2 ]; then
+  echo "Usage: $0 <nav|resize|split> <direction>" >&2
+  exit 2
+fi
+
+action=$1
+direction=$2
+
+pane_id=${HERDR_PANE_ID:-}
+if [ -z "$pane_id" ] && command -v jq >/dev/null 2>&1; then
+  pane_id=$(herdr pane current 2>/dev/null | jq -r '.result.pane.pane_id // empty' || true)
+fi
+
+marker_dir="${XDG_CACHE_HOME:-$HOME/.cache}/herdr/nvim-panes"
+nvim_alive=0
+nvim_sock=""
+
+if [ -n "$pane_id" ] && [ -f "$marker_dir/$pane_id" ]; then
+  nvim_pid=$(sed -n '1p' "$marker_dir/$pane_id" 2>/dev/null || true)
+  nvim_sock=$(sed -n '2p' "$marker_dir/$pane_id" 2>/dev/null || true)
+  case "$nvim_pid" in
+    '' | *[!0-9]*)
+      rm -f "$marker_dir/$pane_id"
+      ;;
+    *)
+      if kill -0 "$nvim_pid" 2>/dev/null; then
+        nvim_alive=1
+      else
+        rm -f "$marker_dir/$pane_id"
+      fi
+      ;;
+  esac
+fi
+
+case "$action" in
+  nav)
+    case "$direction" in
+      left)  key="ctrl+h" ;;
+      down)  key="ctrl+j" ;;
+      up)    key="ctrl+k" ;;
+      right) key="ctrl+l" ;;
+      *)
+        echo "Unknown nav direction: $direction" >&2
+        exit 2
+        ;;
+    esac
+
+    if [ "$nvim_alive" -eq 1 ]; then
+      exec herdr pane send-keys "$pane_id" "$key"
+    fi
+    if [ -n "$pane_id" ]; then
+      exec herdr pane focus --pane "$pane_id" --direction "$direction"
+    fi
+    exec herdr pane focus --current --direction "$direction"
+    ;;
+
+  resize)
+    case "$direction" in
+      left)  key="alt+h" ;;
+      down)  key="alt+j" ;;
+      up)    key="alt+k" ;;
+      right) key="alt+l" ;;
+      *)
+        echo "Unknown resize direction: $direction" >&2
+        exit 2
+        ;;
+    esac
+
+    if [ "$nvim_alive" -eq 1 ]; then
+      exec herdr pane send-keys "$pane_id" "$key"
+    fi
+    amount="${HERDR_RESIZE_AMOUNT:-0.05}"
+    if [ -n "$pane_id" ]; then
+      exec herdr pane resize --pane "$pane_id" --direction "$direction" --amount "$amount"
+    fi
+    exec herdr pane resize --current --direction "$direction" --amount "$amount"
+    ;;
+
+  split)
+    case "$direction" in
+      right | down) ;;
+      *)
+        echo "Unknown split direction: $direction" >&2
+        exit 2
+        ;;
+    esac
+
+    if [ "$nvim_alive" -eq 1 ] && [ -n "$nvim_sock" ]; then
+      if nvim --server "$nvim_sock" --remote-expr "v:lua.require('herdr').split('$direction')" >/dev/null 2>&1; then
+        exit 0
+      fi
+    fi
+    if [ -n "$pane_id" ]; then
+      exec herdr pane split --pane "$pane_id" --direction "$direction"
+    fi
+    exec herdr pane split --current --direction "$direction"
+    ;;
+
+  *)
+    echo "Unknown action: $action" >&2
+    exit 2
+    ;;
+esac

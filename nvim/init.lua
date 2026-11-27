@@ -13,6 +13,7 @@ vim.g.loaded_tutor_mode_plugin = 1
 vim.g.loaded_zipPlugin = 1
 
 require("options")
+require("herdr").setup()
 require("keymaps")
 require("plugins")
 require("lsp").setup()

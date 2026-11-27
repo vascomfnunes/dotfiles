@@ -113,6 +113,7 @@ fi
 echo "📂 Creating directories..."
 mkdir -p \
   "$HOME/.config/ghostty" \
+  "$HOME/.config/herdr" \
   "$HOME/.config/btop/themes" \
   "$HOME/.config/git" \
   "$HOME/.config/zsh" \
@@ -197,6 +198,7 @@ dotlink starship.toml .config/starship.toml
 dotlink git/gitconfig .config/git/config
 dotlink git/gitignore .config/git/ignore
 dotlink ghostty/config .config/ghostty/config
+dotlink herdr/config.toml .config/herdr/config.toml
 dotlink btop/themes/catppuccin_latte.theme .config/btop/themes/catppuccin_latte.theme
 dotlink btop/themes/catppuccin_mocha.theme .config/btop/themes/catppuccin_mocha.theme
 dotlink gpg/gpg-agent.conf .gnupg/gpg-agent.conf
@@ -212,6 +214,7 @@ dotlink bin/serve .local/bin/serve
 dotlink bin/git-commit-ai .local/bin/git-commit-ai
 dotlink bin/nvim-edit .local/bin/nvim-edit
 dotlink bin/btop-themed .local/bin/btop-themed
+dotlink bin/herdr-nvim-bridge .local/bin/herdr-nvim-bridge
 
 # OpenCode's shared agent instructions.
 dotlink agents/AGENTS.md .config/opencode/AGENTS.md

@@ -8,6 +8,11 @@ font-feature = -calt
 
 ##### Cursor and shell integration
 
+# Launch Herdr in the first Ghostty surface on startup, falling back to a login
+# shell when detaching or if Herdr is unavailable. Subsequent windows and the
+# quick terminal still open a normal Zsh shell.
+initial-command = /bin/zsh -l -c 'if command -v herdr >/dev/null 2>&1; then herdr; fi; exec /bin/zsh -l'
+
 cursor-style-blink = true
 shell-integration-features = no-cursor
 # Always confirm before closing a surface or quitting, even when idle.
@@ -44,52 +49,11 @@ split-preserve-zoom = navigation
 
 ##### Key bindings
 
-# Ctrl+A is the terminal leader. Press Ctrl+A twice to send a literal Ctrl+A
-# to the running program.
-keybind = ctrl+a>ctrl+a=text:\x01
-keybind = ctrl+a>c=new_tab
-keybind = ctrl+a>v=new_split:right
-keybind = ctrl+a>s=new_split:down
-keybind = ctrl+a>x=close_surface
-keybind = ctrl+a>w=close_tab
-keybind = ctrl+a>z=toggle_split_zoom
-keybind = ctrl+a>==equalize_splits
-keybind = ctrl+a>t=prompt_tab_title
-keybind = ctrl+a>h=previous_tab
-keybind = ctrl+a>l=next_tab
-keybind = ctrl+a>1=goto_tab:1
-keybind = ctrl+a>2=goto_tab:2
-keybind = ctrl+a>3=goto_tab:3
-keybind = ctrl+a>4=goto_tab:4
-keybind = ctrl+a>5=goto_tab:5
-keybind = ctrl+a>6=goto_tab:6
-keybind = ctrl+a>7=goto_tab:7
-keybind = ctrl+a>8=goto_tab:8
-keybind = ctrl+a>9=goto_tab:9
+# Send Option as Alt so Alt+hjkl resize bindings reach Herdr and Neovim.
+macos-option-as-alt = true
 
-# Outside Neovim, Ghostty handles Ctrl/Option+hjkl itself.
-keybind = performable:ctrl+h=goto_split:left
-keybind = performable:ctrl+j=goto_split:down
-keybind = performable:ctrl+k=goto_split:up
-keybind = performable:ctrl+l=goto_split:right
-keybind = performable:alt+h=resize_split:left,30
-keybind = performable:alt+j=resize_split:down,30
-keybind = performable:alt+k=resize_split:up,30
-keybind = performable:alt+l=resize_split:right,30
-
-# smart-splits.nvim claims this key table while Neovim is running. The table
-# name must match the backend's `key_table` option, which defaults to `nvim`.
-# The table gives Neovim first refusal; Ghostty handles the same keys only
-# after Neovim reaches the edge of its own layout.
-keybind = nvim/
-keybind = nvim/ctrl+h=text:\x08
-keybind = nvim/ctrl+j=text:\x0a
-keybind = nvim/ctrl+k=text:\x0b
-keybind = nvim/ctrl+l=text:\x0c
-keybind = nvim/alt+h=esc:h
-keybind = nvim/alt+j=esc:j
-keybind = nvim/alt+k=esc:k
-keybind = nvim/alt+l=esc:l
+# Tabs, splits, and Neovim-aware pane navigation/resizing are handled by Herdr
+# (~/.config/herdr/config.toml), so Ghostty multiplexer keybindings are omitted.
 
 
 ##### Quick terminal

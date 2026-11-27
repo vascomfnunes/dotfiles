@@ -1,0 +1,95 @@
+onboarding = false
+# Herdr configuration
+# Managed in dotfiles and linked to ~/.config/herdr/config.toml.
+
+[theme]
+name = "catppuccin"
+auto_switch = true
+dark_name = "catppuccin"
+light_name = "catppuccin-latte"
+
+[keys]
+# Ctrl+A is the terminal leader (matching the former Ghostty configuration).
+prefix = "ctrl+a"
+
+# Tabs and panes
+new_tab = "prefix+c"
+close_pane = "prefix+x"
+close_tab = "prefix+w"
+zoom = "prefix+z"
+rename_tab = "prefix+r"
+previous_tab = "prefix+h"
+next_tab = "prefix+l"
+switch_tab = ["prefix+1..9", "cmd+1..9"]
+toggle_sidebar = "prefix+b"
+
+# Force Herdr pane splits even when Neovim owns the active pane.
+# Plain prefix+v / prefix+s are Neovim-aware via [[keys.command]] below.
+split_vertical = "prefix+shift+v"
+split_horizontal = "prefix+shift+s"
+
+# Rebind or disable defaults that would otherwise collide with the bindings above.
+settings = "prefix+,"
+workspace_picker = "prefix+shift+w"
+rename_workspace = "prefix+alt+w"
+resize_mode = ""
+
+# Pane focus is handled by the direct Neovim-aware Ctrl+hjkl commands below.
+focus_pane_left = ""
+focus_pane_down = ""
+focus_pane_up = ""
+focus_pane_right = ""
+
+# Seamless pane/split navigation (Ctrl+hjkl).
+[[keys.command]]
+key = "ctrl+h"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge nav left"
+
+[[keys.command]]
+key = "ctrl+j"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge nav down"
+
+[[keys.command]]
+key = "ctrl+k"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge nav up"
+
+[[keys.command]]
+key = "ctrl+l"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge nav right"
+
+# Seamless pane/split resizing (Alt/Option+hjkl).
+[[keys.command]]
+key = "alt+h"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge resize left"
+
+[[keys.command]]
+key = "alt+j"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge resize down"
+
+[[keys.command]]
+key = "alt+k"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge resize up"
+
+[[keys.command]]
+key = "alt+l"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge resize right"
+
+# Seamless split creation (Ctrl+A v / Ctrl+A s).
+# Creates a Neovim split when Neovim is active in the pane, otherwise a Herdr split.
+[[keys.command]]
+key = "prefix+v"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge split right"
+
+[[keys.command]]
+key = "prefix+s"
+type = "shell"
+command = "$HOME/.local/bin/herdr-nvim-bridge split down"
